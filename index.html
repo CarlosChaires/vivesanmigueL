@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel de Allende</title>
+    <style>
+        :root {
+            --bg-color: #fcfbfa;
+            --card-bg: #f4f1ea;
+            --text-main: #2c2a29;
+            --text-muted: #6b6762;
+            --accent: #d4a373;
+            --accent-hover: #bc6c25;
+            --border-color: #e6e1da;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #e0ded8;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--text-main);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-align: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 1100px;
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>San Miguel de Allende</h1>
+        <p class="subtitle">Descubre la magia, cultura y rincones de nuestra ciudad</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            <!-- Tarjeta 1 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1584288019949-a6e133bb0799?auto=format&fit=crop&w=600&q=80" alt="Arquitectura Colonial">
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h2 class="card-title">Arquitectura e Historia</h2>
+                        <p class="card-desc">Camina por calles empedradas llenas de historia, fachadas coloniales y la emblemática Parroquia.</p>
+                    </div>
+                    <div class="btn-container">
+                        <a href="#" class="btn">Explorar rutas</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Gastronomía Local">
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h2 class="card-title">Gastronomía</h2>
+                        <p class="card-desc">Sabores auténticos, alta cocina internacional y terrazas con vistas privilegiadas al atardecer.</p>
+                    </div>
+                    <div class="btn-container">
+                        <a href="#" class="btn">Ver restaurantes</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Arte y Galerías">
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h2 class="card-title">Arte y Cultura</h2>
+                        <p class="card-desc">Un refugio para artistas, galerías independientes, talleres de diseño y expresiones vivas.</p>
+                    </div>
+                    <div class="btn-container">
+                        <a href="#" class="btn">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Vive San Miguel de Allende. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
