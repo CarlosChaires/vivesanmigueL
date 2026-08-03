@@ -93,23 +93,30 @@
             font-size: 18px;
             color: var(--text-muted);
             max-width: 600px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 30px auto;
             line-height: 1.6;
         }
 
-        /* --- Botón Explorar --- */
+        /* --- Contenedor de Botones Principales --- */
+        .sma-cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
         .sma-explore-btn {
             display: inline-block;
             background-color: var(--primary-navy);
             color: var(--white);
-            padding: 16px 40px;
+            padding: 15px 32px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             box-shadow: 0 8px 25px rgba(27, 42, 74, 0.2);
             transition: all 0.3s ease;
-            margin-bottom: 60px;
         }
 
         .sma-explore-btn:hover {
@@ -118,12 +125,23 @@
             box-shadow: 0 12px 30px rgba(200, 125, 85, 0.35);
         }
 
+        .sma-explore-btn.secondary {
+            background-color: var(--white);
+            color: var(--primary-navy);
+            border: 1px solid var(--cantera-terracotta);
+        }
+
+        .sma-explore-btn.secondary:hover {
+            background-color: var(--cantera-terracotta);
+            color: var(--white);
+        }
+
         /* --- Separador --- */
         .sma-separator {
             border: none;
             height: 1px;
             background-color: var(--border-subtle);
-            margin: 50px 0;
+            margin: 40px 0;
         }
 
         /* --- Formulario de Suscripción --- */
@@ -133,7 +151,7 @@
             padding: 40px 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             border: 1px solid var(--border-subtle);
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -195,7 +213,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .sma-social-link {
@@ -236,6 +254,10 @@
             h1.site-main-title {
                 font-size: 32px;
             }
+            .sma-cta-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
             .sma-subscribe-form {
                 flex-direction: column;
             }
@@ -260,7 +282,7 @@
     <div class="sma-main-wrapper">
         
         <!-- Logotipo Institucional de Corazón Artesanal -->
-        <div class="site-logo-container" title="Vive San Miguel">
+        <div class="site-logo-container" title="Dirección de Turismo - San Miguel de Allende">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
@@ -269,8 +291,11 @@
         <h1 class="site-main-title">Vive San Miguel</h1>
         <p class="site-main-subtitle">Donde el corazón de México late más fuerte. Descubre la magia colonial, la cultura, los viñedos y cada rincón secreto de nuestra Ciudad Patrimonio.</p>
 
-        <!-- Botón Explorar que redirige a la sección creada -->
-        <a href="seccion-principal.html" class="sma-explore-btn">Explorar la Ruta</a>
+        <!-- Botones de Acción (Planea tu viaje y FASMA2026) -->
+        <div class="sma-cta-container">
+            <a href="https://vivemigueldeallende.wordpress.com/vive-san-miguel-de-allende/" class="sma-explore-btn">Planea tu viaje</a>
+            <a href="https://www.fasma.com.mx/" target="_blank" rel="noopener noreferrer" class="sma-explore-btn secondary">FASMA2026</a>
+        </div>
 
         <hr class="sma-separator" />
 
@@ -285,13 +310,13 @@
         </section>
 
         <!-- Redes Sociales -->
-        <div style="font-weight: 700; color: var(--primary-navy); margin-bottom: 15px; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Síguenos en Redes Sociales</div>
+        <div style="font-weight: 700; color: var(--primary-navy); margin-bottom: 10px; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Síguenos en Redes Sociales</div>
         <div class="sma-social-container">
             <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="sma-social-link instagram">Instagram</a>
             <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="sma-social-link tiktok">TikTok</a>
         </div>
 
-        <p style="font-size: 12px; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; margin-top: 50px;">vivesanmiguel.com</p>
+        <p style="font-size: 12px; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; margin-top: 40px;">vivesanmiguel.com</p>
 
     </div>
 
