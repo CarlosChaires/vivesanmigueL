@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive Tu Ruta - San Miguel de Allende</title>
+    <title>Vive San Miguel - Inicio</title>
     <style>
         :root {
             --bg-sanmiguel: #fcfbfa;
@@ -28,7 +28,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de Fondo Interactiva (Luz Suave Rosada) --- */
+        /* --- Animación de Fondo Interactiva (Luz Suave) --- */
         #cursor-glow {
             position: fixed;
             top: 0;
@@ -46,34 +46,30 @@
         .sma-main-wrapper {
             position: relative;
             z-index: 1;
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
             box-sizing: border-box;
-        }
-
-        /* --- Logotipo Superior Integrado --- */
-        .site-header-custom {
             text-align: center;
-            margin-bottom: 20px;
         }
 
+        /* --- Logotipo Institucional --- */
         .site-logo-container {
-            width: 75px;
-            height: 75px;
-            margin: 0 auto;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px auto;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--white);
             border-radius: 50%;
-            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.15);
+            box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
             border: 1px solid var(--border-subtle);
         }
 
         .site-logo-container svg {
-            width: 38px;
-            height: 38px;
+            width: 45px;
+            height: 45px;
             fill: var(--primary-navy);
             animation: pulse-heart 2s infinite;
         }
@@ -84,246 +80,174 @@
             100% { transform: scale(1); }
         }
 
-        /* --- Separadores --- */
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background-color: var(--border-subtle);
-            margin: 40px 0;
-            opacity: 1;
-        }
-
-        /* --- Botones Pasteles Superiores --- */
-        .sma-buttons-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .sma-pastel-btn .wp-block-button__link {
-            background-color: var(--white) !important;
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--cantera-terracotta) !important;
-            padding: 14px 28px !important;
-            border-radius: 30px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-            text-decoration: none !important;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
-        }
-
-        .sma-pastel-btn .wp-block-button__link:hover {
-            background-color: var(--cantera-terracotta) !important;
-            color: var(--white) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.3);
-        }
-
-        /* --- Imagen Panorámica --- */
-        .wp-block-image.alignfull {
-            margin: 0 0 40px 0;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-        }
-
-        .wp-block-image.alignfull img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* --- Grupo Vuelo en Globo --- */
-        .has-background-light-background-color {
-            background-color: var(--white) !important;
-            border-radius: 24px;
-            padding: 40px 20px !important;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 50px;
-        }
-
-        .wp-block-image.aligncenter img {
-            border-radius: 14px;
-            max-width: 100%;
-        }
-
-        /* --- Sección Instagram / Pullquote --- */
-        .wp-block-pullquote {
-            text-align: center;
-            border: none;
-            margin: 50px 0 30px 0;
-            padding: 0;
-        }
-
-        .wp-block-pullquote blockquote p {
-            font-size: 26px;
+        /* --- Títulos de Bienvenida --- */
+        h1.site-main-title {
+            font-size: 44px;
             font-weight: 800;
             color: var(--primary-navy);
-            margin: 0 0 10px 0;
-            letter-spacing: -0.5px;
+            margin: 0 0 15px 0;
+            letter-spacing: -1px;
         }
 
-        .wp-block-pullquote blockquote cite {
-            font-size: 16px;
-            color: var(--cantera-terracotta);
-            font-style: normal;
-            font-weight: 600;
-        }
-
-        .wp-block-jetpack-instagram-gallery {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .wp-block-jetpack-instagram-gallery a {
-            display: inline-block;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            box-shadow: 0 6px 20px rgba(220, 39, 67, 0.25);
-            transition: transform 0.2s;
-        }
-
-        .wp-block-jetpack-instagram-gallery a:hover {
-            transform: translateY(-2px);
-        }
-
-        /* --- Footer Informativo (Sobre nosotros, Contacto, Visítanos) --- */
-        .has-foreground-background-color {
-            background-color: var(--primary-navy) !important;
-            color: var(--white) !important;
-            border-radius: 24px;
-            padding: 50px 30px !important;
-            margin-top: 50px;
-            box-shadow: 0 20px 40px rgba(27, 42, 74, 0.12);
-        }
-
-        .wp-block-columns.alignwide {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: space-between;
-        }
-
-        .wp-block-column {
-            flex: 1;
-            min-width: 240px;
-        }
-
-        .wp-block-heading.has-background-color {
-            color: #ffffff !important;
+        p.site-main-subtitle {
             font-size: 18px;
-            font-weight: 700;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
-        .has-foreground-background-color p, 
-        .has-foreground-background-color li {
-            color: rgba(255, 255, 255, 0.85) !important;
-            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
             line-height: 1.6;
         }
 
-        .wp-block-list {
-            padding-left: 0;
-            list-style: none;
+        /* --- Botón Explorar --- */
+        .sma-explore-btn {
+            display: inline-block;
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 16px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.2);
+            transition: all 0.3s ease;
+            margin-bottom: 60px;
         }
 
-        /* --- Buscador --- -->
-        .wp-block-search {
-            margin: 40px auto;
-            text-align: center;
+        .sma-explore-btn:hover {
+            background-color: var(--cantera-terracotta);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(200, 125, 85, 0.35);
+        }
+
+        /* --- Separador --- */
+        .sma-separator {
+            border: none;
+            height: 1px;
+            background-color: var(--border-subtle);
+            margin: 50px 0;
+        }
+
+        /* --- Formulario de Suscripción --- */
+        .sma-subscribe-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sma-subscribe-section h3 {
+            font-size: 22px;
+            color: var(--primary-navy);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .sma-subscribe-section p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .sma-subscribe-form {
             display: flex;
+            gap: 10px;
             justify-content: center;
-        }
-
-        .wp-block-search__input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px !important;
-            border-radius: 30px !important;
-            border: 1px solid var(--border-subtle) !important;
-            background: var(--white) !important;
-            font-size: 15px !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            outline: none;
-        }
-
-        .wp-block-search__button {
-            display: none !important; /* Ocultar botón por estética minimalista o estilizarlo */
-        }
-
-        /* --- Footer Final de Redes y Logo --- */
-        .wp-block-group.alignfull[style*="padding-top"] {
-            border-top: 1px solid var(--border-subtle);
-            margin-top: 30px;
-            padding: 30px 20px !important;
-        }
-
-        header.wp-block-group.alignwide {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
         }
 
-        .wp-block-social-links.is-style-logos-only {
+        .sma-subscribe-form input[type="email"] {
+            flex: 1;
+            min-width: 260px;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--border-subtle);
+            font-size: 15px;
+            outline: none;
+            background: var(--bg-sanmiguel);
+        }
+
+        .sma-subscribe-form input[type="email"]:focus {
+            border-color: var(--cantera-terracotta);
+        }
+
+        .sma-subscribe-form button {
+            background-color: var(--cantera-terracotta);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .sma-subscribe-form button:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Redes Sociales --- */
+        .sma-social-container {
             display: flex;
-            gap: 12px;
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
         }
 
-        .wp-block-social-links li a {
-            background: var(--primary-navy) !important;
-            color: var(--white) !important;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
+        .sma-social-link {
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
             transition: transform 0.2s, background-color 0.2s;
         }
 
-        .wp-block-social-links li a:hover {
-            background: var(--cantera-terracotta) !important;
-            transform: translateY(-2px);
+        .sma-social-link.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
-        /* --- Responsive para Móviles --- */
+        .sma-social-link.tiktok {
+            background-color: #000000;
+        }
+
+        .sma-social-link:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .sma-social-link.instagram::before { content: '📸'; }
+        .sma-social-link.tiktok::before { content: '🎵'; }
+
+        /* --- Responsive Móvil --- */
         @media screen and (max-width: 768px) {
             .sma-main-wrapper {
-                padding: 20px 15px;
+                padding: 40px 15px;
             }
-            .wp-block-image.alignfull img {
-                height: 250px;
+            h1.site-main-title {
+                font-size: 32px;
             }
-            .wp-block-pullquote blockquote p {
-                font-size: 20px;
-            }
-            header.wp-block-group.alignwide {
+            .sma-subscribe-form {
                 flex-direction: column;
-                text-align: center;
+            }
+            .sma-subscribe-form button {
+                width: 100%;
+            }
+            .sma-social-container {
+                flex-direction: column;
+            }
+            .sma-social-link {
+                width: 100%;
                 justify-content: center;
-            }
-            .wp-block-columns.alignwide {
-                flex-direction: column;
-                gap: 20px;
             }
         }
     </style>
@@ -334,145 +258,40 @@
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
-
-        <!-- Logotipo Institucional Superior (Corazón Artesanal) -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" title="Dirección de Turismo - San Miguel de Allende">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            </div>
-        </header>
-
-        <!-- wp:separator -->
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-        <!-- /wp:separator -->
-
-        <!-- wp:buttons {"align":"wide","layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
-        <div class="wp-block-buttons alignwide sma-buttons-container">
-            <!-- wp:button {"className":"sma-pastel-btn"} -->
-            <div class="wp-block-button sma-pastel-btn">
-                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/vive-san-miguel-de-allende/">PREPARA TU VIAJE</a>
-            </div>
-            <!-- /wp:button -->
-
-            <!-- wp:button {"className":"sma-pastel-btn"} -->
-            <div class="wp-block-button sma-pastel-btn">
-                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/11/26/785/">CENAS DE NOCHE BUENA 2025</a>
-            </div>
-            <!-- /wp:button -->
-
-            <!-- wp:button {"className":"sma-pastel-btn"} -->
-            <div class="wp-block-button sma-pastel-btn">
-                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2026/03/25/semana-santa-2026/">SEMANA SANTA 2026</a>
-            </div>
-            <!-- /wp:button -->
+        
+        <!-- Logotipo Institucional de Corazón Artesanal -->
+        <div class="site-logo-container" title="Vive San Miguel">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
         </div>
-        <!-- /wp:buttons -->
 
-        <!-- wp:separator -->
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-        <!-- /wp:separator -->
+        <h1 class="site-main-title">Vive San Miguel</h1>
+        <p class="site-main-subtitle">Donde el corazón de México late más fuerte. Descubre la magia colonial, la cultura, los viñedos y cada rincón secreto de nuestra Ciudad Patrimonio.</p>
 
-        <!-- wp:image {"id":885,"sizeSlug":"large","linkDestination":"none","align":"full"} -->
-        <figure class="wp-block-image alignfull size-large"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2026/04/pexels-tiarrasorte-29837357.jpg?w=1024" alt="Vista panorámica de San Miguel de Allende" class="wp-image-885" /></figure>
-        <!-- /wp:image -->
+        <!-- Botón Explorar que redirige a la sección creada -->
+        <a href="seccion-principal.html" class="sma-explore-btn">Explorar la Ruta</a>
 
-        <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}},"backgroundColor":"background-light"} -->
-        <div class="wp-block-group alignfull has-background-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40)"><!-- wp:image {"id":136,"width":"703px","height":"auto","sizeSlug":"full","linkDestination":"none","align":"center","className":"alignfull"} -->
-        <figure class="wp-block-image aligncenter size-full is-resized alignfull"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" class="wp-image-136" style="width:703px;height:auto" /></figure>
-        <!-- /wp:image --></div>
-        <!-- /wp:group -->
+        <hr class="sma-separator" />
 
-        <!-- wp:group {"align":"full"} -->
-        <div class="wp-block-group alignfull"><!-- wp:spacer {"height":"20px","className":"desktop-only"} -->
-        <div style="height:20px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
-        <!-- /wp:spacer -->
+        <!-- Formulario de Suscripción -->
+        <section class="sma-subscribe-section">
+            <h3>Mantente Informado</h3>
+            <p>Suscríbete para recibir nuestra guía exclusiva, eventos destacados y recomendaciones de viaje directo en tu correo.</p>
+            <form class="sma-subscribe-form" action="#" method="POST">
+                <input type="email" placeholder="Ingresa tu correo electrónico..." required aria-label="Correo electrónico" />
+                <button type="submit">Suscribirme</button>
+            </form>
+        </section>
 
-        <!-- wp:pullquote -->
-        <figure class="wp-block-pullquote"><blockquote><p>¡UN VIAJE AL CORAZÓN!</p><cite><strong>¡Descubre la magia de San Miguel de Allende en Instagram!</strong></cite></blockquote></figure>
-        <!-- /wp:pullquote -->
-
-        <!-- wp:jetpack/instagram-gallery {"accessToken":"31182912","instagramUser":"sanmiigueldeallende"} -->
-        <div class="wp-block-jetpack-instagram-gallery"><a href="https://www.instagram.com/sanmiigueldeallende/" rel="noopener noreferrer" target="_blank">Ver Galería en Instagram</a></div>
-        <!-- /wp:jetpack/instagram-gallery --></div>
-        <!-- /wp:group -->
-
-        <!-- wp:group {"align":"full","style":{"color":{"text":"#ffffff"}},"backgroundColor":"foreground"} -->
-        <div class="wp-block-group alignfull has-foreground-background-color has-text-color has-background" style="color:#ffffff"><!-- wp:spacer {"height":"20px"} -->
-        <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
-        <!-- /wp:spacer -->
-
-        <!-- wp:columns {"align":"wide"} -->
-        <div class="wp-block-columns alignwide"><!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Sobre nosotros</h4>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph -->
-        <p>Somos una organización especializada en el destino, nuestra finalidad es que usted disfrute de una experiencia inolvidable.</p>
-        <!-- /wp:paragraph --></div>
-        <!-- /wp:column -->
-
-        <!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Ponte en contacto</h4>
-        <!-- /wp:heading -->
-
-        <!-- wp:list -->
-        <ul class="wp-block-list"><!-- wp:list-item -->
-        <li>vivesma@gmail.com</li>
-        <!-- /wp:list-item -->
-
-        <!-- wp:list-item -->
-        <li>+52 415 177 36 98</li>
-        <!-- /wp:list-item --></ul>
-        <!-- /wp:list --></div>
-        <!-- /wp:column -->
-
-        <!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Visítanos</h4>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph -->
-        <p>Zona centro, San Miguel de Allende, 37700, México</p>
-        <!-- /wp:paragraph --></div>
-        <!-- /wp:column --></div>
-        <!-- /wp:columns -->
-
-        <!-- wp:spacer {"height":"20px","className":"desktop-only"} -->
-        <div style="height:20px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
-        <!-- /wp:spacer --></div>
-        <!-- /wp:group -->
-
-        <!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
-        <div class="wp-block-group alignwide wp-block-search" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:search {"label":"Buscar en el sitio","showLabel":false,"buttonText":"Buscar"} /-->
-            <input type="search" class="wp-block-search__input" placeholder="Buscar en el sitio..." aria-label="Buscar en el sitio" />
+        <!-- Redes Sociales -->
+        <div style="font-weight: 700; color: var(--primary-navy); margin-bottom: 15px; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Síguenos en Redes Sociales</div>
+        <div class="sma-social-container">
+            <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="sma-social-link instagram">Instagram</a>
+            <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="sma-social-link tiktok">TikTok</a>
         </div>
-        <!-- /wp:group -->
 
-        <!-- wp:group {"metadata":{"name":"Footer Container","categories":["footer"],"patternName":"a8c/footer-menu-logo-social"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"constrained"}} -->
-        <div class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)"><!-- wp:group {"tagName":"header","metadata":{"name":"Contents"},"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-        <header class="wp-block-group alignwide"><!-- wp:navigation {"ref":104,"style":{"layout":{"selfStretch":"fixed","flexSize":"40%"}}} /-->
-
-        <!-- wp:group -->
-        <div class="wp-block-group"><!-- wp:site-title --><div class="wp-block-site-title" style="font-weight:700; color:var(--primary-navy);">Vive Tu Ruta</div><!-- /wp:site-title --></div>
-        <!-- /wp:group -->
-
-        <!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"},"layout":{"selfStretch":"fixed","flexSize":"40%"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
-        <div class="wp-block-group"><!-- wp:social-links {"size":"has-normal-icon-size","className":"is-style-logos-only","style":{"spacing":{"blockGap":{"left":"12px"}}}} -->
-        <ul class="wp-block-social-links has-normal-icon-size is-style-logos-only"><!-- wp:social-link {"url":"https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==","service":"instagram"} /-->
-        <li><a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" title="Instagram">IG</a></li>
-        <!-- /wp:social-link -->
-
-        <!-- wp:social-link {"url":"https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1\u0026amp;sender_device=pc","service":"tiktok"} /-->
-        <li><a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok">TK</a></li>
-        <!-- /wp:social-link --></ul>
-        <!-- /wp:social-links --></div>
-        <!-- /wp:group --></header>
-        <!-- /wp:group --></div>
-        <!-- /wp:group -->
+        <p style="font-size: 12px; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; margin-top: 50px;">vivesanmiguel.com</p>
 
     </div>
 
