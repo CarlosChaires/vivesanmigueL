@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive Tu Ruta - San Miguel de Allende</title>
+    <style>
+        :root {
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --pastel-sand: #f4ebd0;
+            --text-main: #2c2c2c;
+            --text-muted: #666666;
+            --border-subtle: rgba(27, 42, 74, 0.08);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: var(--text-main);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Animación de Fondo: Luz rosada y cálida interactiva --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(244, 185, 200, 0.12) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: width 0.2s, height 0.2s;
+        }
+
+        .sma-main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Cabecera Estilizada con Botón de Inicio --- */
+        .site-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .sma-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--white);
+            color: var(--primary-navy);
+            border: 1px solid var(--cantera-terracotta);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .sma-home-btn:hover {
+            background-color: var(--cantera-terracotta);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.25);
+        }
+
+        .site-logo-container {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 18px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(200, 125, 85, 0.08);
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.15);
+        }
+
+        .site-logo-container svg {
+            width: 34px;
+            height: 34px;
+            fill: var(--primary-navy);
+            animation: pulse-heart 2s infinite;
+        }
+
+        h2.wp-block-heading.site-title {
+            font-size: 38px;
+            font-weight: 800;
+            text-align: center;
+            margin: 0 0 12px 0;
+            color: var(--primary-navy);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: var(--text-muted);
+            margin: 0;
+            font-weight: 400;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Cuadrícula Minimalista Optimizada para Móvil --- */
+        .sma-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 35px;
+            margin-top: 30px;
+        }
+
+        .sma-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sma-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+        }
+
+        .sma-img-wrapper {
+            width: 100%;
+            height: 200px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .sma-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .sma-item:hover .sma-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .sma-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 6px 8px 6px;
+        }
+
+        .sma-link-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            text-decoration: none;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .sma-link-title:hover {
+            color: var(--cantera-terracotta);
+        }
+
+        .sma-link-title::before {
+            content: "•";
+            color: var(--cantera-terracotta);
+            font-size: 20px;
+            line-height: 0;
+        }
+
+        .sma-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* --- Sección de Redes Sociales Optimizada --- */
+        .social-footer {
+            margin-top: 70px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .social-btn {
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .social-btn.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .social-btn.tiktok {
+            background-color: #000000;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .social-btn.instagram::before { content: '📸'; }
+        .social-btn.tiktok::before { content: '🎵'; }
+
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Ajustes Responsive específicos para Móviles --- */
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 30px 15px;
+            }
+            h2.wp-block-heading.site-title {
+                font-size: 28px;
+            }
+            .hero-subtitle {
+                font-size: 14px;
+            }
+            .sma-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .social-btn {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animación de luz suave interactiva -->
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+        
+        <!-- Cabecera con Botón de Inicio y Logotipo de Corazón Artesanal -->
+        <header class="site-header">
+            <a href="index.html" class="sma-home-btn">← Inicio</a>
+            
+            <div class="site-logo-container" title="Corazón Artesanal - San Miguel de Allende">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <h2 class="wp-block-heading site-title">Donde el Corazón de México Late Más Fuerte</h2>
+            <p class="hero-subtitle">Vive, siente y recorre la magia colonial de San Miguel de Allende paso a paso.</p>
+        </header>
+
+        <!-- Contribuciones / Tarjetas Minimalistas -->
+        <div class="sma-grid">
+            
+            <!-- Item 1 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="Mapa Turístico"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf" class="sma-link-title" target="_blank">Mapa Turístico</a>
+                    <p class="sma-description">Tu brújula perfecta para perderte entre callejones empedrados y joyas arquitectónicas.</p>
+                </div>
+            </article>
+
+            <!-- Item 2 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_dj40g5dj40g5dj40.png?w=1024" alt="Eventos"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://discoversma.com/" class="sma-link-title" target="_blank">Eventos</a>
+                    <p class="sma-description">Siente la fiesta, el color y la música en una agenda cultural viva todo el año.</p>
+                </div>
+            </article>
+
+            <!-- Item 3 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2k6uxt2k6uxt2k6u.png?w=1024" alt="Ecos del pasado"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" class="sma-link-title">Ecos del pasado</a>
+                    <p class="sma-description">Un viaje en el tiempo por la historia viva de nuestra Ciudad Patrimonio.</p>
+                </div>
+            </article>
+
+            <!-- Item 4 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" class="sma-link-title">Sitios de interés</a>
+                    <p class="sma-description">Postales icónicas y rincones secretos que enamoran a cada paso.</p>
+                </div>
+            </article>
+
+            <!-- Item 5 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2w7k3d2w7k3d2w7k.png?w=1024" alt="Tradiciones"/>
+                </div>
+                <div class="sma-content">
+                    <a href="#" class="sma-link-title">Tradiciones</a>
+                    <p class="sma-description">El alma de nuestras costumbres latiendo fuerte en cada celebración.</p>
+                </div>
+            </article>
+
+            <!-- Item 6 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-27-a-las-19.30.42_359f7392.jpg?w=1024" alt="Rutas temáticas"/>
+                </div>
+                <div class="sma-content">
+                    <a href="#" class="sma-link-title">Rutas temáticas</a>
+                    <p class="sma-description">Itinerarios diseñados a la medida para explorar como un auténtico local.</p>
+                </div>
+            </article>
+
+            <!-- Item 7 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="Rutas de autobuses"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link" class="sma-link-title" target="_blank">Rutas de autobuses</a>
+                    <p class="sma-description">Muévete fácil y conéctate con la ciudad usando el transporte local.</p>
+                </div>
+            </article>
+
+            <!-- Item 8 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/vino.png?w=1024" alt="Viñedos"/>
+                </div>
+                <div class="sma-content">
+                    <a href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" class="sma-link-title">Viñedos</a>
+                    <p class="sma-description">Experiencias enológicas de altura entre los mejores valles del estado.</p>
+                </div>
+            </article>
+
+            <!-- Item 9 -->
+            <article class="sma-item">
+                <div class="sma-img-wrapper">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="Tours"/>
+                </div>
+                <div class="sma-content">
+                    <a href="#" class="sma-link-title">Tours</a>
+                    <p class="sma-description">Aventuras guiadas por expertos que conocen cada secreto de nuestra tierra.</p>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Redes Sociales y Footer -->
+        <footer class="social-footer">
+            <div class="social-links">
+                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram">Instagram</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok">TikTok</a>
+            </div>
+            <p style="font-size:12px;opacity:0.5;letter-spacing:2px;text-transform:uppercase;margin:0">vivesanmiguel.com</p>
+        </footer>
+
+    </div>
+
+    <!-- Script de luz interactiva -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+    </script>
+</body>
+</html>
