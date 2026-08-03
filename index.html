@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive Tu Ruta - San Miguel de Allende</title>
     <style>
-        /* --- Variables de Diseño y Paleta de Colores --- */
         :root {
-            --bg-light: #fdfbf7;          /* Fondo principal suave */
+            --bg-light: #fdfbf7;
             --white: #ffffff;
-            --primary-navy: #1b2a4a;      /* Color principal, elegancia */
-            --pastel-terracotta: #e8a87c;   /* Color cálido, artesanal */
-            --accent-ochre: #dfc291;      /* Color secundario, dorado suave */
-            --text-main: #2c2c2c;         /* Texto principal */
-            --text-muted: #666666;         /* Texto secundario, subtítulos */
-            --border-color: rgba(0,0,0,0.08); /* Bordes sutiles */
+            --primary-navy: #1b2a4a;
+            --pastel-terracotta: #e8a87c;
+            --accent-ochre: #dfc291;
+            --text-main: #2c2c2c;
+            --text-muted: #666666;
+            --border-color: rgba(0,0,0,0.08);
             --shadow-card: 0 6px 20px rgba(0,0,0,0.03);
             --shadow-hover: 0 12px 30px rgba(0,0,0,0.06);
         }
 
-        /* --- Estilos Generales --- */
         body {
             margin: 0;
             padding: 0;
@@ -27,23 +25,36 @@
             background-color: var(--bg-light);
             color: var(--text-main);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            transition: all 0.3s ease;
+        /* --- Animación de Fondo Interactiva (Eilo Cursor Rosita) --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(232, 168, 124, 0.22) 0%, rgba(244, 185, 200, 0.12) 40%, transparent 75%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+            z-index: 0;
         }
 
-        /* --- Contenedor Principal --- */
         .sma-main-wrapper {
+            position: relative;
+            z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
             padding: 60px 20px;
             box-sizing: border-box;
         }
 
-        /* --- Cabecera (Header) --- */
+        /* --- Cabecera --- */
         .site-header {
             text-align: center;
             margin-bottom: 60px;
@@ -55,7 +66,7 @@
         }
 
         .site-logo {
-            width: 130px; /* Aumenté un poco el tamaño para mayor presencia */
+            width: 140px;
             height: auto;
             margin-bottom: 20px;
             display: inline-block;
@@ -82,7 +93,7 @@
             margin-right: auto;
         }
 
-        /* --- Cuadrícula de Contenido (Grid) --- */
+        /* --- Cuadrícula --- */
         .wp-block-columns.sma-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -102,7 +113,7 @@
             box-sizing: border-box;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid var(--border-color);
-            width: 100%; /* Asegura que ocupe todo el espacio de su columna en el grid */
+            width: 100%;
         }
 
         .wp-block-column.sma-box:hover {
@@ -110,20 +121,11 @@
             box-shadow: var(--shadow-hover);
         }
 
-        /* --- Imágenes de las tarjetas --- */
         .wp-block-image.sma-img {
             margin: 0 0 25px 0;
             border-radius: 16px;
             overflow: hidden;
             height: 220px;
-            position: relative;
-        }
-
-        .wp-block-image.sma-img::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 100%);
         }
 
         .wp-block-image.sma-img img {
@@ -138,7 +140,6 @@
             transform: scale(1.07);
         }
 
-        /* --- Botones Principales (CTA) --- */
         .wp-block-buttons {
             display: flex;
             justify-content: center;
@@ -149,7 +150,7 @@
             background-color: var(--pastel-terracotta);
             color: var(--white);
             padding: 14px 32px;
-            border-radius: 50px; /* Botón completamente redondeado */
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
             font-size: 16px;
@@ -168,7 +169,6 @@
             box-shadow: 0 8px 20px rgba(232, 168, 124, 0.5);
         }
 
-        /* Icono de corazón latiente */
         .wp-block-button__link.sma-cta-btn::before {
             content: "♥";
             font-size: 18px;
@@ -182,7 +182,6 @@
             100% { transform: scale(1); }
         }
 
-        /* --- Texto descriptivo de la tarjeta --- */
         p.sma-box-description {
             text-align: center;
             font-size: 15px;
@@ -192,7 +191,7 @@
             padding: 0 10px;
         }
 
-        /* --- Nueva Sección: Contacto y Redes Sociales --- */
+        /* --- Sección Redes Sociales --- */
         .turismo-contact-section {
             margin-top: 80px;
             padding-top: 50px;
@@ -216,21 +215,6 @@
             margin-right: auto;
         }
 
-        .email-link {
-            display: inline-block;
-            font-size: 17px;
-            color: var(--primary-navy);
-            font-weight: 600;
-            margin-bottom: 40px;
-            padding: 10px 20px;
-            border: 2px solid var(--primary-navy);
-            border-radius: 30px;
-        }
-        .email-link:hover {
-             background-color: var(--primary-navy);
-             color: var(--white);
-        }
-
         .social-links-turismo {
             display: flex;
             gap: 25px;
@@ -238,7 +222,6 @@
         }
 
         .social-btn-turismo {
-            background-color: var(--primary-navy);
             color: var(--white);
             padding: 14px 30px;
             border-radius: 50px;
@@ -248,14 +231,15 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: background 0.3s, transform 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
         }
-        /* Diferenciación de colores de marca */
+        
         .social-btn-turismo.instagram {
-            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
+        
         .social-btn-turismo.tiktok {
-             background-color: #000; /* O el color de su marca */
+            background-color: #010101;
         }
 
         .social-btn-turismo:hover {
@@ -263,11 +247,9 @@
             opacity: 0.9;
         }
 
-         /* Iconos para botones sociales (opcional, usando emojis o pseudo-elementos) */
-        .social-btn-turismo.instagram::before { content: '📸'; font-size: 18px;}
-        .social-btn-turismo.tiktok::before { content: '🎵'; font-size: 18px;}
+        .social-btn-turismo.instagram::before { content: '📸'; font-size: 18px; }
+        .social-btn-turismo.tiktok::before { content: '🎵'; font-size: 18px; }
 
-        /* --- Footer --- */
         .site-footer-final {
             margin-top: 70px;
             text-align: center;
@@ -284,72 +266,183 @@
             color: var(--text-main);
         }
 
-        /* --- Estilo Responsivo para Móviles y Tablets --- */
         @media screen and (max-width: 768px) {
-            .site-header {
-                width: 90%;
-            }
-            h2.wp-block-heading.site-title {
-                font-size: 32px;
-            }
-            .wp-block-columns.sma-grid {
-                grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
-            }
-            .wp-block-column.sma-box {
-                max-width: 100%;
-                margin-bottom: 20px;
-            }
-            .turismo-contact-section {
-                padding-top: 30px;
-            }
-            .social-links-turismo {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-             .social-btn-turismo {
-                 width: 80%;
-                 justify-content: center;
-             }
+            .site-header { width: 90%; }
+            h2.wp-block-heading.site-title { font-size: 32px; }
+            .wp-block-columns.sma-grid { grid-template-columns: 1fr; }
+            .social-links-turismo { flex-direction: column; align-items: center; gap: 15px; }
+            .social-btn-turismo { width: 80%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Contenedor principal con diseño envolvente -->
+    <!-- Animación de luz que sigue el cursor en tonos rosados/cálidos -->
+    <div id="cursor-glow"></div>
+
     <div class="sma-main-wrapper">
         
-        <!-- Cabecera (Header) con Logotipo y Título -->
         <header class="site-header">
-            <img src="https://i.ibb.co/379w42L/parroquia-limpia.png" alt="Parroquia San Miguel de Allende Logo" class="site-logo">
-            <h1 class="wp-block-heading site-title">Donde el Corazón de México Late Más Fuerte</h1>
+            <!-- Logotipo actualizado directamente con tu imagen -->
+            <img src="https://i.ibb.co/V97750B/WhatsApp-Image-2026-08-02-at-5-58-58-PM.jpg" alt="Parroquia San Miguel de Allende" class="site-logo">
+            <h2 class="wp-block-heading site-title">Donde el Corazón de México Late Más Fuerte</h2>
             <p class="hero-subtitle">Vive, siente y recorre la magia colonial de San Miguel de Allende paso a paso.</p>
         </header>
 
-        <!-- Cuadrícula de Contenido (Grid System) -->
         <div class="wp-block-columns alignwide sma-grid">
             
-            <!-- Tarjeta 1: Mapa Turístico -->
             <article class="wp-block-column sma-box">
                 <figure class="wp-block-image size-large sma-img">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="Mapa Turístico de San Miguel de Allende" class="wp-image-412"/>
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="Mapa Turístico"/>
                 </figure>
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn">
-                        <a class="wp-block-button__link sma-cta-btn wp-element-button" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf">Mapa Turístico</a>
+                        <a class="wp-block-button__link sma-cta-btn" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf">Mapa Turístico</a>
                     </div>
                 </div>
-                <p class="has-text-align-center sma-box-description">Tu brújula perfecta para perderte entre callejones empedrados y joyas arquitectónicas.</p>
+                <p class="sma-box-description">Tu brújula perfecta para perderte entre callejones empedrados y joyas arquitectónicas.</p>
             </article>
 
-            <!-- Tarjeta 2: Eventos -->
             <article class="wp-block-column sma-box">
                 <figure class="wp-block-image size-large sma-img">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_dj40g5dj40g5dj40.png?w=1024" alt="Eventos Culturales en San Miguel de Allende" class="wp-image-528"/>
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_dj40g5dj40g5dj40.png?w=1024" alt="Eventos"/>
                 </figure>
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn">
-                        <a class="wp-block-button__link sma-cta-btn wp-element-button" href="https://discoversma.com/">Eventos</a>
+                        <a class="wp-block-button__link sma-cta-btn" href="https://discoversma.com/">Eventos</a>
                     </div>
                 </div>
-                <p class="has-text
+                <p class="sma-box-description">Siente la fiesta, el color y la música en una agenda cultural viva todo el año.</p>
+            </article>
+
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2k6uxt2k6uxt2k6u.png?w=1024" alt="Ecos del pasado"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/">Ecos del pasado</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Un viaje en el tiempo por la historia viva de nuestra Ciudad Patrimonio.</p>
+            </article>
+        </div>
+
+        <div class="wp-block-columns alignwide sma-grid" style="margin-top:40px;">
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/">Sitios de interés</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Postales icónicas y rincones secretos que enamoran a cada paso.</p>
+            </article>
+
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2w7k3d2w7k3d2w7k.png?w=1024" alt="Tradiciones"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="#">Tradiciones</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">El alma de nuestras costumbres latiendo fuerte en cada celebración.</p>
+            </article>
+
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-27-a-las-19.30.42_359f7392.jpg?w=1024" alt="Rutas temáticas"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="#">Rutas temáticas</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Itinerarios diseñados a la medida para explorar como un auténtico local.</p>
+            </article>
+        </div>
+
+        <div class="wp-block-columns alignwide sma-grid" style="margin-top:40px;">
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="Rutas de autobuses"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link">Rutas de autobuses</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Muévete fácil y conéctate con la ciudad usando el transporte local.</p>
+            </article>
+
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/vino.png?w=1024" alt="Viñedos"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/">Viñedos</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Experiencias enológicas de altura entre los mejores valles del estado.</p>
+            </article>
+
+            <article class="wp-block-column sma-box">
+                <figure class="wp-block-image size-large sma-img">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="Tours"/>
+                </figure>
+                <div class="wp-block-buttons">
+                    <div class="wp-block-button sma-btn">
+                        <a class="wp-block-button__link sma-cta-btn" href="#">Tours</a>
+                    </div>
+                </div>
+                <p class="sma-box-description">Aventuras guiadas por expertos que conocen cada secreto de nuestra tierra.</p>
+            </article>
+        </div>
+
+        <!-- Sección Exclusiva de Redes Sociales (Instagram y TikTok) -->
+        <section class="turismo-contact-section">
+            <h3 class="contact-title">Síguenos en Redes Sociales</h3>
+            <p class="contact-text">Descubre contenido exclusivo, recomendaciones y la agenda diaria de San Miguel de Allende.</p>
+            
+            <div class="social-links-turismo">
+                <a href="https://instagram.com" target="_blank" class="social-btn-turismo instagram">Instagram</a>
+                <a href="https://tiktok.com" target="_blank" class="social-btn-turismo tiktok">TikTok</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer-final">
+            <p class="footer-domain">vivesanmiguel.com</p>
+        </footer>
+
+    </div>
+
+    <!-- Script para la animación fluida que sigue el cursor -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+    </script>
+</body>
+</html>
