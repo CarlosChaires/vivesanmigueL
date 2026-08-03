@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel de Allende</title>
+    <title>Vive Tu Ruta - San Miguel de Allende</title>
     <style>
         :root {
             --bg-light: #fdfbf7;
@@ -12,6 +12,7 @@
             --pastel-ochre: #dfc291;
             --text-color: #2c2c2c;
             --white: #ffffff;
+            --primary-navy: #1b2a4a;
         }
 
         body {
@@ -26,16 +27,38 @@
         .wp-block-group.alignfull {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 40px 20px;
             box-sizing: border-box;
         }
 
-        h2.wp-block-heading {
-            font-size: 30px;
-            font-weight: 600;
+        /* Cabecera con Logo (Solo la Parroquia) */
+        .site-header {
             text-align: center;
             margin-bottom: 40px;
-            color: #3b2f2f;
+        }
+
+        .site-logo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        h2.wp-block-heading {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary-navy);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 400;
         }
 
         .wp-block-columns.alignwide {
@@ -51,23 +74,24 @@
             min-width: 280px;
             max-width: 350px;
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .wp-block-column.sma-box:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
         }
 
         .wp-block-image.sma-img {
             margin: 0 0 20px 0;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             height: 200px;
         }
@@ -77,6 +101,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .wp-block-column.sma-box:hover .wp-block-image.sma-img img {
+            transform: scale(1.05);
         }
 
         .wp-block-buttons {
@@ -85,21 +114,39 @@
             margin-bottom: 15px;
         }
 
+        /* Botón con el corazón artesanal latente estilo hojalata */
         .wp-block-button__link {
             background-color: var(--pastel-terracotta);
             color: var(--white);
-            padding: 10px 24px;
-            border-radius: 20px;
+            padding: 10px 22px;
+            border-radius: 25px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 14px;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
             text-align: center;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(232, 168, 124, 0.4);
+        }
+
+        .wp-block-button__link::before {
+            content: "♥";
+            font-size: 15px;
+            color: #fff;
+            animation: pulse-heart 1.5s infinite;
+        }
+
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         .wp-block-button__link:hover {
             background-color: #d6956b;
+            transform: scale(1.03);
         }
 
         p.has-text-align-center {
@@ -109,7 +156,40 @@
             margin: 0;
         }
 
-        /* Estilo para móviles y tablets estrictamente adaptables */
+        /* Redes Sociales y Footer */
+        .social-footer {
+            margin-top: 50px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding-top: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .social-btn:hover {
+            opacity: 0.85;
+        }
+
+        /* Estilo responsivo para móviles y tablets */
         @media screen and (max-width: 768px) {
             .wp-block-columns.alignwide {
                 flex-direction: column;
@@ -124,8 +204,14 @@
 </head>
 <body>
 
-    <div class="wp-block-group alignfull has-background-light-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:60px;padding-bottom:60px">
-        <h2 class="wp-block-heading has-text-align-center alignwide" style="margin-bottom:40px;font-size:30px;font-weight:600">Descubre la magia de San Miguel de Allende</h2>
+    <div class="wp-block-group alignfull has-background-light-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:40px;padding-bottom:60px">
+        
+        <!-- Cabecera con Logo (Parroquia recortada sin letras) -->
+        <div class="site-header">
+            <img src="https://i.ibb.co/6R5G402/parroquia-icon.png" alt="Parroquia San Miguel de Allende" class="site-logo">
+            <h2 class="wp-block-heading alignwide">Donde el Corazón de México Late Más Fuerte</h2>
+            <p class="hero-subtitle">Vive, siente y recorre la magia colonial de San Miguel de Allende paso a paso.</p>
+        </div>
 
         <!-- Fila 1 -->
         <div class="wp-block-columns alignwide">
@@ -134,7 +220,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf">Mapa Turístico</a></div>
                 </div>
-                <p class="has-text-align-center">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad.</p>
+                <p class="has-text-align-center">Tu brújula perfecta para perderte entre callejones empedrados y joyas arquitectónicas.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -142,7 +228,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://discoversma.com/">Eventos</a></div>
                 </div>
-                <p class="has-text-align-center">Disfruta de <strong>festivales tradicionales llenos de color y música</strong> y una agenda cultural dinámica para todos los gustos.</p>
+                <p class="has-text-align-center">Siente la fiesta, el color y la música en una agenda cultural viva todo el año.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -150,7 +236,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/">Ecos del pasado</a></div>
                 </div>
-                <p class="has-text-align-center">Explora las raíces de esta ciudad Patrimonio de la Humanidad, donde cada rincón narra historias de épocas pasadas.</p>
+                <p class="has-text-align-center">Un viaje en el tiempo por la historia viva de nuestra Ciudad Patrimonio.</p>
             </div>
         </div>
 
@@ -161,7 +247,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/">Sitios de interés</a></div>
                 </div>
-                <p class="has-text-align-center">Un tesoro de lugares fascinantes esperando ser descubiertos en cada esquina a través de un viaje visual.</p>
+                <p class="has-text-align-center">Postales icónicas y rincones secretos que enamoran a cada paso.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -169,7 +255,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a></div>
                 </div>
-                <p class="has-text-align-center">Sumérgete en el corazón de nuestras arraigadas costumbres, donde el pasado se entrelaza con el presente.</p>
+                <p class="has-text-align-center">El alma de nuestras costumbres latiendo fuerte en cada celebración.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -177,7 +263,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a></div>
                 </div>
-                <p class="has-text-align-center">Olvídate de la planificación tradicional y vive experiencias únicas con nuestras cuidadas rutas temáticas.</p>
+                <p class="has-text-align-center">Itinerarios diseñados a la medida para explorar como un auténtico local.</p>
             </div>
         </div>
 
@@ -188,7 +274,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link">Rutas de autobuses</a></div>
                 </div>
-                <p class="has-text-align-center">Utiliza el sistema de transporte público local y descubre la ciudad como un residente más de forma sencilla.</p>
+                <p class="has-text-align-center">Muévete fácil y conéctate con la ciudad usando el transporte local.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -196,7 +282,7 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/">Viñedos</a></div>
                 </div>
-                <p class="has-text-align-center">Descubre un mapa de los viñedos locales y la pasión invertida en la producción de excelentes vinos de altura.</p>
+                <p class="has-text-align-center">Experiencias enológicas de altura entre los mejores valles del estado.</p>
             </div>
 
             <div class="wp-block-column sma-box">
@@ -204,11 +290,19 @@
                 <div class="wp-block-buttons">
                     <div class="wp-block-button sma-btn"><a class="wp-block-button__link wp-element-button" href="#">Tours</a></div>
                 </div>
-                <p class="has-text-align-center">Explora a profundidad cada rincón de San Miguel de Allende de la mano de expertos locales certificados.</p>
+                <p class="has-text-align-center">Aventuras guiadas por expertos que conocen cada secreto de nuestra tierra.</p>
             </div>
         </div>
 
-        <p class="has-text-align-center" style="margin-top:50px;font-size:12px;opacity:0.5;letter-spacing:2px;text-transform:uppercase">vivesanmiguel.com</p>
+        <!-- Footer con Redes Sociales (Instagram y TikTok) -->
+        <div class="social-footer">
+            <div class="social-links">
+                <a href="https://instagram.com" target="_blank" class="social-btn">Instagram</a>
+                <a href="https://tiktok.com" target="_blank" class="social-btn">TikTok</a>
+            </div>
+            <p style="font-size:12px;opacity:0.6;letter-spacing:2px;text-transform:uppercase;margin:0">vivesanmiguel.com</p>
+        </div>
+
     </div>
 
 </body>
