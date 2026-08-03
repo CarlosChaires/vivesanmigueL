@@ -10,7 +10,6 @@
             --white: #ffffff;
             --primary-navy: #1b2a4a;
             --pastel-terracotta: #e8a87c;
-            --pastel-pink-soft: #f4c2c2;
             --text-main: #2c2c2c;
             --text-muted: #555555;
             --border-color: rgba(27, 42, 74, 0.08);
@@ -30,14 +29,14 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de Fondo: Luz rosada que sigue el cursor --- */
+        /* --- Animación de Fondo: Luz rosada más viva que sigue el cursor --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(232, 168, 124, 0.25) 0%, rgba(244, 194, 194, 0.15) 45%, transparent 75%);
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(232, 168, 124, 0.38) 0%, rgba(244, 150, 180, 0.22) 45%, transparent 75%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -65,11 +64,23 @@
             margin-right: auto;
         }
 
-        .site-logo {
-            width: 110px;
-            height: auto;
-            margin-bottom: 20px;
-            display: inline-block;
+        .site-logo-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(232, 168, 124, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(232, 168, 124, 0.2);
+        }
+
+        .site-logo-container svg {
+            width: 44px;
+            height: 44px;
+            fill: var(--primary-navy);
+            animation: pulse-heart 2s infinite;
         }
 
         h2.wp-block-heading.site-title {
@@ -141,7 +152,7 @@
             margin-bottom: 15px;
         }
 
-        /* --- Botones Minimalistas con Corazón Latiente --- */
+        /* --- Botones Minimalistas con Corazón --- */
         .wp-block-button__link.sma-cta-btn {
             background-color: var(--primary-navy);
             color: var(--white);
@@ -250,9 +261,14 @@
 
     <div class="sma-main-wrapper">
         
-        <!-- Cabecera -->
+        <!-- Cabecera con Logotipo de Corazón Artesanal Estilizado -->
         <header class="site-header">
-            <img src="https://i.ibb.co/379w42L/parroquia-limpia.png" alt="Parroquia San Miguel de Allende" class="site-logo">
+            <div class="site-logo-container" title="Corazón Artesanal - San Miguel de Allende">
+                <!-- SVG de Corazón Artesanal Mexicano Minimalista -->
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
             <h2 class="wp-block-heading site-title">Donde el Corazón de México Late Más Fuerte</h2>
             <p class="hero-subtitle">Vive, siente y recorre la magia colonial de San Miguel de Allende paso a paso.</p>
         </header>
