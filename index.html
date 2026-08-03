@@ -28,25 +28,26 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de Fondo Interactiva (Luz Suave) --- */
+        /* --- Animación de Fondo: Estilo orgánica/fluida que sigue el cursor (no circular) --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.2) 0%, rgba(244, 185, 200, 0.12) 50%, transparent 80%);
-            border-radius: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, rgba(200, 125, 85, 0.22) 0%, rgba(244, 185, 200, 0.15) 40%, transparent 75%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 0;
-            transition: width 0.2s, height 0.2s;
+            transition: width 0.3s, height 0.3s, border-radius 0.5s;
+            filter: blur(40px);
         }
 
         .sma-main-wrapper {
             position: relative;
             z-index: 1;
-            max-width: 900px;
+            max-width: 1050px;
             margin: 0 auto;
             padding: 60px 20px;
             box-sizing: border-box;
@@ -92,8 +93,8 @@
         p.site-main-subtitle {
             font-size: 18px;
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            max-width: 650px;
+            margin: 0 auto 35px auto;
             line-height: 1.6;
         }
 
@@ -136,12 +137,45 @@
             color: var(--white);
         }
 
-        /* --- Separador --- */
+        /* --- Separadores --- */
         .sma-separator {
             border: none;
             height: 1px;
             background-color: var(--border-subtle);
             margin: 40px 0;
+        }
+
+        /* --- Secciones restauradas del sitio --- */
+        .sma-hero-image {
+            width: 100%;
+            height: 420px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            margin-bottom: 40px;
+        }
+
+        .sma-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sma-balloon-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 50px;
+        }
+
+        .sma-balloon-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 14px;
         }
 
         /* --- Formulario de Suscripción --- */
@@ -258,6 +292,9 @@
                 flex-direction: column;
                 align-items: stretch;
             }
+            .sma-hero-image {
+                height: 250px;
+            }
             .sma-subscribe-form {
                 flex-direction: column;
             }
@@ -276,7 +313,7 @@
 </head>
 <body>
 
-    <!-- Animación de fondo interactiva -->
+    <!-- Animación orgánica de fondo que sigue el cursor -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
@@ -299,6 +336,16 @@
 
         <hr class="sma-separator" />
 
+        <!-- Vista Panorámica Restaurada -->
+        <div class="sma-hero-image">
+            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2026/04/pexels-tiarrasorte-29837357.jpg?w=1024" alt="Vista panorámica de San Miguel de Allende" />
+        </div>
+
+        <!-- Sección Vuelo en Globo Restaurada -->
+        <div class="sma-balloon-section">
+            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" />
+        </div>
+
         <!-- Formulario de Suscripción -->
         <section class="sma-subscribe-section">
             <h3>Mantente Informado</h3>
@@ -320,7 +367,7 @@
 
     </div>
 
-    <!-- Script de luz interactiva que sigue el cursor -->
+    <!-- Script de luz orgánica interactiva que sigue el cursor -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = 0, mouseY = 0;
@@ -332,8 +379,8 @@
         });
 
         function animateGlow() {
-            glowX += (mouseX - glowX) * 0.1;
-            glowY += (mouseY - glowY) * 0.1;
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
             requestAnimationFrame(animateGlow);
