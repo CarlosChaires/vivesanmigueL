@@ -6,20 +6,21 @@
     <title>Vive Tu Ruta - San Miguel de Allende</title>
     <style>
         :root {
-            --bg-light: #fdfbf7;
+            --bg-sanmiguel: #fcfbfa;
             --white: #ffffff;
             --primary-navy: #1b2a4a;
-            --pastel-terracotta: #e8a87c;
+            --cantera-terracotta: #c87d55;
+            --pastel-sand: #f4ebd0;
             --text-main: #2c2c2c;
             --text-muted: #666666;
-            --border-subtle: rgba(27, 42, 74, 0.06);
+            --border-subtle: rgba(27, 42, 74, 0.08);
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-light);
+            background-color: var(--bg-sanmiguel);
             color: var(--text-main);
             line-height: 1.6;
             position: relative;
@@ -27,14 +28,14 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de Fondo: Luz rosada interactiva --- */
+        /* --- Animación de Fondo: Luz rosada y cálida interactiva --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(232, 168, 124, 0.4) 0%, rgba(244, 150, 180, 0.25) 45%, transparent 75%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(244, 185, 200, 0.12) 50%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -45,84 +46,87 @@
         .sma-main-wrapper {
             position: relative;
             z-index: 1;
-            max-width: 1100px;
+            max-width: 1050px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 50px 20px;
             box-sizing: border-box;
         }
 
-        /* --- Cabecera Minimalista --- */
+        /* --- Cabecera Estilizada --- */
         .site-header {
             text-align: center;
-            margin-bottom: 70px;
+            margin-bottom: 60px;
         }
 
         .site-logo-container {
-            width: 75px;
-            height: 75px;
-            margin: 0 auto 20px auto;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 18px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(232, 168, 124, 0.12);
+            background: rgba(200, 125, 85, 0.08);
             border-radius: 50%;
-            box-shadow: 0 8px 20px rgba(232, 168, 124, 0.25);
+            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.15);
         }
 
         .site-logo-container svg {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             fill: var(--primary-navy);
             animation: pulse-heart 2s infinite;
         }
 
         h2.wp-block-heading.site-title {
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 800;
             text-align: center;
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             color: var(--primary-navy);
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
         }
 
         .hero-subtitle {
             text-align: center;
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-muted);
             margin: 0;
             font-weight: 400;
-            max-width: 600px;
+            max-width: 550px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* --- Estilo Minimalista (Sin Marcos Pesados) --- */
+        /* --- Cuadrícula Minimalista Optimizada para Móvil --- */
         .sma-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-            gap: 40px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 35px;
+            margin-top: 30px;
         }
 
         .sma-item {
             display: flex;
             flex-direction: column;
-            background: transparent; /* Adiós a los cuadros o cajas viejas */
-            transition: transform 0.3s ease;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .sma-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
         }
 
-        /* Imágenes limpias con esquinas redondeadas modernas */
         .sma-img-wrapper {
             width: 100%;
-            height: 220px;
-            border-radius: 20px;
+            height: 200px;
+            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
         }
 
         .sma-img-wrapper img {
@@ -130,79 +134,84 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.6s ease;
+            transition: transform 0.5s ease;
         }
 
         .sma-item:hover .sma-img-wrapper img {
-            transform: scale(1.06);
+            transform: scale(1.05);
         }
 
-        /* Textos y Enlaces Minimalistas */
         .sma-content {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            padding: 0 6px 8px 6px;
         }
 
         .sma-link-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--primary-navy);
             text-decoration: none;
             margin-bottom: 8px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: color 0.2s;
         }
 
         .sma-link-title:hover {
-            color: var(--pastel-terracotta);
+            color: var(--cantera-terracotta);
         }
 
         .sma-link-title::before {
-            content: "—";
-            color: var(--pastel-terracotta);
-            font-weight: bold;
+            content: "•";
+            color: var(--cantera-terracotta);
+            font-size: 20px;
+            line-height: 0;
         }
 
         .sma-description {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-muted);
             margin: 0;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* --- Sección de Redes Sociales --- */
+        /* --- Sección de Redes Sociales Optimizada --- */
         .social-footer {
-            margin-top: 90px;
+            margin-top: 70px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
             border-top: 1px solid var(--border-subtle);
-            padding-top: 50px;
+            padding-top: 40px;
         }
 
         .social-links {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
+            width: 100%;
         }
 
         .social-btn {
             color: var(--white);
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 30px;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 8px;
             transition: transform 0.2s, opacity 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex: 1;
+            max-width: 180px;
         }
 
         .social-btn.instagram {
@@ -227,26 +236,40 @@
             100% { transform: scale(1); }
         }
 
-        /* --- Responsive --- */
+        /* --- Ajustes Responsive específicos para Móviles --- */
         @media screen and (max-width: 768px) {
-            .sma-grid {
-                grid-template-columns: 1fr;
-                gap: 35px;
+            .sma-main-wrapper {
+                padding: 30px 15px;
             }
             h2.wp-block-heading.site-title {
-                font-size: 32px;
+                font-size: 28px;
+            }
+            .hero-subtitle {
+                font-size: 14px;
+            }
+            .sma-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .social-btn {
+                max-width: 100%;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Animación de luz interactiva -->
+    <!-- Animación de luz suave interactiva -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
         
-        <!-- Cabecera con Logo de Corazón Artesanal -->
+        <!-- Cabecera con Logotipo de Corazón Artesanal -->
         <header class="site-header">
             <div class="site-logo-container" title="Corazón Artesanal - San Miguel de Allende">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -257,7 +280,7 @@
             <p class="hero-subtitle">Vive, siente y recorre la magia colonial de San Miguel de Allende paso a paso.</p>
         </header>
 
-        <!-- Contenido Minimalista (Sin Marcos) -->
+        <!-- Contribuciones / Tarjetas Minimalistas -->
         <div class="sma-grid">
             
             <!-- Item 1 -->
