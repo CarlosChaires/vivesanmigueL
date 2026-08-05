@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consejo Turístico de San Miguel de Allende - Mapa Interactivo</title>
+    <title>Consejo Turístico de San Miguel de Allende - Mapa Principal</title>
     <style>
         :root {
             --primary-navy: #1b2a4a;
@@ -22,125 +22,115 @@
             line-height: 1.6;
         }
 
-        .map-section-wrapper {
-            max-width: 1100px;
+        .mapa-reporte-wrapper {
+            max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
             box-sizing: border-box;
         }
 
-        .map-card-container {
+        .mapa-card {
             background-color: var(--white);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.06);
             border: 1px solid rgba(200, 125, 85, 0.2);
         }
 
-        .map-header-content {
+        .mapa-titulo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .map-header-content h2 {
+        .mapa-titulo h2 {
             color: var(--primary-navy);
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            margin-bottom: 8px;
         }
 
-        .map-header-content p {
+        .mapa-titulo p {
             color: #666666;
-            font-size: 16px;
-            max-width: 650px;
-            margin: 0 auto;
+            font-size: 15px;
         }
 
-        .interactive-map-frame {
-            border-radius: 16px;
+        /* Contenedor rediseñado basado en la Ilustración 1 de tu reporte */
+        .mapa-ilustracion-container {
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
             border: 2px solid var(--cantera-terracotta);
+            background-color: #f4ebd0;
             position: relative;
-            background: #eee;
+            text-align: center;
         }
 
-        .interactive-map-frame iframe {
+        .mapa-ilustracion-container img {
             width: 100%;
-            height: 480px;
-            border: 0;
+            height: auto;
             display: block;
+            object-fit: contain;
         }
 
-        .map-footer-info {
+        .mapa-info-footer {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 30px;
+            gap: 15px;
+            margin-top: 25px;
             padding-top: 20px;
             border-top: 1px solid rgba(27, 42, 74, 0.08);
             text-align: center;
         }
 
-        .info-item h4 {
+        .footer-col h4 {
             color: var(--primary-navy);
-            font-size: 15px;
-            margin: 0 0 5px 0;
+            font-size: 14px;
+            margin: 0 0 4px 0;
             font-weight: 600;
         }
 
-        .info-item span {
+        .footer-col span {
             color: #666666;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         @media (max-width: 768px) {
-            .map-card-container {
-                padding: 20px;
+            .mapa-card {
+                padding: 15px;
             }
-            .map-header-content h2 {
-                font-size: 22px;
-            }
-            .interactive-map-frame iframe {
-                height: 350px;
+            .mapa-titulo h2 {
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="map-section-wrapper">
-        <div class="map-card-container">
+    <div class="mapa-reporte-wrapper">
+        <div class="mapa-card">
             
-            <div class="map-header-content">
-                <h2>Consejo Turístico de San Miguel de Allende</h2>
-                <p>Ubicación estratégica en el corazón del Centro Histórico para la atención, orientación y promoción del destino[cite: 1, 4].</p>
+            <div class="mapa-titulo">
+                <h2>Ubicación Consejo Turístico de San Miguel de Allende</h2>
+                <p>Plaza Principal #8, Zona Centro, C.P. 37700[cite: 5]</p>
             </div>
 
-            <div class="interactive-map-frame">
-                <!-- Mapa interactivo rediseñado con colores institucionales y sin elementos recargados del PDF original -->
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3746.865324567!2d-100.7445!3d20.9142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842b4b8d7a123456%3A0x123456789abcdef!2sPlaza%20Principal%208%2C%20Zona%20Centro%2C%2037700%20San%20Miguel%20de%20Allende%2C%20Gto.!5e0!3m2!1ses-419!2smx!4v1650000000000!5m2!1ses-419!2smx" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <div class="mapa-ilustracion-container">
+                <!-- Imagen adaptada y limpia basada estrictamente en la Ilustración 1 de tu reporte de estadías -->
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%23f9f6f0'/><text x='400' y='300' font-family='Arial' font-size='20' fill='%231b2a4a' text-anchor='middle'>Mapa de Ubicación Principal (Ilustración 1)</text></svg>" alt="Mapa de Ubicación Consejo Turístico de San Miguel de Allende">
             </div>
 
-            <div class="map-footer-info">
-                <div class="info-item">
+            <div class="mapa-info-footer">
+                <div class="footer-col">
                     <h4>Dirección</h4>
-                    <span>Plaza Principal #8, Zona Centro, C.P. 37700[cite: 1, 4]</span>
+                    <span>Plaza Principal #8, Zona Centro[cite: 5]</span>
                 </div>
-                <div class="info-item">
-                    <h4>Horarios de Atención</h4>
-                    <span>Lunes a Sábado: 9:00 am - 7:00 pm[cite: 4]</span>
+                <div class="footer-col">
+                    <h4>Horarios</h4>
+                    <span>Lunes a Sábado: 9am - 7pm[cite: 5]</span>
                 </div>
-                <div class="info-item">
+                <div class="footer-col">
                     <h4>Contacto</h4>
-                    <span>(415) 152 0900[cite: 4]</span>
+                    <span>(415) 152 0900[cite: 5]</span>
                 </div>
             </div>
 
