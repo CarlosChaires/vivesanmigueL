@@ -3,109 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Rutas Temáticas - San Miguel de Allende</title>
+    <title>Mapa de Turismo | San Miguel de Allende</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --bg-sand: #fcfbfa;
-            --white: #ffffff;
+            --primary-rose: #e63956;
+            --soft-rose: #fce4ec;
+            --accent-terracotta: #d97757;
+            --dark-charcoal: #1e1e24;
+            --warm-bg: #faf7f5;
+            --card-bg: #ffffff;
+            --text-main: #2b2b30;
+            --text-muted: #6b6b76;
+            --border-subtle: #eae3df;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-sand);
-            color: #2c2c2c;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--warm-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
         }
 
-        .mapa-section {
-            background-color: var(--white);
-            padding: 40px 20px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.05);
-            margin: 40px auto;
-            max-width: 900px;
-            border: 1px solid rgba(200, 125, 85, 0.15);
-            box-sizing: border-box;
+        /* Cursor following pink glow animation */
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(230, 57, 86, 0.15) 0%, rgba(217, 119, 87, 0.05) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease;
+            z-index: 9999;
+            mix-blend-mode: multiply;
         }
 
-        .mapa-header {
+        header {
+            padding: 2.5rem 2rem 1.5rem 2rem;
             text-align: center;
-            margin-bottom: 25px;
+            position: relative;
+            z-index: 10;
+            background: rgba(250, 247, 245, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .mapa-header h2 {
-            color: var(--primary-navy);
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .mapa-header p {
-            color: #666666;
-            font-size: 15px;
-            margin: 0;
-        }
-
-        .mapa-image-container {
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid var(--cantera-terracotta);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            background-color: #f4ebd0;
-        }
-
-        .mapa-image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .mapa-btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .btn-catalogo {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            padding: 14px 28px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
+        .badge {
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.2);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            background-color: var(--soft-rose);
+            color: var(--primary-rose);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
         }
 
-        .btn-catalogo:hover {
-            background-color: var(--cantera-terracotta);
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--dark-charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        h1 span {
+            color: var(--primary-rose);
+            font-style: italic;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .map-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(30, 30, 36, 0.04);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 900px) {
+            .map-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .map-image-container {
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            border-right: 1px solid var(--border-subtle);
+        }
+
+        @media (max-width: 900px) {
+            .map-image-container {
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+        }
+
+        .map-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .map-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .map-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .map-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--dark-charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .map-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .features-list li svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary-rose);
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--dark-charcoal);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(30, 30, 36, 0.1);
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-download:hover {
+            background-color: var(--primary-rose);
             transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(230, 57, 86, 0.25);
+        }
+
+        .btn-download svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-subtle);
+            background: #fff;
         }
     </style>
 </head>
 <body>
 
-    <section class="mapa-section">
-        <div class="mapa-header">
-            <h2>Mapa General de Turismo</h2>
-            <p>Plano oficial de ubicación y puntos de interés del destino.</p>
-        </div>
-        
-        <div class="mapa-image-container">
-            <!-- Imagen oficial del mapa general -->
-            <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende">
-        </div>
+    <!-- Cursor Follow Glow Animation -->
+    <div class="cursor-glow" id="cursorGlow"></div>
 
-        <div class="mapa-btn-container">
-            <a href="https://canva.link/h47a7syz9r9e9wy" target="_blank" class="btn-catalogo">
-                📄 Ver / Descargar Catálogo Completo
-            </a>
-        </div>
-    </section>
+    <header>
+        <span class="badge">Patrimonio de la Humanidad</span>
+        <h1>San Miguel de <span>Allende</span></h1>
+        <p class="subtitle">Explora los rincones mágicos, calles coloniales y atractivos turísticos de nuestra hermosa ciudad a través de nuestra cartografía oficial.</p>
+    </header>
 
+    <main>
+        <section class="map-card">
+            <div class="map-image-container">
+                <img src="input_file_0.png" alt="Mapa Turístico de San Miguel de Allende">
+            </div>
+            <div class="map-content">
+                <div>
+                    <h2>Mapa Turístico Oficial</h2>
+                    <p>Diseñado para guiarte por los sitios más emblemáticos, templos históricos, callejones pintorescos y puntos de interés imperdibles de San Miguel de Allende.</p>
+                    
+                    <ul class="features-list">
+                        <li>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            Ubicación exacta de templos y monumentos históricos
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            Directorio de zonas de interés y centros culturales
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            Formato oficial en alta resolución listo para consulta
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="794551123973_geo.pdf" download="Mapa_Turistico_San_Miguel_de_Allende.pdf" class="btn-download">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Descargar Mapa Oficial (PDF)
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 San Miguel de Allende &bull; Dirección de Turismo y Fomento Económico</p>
+    </footer>
+
+    <script>
+        const glow = document.getElementById('cursorGlow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animate() {
+            let dx = mouseX - glowX;
+            let dy = mouseY - glowY;
+            
+            glowX += dx * 0.1;
+            glowY += dy * 0.1;
+            
+            glow.style.left = glowX + 'px';
+            glow.style.top = glowY + 'px';
+            
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
 </body>
 </html>
