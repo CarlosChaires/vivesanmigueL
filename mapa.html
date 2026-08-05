@@ -7,15 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-rose: #e63956;
-            --soft-rose: #fce4ec;
-            --accent-terracotta: #d97757;
-            --dark-charcoal: #1e1e24;
-            --warm-bg: #faf7f5;
+            /* Paleta inspirada en la cantera rosa de San Miguel de Allende y tonos coloniales */
+            --cantera-rose: #d48384;
+            --cantera-dark: #8c4a4f;
+            --cantera-light: #f7ebee;
+            --stone-gray: #7a6e6b;
+            --warm-sand: #fbf9f7;
             --card-bg: #ffffff;
-            --text-main: #2b2b30;
-            --text-muted: #6b6b76;
-            --border-subtle: #eae3df;
+            --text-main: #2d2625;
+            --text-muted: #6b5f5c;
+            --border-subtle: #ebdcd7;
         }
 
         * {
@@ -26,74 +27,75 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--warm-bg);
+            background-color: var(--warm-sand);
             color: var(--text-main);
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
         }
 
-        /* Cursor following pink glow animation */
+        /* Animación fluida con fondo rosa cantera que sigue el cursor */
         .cursor-glow {
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(230, 57, 86, 0.15) 0%, rgba(217, 119, 87, 0.05) 50%, transparent 80%);
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(212, 131, 132, 0.22) 0%, rgba(140, 74, 79, 0.08) 55%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            transition: width 0.2s ease, height 0.2s ease;
             z-index: 9999;
             mix-blend-mode: multiply;
         }
 
         header {
-            padding: 2.5rem 2rem 1.5rem 2rem;
+            padding: 3rem 2rem 2rem 2rem;
             text-align: center;
             position: relative;
             z-index: 10;
-            background: rgba(250, 247, 245, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(251, 249, 247, 0.9);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .badge {
             display: inline-block;
-            background-color: var(--soft-rose);
-            color: var(--primary-rose);
+            background-color: var(--cantera-light);
+            color: var(--cantera-dark);
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 0.4rem 1rem;
+            letter-spacing: 2.5px;
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid rgba(212, 131, 132, 0.3);
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 700;
-            color: var(--dark-charcoal);
+            color: var(--text-main);
             margin-bottom: 0.5rem;
         }
 
         h1 span {
-            color: var(--primary-rose);
+            color: var(--cantera-dark);
             font-style: italic;
         }
 
         p.subtitle {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-muted);
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             font-weight: 300;
+            line-height: 1.6;
         }
 
         main {
             max-width: 1200px;
-            margin: 3rem auto;
+            margin: 3.5rem auto;
             padding: 0 2rem;
             position: relative;
             z-index: 10;
@@ -101,12 +103,12 @@
 
         .map-card {
             background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(30, 30, 36, 0.04);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(140, 74, 79, 0.06);
             border: 1px solid var(--border-subtle);
             overflow: hidden;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 1fr;
             gap: 0;
             margin-bottom: 4rem;
         }
@@ -121,11 +123,11 @@
             position: relative;
             overflow: hidden;
             background: #fff;
-            min-height: 450px;
+            min-height: 480px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 2rem;
             border-right: 1px solid var(--border-subtle);
         }
 
@@ -140,16 +142,16 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border-radius: 12px;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 10px;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .map-image-container:hover img {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         .map-content {
-            padding: 3rem;
+            padding: 3.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -157,14 +159,14 @@
 
         .map-content h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--dark-charcoal);
+            font-size: 2.2rem;
+            color: var(--text-main);
             margin-bottom: 1rem;
         }
 
         .map-content p {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 1.05rem;
             line-height: 1.7;
             margin-bottom: 2rem;
             font-weight: 300;
@@ -178,7 +180,7 @@
         .features-list li {
             display: flex;
             align-items: center;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.9rem;
             font-size: 0.95rem;
             color: var(--text-main);
             font-weight: 500;
@@ -187,8 +189,8 @@
         .features-list li svg {
             width: 18px;
             height: 18px;
-            fill: var(--primary-rose);
-            margin-right: 10px;
+            fill: var(--cantera-dark);
+            margin-right: 12px;
             flex-shrink: 0;
         }
 
@@ -196,25 +198,26 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--dark-charcoal);
+            background-color: var(--cantera-dark);
             color: #ffffff;
             font-weight: 600;
             padding: 1rem 2rem;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(30, 30, 36, 0.1);
-            gap: 10px;
+            box-shadow: 0 8px 20px rgba(140, 74, 79, 0.2);
+            gap: 12px;
             border: none;
             cursor: pointer;
             width: 100%;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
         .btn-download:hover {
-            background-color: var(--primary-rose);
+            background-color: var(--cantera-rose);
             transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(230, 57, 86, 0.25);
+            box-shadow: 0 12px 25px rgba(212, 131, 132, 0.35);
         }
 
         .btn-download svg {
@@ -226,51 +229,53 @@
         footer {
             text-align: center;
             padding: 2rem;
-            color: var(--text-muted);
+            color: var(--stone-gray);
             font-size: 0.85rem;
             border-top: 1px solid var(--border-subtle);
-            background: #fff;
+            background: var(--card-bg);
         }
     </style>
 </head>
 <body>
 
-    <!-- Cursor Follow Glow Animation -->
+    <!-- Animación de fondo rosa cantera que sigue el cursor -->
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <header>
         <span class="badge">Patrimonio de la Humanidad</span>
         <h1>San Miguel de <span>Allende</span></h1>
-        <p class="subtitle">Explora los rincones mágicos, calles coloniales y atractivos turísticos de nuestra hermosa ciudad a través de nuestra cartografía oficial.</p>
+        <p class="subtitle">Descubre la magia de nuestras calles empedradas, arquitectura colonial y sitios emblemáticos a través de la cartografía oficial del municipio.</p>
     </header>
 
     <main>
         <section class="map-card">
             <div class="map-image-container">
-                <img src="input_file_0.png" alt="Mapa Turístico de San Miguel de Allende">
+                <!-- Imagen tomada desde el enlace de Google Drive proporcionado (convertido para visualización directa) -->
+                <img src="https://lh3.googleusercontent.com/d/1P9zY-GO3SJ-Y_XlkYDv2nB7Q2lQrqoNS" alt="Mapa Turístico de San Miguel de Allende">
             </div>
             <div class="map-content">
                 <div>
                     <h2>Mapa Turístico Oficial</h2>
-                    <p>Diseñado para guiarte por los sitios más emblemáticos, templos históricos, callejones pintorescos y puntos de interés imperdibles de San Miguel de Allende.</p>
+                    <p>Una guía visual diseñada detalladamente para recorrer el corazón de la ciudad, localizar monumentos históricos, templos icónicos y puntos de interés imperdibles.</p>
                     
                     <ul class="features-list">
                         <li>
                             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                            Ubicación exacta de templos y monumentos históricos
+                            Ubicación exacta de recintos históricos y culturales
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                            Directorio de zonas de interés y centros culturales
+                            Zonas clave, barrios tradicionales y servicios
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                            Formato oficial en alta resolución listo para consulta
+                            Documento cartográfico oficial en formato digital
                         </li>
                     </ul>
                 </div>
 
-                <a href="794551123973_geo.pdf" download="Mapa_Turistico_San_Miguel_de_Allende.pdf" class="btn-download">
+                <!-- Enlace al PDF proporcionado -->
+                <a href="https://35815e04-dda2-451b-82d1-6871b2e6448f.filesusr.com/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf" target="_blank" rel="noopener noreferrer" class="btn-download">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                     Descargar Mapa Oficial (PDF)
                 </a>
@@ -283,6 +288,7 @@
     </footer>
 
     <script>
+        // Animación suave de luz rosa cantera siguiendo el cursor
         const glow = document.getElementById('cursorGlow');
         let mouseX = 0, mouseY = 0;
         let glowX = 0, glowY = 0;
