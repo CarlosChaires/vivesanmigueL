@@ -48,13 +48,23 @@
         }
 
         header {
-            padding: 3rem 2rem 2rem 2rem;
+            padding: 2.5rem 2rem 2rem 2rem;
             text-align: center;
             position: relative;
             z-index: 10;
             background: rgba(251, 249, 247, 0.9);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .logo-container {
+            margin-bottom: 1.2rem;
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
         }
 
         .badge {
@@ -67,7 +77,7 @@
             letter-spacing: 2.5px;
             padding: 0.5rem 1.2rem;
             border-radius: 50px;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             border: 1px solid rgba(212, 131, 132, 0.3);
         }
 
@@ -242,6 +252,10 @@
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <header>
+        <!-- Logo integrado desde el enlace de Google Drive -->
+        <div class="logo-container">
+            <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo San Miguel de Allende">
+        </div>
         <span class="badge">Patrimonio de la Humanidad</span>
         <h1>San Miguel de <span>Allende</span></h1>
         <p class="subtitle">Descubre la magia de nuestras calles empedradas, arquitectura colonial y sitios emblemáticos a través de la cartografía oficial del municipio.</p>
@@ -250,7 +264,7 @@
     <main>
         <section class="map-card">
             <div class="map-image-container">
-                <!-- Imagen tomada desde el enlace de Google Drive proporcionado (convertido para visualización directa) -->
+                <!-- Imagen del mapa tomada desde el enlace de Google Drive -->
                 <img src="https://lh3.googleusercontent.com/d/1P9zY-GO3SJ-Y_XlkYDv2nB7Q2lQrqoNS" alt="Mapa Turístico de San Miguel de Allende">
             </div>
             <div class="map-content">
