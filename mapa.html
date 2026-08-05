@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Turístico Interactivo - San Miguel de Allende</title>
+    <title>Mapa de Turismo - San Miguel de Allende</title>
     <style>
         :root {
             --primary-navy: #1b2a4a;
@@ -56,11 +56,11 @@
             margin: 0 auto;
         }
 
-        /* Contenedor interactivo del mapa basado exactamente en el plano ilustrado */
+        /* Contenedor interactivo del mapa con la ilustración oficial */
         .interactive-map-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             border-radius: 16px;
             overflow: hidden;
@@ -75,14 +75,14 @@
             display: block;
         }
 
-        /* Pines interactivos posicionados sobre el plano */
+        /* Pines interactivos posicionados de forma precisa sobre el mapa */
         .map-pin {
             position: absolute;
             background-color: var(--primary-navy);
             color: var(--white);
             padding: 8px 14px;
             border-radius: 30px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -90,6 +90,7 @@
             transform: translate(-50%, -50%);
             transition: all 0.3s ease;
             z-index: 10;
+            white-space: nowrap;
         }
 
         .map-pin:hover {
@@ -97,7 +98,7 @@
             transform: translate(-50%, -50%) scale(1.1);
         }
 
-        /* Coordenadas porcentuales exactas sobre la ilustración del mapa */
+        /* Coordenadas adaptadas a la proporción del mapa oficial */
         .pin-jardin { top: 52%; left: 51%; }
         .pin-guadalupe { top: 28%; left: 38%; }
         .pin-parque { top: 78%; left: 52%; }
@@ -166,14 +167,14 @@
         <div class="map-card-container">
             
             <div class="map-header-content">
-                <h2>Mapa de Turismo - San Miguel de Allende</h2>
+                <h2>Mapa General de Turismo - San Miguel de Allende</h2>
                 <p>Haz clic en los puntos clave marcados sobre el plano oficial para explorar los atractivos principales de las rutas temáticas[cite: 5].</p>
             </div>
 
-            <!-- Contenedor con la ilustración real y pines interactivos -->
+            <!-- Contenedor con la ilustración oficial y pines interactivos -->
             <div class="interactive-map-container" id="mapContainer">
-                <!-- Imagen limpia del mapa oficial del reporte -->
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='900' viewBox='0 0 800 900'><rect width='800' height='900' fill='%23e8d7be'/><text x='400' y='450' font-family='Arial' font-size='24' fill='%231b2a4a' text-anchor='middle'>Cargando Mapa Turístico Oficial...</text></svg>" alt="Mapa Turístico San Miguel de Allende" class="map-base-image" id="mapImage">
+                <!-- Imagen oficial del mapa del reporte -->
+                <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende" class="map-base-image" id="mapImage">
 
                 <!-- Pines Interactivos -->
                 <div class="map-pin pin-jardin" onclick="mostrarInfo('jardin')">📍 Jardín Principal</div>
@@ -191,7 +192,7 @@
 
             <div class="map-footer-info">
                 <div class="info-item">
-                    <h4>Oficina de Turismo</h4>
+                    <h4>Área de Turismo</h4>
                     <span>Plaza Principal #8, Zona Centro[cite: 5]</span>
                 </div>
                 <div class="info-item">
@@ -208,7 +209,7 @@
     </div>
 
     <script>
-        // Base de datos integrada para interactividad instantánea en el mapa
+        // Base de datos de los atractivos turísticos para la interactividad
         const puntosTurasticos = {
             jardin: {
                 titulo: "Jardín Principal y Parroquia de San Miguel Arcángel",
