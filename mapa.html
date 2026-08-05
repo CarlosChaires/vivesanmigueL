@@ -1,250 +1,49 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Turismo - San Miguel de Allende</title>
-    <style>
-        :root {
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --bg-sand: #fcfbfa;
-            --text-main: #2c2c2c;
-            --white: #ffffff;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-sand);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .map-section-wrapper {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        .map-card-container {
-            background-color: var(--white);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.08);
-            border: 1px solid rgba(200, 125, 85, 0.2);
-        }
-
-        .map-header-content {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .map-header-content h2 {
-            color: var(--primary-navy);
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .map-header-content p {
-            color: #666666;
-            font-size: 15px;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        /* Contenedor interactivo del mapa con la ilustración oficial */
-        .interactive-map-container {
-            position: relative;
-            width: 100%;
-            max-width: 850px;
-            margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 3px solid var(--cantera-terracotta);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            background-color: #f4ebd0;
-        }
-
-        .map-base-image {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Pines interactivos posicionados de forma precisa sobre el mapa */
-        .map-pin {
-            position: absolute;
-            background-color: var(--primary-navy);
-            color: var(--white);
-            padding: 8px 14px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 2px solid var(--white);
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-            z-index: 10;
-            white-space: nowrap;
-        }
-
-        .map-pin:hover {
-            background-color: var(--cantera-terracotta);
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        /* Coordenadas adaptadas a la proporción del mapa oficial */
-        .pin-jardin { top: 52%; left: 51%; }
-        .pin-guadalupe { top: 28%; left: 38%; }
-        .pin-parque { top: 78%; left: 52%; }
-        .pin-mirador { top: 72%; left: 66%; }
-        .pin-aurora { top: 15%; left: 65%; }
-
-        /* Panel de información dinámica al hacer clic */
-        .info-panel {
-            margin-top: 25px;
-            background-color: #f9f6f0;
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 5px solid var(--cantera-terracotta);
-            display: none;
-        }
-
-        .info-panel.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .info-panel h3 {
-            margin: 0 0 8px 0;
-            color: var(--primary-navy);
-            font-size: 18px;
-        }
-
-        .info-panel p {
-            margin: 0;
-            color: #555555;
-            font-size: 14px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .map-footer-info {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(27, 42, 74, 0.08);
-            text-align: center;
-        }
-
-        .info-item h4 {
-            color: var(--primary-navy);
-            font-size: 14px;
-            margin: 0 0 4px 0;
-            font-weight: 600;
-        }
-
-        .info-item span {
-            color: #666666;
-            font-size: 13px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="map-section-wrapper">
-        <div class="map-card-container">
-            
-            <div class="map-header-content">
-                <h2>Mapa General de Turismo - San Miguel de Allende</h2>
-                <p>Haz clic en los puntos clave marcados sobre el plano oficial para explorar los atractivos principales de las rutas temáticas[cite: 5].</p>
-            </div>
-
-            <!-- Contenedor con la ilustración oficial y pines interactivos -->
-            <div class="interactive-map-container" id="mapContainer">
-                <!-- Imagen oficial del mapa del reporte -->
-                <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende" class="map-base-image" id="mapImage">
-
-                <!-- Pines Interactivos -->
-                <div class="map-pin pin-jardin" onclick="mostrarInfo('jardin')">📍 Jardín Principal</div>
-                <div class="map-pin pin-guadalupe" onclick="mostrarInfo('guadalupe')">📍 Col. Guadalupe</div>
-                <div class="map-pin pin-parque" onclick="mostrarInfo('parque')">📍 Parque Juárez</div>
-                <div class="map-pin pin-mirador" onclick="mostrarInfo('mirador')">📍 El Mirador</div>
-                <div class="map-pin pin-aurora" onclick="mostrarInfo('aurora')">📍 Fábrica La Aurora</div>
-            </div>
-
-            <!-- Panel dinámico de visualización de datos -->
-            <div class="info-panel" id="infoPanel">
-                <h3 id="panelTitle">Selecciona un punto en el mapa</h3>
-                <p id="panelDesc">La información detallada del atractivo turístico aparecerá aquí al interactuar con los marcadores.</p>
-            </div>
-
-            <div class="map-footer-info">
-                <div class="info-item">
-                    <h4>Área de Turismo</h4>
-                    <span>Plaza Principal #8, Zona Centro[cite: 5]</span>
-                </div>
-                <div class="info-item">
-                    <h4>Horarios</h4>
-                    <span>Lunes a Sábado: 9:00 am - 7:00 pm[cite: 5]</span>
-                </div>
-                <div class="info-item">
-                    <h4>Contacto</h4>
-                    <span>(415) 152 0900[cite: 5]</span>
-                </div>
-            </div>
-
+<section class="mapa-turistico-sma">
+    <div class="map-header">
+        <h2>Mapa de Turismo de San Miguel de Allende</h2>
+        <p>Explora de forma interactiva el corazón histórico y las rutas temáticas del destino[cite: 5].</p>
+    </div>
+    
+    <div class="map-container-clean">
+        <div class="map-frame">
+            <!-- Imagen oficial del plano turístico integrado -->
+            <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende" style="width:100%; border-radius:12px; border: 2px solid #c87d55;">
         </div>
     </div>
 
-    <script>
-        // Base de datos de los atractivos turísticos para la interactividad
-        const puntosTurasticos = {
-            jardin: {
-                titulo: "Jardín Principal y Parroquia de San Miguel Arcángel",
-                desc: "Corazón neurálgico de la ciudad. Frontero a la icónica parroquia neogótica diseñada por Zeferino Gutiérrez y punto de partida de las rutas de calles icónicas e iglesias."
-            },
-            guadalupe: {
-                titulo: "Zona Tradicional - Colonia Guadalupe",
-                desc: "Emblemático barrio conocido por su expresión de arte urbano, galerías independientes y un ambiente apacible fuera del bullicio inmediato del primer cuadro."
-            },
-            parque: {
-                titulo: "Parque Benito Juárez",
-                desc: "Pulmón verde de estilo francés fundado a principios del siglo XX, ideal para el descanso, caminatas entre árboles centenarios y fuentes tradicionales."
-            },
-            mirador: {
-                titulo: "El Mirador",
-                desc: "Punto panorámico por excelencia que ofrece una de las vistas más fotografiadas del Centro Histórico y la presa local."
-            },
-            aurora: {
-                titulo: "Centro de Arte y Diseño - Fábrica La Aurora",
-                desc: "Antigua fábrica textil del siglo XX reconvertida en un vibrante centro artístico que alberga decenas de galerías de alta gama, estudios de diseño y antigüedades."
-            }
-        };
+    <div class="download-section" style="text-align: center; margin-top: 30px;">
+        <a href="https://canva.link/h47a7syz9r9e9wy" target="_blank" class="btn-descargable" style="background-color: #1b2a4a; color: #ffffff; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            📄 Ver Catálogo Completo en Línea (Canva)
+        </a>
+    </div>
+</section>
 
-        function mostrarInfo(key) {
-            const panel = document.getElementById('infoPanel');
-            const title = document.getElementById('panelTitle');
-            const desc = document.getElementById('panelDesc');
-            
-            if (puntosTurasticos[key]) {
-                title.textContent = puntosTurasticos[key].titulo;
-                desc.textContent = puntosTurasticos[key].desc;
-                panel.classList.add('active');
-            }
-        }
-    </script>
-
-</body>
-</html>
+<style>
+    .mapa-turistico-sma {
+        background-color: #fcfbfa;
+        padding: 40px 20px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(27, 42, 74, 0.05);
+        margin: 40px auto;
+        max-width: 900px;
+        border: 1px solid rgba(200, 125, 85, 0.15);
+    }
+    .map-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .map-header h2 {
+        color: #1b2a4a;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .map-header p {
+        color: #666666;
+        font-size: 15px;
+    }
+    .btn-descargable:hover {
+        background-color: #c87d55;
+        transition: background-color 0.3s ease;
+    }
+</style>
