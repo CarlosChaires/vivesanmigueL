@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Turismo de San Miguel de Allende</title>
+    <title>Mapa Turístico - San Miguel de Allende</title>
     <style>
         :root {
             --primary-navy: #1b2a4a;
             --cantera-terracotta: #c87d55;
             --bg-sand: #fcfbfa;
-            --text-main: #2c2c2c;
             --white: #ffffff;
         }
 
@@ -18,11 +17,10 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-sand);
-            color: var(--text-main);
-            line-height: 1.6;
+            color: #2c2c2c;
         }
 
-        .mapa-turistico-sma {
+        .mapa-section {
             background-color: var(--white);
             padding: 40px 20px;
             border-radius: 24px;
@@ -33,38 +31,45 @@
             box-sizing: border-box;
         }
 
-        .map-header {
+        .mapa-header {
             text-align: center;
             margin-bottom: 25px;
         }
 
-        .map-header h2 {
+        .mapa-header h2 {
             color: var(--primary-navy);
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
         }
 
-        .map-header p {
+        .mapa-header p {
             color: #666666;
             font-size: 15px;
+            margin: 0;
         }
 
-        .map-frame img {
+        .mapa-image-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--cantera-terracotta);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            background-color: #f4ebd0;
+        }
+
+        .mapa-image-container img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 12px;
-            border: 2px solid var(--cantera-terracotta);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
 
-        .download-section {
+        .mapa-btn-container {
             text-align: center;
             margin-top: 30px;
         }
 
-        .btn-descargable {
+        .btn-catalogo {
             background-color: var(--primary-navy);
             color: var(--white);
             padding: 14px 28px;
@@ -76,7 +81,7 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .btn-descargable:hover {
+        .btn-catalogo:hover {
             background-color: var(--cantera-terracotta);
             transform: translateY(-2px);
         }
@@ -84,21 +89,19 @@
 </head>
 <body>
 
-    <section class="mapa-turistico-sma">
-        <div class="map-header">
-            <h2>Mapa de Turismo de San Miguel de Allende</h2>
-            <p>Plano general de ubicación y puntos de interés del destino[cite: 5].</p>
+    <section class="mapa-section">
+        <div class="mapa-header">
+            <h2>Mapa General de Turismo</h2>
+            <p>Plano oficial de ubicación y atractivos de San Miguel de Allende.</p>
         </div>
         
-        <div class="map-container-clean">
-            <div class="map-frame">
-                <!-- Imagen oficial del plano turístico integrado -->
-                <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende">
-            </div>
+        <div class="mapa-image-container">
+            <!-- Inserta aquí el archivo de la imagen oficial del mapa -->
+            <img src="80dc52_98b18d95fb7c4449a9d939d042c6fbe0 (1)_page-0001.jpg" alt="Mapa Turístico Oficial San Miguel de Allende">
         </div>
 
-        <div class="download-section">
-            <a href="https://canva.link/h47a7syz9r9e9wy" target="_blank" class="btn-descargable">
+        <div class="mapa-btn-container">
+            <a href="https://canva.link/h47a7syz9r9e9wy" target="_blank" class="btn-catalogo">
                 📄 Ver / Descargar Catálogo Completo (PDF)
             </a>
         </div>
