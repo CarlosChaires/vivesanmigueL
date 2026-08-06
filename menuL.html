@@ -53,13 +53,41 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo y Título Interactivo --- */
+        /* --- Botón de Inicio / Index Superior --- */
+        .sma-inicio-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sma-inicio-btn {
+            background: linear-gradient(135deg, var(--white) 0%, #fbf9f7) !important;
+            color: var(--primary-navy) !important;
+            border: 2px solid var(--cantera-terracotta) !important;
+            padding: 10px 24px !important;
+            border-radius: 50px !important;
+            font-weight: 700 !important;
+            font-size: 13px !important;
+            text-decoration: none !important;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(184, 107, 67, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .sma-inicio-btn:hover {
+            background: var(--cantera-terracotta) !important;
+            color: var(--white) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(184, 107, 67, 0.25);
+        }
+
+        /* --- Cabecera con Logotipo y Título Interactivo Evocador --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 25px;
-            margin-bottom: 25px;
+            margin-bottom: 45px;
             flex-wrap: wrap;
         }
 
@@ -95,6 +123,13 @@
             mix-blend-mode: multiply;
         }
 
+        .interactive-brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
         .interactive-brand-title {
             font-family: 'Playfair Display', serif, sans-serif;
             font-size: 3.2rem;
@@ -106,6 +141,7 @@
             display: inline-block;
             transition: color 0.3s ease, transform 0.3s ease;
             letter-spacing: -1px;
+            line-height: 1.1;
         }
 
         .interactive-brand-title::after {
@@ -129,15 +165,14 @@
             width: 100%;
         }
 
-        /* --- Sutil frase evocadora de las calles coloniales y cantera rosa --- */
-        .sma-subtitle-vibe {
-            text-align: center;
+        /* --- Sutil subtítulo integrado directamente junto al título principal --- */
+        .sma-title-vibe {
             font-style: italic;
             color: var(--cantera-terracotta);
-            font-size: 1.15rem;
-            margin-bottom: 55px;
+            font-size: 1.05rem;
+            margin-top: 8px;
             font-weight: 500;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
 
         h2.wp-block-heading {
@@ -286,13 +321,17 @@
             .site-header-custom {
                 flex-direction: column;
                 gap: 15px;
+                text-align: center;
+            }
+            .interactive-brand-wrapper {
+                align-items: center;
+                text-align: center;
             }
             .interactive-brand-title {
                 font-size: 2.3rem;
-                text-align: center;
             }
-            .sma-subtitle-vibe {
-                font-size: 1rem;
+            .sma-title-vibe {
+                font-size: 0.95rem;
             }
             h2.wp-block-heading {
                 font-size: 1.8rem;
@@ -311,16 +350,21 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera con Logotipo y Título Interactivo -->
+        <!-- Botón de Inicio / Index Superior -->
+        <div class="sma-inicio-container">
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="sma-inicio-btn">🏠 Inicio</a>
+        </div>
+
+        <!-- Cabecera con Logotipo y Título Interactivo acompañado del toque de San Miguel -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/16zUIExVuI01MKWnlPrAR8D_SMDQt4_fM" alt="Logo Vive San Miguel">
             </div>
-            <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+            <div class="interactive-brand-wrapper">
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+                <span class="sma-title-vibe">"Esta página me recuerda el encanto de nuestras calles coloniales..."</span>
+            </div>
         </header>
-
-        <!-- Detalle evocador inspirado en las calles coloniales y la cantera de San Miguel -->
-        <div class="sma-subtitle-vibe">"Esta página me recuerda el encanto y la calidez de nuestras calles coloniales..."</div>
 
         <!-- Sección Principal 1 -->
         <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
