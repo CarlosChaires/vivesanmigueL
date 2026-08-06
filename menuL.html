@@ -6,15 +6,14 @@
     <title>Vive San Miguel - San Miguel de Allende</title>
     <style>
         :root {
-            --bg-sanmiguel: #fcfbfa;
+            --bg-sanmiguel: #fefcfb;
             --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --pastel-sand: #f4ebd0;
-            --text-main: #2c2c2c;
-            --text-muted: #666666;
-            --border-subtle: rgba(27, 42, 74, 0.08);
+            --primary-navy: #16223b;
+            --cantera-terracotta: #b86b43;
+            --cantera-rose: #e88692;
+            --text-main: #2b2b2b;
+            --text-muted: #6e6e6e;
+            --border-subtle: rgba(184, 107, 67, 0.12);
         }
 
         body {
@@ -29,20 +28,20 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de fondo orgánica y fluida que sigue el cursor --- */
+        /* --- Animación de fondo orgánica, fluida y mucho más rosa/notable --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(ellipse at center, rgba(200, 125, 85, 0.22) 0%, rgba(244, 185, 200, 0.15) 40%, transparent 75%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(ellipse at center, rgba(232, 134, 146, 0.38) 0%, rgba(184, 107, 67, 0.22) 45%, transparent 75%);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 0;
             transition: width 0.3s, height 0.3s, border-radius 0.5s;
-            filter: blur(40px);
+            filter: blur(50px);
         }
 
         .sma-main-wrapper {
@@ -50,45 +49,41 @@
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 50px 20px;
+            padding: 60px 20px;
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo y Título Interactivo lado a lado --- */
+        /* --- Cabecera con Logotipo Destacado y Título Interactivo (Sin fondo blanco) --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 50px;
+            gap: 25px;
+            margin-bottom: 60px;
             flex-wrap: wrap;
         }
 
         .site-logo-container {
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--white);
+            background: transparent;
             border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
-            border: 1px solid var(--border-subtle);
             overflow: hidden;
-            padding: 10px;
             animation: float-logo 4s ease-in-out infinite;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
             cursor: pointer;
         }
 
         .site-logo-container:hover {
-            transform: scale(1.08) rotate(3deg);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.3);
+            transform: scale(1.1) rotate(4deg);
         }
 
         @keyframes float-logo {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0px); }
         }
 
@@ -96,19 +91,14 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: sepia(30%) hue-rotate(320deg) saturate(90%) contrast(105%);
+            filter: drop-shadow(0 10px 20px rgba(184, 107, 67, 0.25));
             mix-blend-mode: multiply;
-            transition: filter 0.3s ease;
         }
 
-        .site-logo-container:hover img {
-            filter: none;
-        }
-
-        /* --- Título Interactivo junto al Logo --- */
+        /* --- Título Interactivo Minimalista --- */
         .interactive-brand-title {
             font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             font-weight: 800;
             color: var(--primary-navy);
             text-decoration: none;
@@ -116,7 +106,7 @@
             cursor: pointer;
             display: inline-block;
             transition: color 0.3s ease, transform 0.3s ease;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
         }
 
         .interactive-brand-title::after {
@@ -124,9 +114,9 @@
             position: absolute;
             width: 0;
             height: 3px;
-            bottom: -4px;
+            bottom: -6px;
             left: 0;
-            background-color: var(--cantera-terracotta);
+            background-color: var(--cantera-rose);
             transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             border-radius: 2px;
         }
@@ -140,18 +130,18 @@
             width: 100%;
         }
 
-        /* --- Títulos de Sección Estilizados --- */
+        /* --- Títulos de Sección --- */
         h2.wp-block-heading {
             font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             color: var(--primary-navy);
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
             font-weight: 700;
             letter-spacing: -0.5px;
             text-align: center;
         }
 
-        /* --- Tarjetas de Servicios Interactivas y Uniformes --- */
+        /* --- Tarjetas Estilo Minimalista Moderno (Glassmorphism sutil y limpio) --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
@@ -161,11 +151,12 @@
 
         .wp-block-column {
             flex: 1;
-            min-width: 300px;
-            background: var(--white);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            min-width: 320px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 35px 30px;
+            box-shadow: 0 15px 35px rgba(22, 34, 59, 0.04);
             border: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
@@ -175,20 +166,21 @@
 
         .wp-block-column:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(200, 125, 85, 0.15);
-            border-color: rgba(200, 125, 85, 0.3);
+            box-shadow: 0 25px 50px rgba(232, 134, 146, 0.18);
+            border-color: rgba(232, 134, 146, 0.4);
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        /* Contenedores de Imagen con Zoom Suave */
+        /* Contenedores de Imagen con Zoom Minimalista */
         .wp-block-image {
-            margin: 0 0 20px 0;
+            margin: 0 0 24px 0;
             overflow: hidden;
-            border-radius: 16px;
+            border-radius: 20px;
             aspect-ratio: 16/10;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fdfbfb;
+            background: #f7f3f0;
         }
 
         .wp-block-image img {
@@ -199,27 +191,27 @@
         }
 
         .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.06);
+            transform: scale(1.05);
         }
 
-        /* --- Botones Uniformes, Interactivos y Llamativos --- */
+        /* --- Botones Minimalistas y Elegantes --- */
         .wp-block-buttons {
             display: flex;
             justify-content: center;
-            margin: 15px 0;
+            margin: 18px 0;
         }
 
         .wp-block-button__link {
-            background: linear-gradient(135deg, var(--white) 0%, #fbf9f7) !important;
+            background: var(--white) !important;
             color: var(--primary-navy) !important;
             border: 2px solid var(--cantera-terracotta) !important;
-            padding: 12px 28px !important;
+            padding: 13px 30px !important;
             border-radius: 50px !important;
             font-weight: 700 !important;
             font-size: 14px !important;
             text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.12);
+            box-shadow: 0 6px 20px rgba(184, 107, 67, 0.08);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
             letter-spacing: 0.5px;
             text-align: center;
@@ -228,32 +220,32 @@
         }
 
         .wp-block-button__link:hover {
-            background: linear-gradient(135deg, var(--cantera-terracotta) 0%, #b36944) !important;
+            background: var(--cantera-terracotta) !important;
             color: var(--white) !important;
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+            box-shadow: 0 12px 25px rgba(184, 107, 67, 0.25);
             border-color: var(--cantera-terracotta) !important;
         }
 
-        /* Textos descriptivos */
+        /* Textos descriptivos modernos */
         p.is-service-description, p {
             color: var(--text-muted);
             font-size: 15px !important;
             line-height: 1.6;
             margin-top: 10px;
-            font-weight: 300;
+            font-weight: 400;
         }
 
-        /* Sección de anuncios o bloques intermedios con estilo coherente */
+        /* Sección intermedia con toque rosado colonial */
         .wp-block-group.has-background {
-            background-color: rgba(200, 125, 85, 0.04) !important;
-            border-radius: 30px;
-            padding: 40px 20px;
-            margin: 40px 0;
-            border: 1px solid rgba(200, 125, 85, 0.1);
+            background: linear-gradient(135deg, rgba(232, 134, 146, 0.06) 0%, rgba(184, 107, 67, 0.04) 100%) !important;
+            border-radius: 35px;
+            padding: 50px 25px;
+            margin: 50px 0;
+            border: 1px solid rgba(232, 134, 146, 0.15);
         }
 
-        /* Footer institucional */
+        /* Footer institucional minimalista */
         .footer-brand-section {
             text-align: center;
             padding: 40px 20px;
@@ -262,24 +254,24 @@
         }
 
         .footer-brand-section p {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary-navy);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            font-size: 14px !important;
+            font-size: 13px !important;
         }
 
         /* --- Responsive para Móviles --- */
         @media screen and (max-width: 768px) {
             .sma-main-wrapper {
-                padding: 20px 15px;
+                padding: 30px 15px;
             }
             .site-header-custom {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
             .interactive-brand-title {
-                font-size: 2.2rem;
+                font-size: 2.3rem;
                 text-align: center;
             }
             h2.wp-block-heading {
@@ -291,12 +283,12 @@
 </head>
 <body>
 
-    <!-- Animación de fondo orgánica que sigue el cursor -->
+    <!-- Animación de fondo orgánica más rosa y notable -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera con Logotipo y Título Interactivo lado a lado -->
+        <!-- Cabecera con Logotipo Grande (sin contenedor blanco) y Título Interactivo -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo Vive San Miguel">
@@ -318,7 +310,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
                         </div>
-                        <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es mucho más que un simple plano; es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
+                        <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
                     </div>
 
                     <div class="wp-block-column">
@@ -328,7 +320,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
                         </div>
-                        <p>Desde <strong>festivales tradicionales llenos de color y música</strong> hasta eventos culturales de talla internacional, San Miguel de Allende ofrece una agenda dinámica para todos los gustos.</p>
+                        <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
                     </div>
 
                     <div class="wp-block-column">
@@ -338,7 +330,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
                         </div>
-                        <p>Retrocede en el tiempo y descubre los fascinantes capítulos que han tejido la rica historia de esta ciudad Patrimonio de la Humanidad.</p>
+                        <p>Retrocede en el tiempo y explora las raíces profundas de esta ciudad Patrimonio de la Humanidad.</p>
                     </div>
                 </div>
 
@@ -351,7 +343,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
                         </div>
-                        <p class="is-service-description">San Miguel de Allende es un tesoro de lugares fascinantes esperando ser descubiertos en cada esquina de esta ciudad icónica.</p>
+                        <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
                     </div>
 
                     <div class="wp-block-column">
@@ -361,7 +353,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
                         </div>
-                        <p>Te invitamos a sumergirte en el corazón de nuestras arraigadas costumbres, donde el pasado se entrelaza con el presente.</p>
+                        <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
                     </div>
 
                     <div class="wp-block-column">
@@ -371,7 +363,7 @@
                         <div class="wp-block-buttons">
                             <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
                         </div>
-                        <p>Olvídate de la planificación tradicional y sumérgete en experiencias únicas con nuestras rutas temáticas diseñadas para ti.</p>
+                        <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
                     </div>
                 </div>
             </div>
@@ -387,7 +379,7 @@
                     <div class="wp-block-buttons">
                         <a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link" target="_blank" rel="noopener noreferrer">Rutas de autobuses locales</a>
                     </div>
-                    <p class="is-service-description">Te proporcionamos la información esencial para utilizar el sistema de transporte público local y descubrir la ciudad como un residente más.</p>
+                    <p class="is-service-description">Información esencial para utilizar el transporte público local y moverte como un residente.</p>
                 </div>
 
                 <div class="wp-block-column">
@@ -397,7 +389,7 @@
                     <div class="wp-block-buttons">
                         <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
                     </div>
-                    <p>Aquí encontrarás un mapa de los <strong>viñedos locales</strong>, cada uno con su propio encanto y personalidad en la producción de vinos de altura.</p>
+                    <p>Descubre los viñedos locales y la pasión invertida en la producción de excelentes vinos de altura.</p>
                 </div>
 
                 <div class="wp-block-column">
@@ -407,7 +399,7 @@
                     <div class="wp-block-buttons">
                         <a class="wp-block-button__link wp-element-button" href="#">Tours</a>
                     </div>
-                    <p>San Miguel de Allende es un destino que se presta a la exploración profunda, de la mano de la guía de expertos locales.</p>
+                    <p>Explora a profundidad de la mano de expertos locales que enriquecerán cada paso de tu visita.</p>
                 </div>
             </div>
         </div>
