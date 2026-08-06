@@ -60,8 +60,8 @@
         }
 
         .site-logo-container {
-            width: 85px;
-            height: 85px;
+            width: 130px;
+            height: 130px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -70,19 +70,15 @@
             border-radius: 50%;
             box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
             border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            padding: 12px;
         }
 
-        .site-logo-container svg {
-            width: 42px;
-            height: 42px;
-            fill: var(--primary-navy);
-            animation: pulse-heart 2s infinite;
-        }
-
-        @keyframes pulse-heart {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            mix-blend-mode: multiply;
         }
 
         /* --- Separadores --- */
@@ -343,12 +339,10 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Logotipo Institucional Superior (Corazón Artesanal) -->
+        <!-- Logotipo Institucional Superior (Con la imagen de Google Drive integrada) -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Dirección de Turismo - San Miguel de Allende">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
+                <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo San Miguel de Allende">
             </div>
         </header>
 
