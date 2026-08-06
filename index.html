@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive Tu Ruta - San Miguel de Allende</title>
+    <title>Vive San Miguel - San Miguel de Allende</title>
     <style>
         :root {
             --bg-sanmiguel: #fcfbfa;
@@ -53,7 +53,7 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo Institucional --- */
+        /* --- Cabecera con Logotipo Institucional Integrado y Animado --- */
         .site-header-custom {
             text-align: center;
             margin-bottom: 30px;
@@ -72,13 +72,27 @@
             border: 1px solid var(--border-subtle);
             overflow: hidden;
             padding: 12px;
+            animation: float-logo 4s ease-in-out infinite;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-6px) scale(1.03); }
+            100% { transform: translateY(0px) scale(1); }
         }
 
         .site-logo-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            /* Se integra de forma armónica con los tonos de la web manteniendo su esencia */
+            filter: sepia(30%) hue-rotate(320deg) saturate(90%) contrast(105%);
             mix-blend-mode: multiply;
+            transition: filter 0.3s ease;
+        }
+
+        .site-logo-container:hover img {
+            filter: none; /* Al pasar el mouse recupera su color original con viveza */
         }
 
         /* --- Separadores --- */
@@ -339,10 +353,10 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Logotipo Institucional Superior (Con la imagen de Google Drive integrada) -->
+        <!-- Logotipo Institucional Superior con animación flotante y tono integrado -->
         <header class="site-header-custom">
-            <div class="site-logo-container" title="Dirección de Turismo - San Miguel de Allende">
-                <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo San Miguel de Allende">
+            <div class="site-logo-container" title="Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo Vive San Miguel">
             </div>
         </header>
 
@@ -354,7 +368,6 @@
         <div class="wp-block-buttons alignwide sma-buttons-container">
             <!-- wp:button {"className":"sma-pastel-btn"} -->
             <div class="wp-block-button sma-pastel-btn">
-                <!-- Enlace exacto proporcionado -->
                 <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/menuL.html">PREPARA TU VIAJE</a>
             </div>
             <!-- /wp:button -->
@@ -454,7 +467,7 @@
         <header class="wp-block-group alignwide"><!-- wp:navigation {"ref":104,"style":{"layout":{"selfStretch":"fixed","flexSize":"40%"}}} /-->
 
         <!-- wp:group -->
-        <div class="wp-block-group"><!-- wp:site-title --><div class="wp-block-site-title" style="font-weight:700; color:var(--primary-navy);">Vive Tu Ruta</div><!-- /wp:site-title --></div>
+        <div class="wp-block-group"><!-- wp:site-title --><div class="wp-block-site-title" style="font-weight:700; color:var(--primary-navy);">Vive San Miguel</div><!-- /wp:site-title --></div>
         <!-- /wp:group -->
 
         <!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"},"layout":{"selfStretch":"fixed","flexSize":"40%"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
