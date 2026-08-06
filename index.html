@@ -53,16 +53,19 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo Institucional Integrado y Animado --- */
+        /* --- Cabecera con Logotipo y Título Interactivo lado a lado --- */
         .site-header-custom {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .site-logo-container {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,28 +74,69 @@
             box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
             border: 1px solid var(--border-subtle);
             overflow: hidden;
-            padding: 12px;
+            padding: 10px;
             animation: float-logo 4s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .site-logo-container:hover {
+            transform: scale(1.08) rotate(3deg);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.3);
         }
 
         @keyframes float-logo {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-6px) scale(1.03); }
-            100% { transform: translateY(0px) scale(1); }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
         .site-logo-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Se integra de forma armónica con los tonos de la web manteniendo su esencia */
             filter: sepia(30%) hue-rotate(320deg) saturate(90%) contrast(105%);
             mix-blend-mode: multiply;
             transition: filter 0.3s ease;
         }
 
         .site-logo-container:hover img {
-            filter: none; /* Al pasar el mouse recupera su color original con viveza */
+            filter: none;
+        }
+
+        /* --- Título Interactivo junto al Logo --- */
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            transition: color 0.3s ease, transform 0.3s ease;
+            letter-spacing: -0.5px;
+        }
+
+        .interactive-brand-title::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--cantera-terracotta);
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 2px;
+        }
+
+        .interactive-brand-title:hover {
+            color: var(--cantera-terracotta);
+            transform: translateY(-2px);
+        }
+
+        .interactive-brand-title:hover::after {
+            width: 100%;
         }
 
         /* --- Separadores --- */
@@ -328,6 +372,14 @@
             .sma-main-wrapper {
                 padding: 20px 15px;
             }
+            .site-header-custom {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .interactive-brand-title {
+                font-size: 2rem;
+                text-align: center;
+            }
             .wp-block-image.alignfull img {
                 height: 250px;
             }
@@ -353,11 +405,12 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Logotipo Institucional Superior con animación flotante y tono integrado -->
+        <!-- Cabecera con Logotipo y Título Interactivo lado a lado -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo Vive San Miguel">
             </div>
+            <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
         </header>
 
         <!-- wp:separator -->
