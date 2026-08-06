@@ -10,6 +10,7 @@
             --white: #ffffff;
             --primary-navy: #1b2a4a;
             --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
             --pastel-sand: #f4ebd0;
             --text-main: #2c2c2c;
             --text-muted: #666666;
@@ -148,43 +149,52 @@
             opacity: 1;
         }
 
-        /* --- Botones Superiores (Prepara tu viaje y FASMA2026) --- */
+        /* --- Botones Superiores Uniformes, Interactivos y Llamativos --- */
         .sma-buttons-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 25px 0;
         }
 
         .sma-pastel-btn .wp-block-button__link {
-            background-color: var(--white) !important;
+            background: linear-gradient(135deg, var(--white) 0%, #fbf9f7) !important;
             color: var(--primary-navy) !important;
-            border: 1px solid var(--cantera-terracotta) !important;
-            padding: 14px 28px !important;
-            border-radius: 30px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
+            border: 2px solid var(--cantera-terracotta) !important;
+            padding: 16px 36px !important;
+            border-radius: 50px !important;
+            font-weight: 700 !important;
+            font-size: 15px !important;
             text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-width: 210px;
         }
 
         .sma-pastel-btn .wp-block-button__link:hover {
-            background-color: var(--cantera-terracotta) !important;
+            background: linear-gradient(135deg, var(--cantera-terracotta) 0%, #b36944) !important;
             color: var(--white) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.3);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(200, 125, 85, 0.35);
+            border-color: var(--cantera-terracotta) !important;
         }
 
         .sma-pastel-btn.secondary .wp-block-button__link {
-            background-color: var(--cantera-terracotta) !important;
+            background: linear-gradient(135deg, var(--cantera-terracotta) 0%, #b36944) !important;
             color: var(--white) !important;
+            border-color: var(--cantera-terracotta) !important;
         }
 
         .sma-pastel-btn.secondary .wp-block-button__link:hover {
-            background-color: var(--primary-navy) !important;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #121c33) !important;
+            border-color: var(--primary-navy) !important;
+            box-shadow: 0 12px 30px rgba(27, 42, 74, 0.3);
         }
 
         /* --- Imagen Panorámica --- */
@@ -202,20 +212,42 @@
             display: block;
         }
 
-        /* --- Grupo Vuelo en Globo --- */
+        /* --- Grupo Vuelo en Globo (Ajustado para que se vea completamente centrado y visualmente perfecto) --- */
         .has-background-light-background-color {
             background-color: var(--white) !important;
             border-radius: 24px;
-            padding: 40px 20px !important;
+            padding: 50px 30px !important;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             border: 1px solid var(--border-subtle);
             margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .wp-block-image.aligncenter img {
-            border-radius: 14px;
-            max-width: 100%;
+        .wp-block-image.aligncenter.balloon-container {
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .wp-block-image.aligncenter.balloon-container img {
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease;
+        }
+
+        .wp-block-image.aligncenter.balloon-container img:hover {
+            transform: scale(1.02);
         }
 
         /* --- Sección Instagram / Pullquote --- */
@@ -442,9 +474,12 @@
         <!-- /wp:image -->
 
         <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}},"backgroundColor":"background-light"} -->
-        <div class="wp-block-group alignfull has-background-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40)"><!-- wp:image {"id":136,"width":"703px","height":"auto","sizeSlug":"full","linkDestination":"none","align":"center","className":"alignfull"} -->
-        <figure class="wp-block-image aligncenter size-full is-resized alignfull"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" class="wp-image-136" style="width:703px;height:auto" /></figure>
-        <!-- /wp:image --></div>
+        <div class="wp-block-group alignfull has-background-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40)">
+            <!-- Imagen del globo perfectamente centrada, vertical y visualmente armónica -->
+            <figure class="wp-block-image aligncenter balloon-container">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" class="wp-image-136" />
+            </figure>
+        </div>
         <!-- /wp:group -->
 
         <!-- wp:group {"align":"full"} -->
