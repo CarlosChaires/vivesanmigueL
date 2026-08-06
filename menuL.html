@@ -28,14 +28,14 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de fondo orgánica, fluida y mucho más rosa/notable --- */
+        /* --- Animación de fondo orgánica y muy notable en tonos rosas y terracota --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
             width: 700px;
             height: 700px;
-            background: radial-gradient(ellipse at center, rgba(232, 134, 146, 0.38) 0%, rgba(184, 107, 67, 0.22) 45%, transparent 75%);
+            background: radial-gradient(ellipse at center, rgba(232, 134, 146, 0.42) 0%, rgba(184, 107, 67, 0.25) 45%, transparent 75%);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -53,7 +53,7 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo Destacado y Título Interactivo (Sin fondo blanco) --- */
+        /* --- Cabecera con Logotipo Nuevo y Título Interactivo --- */
         .site-header-custom {
             display: flex;
             align-items: center;
@@ -64,8 +64,8 @@
         }
 
         .site-logo-container {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -95,7 +95,6 @@
             mix-blend-mode: multiply;
         }
 
-        /* --- Título Interactivo Minimalista --- */
         .interactive-brand-title {
             font-family: 'Playfair Display', serif, sans-serif;
             font-size: 3.2rem;
@@ -130,7 +129,6 @@
             width: 100%;
         }
 
-        /* --- Títulos de Sección --- */
         h2.wp-block-heading {
             font-family: 'Playfair Display', serif, sans-serif;
             font-size: 2.5rem;
@@ -141,12 +139,13 @@
             text-align: center;
         }
 
-        /* --- Tarjetas Estilo Minimalista Moderno (Glassmorphism sutil y limpio) --- */
+        /* --- Estructura de Columnas con Altura 100% Uniforme --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
             gap: 30px;
             margin-bottom: 2.5rem;
+            align-items: stretch; /* Clave para garantizar exactamente el mismo tamaño en cada ítem */
         }
 
         .wp-block-column {
@@ -160,8 +159,9 @@
             border: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-between; /* Distribuye elementos uniformemente de arriba a abajo */
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-sizing: border-box;
         }
 
         .wp-block-column:hover {
@@ -171,16 +171,18 @@
             background: rgba(255, 255, 255, 0.95);
         }
 
-        /* Contenedores de Imagen con Zoom Minimalista */
+        /* Contenedores de Imagen Uniformes */
         .wp-block-image {
-            margin: 0 0 24px 0;
+            margin: 0 0 20px 0;
             overflow: hidden;
             border-radius: 20px;
-            aspect-ratio: 16/10;
+            width: 100%;
+            height: 210px; /* Altura fija estricta para que todas las imágenes midan exactamente lo mismo */
             display: flex;
             align-items: center;
             justify-content: center;
             background: #f7f3f0;
+            flex-shrink: 0;
         }
 
         .wp-block-image img {
@@ -194,11 +196,19 @@
             transform: scale(1.05);
         }
 
-        /* --- Botones Minimalistas y Elegantes --- */
+        /* Contenido interno para mantener alineación perfecta */
+        .card-content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
         .wp-block-buttons {
             display: flex;
             justify-content: center;
-            margin: 18px 0;
+            margin: 15px 0;
+            flex-shrink: 0;
         }
 
         .wp-block-button__link {
@@ -227,25 +237,23 @@
             border-color: var(--cantera-terracotta) !important;
         }
 
-        /* Textos descriptivos modernos */
         p.is-service-description, p {
             color: var(--text-muted);
             font-size: 15px !important;
             line-height: 1.6;
-            margin-top: 10px;
+            margin: 10px 0 0 0;
             font-weight: 400;
+            text-align: center;
         }
 
-        /* Sección intermedia con toque rosado colonial */
         .wp-block-group.has-background {
-            background: linear-gradient(135deg, rgba(232, 134, 146, 0.06) 0%, rgba(184, 107, 67, 0.04) 100%) !important;
+            background: linear-gradient(135deg, rgba(232, 134, 146, 0.08) 0%, rgba(184, 107, 67, 0.05) 100%) !important;
             border-radius: 35px;
             padding: 50px 25px;
             margin: 50px 0;
-            border: 1px solid rgba(232, 134, 146, 0.15);
+            border: 1px solid rgba(232, 134, 146, 0.2);
         }
 
-        /* Footer institucional minimalista */
         .footer-brand-section {
             text-align: center;
             padding: 40px 20px;
@@ -261,7 +269,6 @@
             font-size: 13px !important;
         }
 
-        /* --- Responsive para Móviles --- */
         @media screen and (max-width: 768px) {
             .sma-main-wrapper {
                 padding: 30px 15px;
@@ -278,20 +285,23 @@
                 font-size: 1.8rem;
                 text-align: center;
             }
+            .wp-block-image {
+                height: 180px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Animación de fondo orgánica más rosa y notable -->
+    <!-- Animación de fondo orgánica con presencia notable de tono rosa -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera con Logotipo Grande (sin contenedor blanco) y Título Interactivo -->
+        <!-- Cabecera con el nuevo Logotipo grande y limpio (sin fondo blanco) -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/14W_t-cvvkii7QIC_GDSqw7PHmVskdOLI" alt="Logo Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/16zUIExVuI01MKWnlPrAR8D_SMDQt4_fM" alt="Logo Vive San Miguel">
             </div>
             <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
         </header>
@@ -307,30 +317,36 @@
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="Mapa Turístico">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://www.visitsanmiguel.travel/_files/ugd/80dc52_98b18d95fb7c4449a9d939d042c6fbe0.pdf" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
+                            </div>
+                            <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
                         </div>
-                        <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
                     </div>
 
                     <div class="wp-block-column">
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_dj40g5dj40g5dj40.png?w=1024" alt="Eventos">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
+                            </div>
+                            <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
                         </div>
-                        <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
                     </div>
 
                     <div class="wp-block-column">
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2k6uxt2k6uxt2k6u.png?w=1024" alt="Ecos del pasado">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
+                            </div>
+                            <p>Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.</p>
                         </div>
-                        <p>Retrocede en el tiempo y explora las raíces profundas de esta ciudad Patrimonio de la Humanidad.</p>
                     </div>
                 </div>
 
@@ -340,30 +356,36 @@
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
+                            </div>
+                            <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
                         </div>
-                        <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
                     </div>
 
                     <div class="wp-block-column">
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_2w7k3d2w7k3d2w7k.png?w=1024" alt="Tradiciones">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
+                            </div>
+                            <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
                         </div>
-                        <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
                     </div>
 
                     <div class="wp-block-column">
                         <figure class="wp-block-image size-large">
                             <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-27-a-las-19.30.42_359f7392.jpg?w=1024" alt="Rutas temáticas">
                         </figure>
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
+                            </div>
+                            <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
                         </div>
-                        <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
                     </div>
                 </div>
             </div>
@@ -376,30 +398,36 @@
                     <figure class="wp-block-image size-large">
                         <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="Autobuses locales">
                     </figure>
-                    <div class="wp-block-buttons">
-                        <a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link" target="_blank" rel="noopener noreferrer">Rutas de autobuses locales</a>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link" target="_blank" rel="noopener noreferrer">Rutas de autobuses locales</a>
+                        </div>
+                        <p class="is-service-description">Información esencial para utilizar el transporte público local y moverte como un residente.</p>
                     </div>
-                    <p class="is-service-description">Información esencial para utilizar el transporte público local y moverte como un residente.</p>
                 </div>
 
                 <div class="wp-block-column">
                     <figure class="wp-block-image size-large">
                         <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/vino.png?w=1024" alt="Viñedos">
                     </figure>
-                    <div class="wp-block-buttons">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
+                        </div>
+                        <p>Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.</p>
                     </div>
-                    <p>Descubre los viñedos locales y la pasión invertida en la producción de excelentes vinos de altura.</p>
                 </div>
 
                 <div class="wp-block-column">
                     <figure class="wp-block-image size-large">
                         <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="Tours">
                     </figure>
-                    <div class="wp-block-buttons">
-                        <a class="wp-block-button__link wp-element-button" href="#">Tours</a>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="#">Tours</a>
+                        </div>
+                        <p>Explora a profundidad de la mano de expertos locales que enriquecerán cada paso de tu visita.</p>
                     </div>
-                    <p>Explora a profundidad de la mano de expertos locales que enriquecerán cada paso de tu visita.</p>
                 </div>
             </div>
         </div>
