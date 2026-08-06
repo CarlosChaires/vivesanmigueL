@@ -53,13 +53,13 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo Nuevo y Título Interactivo --- */
+        /* --- Cabecera con Logotipo y Título Interactivo --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 25px;
-            margin-bottom: 60px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
 
@@ -129,6 +129,17 @@
             width: 100%;
         }
 
+        /* --- Sutil frase evocadora de las calles coloniales y cantera rosa --- */
+        .sma-subtitle-vibe {
+            text-align: center;
+            font-style: italic;
+            color: var(--cantera-terracotta);
+            font-size: 1.15rem;
+            margin-bottom: 55px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
         h2.wp-block-heading {
             font-family: 'Playfair Display', serif, sans-serif;
             font-size: 2.5rem;
@@ -145,7 +156,7 @@
             flex-wrap: wrap;
             gap: 30px;
             margin-bottom: 2.5rem;
-            align-items: stretch; /* Clave para garantizar exactamente el mismo tamaño en cada ítem */
+            align-items: stretch;
         }
 
         .wp-block-column {
@@ -159,7 +170,7 @@
             border: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Distribuye elementos uniformemente de arriba a abajo */
+            justify-content: space-between;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             box-sizing: border-box;
         }
@@ -177,7 +188,7 @@
             overflow: hidden;
             border-radius: 20px;
             width: 100%;
-            height: 210px; /* Altura fija estricta para que todas las imágenes midan exactamente lo mismo */
+            height: 210px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -196,7 +207,6 @@
             transform: scale(1.05);
         }
 
-        /* Contenido interno para mantener alineación perfecta */
         .card-content-area {
             display: flex;
             flex-direction: column;
@@ -281,6 +291,9 @@
                 font-size: 2.3rem;
                 text-align: center;
             }
+            .sma-subtitle-vibe {
+                font-size: 1rem;
+            }
             h2.wp-block-heading {
                 font-size: 1.8rem;
                 text-align: center;
@@ -298,13 +311,16 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera con el nuevo Logotipo grande y limpio (sin fondo blanco) -->
+        <!-- Cabecera con Logotipo y Título Interactivo -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/16zUIExVuI01MKWnlPrAR8D_SMDQt4_fM" alt="Logo Vive San Miguel">
             </div>
             <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
         </header>
+
+        <!-- Detalle evocador inspirado en las calles coloniales y la cantera de San Miguel -->
+        <div class="sma-subtitle-vibe">"Esta página me recuerda el encanto y la calidez de nuestras calles coloniales..."</div>
 
         <!-- Sección Principal 1 -->
         <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
