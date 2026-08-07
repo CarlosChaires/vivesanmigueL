@@ -212,7 +212,7 @@
             display: block;
         }
 
-        /* --- Grupo Vuelo en Globo (Ajustado para que se vea completamente centrado y visualmente perfecto) --- */
+        /* --- Grupo Vuelo en Globo --- */
         .has-background-light-background-color {
             background-color: var(--white) !important;
             border-radius: 24px;
@@ -295,7 +295,7 @@
             transform: translateY(-2px);
         }
 
-        /* --- Footer Informativo (Sobre nosotros, Contacto, Visítanos) --- */
+        /* --- Footer Informativo --- */
         .has-foreground-background-color {
             background-color: var(--primary-navy) !important;
             color: var(--white) !important;
@@ -440,7 +440,7 @@
         <!-- Cabecera con Logotipo y Título Interactivo lado a lado -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2026/04/cropped-captura-de-pantalla-2026-04-12-a-las-3.52.01-p.m..png" alt="Logo Vive San Miguel">
             </div>
             <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
         </header>
@@ -475,7 +475,6 @@
 
         <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}},"backgroundColor":"background-light"} -->
         <div class="wp-block-group alignfull has-background-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40)">
-            <!-- Imagen del globo perfectamente centrada, vertical y visualmente armónica -->
             <figure class="wp-block-image aligncenter balloon-container">
                 <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" class="wp-image-136" />
             </figure>
@@ -483,7 +482,8 @@
         <!-- /wp:group -->
 
         <!-- wp:group {"align":"full"} -->
-        <div class="wp-block-group alignfull"><!-- wp:spacer {"height":"20px","className":"desktop-only"} -->
+        <div class="wp-block-group alignfull">
+        <!-- wp:spacer {"height":"20px","className":"desktop-only"} -->
         <div style="height:20px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
         <!-- /wp:spacer -->
 
@@ -491,52 +491,43 @@
         <figure class="wp-block-pullquote"><blockquote><p>¡UN VIAJE AL CORAZÓN!</p><cite><strong>¡Descubre la magia de San Miguel de Allende en Instagram!</strong></cite></blockquote></figure>
         <!-- /wp:pullquote -->
 
-        <!-- wp:jetpack/instagram-gallery {"accessToken":"31182912","instagramUser":"sanmiigueldeallende"} -->
+        <!-- wp:jetpack/instagram-gallery -->
         <div class="wp-block-jetpack-instagram-gallery"><a href="https://www.instagram.com/sanmiigueldeallende/" rel="noopener noreferrer" target="_blank">Ver Galería en Instagram</a></div>
         <!-- /wp:jetpack/instagram-gallery --></div>
         <!-- /wp:group -->
 
         <!-- wp:group {"align":"full","style":{"color":{"text":"#ffffff"}},"backgroundColor":"foreground"} -->
-        <div class="wp-block-group alignfull has-foreground-background-color has-text-color has-background" style="color:#ffffff"><!-- wp:spacer {"height":"20px"} -->
+        <div class="wp-block-group alignfull has-foreground-background-color has-text-color has-background" style="color:#ffffff">
+        <!-- wp:spacer {"height":"20px"} -->
         <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
         <!-- /wp:spacer -->
 
-        <!-- wp:columns {"align":"wide"} -->
-        <div class="wp-block-columns alignwide"><!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Sobre nosotros</h4>
-        <!-- /wp:heading -->
+        <!-- wp:columns {"alignwide"} -->
+        <div class="wp-block-columns alignwide">
+            <!-- wp:column -->
+            <div class="wp-block-column">
+                <h4 class="wp-block-heading has-background-color has-text-color">Sobre nosotros</h4>
+                <p>Somos una organización especializada en el destino, nuestra finalidad es que usted disfrute de una experiencia inolvidable.</p>
+            </div>
+            <!-- /wp:column -->
 
-        <!-- wp:paragraph -->
-        <p>Somos una organización especializada en el destino, nuestra finalidad es que usted disfrute de una experiencia inolvidable.</p>
-        <!-- /wp:paragraph --></div>
-        <!-- /wp:column -->
+            <!-- wp:column -->
+            <div class="wp-block-column">
+                <h4 class="wp-block-heading has-background-color has-text-color">Ponte en contacto</h4>
+                <ul class="wp-block-list">
+                    <li>vivesma@gmail.com</li>
+                    <li>+52 415 177 36 98</li>
+                </ul>
+            </div>
+            <!-- /wp:column -->
 
-        <!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Ponte en contacto</h4>
-        <!-- /wp:heading -->
-
-        <!-- wp:list -->
-        <ul class="wp-block-list"><!-- wp:list-item -->
-        <li>vivesma@gmail.com</li>
-        <!-- /wp:list-item -->
-
-        <!-- wp:list-item -->
-        <li>+52 415 177 36 98</li>
-        <!-- /wp:list-item --></ul>
-        <!-- /wp:list --></div>
-        <!-- /wp:column -->
-
-        <!-- wp:column -->
-        <div class="wp-block-column"><!-- wp:heading {"level":4,"textColor":"background"} -->
-        <h4 class="wp-block-heading has-background-color has-text-color">Visítanos</h4>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph -->
-        <p>Zona centro, San Miguel de Allende, 37700, México</p>
-        <!-- /wp:paragraph --></div>
-        <!-- /wp:column --></div>
+            <!-- wp:column -->
+            <div class="wp-block-column">
+                <h4 class="wp-block-heading has-background-color has-text-color">Visítanos</h4>
+                <p>Zona centro, San Miguel de Allende, 37700, México</p>
+            </div>
+            <!-- /wp:column -->
+        </div>
         <!-- /wp:columns -->
 
         <!-- wp:spacer {"height":"20px","className":"desktop-only"} -->
@@ -545,36 +536,24 @@
         <!-- /wp:group -->
 
         <!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
-        <div class="wp-block-group alignwide wp-block-search" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:search {"label":"Buscar en el sitio","showLabel":false,"buttonText":"Buscar"} /-->
+        <div class="wp-block-group alignwide wp-block-search" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)">
             <input type="search" class="wp-block-search__input" placeholder="Buscar en el sitio..." aria-label="Buscar en el sitio" />
         </div>
         <!-- /wp:group -->
 
-        <!-- wp:group {"metadata":{"name":"Footer Container","categories":["footer"],"patternName":"a8c/footer-menu-logo-social"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"constrained"}} -->
-        <div class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)"><!-- wp:group {"tagName":"header","metadata":{"name":"Contents"},"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-        <header class="wp-block-group alignwide"><!-- wp:navigation {"ref":104,"style":{"layout":{"selfStretch":"fixed","flexSize":"40%"}}} /-->
-
-        <!-- wp:group -->
-        <div class="wp-block-group"><!-- wp:site-title --><div class="wp-block-site-title" style="font-weight:700; color:var(--primary-navy);">Vive San Miguel</div><!-- /wp:site-title --></div>
-        <!-- /wp:group -->
-
-        <!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"},"layout":{"selfStretch":"fixed","flexSize":"40%"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
-        <div class="wp-block-group"><!-- wp:social-links {"size":"has-normal-icon-size","className":"is-style-logos-only","style":{"spacing":{"blockGap":{"left":"12px"}}}} -->
-        <ul class="wp-block-social-links has-normal-icon-size is-style-logos-only"><!-- wp:social-link {"url":"https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==","service":"instagram"} /-->
-        <li><a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" title="Instagram">IG</a></li>
-        <!-- /wp:social-link -->
-
-        <!-- wp:social-link {"url":"https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&amp;sender_device=pc","service":"tiktok"} /-->
-        <li><a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok">TK</a></li>
-        <!-- /wp:social-link --></ul>
-        <!-- /wp:social-links --></div>
-        <!-- /wp:group --></header>
-        <!-- /wp:group --></div>
-        <!-- /wp:group -->
+        <!-- Footer Final -->
+        <div class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding:20px 40px;">
+        <header class="wp-block-group alignwide" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+            <div class="wp-block-site-title" style="font-weight:700; color:var(--primary-navy);">Vive San Miguel</div>
+            <ul class="wp-block-social-links has-normal-icon-size is-style-logos-only">
+                <li><a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" title="Instagram">IG</a></li>
+                <li><a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok">TK</a></li>
+            </ul>
+        </header>
+        </div>
 
     </div>
 
-    <!-- Script de luz orgánica interactiva que sigue el cursor -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = 0, mouseY = 0;
