@@ -3,71 +3,470 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorador de Rutas | Vive San Miguel 2026</title>
+    <title>Vive San Miguel - Sitios de Interés</title>
     <style>
         :root {
-            --navy: #1b2a4a;
-            --rose: #d48384;
-            --sand: #fcfbfa;
-            --text: #2c2c2c;
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
+            --border-subtle: rgba(27, 42, 74, 0.08);
         }
 
-        body { 
-            background-color: var(--sand); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0; padding: 0; color: var(--text); overflow-x: hidden;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: #2c2c2c;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Puntero Interactivo (Glow) */
         #cursor-glow {
-            position: fixed; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.15) 0%, transparent 70%);
-            pointer-events: none; transform: translate(-50%, -50%); z-index: 0;
-            transition: transform 0.1s ease-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, rgba(200, 125, 85, 0.22) 0%, rgba(244, 185, 200, 0.15) 40%, transparent 75%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: width 0.3s, height 0.3s, border-radius 0.5s;
+            filter: blur(40px);
         }
 
-        .main-container { max-width: 800px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 1; }
+        .sma-main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            box-sizing: border-box;
+        }
 
-        /* Botón Back Estilizado */
-        .btn-back { display: inline-block; padding: 10px 20px; border: 1px solid var(--navy); border-radius: 20px; color: var(--navy); text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 40px; transition: 0.3s; }
-        .btn-back:hover { background: var(--navy); color: #fff; }
+        .nav-back-container {
+            margin-bottom: 25px;
+        }
 
-        /* Tarjetas de Sitios (Basadas en tu Reporte) */
-        .site-card { background: #fff; padding: 25px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .site-card img { width: 120px; height: 80px; object-fit: cover; border-radius: 10px; }
-        .site-card a { color: var(--navy); text-decoration: none; font-weight: 700; font-size: 14px; }
+        .btn-back {
+            display: inline-block;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary-navy);
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary-navy);
+            color: var(--white);
+        }
+
+        .site-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .site-logo-container {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            padding: 10px;
+            animation: float-logo 4s ease-in-out infinite;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: sepia(30%) hue-rotate(320deg) saturate(90%) contrast(105%);
+            mix-blend-mode: multiply;
+        }
+
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            letter-spacing: -0.5px;
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background-color: var(--border-subtle);
+            margin: 40px 0;
+            opacity: 1;
+        }
+
+        .wp-block-image.aligncenter.is-resized img {
+            border-radius: 16px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease;
+        }
+
+        .wp-block-image.aligncenter.is-resized img:hover {
+            transform: scale(1.02);
+        }
+
+        .wp-block-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px 0;
+        }
+
+        .wp-block-button__link {
+            background: linear-gradient(135deg, var(--white) 0%, #fbf9f7) !important;
+            color: var(--primary-navy) !important;
+            border: 2px solid var(--cantera-terracotta) !important;
+            padding: 14px 30px !important;
+            border-radius: 50px !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            display: inline-block;
+            box-shadow: 0 6px 20px rgba(200, 125, 85, 0.12);
+            transition: all 0.3s ease !important;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .wp-block-button__link:hover {
+            background: linear-gradient(135deg, var(--cantera-terracotta) 0%, #b36944) !important;
+            color: var(--white) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 20px 15px;
+            }
+            .site-header-custom {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .interactive-brand-title {
+                font-size: 2rem;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="cursor-glow"></div>
 
-    <div class="main-container">
-        <a href="javascript:history.back()" class="btn-back">← Volver a la página anterior</a>
+    <div class="sma-main-wrapper">
 
-        <!-- Integración de tus sitios de interés (Ejemplos seleccionados) -->
-        <div class="site-card">
-            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png" alt="Museo Casa de Allende">
-            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
+        <div class="nav-back-container">
+            <a href="javascript:history.back()" class="btn-back">← Volver a la página anterior</a>
         </div>
 
-        <div class="site-card">
-            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png" alt="Casa del Mayorazgo de la Canal">
-            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
-        </div>
+        <header class="site-header-custom">
+            <div class="site-logo-container" title="Vive San Miguel">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2026/04/cropped-captura-de-pantalla-2026-04-12-a-las-3.52.01-p.m..png" alt="Logo Vive San Miguel">
+            </div>
+            <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+        </header>
 
-        <div class="site-card">
-            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png" alt="Univerciudad Casa del Nigromante">
-            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <!-- 1. Museo Casa de Allende -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende" class="wp-image-247" style="width:459px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
+            </div>
         </div>
+        <!-- /wp:buttons -->
+
+        <!-- 2. Casa del Mayorazgo de la Canal -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal" class="wp-image-177" style="width:388px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 3. Univerciudad Casa del Nigromante -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835" alt="Univerciudad Casa del Nigromante" class="wp-image-257" style="width:434px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 4. Centro Cultural Ignacio Ramírez -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez" class="wp-image-259" style="width:437px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons alignwide">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">CENTRO CULTURAL IGNACIO RAMIREZ</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 5. Instituto Allende -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024" alt="Instituto Allende" class="wp-image-261" style="width:421px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons alignwide">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">INSTITUTO ALLENDE</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 6. Fábrica La Aurora -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024" alt="Fábrica La Aurora" class="wp-image-211" style="width:438px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">FABRICA LA AURORA</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 7. Mercado Ignacio Ramírez -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez" class="wp-image-205" style="width:437px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons alignwide">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">MERCADO IGANCIO RAMIREZ</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 8. Parque Juárez -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024" alt="Parque Juárez" class="wp-image-198" style="width:429px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">PARQUE JUAREZ</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 9. Paseo del Chorro -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro" class="wp-image-193" style="width:414px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">PASEO DEL CHORRO</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 10. Mirador -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639" alt="Mirador" class="wp-image-268" style="width:382px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">MIRADOR</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 11. El Charco del Ingenio -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024" alt="El Charco del Ingenio" class="wp-image-241" style="width:388px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">EL CHARCO DEL INGENIO</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 12. Atotonilco -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Atotonilco" class="wp-image-227" style="width:325px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">ATOTONILCO.</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 13. Balnearios de Aguas Termales -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889" alt="Balnearios de Aguas Termales" class="wp-image-231" style="width:383px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">BALNEARIOS DE AGUAS TERMALES</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- 14. Cañada de la Virgen -->
+        <!-- wp:image -->
+        <figure class="wp-block-image aligncenter size-large is-resized">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600" alt="Cañada de la Virgen" class="wp-image-236" style="width:408px;height:auto" />
+            </a>
+        </figure>
+        <!-- /wp:image -->
+
+        <!-- wp:buttons -->
+        <div class="wp-block-buttons">
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">CAÑADA DE LA VIRGEN</a>
+            </div>
+        </div>
+        <!-- /wp:buttons -->
+
+        <!-- wp:paragraph -->
+        <p></p>
+        <!-- /wp:paragraph -->
+
     </div>
 
     <script>
-        const glow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
     </script>
 </body>
 </html>
