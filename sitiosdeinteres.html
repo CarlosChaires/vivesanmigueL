@@ -2,101 +2,59 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Catálogo de Rutas</title>
+    <title>Vive San Miguel | Experiencias Inmersivas</title>
     <style>
         :root {
-            --navy: #1b2a4a;
-            --rose: #d48384;
-            --sand: #fcfbfa;
-            --white: #ffffff;
+            --navy: #1b2a4a; --rose: #d48384; --bg: #fcfbfa; --white: #ffffff;
         }
-
-        body {
-            background-color: var(--sand);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            color: var(--navy);
-        }
-
-        .main-container { max-width: 900px; margin: 0 auto; }
-
-        /* Botón de Regreso (Nuevo) */
-        .back-nav { margin-bottom: 30px; }
-        .btn-back {
-            color: var(--navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            border: 1px solid var(--navy);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: 0.3s;
-        }
-        .btn-back:hover { background: var(--navy); color: var(--white); }
-
-        /* Estilo de Tarjetas de Ruta */
-        .route-item {
-            display: flex;
-            align-items: center;
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .route-item:hover { transform: translateY(-5px); }
+        body { font-family: 'Playfair Display', serif; background: var(--bg); margin: 0; color: var(--navy); }
         
-        .route-img {
-            width: 150px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-right: 25px;
-        }
-
-        .route-info h3 { margin: 0 0 10px 0; font-family: 'Playfair Display', serif; }
-        .btn-view {
-            background: var(--rose);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-        }
+        /* Navegación */
+        .header-ui { padding: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-back { border: 1px solid var(--navy); padding: 10px 25px; border-radius: 30px; text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* Grid de Rutas (Aquí integramos tus datos del PDF) */
+        .routes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; padding: 0 40px; }
+        
+        .card { background: var(--white); border-radius: 25px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 30px; }
+        
+        .tag { color: var(--rose); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        h2 { margin: 10px 0; }
+        .btn-link { display: block; margin-top: 20px; color: var(--navy); text-decoration: underline; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="back-nav">
-            <a href="javascript:history.back()" class="btn-back">← VOLVER A LA PÁGINA ANTERIOR</a>
-        </div>
+<header class="header-ui">
+    <h1>Vive San Miguel</h1>
+    <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+</header>
 
-        <h1>Explora nuestras Rutas Temáticas</h1>
-        <p>Descubre el patrimonio tangible e intangible de San Miguel de Allende.</p>
-
-        <!-- Bloque ejemplo basado en tu reporte -->
-        <div class="route-item">
-            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" class="route-img" alt="Museo Casa de Allende">
-            <div class="route-info">
-                <h3>MUSEO CASA DE ALLENDE</h3>
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/" class="btn-view">VER DETALLES</a>
-            </div>
+<main class="routes-grid">
+    <!-- Ejemplo Ruta: Edificios Históricos (Basado en tu Cap. 5.5.5) -->
+    <article class="card">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez">
+        <div class="card-content">
+            <span class="tag">Arquitectura & Historia</span>
+            <h2>Edificios con Historia</h2>
+            <p>De la Casa de Allende al Teatro Ángela Peralta. Un recorrido por la memoria viva de nuestra ciudad.</p>
+            <a href="#" class="btn-link">Explorar esta ruta</a>
         </div>
+    </article>
 
-        <!-- Puedes repetir este bloque para cada ruta (Casa Canal, Nigromante, etc.) -->
-        <div class="route-item">
-            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" class="route-img" alt="Casa del Mayorazgo">
-            <div class="route-info">
-                <h3>CASA DEL MAYORAZGO DE LA CANAL</h3>
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/" class="btn-view">VER DETALLES</a>
-            </div>
+    <!-- Ejemplo Ruta: Fuentes (Basado en tu Cap. 5.5.6) -->
+    <article class="card">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro">
+        <div class="card-content">
+            <span class="tag">Patrimonio Urbano</span>
+            <h2>Fuentes Históricas</h2>
+            <p>El sistema hidráulico colonial que dio vida a San Miguel. Recorre el Chorro y la Fuente del Conde.</p>
+            <a href="#" class="btn-link">Ver mapa de fuentes</a>
         </div>
-    </div>
+    </article>
+</main>
 
 </body>
 </html>
