@@ -2,59 +2,72 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Vive San Miguel | Experiencias Inmersivas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Rutas | Vive San Miguel 2026</title>
     <style>
         :root {
-            --navy: #1b2a4a; --rose: #d48384; --bg: #fcfbfa; --white: #ffffff;
+            --navy: #1b2a4a;
+            --rose: #d48384;
+            --sand: #fcfbfa;
+            --text: #2c2c2c;
         }
-        body { font-family: 'Playfair Display', serif; background: var(--bg); margin: 0; color: var(--navy); }
-        
-        /* Navegación */
-        .header-ui { padding: 40px; display: flex; justify-content: space-between; align-items: center; }
-        .btn-back { border: 1px solid var(--navy); padding: 10px 25px; border-radius: 30px; text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
-        
-        /* Grid de Rutas (Aquí integramos tus datos del PDF) */
-        .routes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; padding: 0 40px; }
-        
-        .card { background: var(--white); border-radius: 25px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 30px; }
-        
-        .tag { color: var(--rose); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
-        h2 { margin: 10px 0; }
-        .btn-link { display: block; margin-top: 20px; color: var(--navy); text-decoration: underline; font-size: 14px; }
+
+        body { 
+            background-color: var(--sand); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0; padding: 0; color: var(--text); overflow-x: hidden;
+        }
+
+        /* Puntero Interactivo (Glow) */
+        #cursor-glow {
+            position: fixed; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212, 131, 132, 0.15) 0%, transparent 70%);
+            pointer-events: none; transform: translate(-50%, -50%); z-index: 0;
+            transition: transform 0.1s ease-out;
+        }
+
+        .main-container { max-width: 800px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 1; }
+
+        /* Botón Back Estilizado */
+        .btn-back { display: inline-block; padding: 10px 20px; border: 1px solid var(--navy); border-radius: 20px; color: var(--navy); text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 40px; transition: 0.3s; }
+        .btn-back:hover { background: var(--navy); color: #fff; }
+
+        /* Tarjetas de Sitios (Basadas en tu Reporte) */
+        .site-card { background: #fff; padding: 25px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .site-card img { width: 120px; height: 80px; object-fit: cover; border-radius: 10px; }
+        .site-card a { color: var(--navy); text-decoration: none; font-weight: 700; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<header class="header-ui">
-    <h1>Vive San Miguel</h1>
-    <a href="javascript:history.back()" class="btn-back">← Regresar</a>
-</header>
+    <div id="cursor-glow"></div>
 
-<main class="routes-grid">
-    <!-- Ejemplo Ruta: Edificios Históricos (Basado en tu Cap. 5.5.5) -->
-    <article class="card">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez">
-        <div class="card-content">
-            <span class="tag">Arquitectura & Historia</span>
-            <h2>Edificios con Historia</h2>
-            <p>De la Casa de Allende al Teatro Ángela Peralta. Un recorrido por la memoria viva de nuestra ciudad.</p>
-            <a href="#" class="btn-link">Explorar esta ruta</a>
+    <div class="main-container">
+        <a href="javascript:history.back()" class="btn-back">← Volver a la página anterior</a>
+
+        <!-- Integración de tus sitios de interés (Ejemplos seleccionados) -->
+        <div class="site-card">
+            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png" alt="Museo Casa de Allende">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
         </div>
-    </article>
 
-    <!-- Ejemplo Ruta: Fuentes (Basado en tu Cap. 5.5.6) -->
-    <article class="card">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro">
-        <div class="card-content">
-            <span class="tag">Patrimonio Urbano</span>
-            <h2>Fuentes Históricas</h2>
-            <p>El sistema hidráulico colonial que dio vida a San Miguel. Recorre el Chorro y la Fuente del Conde.</p>
-            <a href="#" class="btn-link">Ver mapa de fuentes</a>
+        <div class="site-card">
+            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png" alt="Casa del Mayorazgo de la Canal">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
         </div>
-    </article>
-</main>
 
+        <div class="site-card">
+            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png" alt="Univerciudad Casa del Nigromante">
+            <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
+        </div>
+    </div>
+
+    <script>
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+    </script>
 </body>
 </html>
