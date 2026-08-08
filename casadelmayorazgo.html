@@ -3,625 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa del Mayorazgo de la Canal - Vive San Miguel de Allende</title>
-    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Casa del Mayorazgo de la Canal - Vive San Miguel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-sanmiguel: #fcfbfa;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --border-subtle: rgba(200, 125, 85, 0.15);
-            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
-            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
-        }
+        :root { --bg: #fcfbfa; --navy: #1b2a4a; --rose: #d48384; --white: #ffffff; --terracotta: #c87d55; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #333; line-height: 1.7; }
+        
+        #cursor-glow { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212,131,132,0.15) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 0; filter: blur(50px); transition: 0.1s; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--primary-navy);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+        
+        /* Navegación y Header */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .btn-home-back { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--navy); padding: 8px 16px; border-radius: 25px; text-decoration: none; color: var(--navy); font-weight: 700; font-size: 11px; text-transform: uppercase; }
+        .social-links { display: flex; gap: 10px; }
+        .social-link { width: 35px; height: 35px; border: 1px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--navy); text-decoration: none; font-weight: 700; }
+        .logo-box { text-align: center; margin-bottom: 30px; }
+        .logo-box img { width: 120px; cursor: pointer; }
+        h1 { font-family: 'Playfair Display', serif; text-align: center; color: var(--navy); margin-bottom: 40px; }
 
-        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            transition: width 0.4s, height 0.4s;
-            filter: blur(50px);
-        }
-
-        .sma-main-wrapper {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            box-sizing: border-box;
-        }
-
-        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
-        .top-action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .btn-home-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1.5px solid var(--primary-navy);
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: var(--white);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-        }
-
-        .btn-home-back:hover {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
-        }
-
-        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
-        .social-quick-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--white);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s ease;
-        }
-
-        .social-btn.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        .social-btn.tiktok:hover {
-            background: #000000;
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        /* --- Barra de Búsqueda Interna --- */
-        .search-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .site-search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px;
-            border-radius: 50px;
-            border: 1.5px solid var(--border-subtle);
-            background: var(--white);
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--primary-navy);
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .site-search-input:focus {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
-        }
-
-        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        .site-logo-container {
-            width: 95px;
-            height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--white);
-            border-radius: 50%;
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
-            border: 2px solid var(--cantera-terracotta);
-            overflow: hidden;
-            padding: 10px;
-            animation: float-logo 5s ease-in-out infinite;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        @keyframes float-logo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .site-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-        }
-
-        .site-logo-container:hover img {
-            transform: scale(1.08);
-        }
-
-        .brand-text-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        @media screen and (max-width: 768px) {
-            .brand-text-group { align-items: center; }
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--primary-navy);
-            text-decoration: none;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin: 0;
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--cantera-terracotta);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 6px;
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
-            margin: 40px 0;
-            opacity: 0.3;
-        }
-
-        /* --- Tarjeta de Contenido Principal --- */
-        .content-card {
-            background: var(--white);
-            border-radius: 28px;
-            padding: 45px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-card);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
-        }
-
-        /* Estilo de Imagen Adaptado */
-        .wp-block-image {
-            margin: 0 0 35px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .wp-block-image img {
-            width: 100% !important;
-            max-width: 1024px;
-            height: auto !important;
-            border-radius: 18px !important;
-            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
-            display: block;
-        }
-
-        .wp-block-paragraph p, .wp-block-paragraph {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            text-align: justify;
-        }
-
-        .content-card ul.wp-block-list {
-            margin-bottom: 25px;
-            padding-left: 20px;
-            color: #333333;
-        }
-
-        .content-card ul.wp-block-list li {
-            margin-bottom: 10px;
-            font-size: 1.05rem;
-            text-align: justify;
-        }
-
-        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
-        .media-cta-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        @media screen and (max-width: 768px) {
-            .media-cta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Contenedor de Video Inmersivo Compacto y Elegante */
-        .video-inmersivo-container {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
-        .explore-more-box {
-            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
-            border: 1.5px dashed var(--cantera-terracotta);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .explore-more-box h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.25rem;
-            line-height: 1.3;
-        }
-
-        .explore-more-box p {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .btn-explore-catalogue {
-            display: inline-block;
-            background: var(--primary-navy);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
-        }
-
-        .btn-explore-catalogue:hover {
-            background: var(--cantera-terracotta);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
-        }
-
-        /* Créditos y Fuentes Oficiales SIC y Videos */
-        .source-credit {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
-            text-align: center;
-        }
-
-        .source-credit a {
-            color: var(--cantera-terracotta);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        .source-credit a:hover {
-            color: var(--primary-navy);
-        }
-
-        /* --- Responsive para Móviles --- */
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 15px;
-            }
-            .interactive-brand-title {
-                font-size: 1.8rem;
-            }
-            .content-card {
-                padding: 25px 20px;
-            }
-            .top-action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
+        /* Contenido */
+        .content-card { background: var(--white); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--terracotta); }
+        .wp-block-image img { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { font-family: 'Playfair Display', serif; color: var(--navy); margin-top: 30px; }
+        ul { padding-left: 20px; margin-bottom: 25px; }
+        li { margin-bottom: 10px; font-size: 1rem; }
+        
+        /* Video y CTA */
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+        .video-box { border-radius: 15px; overflow: hidden; background: #000; aspect-ratio: 16/9; }
+        .video-box iframe { width: 100%; height: 100%; border: 0; }
+        .cta-box { background: rgba(200,125,85,0.05); border-radius: 15px; padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .btn-cta { background: var(--navy); color: var(--white); padding: 10px 20px; border-radius: 20px; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
+        
+        .credits { margin-top: 30px; font-size: 0.8rem; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
     </style>
 </head>
 <body>
 
-    <!-- Animación de fondo interactiva (Sigue el cursor) -->
     <div id="cursor-glow"></div>
 
-    <div class="sma-main-wrapper">
+    <div class="container">
+        <div class="top-nav">
+            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back">🏠 Inicio</a>
+            <div class="social-links">
+                <a href="#" class="social-link">IG</a>
+                <a href="#" class="social-link">TK</a>
+            </div>
+        </div>
 
-        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
-        <div class="top-action-bar">
-            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Inicio
-            </a>
+        <div class="logo-box">
+            <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'">
+        </div>
+
+        <article class="content-card">
+            <h1>Casa del Mayorazgo de la Canal</h1>
             
-            <div class="social-quick-links">
-                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
-            </div>
-        </div>
-
-        <!-- Barra de Búsqueda Interactiva -->
-        <div class="search-container">
-            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
-        </div>
-
-        <!-- Cabecera Institucional Inmersiva SMA -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
-            </div>
-            <div class="brand-text-group">
-                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">CASA DEL MAYORAZGO DE LA CANAL</a>
-                <span class="brand-subtitle">Patrimonio de la Humanidad • Historia y Cultura</span>
-            </div>
-        </header>
-
-        <hr class="wp-block-separator" />
-
-        <!-- Tarjeta con Contenido Detallado de la Casa del Mayorazgo de la Canal -->
-        <div class="content-card">
-
-            <!-- wp:image {"id":177,"sizeSlug":"large","linkDestination":"none"} -->
-            <figure class="wp-block-image size-large">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal" class="wp-image-177" />
+            <figure class="wp-block-image">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal">
             </figure>
-            <!-- /wp:image -->
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>La Casa del Mayorazgo de la Canal</strong> es uno de los edificios más emblemáticos y con mayor historia de San Miguel de Allende. Su arquitectura, rica en detalles y simbolismos, nos cuenta una fascinante historia que se entrelaza con la evolución de la ciudad.</p>
-            </div>
-            <!-- /wp:paragraph -->
+            <p><strong>La Casa del Mayorazgo de la Canal</strong> es uno de los edificios más emblemáticos y con mayor historia de San Miguel de Allende. Su arquitectura, rica en detalles y simbolismos, nos cuenta una fascinante historia que se entrelaza con la evolución de la ciudad.</p>
+            <p>Esta mansión neoclásica fue la casa de la rica e influyente familia de La Canal; hoy en día es una sucursal de un banco y Casa de Cultura de la Fundación Banamex. Su enorme puerta labrada, sus balcones señoriales y la impresionante forja original de su herrería, es prueba no solo de la habilidad de los ebanistas, cantareros y herreros coloniales sino también del estatus que consideraba tener la familia.</p>
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>Esta mansión neoclásica fue la casa de la rica e influyente familia de La Canal, hoy en día es una sucursal de un banco y Casa de Cultura de la Fundación Banamex. Su enorme puerta labrada, sus balcones señoriales y la impresionante forja original de su herrería, es prueba no solo de la habilidad de los ebanistas, cantareros y herreros coloniales sino también del estatus que consideraba tener la familia.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Orígenes y Construcción:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <li><strong>Siglo XVIII:</strong> La construcción de la Casa del Mayorazgo se inició a mediados del siglo XVIII, bajo la dirección de la familia de la Canal, una de las más poderosas y ricas de la región.</li>
-                <li><strong>Estilo arquitectónico:</strong> La casa es un magnífico ejemplo de la arquitectura barroca novohispana, con influencias italianas y francesas. Sus fachadas están adornadas con elementos decorativos como molduras, rejas de hierro forjado y escudos familiares.</li>
-                <li><strong>Fases de construcción:</strong> La construcción se llevó a cabo en varias etapas a lo largo de varias décadas, lo que explica la diversidad de estilos arquitectónicos que se pueden apreciar en el edificio.</li>
+            <h2>Orígenes y Construcción</h2>
+            <ul>
+                <li><strong>Siglo XVIII:</strong> La construcción se inició a mediados del siglo XVIII, bajo la dirección de la familia de la Canal, una de las más poderosas de la región.</li>
+                <li><strong>Estilo arquitectónico:</strong> Magnífico ejemplo del barroco novohispano con influencias italianas y francesas. Sus fachadas están adornadas con molduras, rejas de hierro forjado y escudos familiares.</li>
             </ul>
-            <!-- /wp:list -->
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Historia y Propósito:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <li><strong>Residencia de la familia de la Canal:</strong> La casa sirvió como residencia principal de la familia de la Canal durante varias generaciones. Su ubicación privilegiada en el centro histórico de San Miguel el Grande le otorgaba un estatus social y político importante.</li>
-                <li><strong>Centro de poder:</strong> La familia de la Canal desempeñó un papel fundamental en la vida social, económica y política de la ciudad. La casa era el epicentro de sus actividades y reuniones.</li>
-                <li><strong>Vínculos con la Independencia:</strong> La familia de la Canal estuvo involucrada en los movimientos independentistas de México. Algunos de sus miembros participaron activamente en la lucha contra el dominio español.</li>
-                <li><strong>Transformación y nuevos usos:</strong> A lo largo de los años, la casa ha tenido diversos usos. Después de la Independencia, fue utilizada como hotel y posteriormente pasó a manos de particulares.</li>
+            <h2>Historia y Propósito</h2>
+            <ul>
+                <li><strong>Residencia:</strong> Fue la residencia principal de la familia de la Canal durante generaciones, siendo el epicentro de sus actividades y reuniones.</li>
+                <li><strong>Vínculos con la Independencia:</strong> La familia estuvo involucrada en los movimientos independentistas de México.</li>
+                <li><strong>Transformación:</strong> Después de la Independencia, fue hotel y posteriormente pasó a manos particulares antes de su restauración por el Banco Nacional de México en 1981.</li>
             </ul>
-            <!-- /wp:list -->
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Restauración y Conservación:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <li><strong>Adquisición por el Banco Nacional de México:</strong> En 1981, el Banco Nacional de México adquirió la casa y emprendió un ambicioso proyecto de restauración.</li>
-                <li><strong>Recuperación de su esplendor:</strong> Gracias a las labores de restauración, la Casa del Mayorazgo recuperó su esplendor original y se convirtió en un referente de la arquitectura colonial mexicana.</li>
-                <li><strong>Museo y centro cultural:</strong> Actualmente, la casa alberga el Museo Casa del Mayorazgo de la Canal, que ofrece a los visitantes la oportunidad de conocer su historia, arquitectura y colecciones.</li>
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Importancia Histórica y Cultural:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <li><strong>Testimonio de una época:</strong> La Casa del Mayorazgo es un testimonio vivo de la historia de San Miguel de Allende y de la vida de una de las familias más importantes de la ciudad.</li>
-                <li><strong>Patrimonio arquitectónico:</strong> Su arquitectura barroca y sus detalles decorativos la convierten en una obra maestra del arte colonial.</li>
-                <li><strong>Centro cultural:</strong> La casa es un importante centro cultural que promueve la difusión del arte y la cultura mexicana.</li>
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Atractivos Destacados:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <li><strong>Fachadas:</strong> Las fachadas de la casa son una verdadera obra de arte, con sus portales, balcones y elementos decorativos.</li>
-                <li><strong>Patio interior:</strong> El patio interior es un espacio tranquilo y sereno, rodeado de arcos y columnas.</li>
-                <li><strong>Salones:</strong> Los salones de la casa están decorados con muebles y objetos de arte de diferentes épocas.</li>
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Recomendaciones y/u Observaciones:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>1.- El horario de visita es de 10:00 a 18:00 Hrs</p>
-                <p>2.- No se permite el acceso de mascotas</p>
-                <p>3.- Es de acceso libre</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
-            <div class="media-cta-grid">
-                <!-- Sección de Video Inmersivo Reproducible -->
-                <div class="video-inmersivo-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/5baVB-eJceo" 
-                            title="Video Casa del Mayorazgo de la Canal" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+            <div class="media-grid">
+                <div class="video-box">
+                    <iframe src="https://www.youtube.com/embed/5baVB-eJceo" allowfullscreen></iframe>
                 </div>
-
-                <!-- Bloque de Invitación a Seguir Leyendo -->
-                <div class="explore-more-box">
-                    <h3>¿Listo para continuar tu recorrido?</h3>
-                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
+                <div class="cta-box">
+                    <p>¿Quieres conocer más rutas? Explora nuestro catálogo completo.</p>
+                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-cta">Ver Catálogo</a>
                 </div>
             </div>
 
-            <div class="source-credit" style="margin-top: 10px;">
-                Video cortesía de: Fomento Cultural Banamex, A.C. (<a href="https://www.youtube.com/watch?v=5baVB-eJceo" target="_blank" rel="noopener noreferrer">YouTube</a>)
+            <div class="credits">
+                <p>Video cortesía: <strong>Fomento Cultural Banamex, A.C.</strong></p>
+                <p>Información e investigación: <a href="https://sic.gob.mx/ficha.php?table=museo&table_id=192" target="_blank">Sistema de Información Cultural (SIC)</a></p>
             </div>
-
-            <!-- Créditos y Fuentes Oficiales -->
-            <div class="source-credit">
-                Fuente e información oficial obtenida de: <a href="https://sic.gob.mx/ficha.php?table=museo&table_id=192" target="_blank" rel="noopener noreferrer">Sistema de Información Cultural (SIC) - Casa del Mayorazgo de la Canal</a>.
-            </div>
-
-        </div>
-
+        </article>
     </div>
 
-    <!-- Script del cursor interactivo orgánico -->
     <script>
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let glowX = 0, glowY = 0;
-
+        const glow = document.getElementById('cursor-glow');
         window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
         });
-
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.08;
-            glowY += (mouseY - glowY) * 0.08;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
     </script>
 </body>
 </html>
