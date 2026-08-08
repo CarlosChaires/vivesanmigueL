@@ -1,17 +1,542 @@
-<!-- Sección de Video Destacado -->
-<div class="video-inmersivo-container" style="margin: 40px 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
-    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
-        <iframe 
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-            src="https://www.youtube.com/embed/w0oIMTXLuZk" 
-            title="Video San Miguel de Allende" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo Casa de Allende - Vive San Miguel de Allende</title>
+    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
+            --border-subtle: rgba(200, 125, 85, 0.15);
+            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
+            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
+        }
 
-<!-- Créditos del video -->
-<div class="source-credit" style="text-align: center; margin-bottom: 40px; font-size: 0.9rem; color: var(--cantera-terracotta);">
-    Video cortesía de: <a href="https://youtu.be/w0oIMTXLuZk" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende (YouTube)</a>
-</div>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: var(--primary-navy);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: width 0.4s, height 0.4s;
+            filter: blur(50px);
+        }
+
+        .sma-main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn-home-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1.5px solid var(--primary-navy);
+            padding: 10px 22px;
+            border-radius: 30px;
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+        }
+
+        .btn-home-back:hover {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
+        }
+
+        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
+        .social-quick-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .social-btn.tiktok:hover {
+            background: #000000;
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        /* --- Barra de Búsqueda Interna --- */
+        .search-container {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .site-search-input {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px 24px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-subtle);
+            background: var(--white);
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--primary-navy);
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .site-search-input:focus {
+            border-color: var(--cantera-terracotta);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
+        }
+
+        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
+        .site-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .site-logo-container {
+            width: 95px;
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
+            border: 2px solid var(--cantera-terracotta);
+            overflow: hidden;
+            padding: 10px;
+            animation: float-logo 5s ease-in-out infinite;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .site-logo-container:hover img {
+            transform: scale(1.08);
+        }
+
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media screen and (max-width: 768px) {
+            .brand-text-group { align-items: center; }
+        }
+
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cantera-terracotta);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 6px;
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
+            margin: 40px 0;
+            opacity: 0.3;
+        }
+
+        /* --- Tarjeta de Contenido Principal --- */
+        .content-card {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 45px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
+        }
+
+        /* Estilo de Imagen Adaptado */
+        .wp-block-image {
+            margin: 0 0 35px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wp-block-image img {
+            width: 100% !important;
+            max-width: 1024px;
+            height: auto !important;
+            border-radius: 18px !important;
+            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
+            display: block;
+        }
+
+        .wp-block-paragraph p, .wp-block-paragraph {
+            font-size: 1.05rem;
+            color: #333333;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
+        .media-cta-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .media-cta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Contenedor de Video Inmersivo Compacto y Elegante */
+        .video-inmersivo-container {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
+        .explore-more-box {
+            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
+            border: 1.5px dashed var(--cantera-terracotta);
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .explore-more-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-navy);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .explore-more-box p {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .btn-explore-catalogue {
+            display: inline-block;
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
+        }
+
+        .btn-explore-catalogue:hover {
+            background: var(--cantera-terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+        }
+
+        /* Créditos y Fuentes Oficiales INAH y Videos */
+        .source-credit {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: var(--cantera-terracotta);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .source-credit a {
+            color: var(--cantera-terracotta);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .source-credit a:hover {
+            color: var(--primary-navy);
+        }
+
+        /* --- Responsive para Móviles --- */
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 30px 15px;
+            }
+            .interactive-brand-title {
+                font-size: 2rem;
+            }
+            .content-card {
+                padding: 25px 20px;
+            }
+            .top-action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animación de fondo interactiva (Sigue el cursor) -->
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
+        <div class="top-action-bar">
+            <a href="index.html" class="btn-home-back" title="Volver al inicio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Inicio
+            </a>
+            
+            <div class="social-quick-links">
+                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
+            </div>
+        </div>
+
+        <!-- Barra de Búsqueda Interactiva -->
+        <div class="search-container">
+            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
+        </div>
+
+        <!-- Cabecera Institucional Inmersiva SMA -->
+        <header class="site-header-custom">
+            <div class="site-logo-container" onclick="window.location.href='index.html'" title="Ir al Inicio - Vive San Miguel">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2026/04/cropped-captura-de-pantalla-2026-04-12-a-las-3.52.01-p.m..png" alt="Logo Oficial Vive San Miguel">
+            </div>
+            <div class="brand-text-group">
+                <a href="index.html" class="interactive-brand-title">MUSEO CASA DE ALLENDE</a>
+                <span class="brand-subtitle">Patrimonio de la Humanidad • Historia y Cultura</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator" />
+
+        <!-- Tarjeta con Contenido Detallado del Museo Casa de Allende -->
+        <div class="content-card">
+
+            <!-- wp:image {"id":245,"sizeSlug":"large","linkDestination":"none"} -->
+            <figure class="wp-block-image size-large">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-18.png?w=1024" alt="Museo Casa de Allende" class="wp-image-245" />
+            </figure>
+            <!-- /wp:image -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>El Museo Histórico de San Miguel de Allende ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.<br>Domingo Narciso de Allende, padre del prócer, mandó construir esta casa por el año de 1769 como regalo de bodas para su esposa María Ana Unzaga y, probablemente, en 1785 se terminó la construcción. Durante la Guerra de Independencia, la casa fue confiscada por el gobierno virreinal, pero al terminar la contienda fue devuelta a sus propietarios, quienes la vendieron a particulares. En 1976 la adquiere el gobierno del estado de Guanajuato, el cual la cede al INAH en 1984 para convertirla en museo histórico. En 2008 se le hace una restauración arquitectónica y museográfica.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia. Hay dos salas en homenaje a Ignacio Allende, donde se destaca su papel en el movimiento independentista.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>La reapertura con colección y museografía nuevas fue el 4 de abril de 2001. El museo cuenta con un nuevo acervo de 1,047 piezas, de las cuales la mayor parte se incorporó con la nueva restauración y consiste en originales y reproducciones de pintura de caballete, documentos, esculturas, enseres domésticos, arte decorativo, platería, textiles, objetos de charrería, productos relacionados con los estancos (los comercios monopolizados por el Estado virreinal), artículos religiosos, banderas, mobiliario, instrumentos musicales, mantelería, juguetes y armas.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
+            <div class="media-cta-grid">
+                <!-- Sección de Video Inmersivo Reproducible -->
+                <div class="video-inmersivo-container">
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/w0oIMTXLuZk" 
+                            title="Video San Miguel de Allende" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Bloque de Invitación a Seguir Leyendo -->
+                <div class="explore-more-box">
+                    <h3>¿Listo para continuar tu recorrido?</h3>
+                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
+                    <a href="index.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
+                </div>
+            </div>
+
+            <div class="source-credit" style="margin-top: 15px;">
+                Video cortesía de: <a href="https://youtu.be/w0oIMTXLuZk?si=0cnacrdxQ83g5e0e" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende (YouTube)</a>
+            </div>
+
+            <!-- Créditos y Fuentes Oficiales -->
+            <div class="source-credit">
+                Fuente e información oficial obtenida de: <a href="https://lugares.inah.gob.mx/es/node/4519" target="_blank" rel="noopener noreferrer">INAH Lugares - Museo Histórico Casa de Allende</a>.
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Script del cursor interactivo orgánico -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+    </script>
+</body>
+</html>
