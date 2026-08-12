@@ -3,97 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión del Patrimonio Turístico | San Miguel de Allende</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Vive San Miguel | Catálogo de Patrimonio 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --navy: #162238;
-            --terracotta: #b86942;
-            --cream: #f9f8f6;
-            --text: #333;
-        }
-        body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); margin: 0; line-height: 1.6; }
+        :root { --navy: #162238; --terracotta: #b86942; --cream: #f9f8f6; --white: #ffffff; }
+        body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--navy); margin: 0; }
         
-        /* Header Institucional */
-        .header { background: var(--navy); color: white; padding: 80px 20px; text-align: center; border-bottom: 8px solid var(--terracotta); }
-        .header h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 10px; }
+        /* Layout */
+        .dashboard-container { max-width: 1200px; margin: auto; padding: 40px 20px; }
         
-        /* Contenedor Principal */
-        .container { max-width: 1000px; margin: -50px auto 50px; padding: 20px; }
+        /* Hero Institucional */
+        .header-section { background: var(--navy); color: white; padding: 60px 30px; border-radius: 30px; margin-bottom: 40px; }
+        .header-section h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; }
         
-        /* Tarjetas de Categoría (Reporte de Estadía) */
-        .category-section { margin-bottom: 50px; }
-        .category-title { font-family: 'Playfair Display', serif; color: var(--terracotta); border-left: 5px solid var(--terracotta); padding-left: 15px; margin-bottom: 25px; }
+        /* Grid de Fichas (Cuerpo principal de tu reporte) */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .ficha-card { background: var(--white); padding: 30px; border-radius: 20px; border-top: 5px solid var(--terracotta); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .ficha-meta { font-size: 0.7rem; color: var(--terracotta); font-weight: 700; text-transform: uppercase; }
+        .ficha-card h3 { margin: 10px 0; font-family: 'Playfair Display', serif; }
         
-        .grid-fichas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .ficha { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .ficha h3 { margin-top: 0; color: var(--navy); }
-        .ficha p { font-size: 0.9rem; color: #555; }
-        
-        .footer { text-align: center; padding: 40px; color: #888; font-size: 0.8rem; }
+        /* Botón de acción para el catálogo */
+        .btn-ruta { display: block; text-align: center; background: var(--navy); color: white; padding: 15px; border-radius: 10px; text-decoration: none; margin-top: 20px; font-weight: 600; }
     </style>
 </head>
 <body>
 
-<header class="header">
-    <h1>Dirección de Desarrollo Económico y Turismo</h1>
-    <p>Área de Información Turística | Catálogo de Patrimonio (Estadía 2026)</p>
-</header>
+<div class="dashboard-container">
+    <header class="header-section">
+        <h1>Sistema de Información Turística</h1>
+        <p>Dirección de Desarrollo Económico y Turismo - San Miguel de Allende, Gto.</p>
+    </header>
 
-<div class="container">
-    <!-- Sección Histórico-Cultural -->
-    <section class="category-section">
-        <h2 class="category-title">Atractivos Histórico-Culturales</h2>
-        <div class="grid-fichas">
-            <div class="ficha">
-                <h3>Parroquia de San Miguel Arcángel</h3>
-                <p>Fachada neogótica diseñada por Zeferino Gutiérrez, símbolo icónico de la ciudad.</p>
-            </div>
-            <div class="ficha">
-                <h3>Museo Casa de Ignacio Allende</h3>
-                <p>Edificio barroco del siglo XVIII, lugar de nacimiento del Generalísimo.</p>
-            </div>
-            <div class="ficha">
-                <h3>Oratorio de San Felipe Neri</h3>
-                <p>Barroco salomónico con cantera rosa, fundado por el padre Antonio Pérez Espinosa.</p>
-            </div>
-        </div>
-    </section>
+    <!-- Ejemplo: Catálogo dinámico basado en tu reporte -->
+    <section class="catalog-grid">
+        <article class="ficha-card">
+            <div class="ficha-meta">Atractivo Histórico-Cultural</div>
+            <h3>Parroquia de San Miguel Arcángel</h3>
+            <p>Símbolo icónico de estilo neogótico, diseñado por Zeferino Gutiérrez.</p>
+            <a href="#" class="btn-ruta">Ver Ficha Técnica Completa</a>
+        </article>
 
-    <!-- Sección Urbanos-Arquitectónicos -->
-    <section class="category-section">
-        <h2 class="category-title">Atractivos Urbanos y Arquitectónicos</h2>
-        <div class="grid-fichas">
-            <div class="ficha">
-                <h3>Calle Aldama</h3>
-                <p>Vialidad histórica con casonas coloniales y vistas espectaculares a la Parroquia[cite: 1].</p>
-            </div>
-            <div class="ficha">
-                <h3>El Mirador</h3>
-                <p>Punto panorámico para visualizar la arquitectura de la ciudad y el centro histórico[cite: 1].</p>
-            </div>
-        </div>
-    </section>
+        <article class="ficha-card">
+            <div class="ficha-meta">Atractivo Arquitectónico</div>
+            <h3>Fuente de la Sirena</h3>
+            <p>Obra neoclásica en cantera rosa ubicada en Barranca y Hospicio.</p>
+            <a href="#" class="btn-ruta">Ver Ficha Técnica Completa</a>
+        </article>
 
-    <!-- Sección de Servicios (Bares y Cantinas) -->
-    <section class="category-section">
-        <h2 class="category-title">Servicios y Vida Social</h2>
-        <div class="grid-fichas">
-            <div class="ficha">
-                <h3>La Coronela</h3>
-                <p>Cantina tradicional que evoca la época dorada del cine mexicano[cite: 1].</p>
-            </div>
-            <div class="ficha">
-                <h3>Cervecería Allende</h3>
-                <p>Tasting room con cervezas artesanales locales de alta calidad[cite: 1].</p>
-            </div>
-        </div>
+        <article class="ficha-card">
+            <div class="ficha-meta">Servicio Turístico</div>
+            <h3>Cervecería Allende Tap Room</h3>
+            <p>Espacio de degustación artesanal con identidad local.</p>
+            <a href="#" class="btn-ruta">Ver Ficha Técnica Completa</a>
+        </article>
     </section>
 </div>
-
-<footer class="footer">
-    <p>© 2026 - Dirección de Desarrollo Económico y Turismo | San Miguel de Allende</p>
-</footer>
 
 </body>
 </html>
