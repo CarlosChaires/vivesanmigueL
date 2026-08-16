@@ -33,7 +33,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Experiencia Inmersiva de Partículas Orgánicas --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -44,7 +43,6 @@
             z-index: 0;
         }
 
-        /* --- Luz Dinámica Interactiva que Sigue el Cursor --- */
         #cursor-glow {
             position: fixed;
             top: 0;
@@ -63,12 +61,11 @@
         .sma-main-wrapper {
             position: relative;
             z-index: 2;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 50px 24px;
         }
 
-        /* --- Botón de Inicio Superior --- */
         .sma-inicio-container {
             text-align: center;
             margin-bottom: 20px;
@@ -97,7 +94,6 @@
             box-shadow: 0 8px 25px rgba(184, 107, 67, 0.2);
         }
 
-        /* --- Cabecera con Logotipo y Título --- */
         .site-header-custom {
             display: flex;
             align-items: center;
@@ -193,63 +189,79 @@
             font-weight: 700;
         }
 
-        /* --- Estilo Minimalista Inmersivo para Sitios de Interés --- */
+        /* --- Grid Moderno de Tarjetas (Estilo Galería Profesional) --- */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
         .destination-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 28px;
-            padding: 35px 24px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 40px rgba(27, 42, 74, 0.04);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
             border: 1px solid var(--border-subtle);
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .destination-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 30px 60px rgba(184, 107, 67, 0.12);
-            border-color: rgba(184, 107, 67, 0.3);
-            background: rgba(255, 255, 255, 0.98);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
+            border-color: rgba(184, 107, 67, 0.4);
+            background: rgba(255, 255, 255, 1);
         }
 
-        .destination-card .wp-block-image {
-            margin: 0 auto 24px auto;
+        .card-image-wrapper {
+            width: 100%;
+            height: 240px;
             overflow: hidden;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background: #f4eee9;
+            position: relative;
         }
 
-        .destination-card .wp-block-image img {
-            max-width: 100%;
-            height: auto;
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 20px;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .destination-card:hover .wp-block-image img {
-            transform: scale(1.03);
+        .destination-card:hover .card-image-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            text-align: center;
         }
 
         .destination-card .wp-block-button__link {
             background: var(--white) !important;
             color: var(--primary-navy) !important;
             border: 1px solid var(--cantera-terracotta) !important;
-            padding: 14px 32px !important;
+            padding: 12px 26px !important;
             border-radius: 40px !important;
             font-weight: 700 !important;
-            font-size: 14px !important;
+            font-size: 13px !important;
             text-decoration: none !important;
             display: inline-block;
             box-shadow: 0 4px 15px rgba(184, 107, 67, 0.06);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
             letter-spacing: 0.5px;
             text-align: center;
+            width: 100%;
         }
 
         .destination-card .wp-block-button__link:hover {
@@ -259,7 +271,6 @@
             box-shadow: 0 8px 25px rgba(184, 107, 67, 0.25);
         }
 
-        /* --- Footer Minimalista --- */
         .footer-brand-section {
             text-align: center;
             padding: 40px 20px;
@@ -291,6 +302,9 @@
             .interactive-brand-title {
                 font-size: 2.2rem;
             }
+            .destinations-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -320,202 +334,205 @@
             </div>
         </header>
 
-        <!-- Sitios de Interés (Estructura optimizada con diseño inmersivo unificado) -->
+        <!-- Contenedor en Grid Profesional (Elegante y Uniforme) -->
+        <div class="destinations-grid">
 
-        <!-- 1. Museo Casa de Allende -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende" style="width:459px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
+            <!-- 1. Museo Casa de Allende -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 2. Casa del Mayorazgo de la Canal -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal" style="width:388px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
+            <!-- 2. Casa del Mayorazgo de la Canal -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 3. Univerciudad Casa del Nigromante -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835" alt="Univerciudad Casa del Nigromante" style="width:434px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
+            <!-- 3. Univerciudad Casa del Nigromante -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835" alt="Univerciudad Casa del Nigromante">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 4. Centro Cultural Ignacio Ramírez -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez" style="width:437px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">CENTRO CULTURAL IGNACIO RAMIREZ</a>
+            <!-- 4. Centro Cultural Ignacio Ramírez -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">CENTRO CULTURAL IGNACIO RAMIREZ</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 5. Instituto Allende -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024" alt="Instituto Allende" style="width:421px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">INSTITUTO ALLENDE</a>
+            <!-- 5. Instituto Allende -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024" alt="Instituto Allende">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">INSTITUTO ALLENDE</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 6. Fábrica La Aurora -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024" alt="Fábrica La Aurora" style="width:438px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">FABRICA LA AURORA</a>
+            <!-- 6. Fábrica La Aurora -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024" alt="Fábrica La Aurora">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">FABRICA LA AURORA</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 7. Mercado Ignacio Ramírez -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez" style="width:437px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">MERCADO IGNACIO RAMIREZ</a>
+            <!-- 7. Mercado Ignacio Ramírez -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">MERCADO IGNACIO RAMIREZ</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 8. Parque Juárez -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024" alt="Parque Juárez" style="width:429px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">PARQUE JUAREZ</a>
+            <!-- 8. Parque Juárez -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024" alt="Parque Juárez">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">PARQUE JUAREZ</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 9. Paseo del Chorro -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro" style="width:414px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">PASEO DEL CHORRO</a>
+            <!-- 9. Paseo del Chorro -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">PASEO DEL CHORRO</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 10. Mirador -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639" alt="Mirador" style="width:382px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">MIRADOR</a>
+            <!-- 10. Mirador -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639" alt="Mirador">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">MIRADOR</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 11. El Charco del Ingenio -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024" alt="El Charco del Ingenio" style="width:388px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">EL CHARCO DEL INGENIO</a>
+            <!-- 11. El Charco del Ingenio -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024" alt="El Charco del Ingenio">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">EL CHARCO DEL INGENIO</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 12. Atotonilco -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Atotonilco" style="width:325px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">ATOTONILCO</a>
+            <!-- 12. Atotonilco -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Atotonilco">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">ATOTONILCO</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 13. Balnearios de Aguas Termales -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889" alt="Balnearios de Aguas Termales" style="width:383px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">BALNEARIOS DE AGUAS TERMALES</a>
+            <!-- 13. Balnearios de Aguas Termales -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889" alt="Balnearios de Aguas Termales">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">BALNEARIOS DE AGUAS TERMALES</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 14. Cañada de la Virgen -->
-        <div class="destination-card">
-            <figure class="wp-block-image size-large is-resized">
-                <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">
-                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600" alt="Cañada de la Virgen" style="width:408px;height:auto">
-                </a>
-            </figure>
-            <div class="wp-block-buttons" style="display:flex; justify-content:center;">
-                <div class="wp-block-button">
-                    <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">CAÑADA DE LA VIRGEN</a>
+            <!-- 14. Cañada de la Virgen -->
+            <div class="destination-card">
+                <div class="card-image-wrapper">
+                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600" alt="Cañada de la Virgen">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="wp-block-button" style="width: 100%;">
+                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">CAÑADA DE LA VIRGEN</a>
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Footer institucional -->
@@ -545,7 +562,7 @@
         }
         animateGlow();
 
-        // Canvas de partículas inmersivas fluidas (Tonos Cantera y Terracota)
+        // Canvas de partículas inmersivas fluidas
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
 
