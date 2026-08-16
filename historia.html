@@ -270,38 +270,73 @@
             background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
         }
 
-        /* Visor PDF Interactivo */
+        /* --- Visor PDF Estilo Libro Abierto --- */
         .pdf-interactive-container {
             margin-bottom: 45px;
-            background: rgba(200, 125, 85, 0.03);
+            background: transparent;
             border-radius: 20px;
-            padding: 20px;
-            border: 1.5px dashed var(--cantera-terracotta);
+            padding: 0;
         }
 
         .pdf-interactive-container h3 {
             font-family: 'Playfair Display', serif;
             color: var(--primary-navy);
             text-align: center;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        /* Marco que simula un libro abierto físico */
+        .book-frame {
+            position: relative;
+            width: 100%;
+            height: 650px;
+            background: #fdfaf5;
+            border-radius: 8px 15px 15px 8px;
+            box-shadow: 
+                inset 15px 0 30px rgba(0,0,0,0.05),
+                inset -5px 0 10px rgba(0,0,0,0.02),
+                20px 20px 40px rgba(27, 42, 74, 0.15),
+                0 0 0 2px rgba(200, 125, 85, 0.3);
+            display: flex;
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        /* Efecto de sombra en el lomo del libro (centro) */
+        .book-frame::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 40px;
+            height: 100%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(0,0,0,0.1) 40%, 
+                rgba(0,0,0,0.2) 50%, 
+                rgba(0,0,0,0.1) 60%, 
+                transparent 100%);
+            pointer-events: none; /* Deja que los clics pasen al iframe */
+            z-index: 10;
         }
 
         .pdf-wrapper {
             position: relative;
             width: 100%;
-            height: 650px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            height: 100%;
             background: var(--white);
+            border-radius: 5px;
+            overflow: hidden;
         }
 
         .pdf-wrapper iframe {
             width: 100%;
             height: 100%;
             border: none;
+            /* Si tienes link de Heyzine o Issuu, la animación del flipbook actuará perfectamente aquí adentro */
         }
 
         /* Estilos de Textos */
@@ -395,8 +430,11 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .pdf-wrapper {
+            .book-frame {
                 height: 450px;
+            }
+            .book-frame::after {
+                width: 20px; /* Sombra central más delgada en móviles */
             }
         }
     </style>
@@ -445,12 +483,18 @@
         <!-- Tarjeta con Contenido Detallado -->
         <div class="content-card">
 
-            <!-- Libro PDF Interactivo usando Google Drive Preview -->
+            <!-- Libro PDF Interactivo con efecto visual de Libro Abierto -->
             <div class="pdf-interactive-container">
-                <h3>Libro Interactivo: La Villa de San Miguel</h3>
-                <div class="pdf-wrapper">
-                    <iframe src="https://drive.google.com/file/d/1pWKjgRNX9bmyxmtvunALBxv6Jcd0pinw/preview" title="Libro La Villa de San Miguel" allow="autoplay"></iframe>
+                <h3>La Villa de San Miguel</h3>
+                
+                <!-- Estructura del marco del libro -->
+                <div class="book-frame">
+                    <div class="pdf-wrapper">
+                        <!-- NOTA IMPORTANTE: Si creas tu libro 3D en Heyzine, Issuu o FlipHTML5, pega el enlace de tu Flipbook en el atributo "src" de este iframe -->
+                        <iframe src="https://drive.google.com/file/d/1pWKjgRNX9bmyxmtvunALBxv6Jcd0pinw/preview" title="Libro La Villa de San Miguel" allow="autoplay; fullscreen"></iframe>
+                    </div>
                 </div>
+
                 <p style="text-align: center; font-size: 0.85rem; color: var(--cantera-terracotta); margin-top: 15px; margin-bottom: 0;">
                     Desliza hacia abajo o utiliza las herramientas del visor para explorar las páginas del libro.
                 </p>
