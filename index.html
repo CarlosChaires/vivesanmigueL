@@ -54,7 +54,7 @@
             box-sizing: border-box;
         }
 
-        /* --- Cabecera con Logotipo Minimalista y Título Interactivo --- */
+        /* --- Cabecera con Logotipo Real de Google Drive y Título Interactivo --- */
         .site-header-custom {
             display: flex;
             align-items: center;
@@ -65,14 +65,17 @@
         }
 
         .site-logo-container {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary-navy), var(--cantera-terracotta));
+            background: var(--white);
             border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(200, 125, 85, 0.2);
+            box-shadow: 0 10px 30px rgba(200, 125, 85, 0.18);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            padding: 8px;
             animation: float-logo 4s ease-in-out infinite;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -80,7 +83,7 @@
 
         .site-logo-container:hover {
             transform: scale(1.08) rotate(3deg);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.35);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.3);
         }
 
         @keyframes float-logo {
@@ -89,10 +92,11 @@
             100% { transform: translateY(0px); }
         }
 
-        .site-logo-container svg {
-            width: 40px;
-            height: 40px;
-            fill: var(--white);
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         /* --- Título Interactivo junto al Logo --- */
@@ -427,12 +431,10 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera con Logotipo Minimalista y Título Interactivo -->
+        <!-- Cabecera con el logotipo correcto de Google Drive integrado mediante enlace de exportación directa -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
-                <svg viewBox="0 0 60 60" fill="currentColor">
-                    <path d="M30 0C13.43 0 0 13.43 0 30s13.43 30 30 30 30-13.43 30-30S46.57 0 30 0zm0 54c-13.23 0-24-10.77-24-24S16.77 6 30 6s24 10.77 24 24-10.77 24-24 24z"/>
-                </svg>
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
             </div>
             <a href="#" class="interactive-brand-title">VIVE SAN MIGUEL</a>
         </header>
