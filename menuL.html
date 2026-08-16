@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel - San Miguel de Allende</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-sanmiguel: #fefcfb;
@@ -19,7 +20,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-sanmiguel);
             color: var(--text-main);
             line-height: 1.6;
@@ -28,25 +29,35 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Animación de fondo orgánica y muy notable en tonos rosas y terracota --- */
+        /* --- Animación de fondo orgánica y fluida con experiencia inmersiva de partículas --- */
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
             width: 700px;
             height: 700px;
-            background: radial-gradient(ellipse at center, rgba(232, 134, 146, 0.42) 0%, rgba(184, 107, 67, 0.25) 45%, transparent 75%);
+            background: radial-gradient(ellipse at center, rgba(232, 134, 146, 0.35) 0%, rgba(184, 107, 67, 0.2) 45%, transparent 75%);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            z-index: 0;
+            z-index: 1;
             transition: width 0.3s, height 0.3s, border-radius 0.5s;
             filter: blur(50px);
         }
 
         .sma-main-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             max-width: 1200px;
             margin: 0 auto;
             padding: 60px 20px;
@@ -81,7 +92,7 @@
             box-shadow: 0 8px 20px rgba(184, 107, 67, 0.25);
         }
 
-        /* --- Cabecera con Logotipo y Título Interactivo Evocador --- */
+        /* --- Cabecera con Logotipo de Google Drive y Título Interactivo --- */
         .site-header-custom {
             display: flex;
             align-items: center;
@@ -92,17 +103,21 @@
         }
 
         .site-logo-container {
-            width: 150px;
-            height: 150px;
+            width: 110px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 50%;
             overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.15);
             animation: float-logo 4s ease-in-out infinite;
             transition: transform 0.3s ease;
             cursor: pointer;
+            padding: 10px;
         }
 
         .site-logo-container:hover {
@@ -119,8 +134,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(184, 107, 67, 0.25));
-            mix-blend-mode: multiply;
+            display: block;
         }
 
         .interactive-brand-wrapper {
@@ -165,15 +179,6 @@
             width: 100%;
         }
 
-        .sma-title-vibe {
-            font-style: italic;
-            color: var(--cantera-terracotta);
-            font-size: 1.05rem;
-            margin-top: 8px;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-        }
-
         h2.wp-block-heading {
             font-family: 'Playfair Display', serif, sans-serif;
             font-size: 2.5rem;
@@ -184,7 +189,7 @@
             text-align: center;
         }
 
-        /* --- Estructura de Columnas con Altura 100% Uniforme --- */
+        /* --- Estructura de Columnas con Altura 100% Uniforme y Experiencia Fluida --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
@@ -196,8 +201,8 @@
         .wp-block-column {
             flex: 1;
             min-width: 320px;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
             border-radius: 28px;
             padding: 35px 30px;
             box-shadow: 0 15px 35px rgba(22, 34, 59, 0.04);
@@ -211,9 +216,9 @@
 
         .wp-block-column:hover {
             transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(232, 134, 146, 0.18);
-            border-color: rgba(232, 134, 146, 0.4);
-            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 25px 50px rgba(232, 134, 146, 0.22);
+            border-color: rgba(232, 134, 146, 0.5);
+            background: rgba(255, 255, 255, 0.98);
         }
 
         /* Contenedores de Imagen Uniformes */
@@ -238,7 +243,7 @@
         }
 
         .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
 
         .card-content-area {
@@ -291,11 +296,12 @@
         }
 
         .wp-block-group.has-background {
-            background: linear-gradient(135deg, rgba(232, 134, 146, 0.08) 0%, rgba(184, 107, 67, 0.05) 100%) !important;
+            background: linear-gradient(135deg, rgba(232, 134, 146, 0.1) 0%, rgba(184, 107, 67, 0.06) 100%) !important;
+            backdrop-filter: blur(10px);
             border-radius: 35px;
             padding: 50px 25px;
             margin: 50px 0;
-            border: 1px solid rgba(232, 134, 146, 0.2);
+            border: 1px solid rgba(232, 134, 146, 0.25);
         }
 
         .footer-brand-section {
@@ -329,9 +335,6 @@
             .interactive-brand-title {
                 font-size: 2.3rem;
             }
-            .sma-title-vibe {
-                font-size: 0.95rem;
-            }
             h2.wp-block-heading {
                 font-size: 1.8rem;
                 text-align: center;
@@ -344,7 +347,10 @@
 </head>
 <body>
 
-    <!-- Animación de fondo orgánica con presencia notable de tono rosa -->
+    <!-- Lienzo de partículas inmersivas flotantes de fondo -->
+    <canvas id="immersive-canvas"></canvas>
+
+    <!-- Luz orgánica interactiva que sigue el cursor -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
@@ -354,14 +360,13 @@
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="sma-inicio-btn">🏠 Inicio</a>
         </div>
 
-        <!-- Cabecera con Logotipo y Título Interactivo acompañado del toque de San Miguel -->
+        <!-- Cabecera con Logotipo de Google Drive y Título Interactivo -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/16zUIExVuI01MKWnlPrAR8D_SMDQt4_fM" alt="Logo Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
             </div>
             <div class="interactive-brand-wrapper">
                 <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
-                <span class="sma-title-vibe">"Esta página me recuerda el encanto de nuestras calles coloniales..."</span>
             </div>
         </header>
 
@@ -498,7 +503,7 @@
 
     </div>
 
-    <!-- Script de luz orgánica interactiva que sigue el cursor -->
+    <!-- Script de luz orgánica interactiva y partículas inmersivas de fondo -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = 0, mouseY = 0;
@@ -517,6 +522,91 @@
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
+
+        // Canvas de partículas inmersivas fluidas
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 140;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 20;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(184, 107, 67, 0.22)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
     </script>
 </body>
 </html>
