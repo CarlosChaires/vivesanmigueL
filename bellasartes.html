@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Univerciudad UG: Casa El Nigromante - Vive San Miguel</title>
+    <!-- Fuentes oficiales -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
+            --border-subtle: rgba(200, 125, 85, 0.15);
+            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: var(--primary-navy);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- Lienzo de partículas inmersivas --- */
+        #immersive-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
+        #cursor-glow { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 1; filter: blur(50px); transition: 0.4s; }
+
+        .container { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        
+        /* Navegación y Header */
+        .top-action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; }
+        .btn-home-back { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-navy); text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; border: 1.5px solid var(--primary-navy); padding: 10px 22px; border-radius: 30px; background: var(--white); transition: 0.3s; }
+        .btn-home-back:hover { background-color: var(--primary-navy); color: var(--white); }
+
+        .social-quick-links { display: flex; gap: 12px; }
+        .social-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; text-decoration: none; color: var(--primary-navy); transition: 0.3s; }
+        .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: var(--white); }
+        .social-btn.tiktok:hover { background: #000; color: var(--white); }
+
+        .site-header-custom { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 40px; flex-wrap: wrap; }
+        .site-logo-container { width: 95px; height: 95px; border-radius: 50%; border: 2px solid var(--cantera-terracotta); padding: 10px; cursor: pointer; flex-shrink: 0; }
+        .site-logo-container img { width: 100%; height: 100%; object-fit: contain; }
+        .interactive-brand-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--primary-navy); text-decoration: none; }
+        .brand-subtitle { font-size: 11px; font-weight: 700; color: var(--cantera-terracotta); text-transform: uppercase; letter-spacing: 3px; }
+
+        /* Contenido */
+        .content-card { background: var(--white); padding: 45px; border-radius: 28px; border-left: 5px solid var(--cantera-terracotta); box-shadow: var(--shadow-card); }
+        .wp-block-image img { width: 100%; border-radius: 18px; margin-bottom: 30px; }
+        h2 { font-family: 'Playfair Display', serif; color: var(--primary-navy); margin-top: 30px; }
+        p { color: #333; margin-bottom: 25px; }
+        
+        /* Video y CTA */
+        .media-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: center; margin: 40px 0; }
+        .video-box { border-radius: 18px; overflow: hidden; aspect-ratio: 16/9; background: #000; }
+        .video-box iframe { width: 100%; height: 100%; border: 0; }
+        .cta-box { background: rgba(200,125,85,0.05); border: 1.5px dashed var(--cantera-terracotta); border-radius: 18px; padding: 25px; text-align: center; }
+        .btn-cta { display: inline-block; background: var(--primary-navy); color: var(--white); padding: 10px 22px; border-radius: 30px; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .credits { margin-top: 20px; font-size: 0.85rem; color: var(--cantera-terracotta); border-top: 1px solid var(--border-subtle); padding-top: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back">🏠 Inicio</a>
+            <div class="social-links">
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" class="social-btn instagram">IG</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" class="social-btn tiktok">TK</a>
+            </div>
+        </div>
+
+        <header class="site-header-custom">
+            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo">
+            </div>
+            <div class="brand-text-group">
+                <a href="#" class="interactive-brand-title">CASA EL NIGROMANTE</a>
+                <span class="brand-subtitle">Univerciudad UG • Historia y Cultura</span>
+            </div>
+        </header>
+
+        <article class="content-card">
+            <figure class="wp-block-image">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Casa El Nigromante">
+            </figure>
+
+            <p>La <strong>Univerciudad UG: Casa El Nigromante</strong> es un espacio cultural de gran relevancia en San Miguel de Allende. Ubicada en la casa natal de Ignacio Ramírez "El Nigromante", una figura clave en la historia de México, este lugar ofrece una amplia variedad de actividades culturales y educativas.</p>
+            
+            <h2>¿Qué es Univerciudad Casa El Nigromante?</h2>
+            <p>Es un proyecto de la Universidad de Guanajuato (UG) que busca acercar el conocimiento, el arte y la cultura a la comunidad de San Miguel de Allende. A través de diversas actividades, como talleres, exposiciones, conferencias y presentaciones artísticas, la Casa El Nigromante se ha convertido en un punto de encuentro para los amantes de la cultura y las artes.</p>
+
+            <h2>¿Qué puedes encontrar?</h2>
+            <ul>
+                <li><strong>Exposiciones:</strong> Muestras de arte, fotografía y diseño.</li>
+                <li><strong>Talleres:</strong> Disciplinas como pintura, escultura, música y literatura.</li>
+                <li><strong>Conferencias:</strong> Ponencias de expertos culturales.</li>
+                <li><strong>Presentaciones artísticas:</strong> Conciertos, obras de teatro y poesía.</li>
+            </ul>
+
+            <div class="media-grid">
+                <div class="video-box">
+                    <iframe src="https://www.youtube.com/embed/q_5EiihBsW0" allowfullscreen></iframe>
+                </div>
+                <div class="cta-box">
+                    <p>Explora más rutas temáticas.</p>
+                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-cta">Ver Catálogo</a>
+                </div>
+            </div>
+
+            <div class="credits">
+                <p>Video cortesía: <strong>TV LIBERTAD MX Orgullo Guanajuatense</strong></p>
+                <p>Más información: <a href="http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante" target="_blank">Universidad de Guanajuato</a></p>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        const glow = document.getElementById('cursor-glow');
+        window.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, particles = [];
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        
+        class P {
+            constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.vx = Math.random()*0.2-0.1; this.vy = Math.random()*0.2-0.1; }
+            update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w) this.vx*=-1; if(this.y<0||this.y>h) this.vy*=-1; }
+            draw() { ctx.fillStyle='rgba(200,125,85,0.15)'; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); }
+        }
+        for(let i=0; i<70; i++) particles.push(new P());
+        function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => {p.update(); p.draw();}); requestAnimationFrame(anim); }
+        anim();
+    </script>
+</body>
+</html>
