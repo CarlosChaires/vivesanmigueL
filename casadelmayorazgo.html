@@ -7,19 +7,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #fcfbfa; --navy: #1b2a4a; --rose: #d48384; --white: #ffffff; --terracotta: #c87d55; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #333; line-height: 1.7; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #333; line-height: 1.7; overflow-x: hidden; position: relative; }
         
-        #cursor-glow { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212,131,132,0.15) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 0; filter: blur(50px); transition: 0.1s; }
+        /* --- Lienzo de partículas inmersivas de fondo --- */
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+        #cursor-glow { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212,131,132,0.15) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 1; filter: blur(50px); transition: 0.1s; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 2; }
         
         /* Navegación y Header */
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .btn-home-back { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--navy); padding: 8px 16px; border-radius: 25px; text-decoration: none; color: var(--navy); font-weight: 700; font-size: 11px; text-transform: uppercase; }
+        .btn-home-back { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--navy); padding: 8px 16px; border-radius: 25px; text-decoration: none; color: var(--navy); font-weight: 700; font-size: 11px; text-transform: uppercase; background: var(--white); }
         
         /* Redes Sociales */
         .social-links { display: flex; gap: 10px; }
-        .social-link { width: 35px; height: 35px; border: 1px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--navy); text-decoration: none; font-weight: 700; transition: 0.3s; }
+        .social-link { width: 35px; height: 35px; border: 1px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--navy); text-decoration: none; font-weight: 700; background: var(--white); transition: 0.3s; }
         .social-link:hover { background: var(--navy); color: var(--white); }
 
         .logo-box { text-align: center; margin-bottom: 30px; }
@@ -46,6 +57,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Lienzo de partículas inmersivas de fondo -->
+    <canvas id="immersive-canvas"></canvas>
 
     <div id="cursor-glow"></div>
 
@@ -104,10 +118,107 @@
 
     <script>
         const glow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
         window.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            glow.style.left = glowX + 'px';
+            glow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Canvas de partículas inmersivas fluidas
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 140;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 20;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
     </script>
 </body>
 </html>
