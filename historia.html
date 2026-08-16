@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de San Miguel de Allende - Vive San Miguel</title>
+    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
+            --border-subtle: rgba(200, 125, 85, 0.15);
+            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
+            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: var(--primary-navy);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Lienzo de partículas inmersivas de fondo --- */
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.4s, height 0.4s;
+            filter: blur(50px);
+        }
+
+        .sma-main-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn-home-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1.5px solid var(--primary-navy);
+            padding: 10px 22px;
+            border-radius: 30px;
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+        }
+
+        .btn-home-back:hover {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
+        }
+
+        /* Enlaces rápidos a Redes Sociales */
+        .social-quick-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .social-btn.tiktok:hover {
+            background: #000000;
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        /* --- Barra de Búsqueda Interna --- */
+        .search-container {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .site-search-input {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px 24px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-subtle);
+            background: var(--white);
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--primary-navy);
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .site-search-input:focus {
+            border-color: var(--cantera-terracotta);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
+        }
+
+        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
+        .site-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .site-logo-container {
+            width: 95px;
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
+            border: 2px solid var(--cantera-terracotta);
+            overflow: hidden;
+            padding: 10px;
+            animation: float-logo 5s ease-in-out infinite;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .site-logo-container:hover img {
+            transform: scale(1.08);
+        }
+
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media screen and (max-width: 768px) {
+            .brand-text-group { align-items: center; }
+        }
+
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cantera-terracotta);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 6px;
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
+            margin: 40px 0;
+            opacity: 0.3;
+        }
+
+        /* --- Tarjeta de Contenido Principal --- */
+        .content-card {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 45px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
+        }
+
+        /* Visor PDF Interactivo */
+        .pdf-interactive-container {
+            margin-bottom: 45px;
+            background: rgba(200, 125, 85, 0.03);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1.5px dashed var(--cantera-terracotta);
+        }
+
+        .pdf-interactive-container h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-navy);
+            text-align: center;
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .pdf-wrapper {
+            position: relative;
+            width: 100%;
+            height: 650px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: var(--white);
+        }
+
+        .pdf-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Estilos de Textos */
+        .wp-block-paragraph p, .wp-block-paragraph {
+            font-size: 1.05rem;
+            color: #333333;
+            margin-bottom: 25px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        .mural-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--cantera-terracotta);
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .content-card strong {
+            color: var(--primary-navy);
+            font-weight: 700;
+        }
+
+        /* Bloque de invitación a seguir leyendo / explorar más ajustado */
+        .explore-more-box {
+            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
+            border: 1.5px dashed var(--cantera-terracotta);
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            margin-top: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .explore-more-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-navy);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+
+        .explore-more-box p {
+            text-align: center;
+            font-size: 1.05rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .btn-explore-catalogue {
+            display: inline-block;
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
+        }
+
+        .btn-explore-catalogue:hover {
+            background: var(--cantera-terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+            color: var(--white);
+        }
+
+        /* --- Responsive para Móviles --- */
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 30px 15px;
+            }
+            .interactive-brand-title {
+                font-size: 2rem;
+            }
+            .content-card {
+                padding: 25px 20px;
+            }
+            .top-action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .pdf-wrapper {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lienzo de partículas inmersivas de fondo -->
+    <canvas id="immersive-canvas"></canvas>
+
+    <!-- Animación de fondo interactiva (Sigue el cursor) -->
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales -->
+        <div class="top-action-bar">
+            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Inicio
+            </a>
+            
+            <div class="social-quick-links">
+                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
+            </div>
+        </div>
+
+        <!-- Barra de Búsqueda Interactiva -->
+        <div class="search-container">
+            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
+        </div>
+
+        <!-- Cabecera Institucional Inmersiva SMA -->
+        <header class="site-header-custom">
+            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
+            </div>
+            <div class="brand-text-group">
+                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">SAN MIGUEL DE ALLENDE</a>
+                <span class="brand-subtitle">El Corazón de México • Joya Colonial</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator" />
+
+        <!-- Tarjeta con Contenido Detallado -->
+        <div class="content-card">
+
+            <!-- Libro PDF Interactivo -->
+            <div class="pdf-interactive-container">
+                <h3>Libro Interactivo: La Villa de San Miguel</h3>
+                <div class="pdf-wrapper">
+                    <!-- Asegúrate de que el archivo PDF esté en la misma carpeta o ajusta la ruta src -->
+                    <iframe src="9 LA VILLA DE SAN MIGUEL EL GRANDE Y CIUDAD DE SAN MIGUEL DE ALLENDE.pdf#view=FitH" title="Libro La Villa de San Miguel"></iframe>
+                </div>
+                <p style="text-align: center; font-size: 0.85rem; color: var(--cantera-terracotta); margin-top: 15px; margin-bottom: 0;">
+                    Desliza hacia abajo o utiliza las herramientas del visor para explorar las páginas del libro.
+                </p>
+            </div>
+
+            <!-- Introducción -->
+            <div class="wp-block-paragraph">
+                <p><strong>San Miguel de Allende</strong>, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos.</p>
+            </div>
+
+            <!-- Cronología Histórica -->
+            <h3 class="mural-title">CRONOLOGÍA HISTÓRICA. – EL PRIMER SAN MIGUEL, EL SAN MIGUEL DE LOS CHICHIMECAS</h3>
+            
+            <div class="wp-block-paragraph">
+                <p>Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 su población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.</p>
+            </div>
+
+            <h3 class="mural-title">EL SEGUNDO SAN MIGUEL, SAN MIGUEL EL GRANDE</h3>
+
+            <div class="wp-block-paragraph">
+                <p>La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines (españoles nacidos en España) quisieran más a la población criolla (el español nacido en México), imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.</p>
+            </div>
+
+            <h3 class="mural-title">EL TERCER SAN MIGUEL, SAN MIGUEL DE ALLENDE</h3>
+
+            <div class="wp-block-paragraph">
+                <p>En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Sin duda San Miguel de Allende apareció en un inicio en el mapa internacional gracias a sus escuelas de arte y español. A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político de izquierda de origen peruano Don Felipe Cossío del Pomar y el ex Gobernador del Estado de Guanajuato el Lic. Enrique Fernández Martínez, dichos personajes fueron los principales promotores de la cultura, fundaron la escuela de arte y español en el Instituto Allende, la hermosa casa solariega de la familia de La Canal.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Los estudiantes que llegaron fueron estadounidenses ex veteranos de guerra los cuales encontraron en esta pintoresca ciudad un lugar de inspiración, cultura y descanso, adaptándose perfectamente. Muchos de ellos después de retirarse, regresaron a San Miguel pero ahora con la intención de vivir.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", nombre en honor de ese gran ilustre escritor y político Sanmiguelense, quien tuvo como profesor a uno de los grandes maestros muralistas mexicanos el gran maestro David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro perteneciente al Templo de La Inmaculada Concepción dejo huella de lo que sería La Vida y Obra del Generalísimo Don Ignacio Allende; por motivos políticos tuvo que dejar la escuela dejando inconclusa esta obra.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial.</p>
+            </div>
+
+            <div class="wp-block-paragraph">
+                <p>Hoy en día, San Miguel de Allende, conocido aún por su elegante ambiente colonial y su creciente comunidad de artistas, también se popularizó como un destino de primera para vacacionar y como un refugio de retiro.</p>
+            </div>
+
+            <!-- Bloque de Invitación a la Biblioteca Virtual -->
+            <div class="explore-more-box">
+                <h3>Si deseas entrar a fondo en la historia de esta hermosa ciudad te invitamos a visitar la biblioteca virtual de la ciudad:</h3>
+                <p>Descubre documentos, libros históricos y el acervo cultural completo que ha forjado a San Miguel de Allende.</p>
+                <a href="https://www.sanmigueldeallende.gob.mx/noticia/librossanmiguel" target="_blank" rel="noopener noreferrer" class="btn-explore-catalogue">Conoce la Biblioteca Virtual de la Ciudad</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Canvas de partículas inmersivas fluidas
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 140;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 20;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+</body>
+</html>
