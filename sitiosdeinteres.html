@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel - Experiencia Inmersiva</title>
+    <title>Vive San Miguel - Experiencia Inmersiva de Cantera</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #050b14;
-            --surface-glass: rgba(15, 23, 42, 0.6);
-            --surface-card: rgba(30, 41, 59, 0.4);
-            --accent-glow: #e09f5b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --bg-sanmiguel: #fbf9f6;
+            --surface-glass: rgba(255, 255, 255, 0.88);
+            --surface-card: rgba(255, 255, 255, 0.96);
+            --cantera-rosa: #d48384;
+            --cantera-terracotta: #c87d55;
+            --primary-navy: #1b2a4a;
+            --text-muted: #717c89;
+            --border-glass: rgba(200, 125, 85, 0.12);
         }
 
         * {
@@ -24,12 +25,13 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-main);
+            background-color: var(--bg-sanmiguel);
+            color: var(--primary-navy);
             overflow-x: hidden;
             min-height: 100vh;
         }
 
+        /* Lienzo inmersivo interactivo con tonos de cantera y atardecer */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -48,7 +50,7 @@
             padding: 60px 20px;
         }
 
-        /* --- Cabecera con el Logotipo Directo de Google Drive --- */
+        /* --- Cabecera con identidad colonial y moderna --- */
         .immersive-header {
             display: flex;
             flex-direction: column;
@@ -59,15 +61,15 @@
         }
 
         .logo-hologram {
-            width: 96px;
-            height: 96px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(224, 159, 91, 0.25) 0%, rgba(5, 11, 20, 0.9) 70%);
-            border: 1px solid rgba(224, 159, 91, 0.4);
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.15) 0%, rgba(255, 255, 255, 0.95) 70%);
+            border: 1px solid rgba(200, 125, 85, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 35px rgba(224, 159, 91, 0.25);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
             position: relative;
             cursor: pointer;
             overflow: hidden;
@@ -78,7 +80,7 @@
 
         .logo-hologram:hover {
             transform: scale(1.08) rotate(3deg);
-            box-shadow: 0 0 50px rgba(224, 159, 91, 0.5);
+            box-shadow: 0 20px 45px rgba(200, 125, 85, 0.35);
         }
 
         .logo-hologram img {
@@ -86,30 +88,28 @@
             height: 100%;
             object-fit: contain;
             display: block;
-            filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));
         }
 
         .brand-title-3d {
             font-family: 'Playfair Display', serif;
             font-size: 3rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ffffff 30%, #e09f5b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-navy);
             letter-spacing: -1px;
             margin: 0;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
         }
 
         .brand-subtitle {
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: var(--text-muted);
+            color: var(--cantera-terracotta);
             margin-top: 8px;
+            font-weight: 600;
         }
 
-        /* --- Panel de Navegación Inmersiva --- */
+        /* --- Botones de Navegación Inmersiva --- */
         .immersive-nav {
             display: flex;
             justify-content: center;
@@ -122,38 +122,40 @@
             background: var(--surface-card);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-glass);
-            color: var(--text-main);
+            color: var(--primary-navy);
             padding: 18px 36px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
             letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.04);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-block;
         }
 
         .immersive-btn:hover {
-            border-color: var(--accent-glow);
-            background: rgba(224, 159, 91, 0.15);
+            border-color: var(--cantera-terracotta);
+            background: rgba(200, 125, 85, 0.08);
+            color: var(--cantera-terracotta);
             transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(224, 159, 91, 0.2);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
         }
 
         .immersive-btn.primary {
-            border-color: rgba(224, 159, 91, 0.4);
-            background: rgba(224, 159, 91, 0.1);
+            border-color: rgba(200, 125, 85, 0.4);
+            background: rgba(200, 125, 85, 0.06);
+            color: var(--cantera-terracotta);
         }
 
-        /* --- Tarjetas Visuales --- */
+        /* --- Tarjetas Inmersivas con Efecto Cristal --- */
         .immersive-card {
             background: var(--surface-glass);
             border: 1px solid var(--border-glass);
             border-radius: 28px;
             padding: 24px;
             margin-bottom: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.06);
             overflow: hidden;
             backdrop-filter: blur(20px);
         }
@@ -171,14 +173,15 @@
             transform: scale(1.02);
         }
 
-        /* --- Escenario de Globo --- */
+        /* --- Escenario de Vuelo en Globo --- */
         .balloon-stage {
-            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(5, 11, 20, 0.95) 100%);
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(244, 235, 208, 0.5) 100%);
             border-radius: 28px;
             border: 1px solid var(--border-glass);
             padding: 60px 20px;
             text-align: center;
             margin-bottom: 40px;
+            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.05);
         }
 
         .balloon-stage img {
@@ -186,7 +189,7 @@
             width: 100%;
             height: auto;
             border-radius: 20px;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 20px 30px rgba(200, 125, 85, 0.2));
             animation: float-balloon 6s ease-in-out infinite;
         }
 
@@ -206,13 +209,11 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-navy);
         }
 
         .quote-box p {
-            color: var(--accent-glow);
+            color: var(--cantera-terracotta);
             font-weight: 600;
             font-size: 16px;
             letter-spacing: 1px;
@@ -225,14 +226,14 @@
 
         .immersive-link {
             display: inline-block;
-            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743);
             color: #fff;
             padding: 16px 36px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
-            box-shadow: 0 15px 35px rgba(253, 29, 29, 0.3);
+            box-shadow: 0 10px 25px rgba(220, 39, 67, 0.25);
             transition: transform 0.3s ease;
         }
 
@@ -250,15 +251,15 @@
             width: 100%;
             max-width: 500px;
             padding: 18px 28px;
-            background: var(--surface-glass);
+            background: var(--surface-card);
             border: 1px solid var(--border-glass);
             border-radius: 18px;
-            color: var(--text-main);
+            color: var(--primary-navy);
             font-size: 15px;
             backdrop-filter: blur(10px);
             outline: none;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.04);
         }
 
         .search-input::placeholder {
@@ -266,10 +267,11 @@
         }
 
         .search-input:focus {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 25px rgba(224, 159, 91, 0.2);
+            border-color: var(--cantera-terracotta);
+            box-shadow: 0 0 25px rgba(200, 125, 85, 0.2);
         }
 
+        /* --- Footer Estilo Inmersivo --- */
         .immersive-footer {
             background: var(--surface-glass);
             border: 1px solid var(--border-glass);
@@ -277,7 +279,7 @@
             padding: 50px 40px;
             margin-top: 60px;
             backdrop-filter: blur(20px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.06);
         }
 
         .footer-grid {
@@ -288,7 +290,7 @@
         }
 
         .footer-col h4 {
-            color: var(--accent-glow);
+            color: var(--cantera-terracotta);
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -327,17 +329,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-main);
+            color: var(--primary-navy);
             text-decoration: none;
             font-weight: 600;
             font-size: 13px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(27, 42, 74, 0.03);
         }
 
         .social-icon:hover {
-            background: var(--accent-glow);
-            color: var(--bg-deep);
-            border-color: var(--accent-glow);
+            background: var(--cantera-terracotta);
+            color: #fff;
+            border-color: var(--cantera-terracotta);
             transform: translateY(-3px);
         }
 
@@ -350,11 +353,12 @@
 </head>
 <body>
 
+    <!-- Lienzo de partículas con tonos terracota y rosa cantera -->
     <canvas id="immersive-canvas"></canvas>
 
     <div class="immersive-wrapper">
 
-        <!-- Cabecera Integrando el Logotipo Real Proporcionado -->
+        <!-- Cabecera con Logotipo y Estilo Inmersivo San Miguel -->
         <header class="immersive-header">
             <div class="logo-hologram" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
@@ -419,6 +423,7 @@
 
     </div>
 
+    <!-- Script de Partículas Inmersivas con Tonos de Cantera y Atardecer Colonial -->
     <script>
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
@@ -445,12 +450,12 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
+                this.size = Math.random() * 2.2 + 0.6;
                 this.baseX = this.x;
                 this.baseY = this.y;
                 this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.5 - 0.25;
-                this.vy = Math.random() * 0.5 - 0.25;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
             }
             update() {
                 mouse.x += (mouse.targetX - mouse.x) * 0.05;
@@ -485,7 +490,7 @@
                 if (this.baseY > height) this.baseY = 0;
             }
             draw() {
-                ctx.fillStyle = 'rgba(224, 159, 91, 0.4)';
+                ctx.fillStyle = 'rgba(200, 125, 85, 0.35)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
