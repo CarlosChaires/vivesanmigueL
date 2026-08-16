@@ -10,7 +10,6 @@
             --bg-sanmiguel: #fbf9f6;
             --surface-glass: rgba(255, 255, 255, 0.88);
             --surface-card: rgba(255, 255, 255, 0.96);
-            --cantera-rosa: #d48384;
             --cantera-terracotta: #c87d55;
             --primary-navy: #1b2a4a;
             --text-muted: #717c89;
@@ -31,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Lienzo inmersivo interactivo con tonos de cantera y atardecer */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -50,7 +48,6 @@
             padding: 60px 20px;
         }
 
-        /* --- Cabecera con identidad colonial y moderna --- */
         .immersive-header {
             display: flex;
             flex-direction: column;
@@ -106,10 +103,9 @@
             letter-spacing: 4px;
             color: var(--cantera-terracotta);
             margin-top: 8px;
-            font-weight: 600;
+            font-weight: 750;
         }
 
-        /* --- Botones de Navegación Inmersiva --- */
         .immersive-nav {
             display: flex;
             justify-content: center;
@@ -148,7 +144,6 @@
             color: var(--cantera-terracotta);
         }
 
-        /* --- Tarjetas Inmersivas con Efecto Cristal --- */
         .immersive-card {
             background: var(--surface-glass);
             border: 1px solid var(--border-glass);
@@ -173,7 +168,6 @@
             transform: scale(1.02);
         }
 
-        /* --- Escenario de Vuelo en Globo --- */
         .balloon-stage {
             background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(244, 235, 208, 0.5) 100%);
             border-radius: 28px;
@@ -271,7 +265,6 @@
             box-shadow: 0 0 25px rgba(200, 125, 85, 0.2);
         }
 
-        /* --- Footer Estilo Inmersivo --- */
         .immersive-footer {
             background: var(--surface-glass);
             border: 1px solid var(--border-glass);
@@ -353,12 +346,10 @@
 </head>
 <body>
 
-    <!-- Lienzo de partículas con tonos terracota y rosa cantera -->
     <canvas id="immersive-canvas"></canvas>
 
     <div class="immersive-wrapper">
 
-        <!-- Cabecera con Logotipo y Texto Actualizado -->
         <header class="immersive-header">
             <div class="logo-hologram" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
@@ -423,7 +414,6 @@
 
     </div>
 
-    <!-- Script de Partículas Inmersivas con Tonos de Cantera y Atardecer Colonial -->
     <script>
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
