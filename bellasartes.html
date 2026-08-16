@@ -96,7 +96,121 @@
             background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
         }
 
-        /* --- Títulos de Murales (Terracota, Serif, con símbolo inicial decorativo) --- */
+        /* --- Cabecera con Logotipo Oficial AL LADO del Nombre, dentro del card --- */
+        .site-header-custom {
+            display: flex;
+            flex-direction: row; /* Acomodo exacto lado a lado */
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            text-align: left;
+        }
+
+        .site-logo-container {
+            width: 95px;
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
+            border: 2px solid var(--cantera-terracotta);
+            overflow: hidden;
+            padding: 10px;
+            animation: float-logo 5s ease-in-out infinite;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.4s ease;
+        }
+
+        .site-logo-container:hover img {
+            transform: scale(1.08);
+        }
+
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media screen and (max-width: 768px) {
+            .site-header-custom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .brand-text-group {
+                align-items: center;
+            }
+        }
+
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .interactive-brand-title:hover {
+            color: var(--cantera-terracotta);
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cantera-terracotta);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 6px;
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
+            margin: 40px 0;
+            opacity: 0.3;
+        }
+
+        /* Estilo de Imagen Adaptado */
+        .wp-block-image {
+            margin: 0 0 35px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wp-block-image img {
+            width: 100% !important;
+            max-width: 1024px;
+            height: auto !important;
+            border-radius: 18px !important;
+            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
+            display: block;
+        }
+
+        /* Títulos de Murales (Terracota, Serif) */
         .mural-title {
             color: var(--cantera-terracotta);
             font-family: 'Playfair Display', serif; /* Fuente elegante con serifa para títulos de murales */
@@ -107,15 +221,13 @@
             line-height: 1.3;
         }
 
-        /* --- Párrafos del Cuerpo (Gris Oscuro, Sans-serif, con símbolo decorativo) --- */
-        .mural-description {
-            color: var(--text-dark-grey);
-            font-family: 'Plus Jakarta Sans', sans-serif; /* Fuente sans-serif limpia para el cuerpo */
+        /* Párrafos del Cuerpo (Gris Oscuro, Sans-serif) */
+        .wp-block-paragraph p, .wp-block-paragraph {
             font-size: 1.05rem;
-            margin-top: 0;
+            color: #333333;
             margin-bottom: 25px; /* Más espacio para evitar amontonamiento */
-            line-height: 1.8;
             text-align: justify;
+            line-height: 1.8; /* Mayor alto de línea para legibilidad */
         }
 
         @media screen and (max-width: 768px) {
