@@ -32,39 +32,55 @@
 
         /* --- Lienzo de partículas inmersivas --- */
         #immersive-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
-        #cursor-glow { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 1; filter: blur(50px); transition: 0.4s; }
+        #cursor-glow { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 1; filter: blur(50px); transition: 0.4s; opacity: 0; }
 
-        .container { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .container { position: relative; z-index: 2; max-width: 1020px; margin: 0 auto; padding: 50px 20px; }
         
-        /* Navegación y Header */
-        .top-action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; }
+        /* Navegación Superior */
+        .top-action-bar { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 40px; gap: 12px; flex-wrap: wrap; }
         .btn-home-back { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-navy); text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; border: 1.5px solid var(--primary-navy); padding: 10px 22px; border-radius: 30px; background: var(--white); transition: 0.3s; }
         .btn-home-back:hover { background-color: var(--primary-navy); color: var(--white); }
-
-        .social-quick-links { display: flex; gap: 12px; }
         .social-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; text-decoration: none; color: var(--primary-navy); transition: 0.3s; }
-        .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: var(--white); }
-        .social-btn.tiktok:hover { background: #000; color: var(--white); }
+        .social-btn:hover { transform: translateY(-2px); }
+        .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: var(--white); border-color: transparent; }
+        .social-btn.tiktok:hover { background: #000; color: var(--white); border-color: transparent; }
 
-        .site-header-custom { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 40px; flex-wrap: wrap; }
-        .site-logo-container { width: 95px; height: 95px; border-radius: 50%; border: 2px solid var(--cantera-terracotta); padding: 10px; cursor: pointer; flex-shrink: 0; }
-        .site-logo-container img { width: 100%; height: 100%; object-fit: contain; }
-        .interactive-brand-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--primary-navy); text-decoration: none; }
-        .brand-subtitle { font-size: 11px; font-weight: 700; color: var(--cantera-terracotta); text-transform: uppercase; letter-spacing: 3px; }
+        /* Cabecera Acomodo Exacto */
+        .site-header-custom { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 60px; flex-wrap: wrap; text-align: left; margin-top: 20px; }
+        .site-logo-container { width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--cantera-terracotta); padding: 8px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15); transition: transform 0.3s ease; }
+        .site-logo-container:hover { transform: scale(1.03); }
+        .site-logo-container img { width: 60%; height: 60%; object-fit: contain; display: block; margin: 0 auto; }
+        .brand-text-group { display: flex; flex-direction: column; }
+        .interactive-brand-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--primary-navy); text-decoration: none; letter-spacing: -1.5px; line-height: 1; }
+        .interactive-brand-title:hover { color: var(--cantera-terracotta); }
+        .brand-subtitle { font-size: 13px; font-weight: 600; color: var(--cantera-terracotta); text-transform: uppercase; letter-spacing: 5px; margin-top: 8px; opacity: 0.8; }
 
         /* Contenido */
-        .content-card { background: var(--white); padding: 45px; border-radius: 28px; border-left: 5px solid var(--cantera-terracotta); box-shadow: var(--shadow-card); }
-        .wp-block-image img { width: 100%; border-radius: 18px; margin-bottom: 30px; }
-        h2 { font-family: 'Playfair Display', serif; color: var(--primary-navy); margin-top: 30px; }
-        p { color: #333; margin-bottom: 25px; }
-        
+        .content-card { background: var(--white); padding: 60px; border-radius: 28px; border-left: 6px solid var(--cantera-terracotta); box-shadow: var(--shadow-card); }
+        .wp-block-image img { width: 100%; border-radius: 20px; margin-bottom: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        h2 { font-family: 'Playfair Display', serif; color: var(--primary-navy); margin-top: 40px; font-size: 1.8rem; }
+        p { color: #333; margin-bottom: 25px; font-size: 1.05rem; line-height: 1.8; text-align: justify; }
+        ul.wp-block-list { color: #333; padding-left: 20px; margin-bottom: 25px; }
+        li.wp-block-list-item { font-size: 1.05rem; line-height: 1.8; margin-bottom: 12px; text-align: justify; }
+
         /* Video y CTA */
-        .media-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: center; margin: 40px 0; }
-        .video-box { border-radius: 18px; overflow: hidden; aspect-ratio: 16/9; background: #000; }
+        .media-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; margin: 60px 0; }
+        .video-box { border-radius: 20px; overflow: hidden; aspect-ratio: 16/9; background: #000; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         .video-box iframe { width: 100%; height: 100%; border: 0; }
-        .cta-box { background: rgba(200,125,85,0.05); border: 1.5px dashed var(--cantera-terracotta); border-radius: 18px; padding: 25px; text-align: center; }
-        .btn-cta { display: inline-block; background: var(--primary-navy); color: var(--white); padding: 10px 22px; border-radius: 30px; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        .credits { margin-top: 20px; font-size: 0.85rem; color: var(--cantera-terracotta); border-top: 1px solid var(--border-subtle); padding-top: 15px; text-align: center; }
+        .cta-box { background: rgba(200,125,85,0.05); border: 2px dashed var(--cantera-terracotta); border-radius: 20px; padding: 40px; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%; box-sizing: border-box; }
+        .cta-box p { text-align: center; color: #555; margin-bottom: 25px; font-size: 0.95rem; }
+        .btn-cta { display: inline-block; background: var(--primary-navy); color: var(--white); padding: 12px 30px; border-radius: 30px; text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; }
+        .btn-cta:hover { background: var(--cantera-terracotta); transform: translateY(-2px); }
+        .credits { margin-top: 40px; font-size: 0.9rem; color: var(--cantera-terracotta); border-top: 1px solid var(--border-subtle); padding-top: 25px; text-align: center; }
+        .credits a { color: var(--cantera-terracotta); text-decoration: underline; font-weight: 600; }
+        .credits a:hover { color: var(--primary-navy); }
+
+        @media screen and (max-width: 992px) {
+            .container { padding: 30px 15px; }
+            .interactive-brand-title { font-size: 2rem; }
+            .content-card { padding: 30px; }
+            .media-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -73,9 +89,9 @@
     <div id="cursor-glow"></div>
 
     <div class="container">
-        <div class="top-nav">
+        <div class="top-action-bar">
             <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back">🏠 Inicio</a>
-            <div class="social-links">
+            <div class="social-quick-links">
                 <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" class="social-btn instagram">IG</a>
                 <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" class="social-btn tiktok">TK</a>
             </div>
@@ -92,61 +108,40 @@
         </header>
 
         <article class="content-card">
-            <figure class="wp-block-image">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Casa El Nigromante">
+            <figure class="wp-block-image size-large">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Casa El Nigromante" class="wp-image-221" />
             </figure>
 
             <p>La <strong>Univerciudad UG: Casa El Nigromante</strong> es un espacio cultural de gran relevancia en San Miguel de Allende. Ubicada en la casa natal de Ignacio Ramírez "El Nigromante", una figura clave en la historia de México, este lugar ofrece una amplia variedad de actividades culturales y educativas.</p>
-            
+
             <h2>¿Qué es Univerciudad Casa El Nigromante?</h2>
             <p>Es un proyecto de la Universidad de Guanajuato (UG) que busca acercar el conocimiento, el arte y la cultura a la comunidad de San Miguel de Allende. A través de diversas actividades, como talleres, exposiciones, conferencias y presentaciones artísticas, la Casa El Nigromante se ha convertido en un punto de encuentro para los amantes de la cultura y las artes.</p>
 
             <h2>¿Qué puedes encontrar?</h2>
-            <ul>
-                <li><strong>Exposiciones:</strong> Muestras de arte, fotografía y diseño.</li>
-                <li><strong>Talleres:</strong> Disciplinas como pintura, escultura, música y literatura.</li>
-                <li><strong>Conferencias:</strong> Ponencias de expertos culturales.</li>
-                <li><strong>Presentaciones artísticas:</strong> Conciertos, obras de teatro y poesía.</li>
+            <ul class="wp-block-list">
+                <li class="wp-block-list-item"><strong>Exposiciones:</strong> A lo largo del año, se presentan diversas exposiciones de arte, fotografía y diseño, tanto de artistas locales como nacionales.</li>
+                <li class="wp-block-list-item"><strong>Talleres:</strong> Se ofrecen talleres de diversas disciplinas, como pintura, escultura, música, literatura y más.</li>
+                <li class="wp-block-list-item"><strong>Conferencias:</strong> Destacadas personalidades del ámbito cultural y académico imparten conferencias sobre temas de interés general.</li>
+                <li class="wp-block-list-item"><strong>Presentaciones artísticas:</strong> Se organizan conciertos, obras de teatro, recitales de poesía y otras expresiones artísticas.</li>
+                <li class="wp-block-list-item"><strong>Eventos especiales:</strong> La Casa El Nigromante también es sede de eventos especiales, como festivales y celebraciones.</li>
             </ul>
+
+            <h2>¿Por qué visitar la Casa El Nigromante?</h2>
+            <ul class="wp-block-list">
+                <li class="wp-block-list-item"><strong>Conectar con la historia:</strong> Al visitar la casa natal de Ignacio Ramírez, podrás sumergirte en la historia de uno de los personajes más importantes de México.</li>
+                <li class="wp-block-list-item"><strong>Disfrutar de la cultura:</strong> La amplia oferta cultural de la Casa El Nigromante te permitirá disfrutar de diversas expresiones artísticas.</li>
+                <li class="wp-block-list-item"><strong>Participar en actividades:</strong> Podrás participar en talleres y eventos, lo que te permitirá desarrollar tus habilidades y conocer a otras personas.</li>
+                <li class="wp-block-list-item"><strong>Apoyar la cultura local:</strong> Al visitar la Casa El Nigromante, estarás apoyando el desarrollo cultural de San Miguel de Allende.</li>
+            </ul>
+
+            <h2>¿Cómo puedo encontrar más información?</h2>
+            <p>Te recomiendo visitar la página oficial de la Univerciudad UG: Casa El Nigromante en la Universidad de Guanajuato: <a target="_blank" rel="noreferrer noopener" href="http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante">http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante</a></p>
+            <p>En este sitio web encontrarás la programación completa de eventos, así como información sobre cómo inscribirte a los talleres y conferencias.</p>
 
             <div class="media-grid">
                 <div class="video-box">
-                    <iframe src="https://www.youtube.com/embed/q_5EiihBsW0" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/q_5EiihBsW0" title="Video Casa El Nigromante - TV LIBERTAD MX" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="cta-box">
-                    <p>Explora más rutas temáticas.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-cta">Ver Catálogo</a>
-                </div>
-            </div>
-
-            <div class="credits">
-                <p>Video cortesía: <strong>TV LIBERTAD MX Orgullo Guanajuatense</strong></p>
-                <p>Más información: <a href="http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante" target="_blank">Universidad de Guanajuato</a></p>
-            </div>
-        </article>
-    </div>
-
-    <script>
-        const glow = document.getElementById('cursor-glow');
-        window.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-        });
-
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h, particles = [];
-        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        
-        class P {
-            constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.vx = Math.random()*0.2-0.1; this.vy = Math.random()*0.2-0.1; }
-            update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w) this.vx*=-1; if(this.y<0||this.y>h) this.vy*=-1; }
-            draw() { ctx.fillStyle='rgba(200,125,85,0.15)'; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); }
-        }
-        for(let i=0; i<70; i++) particles.push(new P());
-        function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => {p.update(); p.draw();}); requestAnimationFrame(anim); }
-        anim();
-    </script>
-</body>
-</html>
+                    <p>Explora más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
+                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-cta">Ver el
