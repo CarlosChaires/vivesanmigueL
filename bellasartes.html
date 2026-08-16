@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Univerciudad UG: Casa El Nigromante - Vive San Miguel</title>
+    <title>Página de Murales -Vive San Miguel de Allende</title>
     <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,7 @@
             --primary-navy: #1b2a4a; /* Azul marino para títulos principales */
             --cantera-terracotta: #c87d55; /* Terracotta cálido para títulos de murales y bordes (idéntico a la imagen) */
             --cantera-rose: #d48384; /* Rosa cantera sutil para degradados */
+            --text-dark-grey: #333333; /* Color gris oscuro para el cuerpo del texto descriptivo */
             --border-subtle: rgba(200, 125, 85, 0.15); /* Borde sutil terracotta */
             --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06); /* Sombra elegante de tarjeta */
             --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18); /* Sombra de tarjeta al pasar el cursor */
@@ -32,7 +33,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Lienzo de partículas inmersivas de fondo --- */
+        /* --- Lienzo de partículas inmersivas flotantes de fondo --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -66,118 +67,25 @@
             margin: 0 auto;
             padding: 50px 20px;
             box-sizing: border-box;
-        }
-
-        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
-        .top-action-bar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .btn-home-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1.5px solid var(--primary-navy);
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: var(--white);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-        }
-
-        .btn-home-back:hover {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
-        }
-
-        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
-        .social-quick-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
             justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--white);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s ease;
-        }
-
-        .social-btn.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        .social-btn.tiktok:hover {
-            background: #000000;
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        /* --- Barra de Búsqueda Interna --- */
-        .search-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .site-search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px;
-            border-radius: 50px;
-            border: 1.5px solid var(--border-subtle);
-            background: var(--white);
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--primary-navy);
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .site-search-input:focus {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
+            align-items: center;
+            min-height: 100vh;
         }
 
         /* --- Tarjeta de Contenido Principal (con borde terracota a la izquierda) --- */
         .content-card {
-            background: var(--white);
+            background-color: var(--white);
             border-radius: 28px;
-            padding: 45px;
-            border: 1px solid var(--border-subtle);
+            padding: 60px;
+            border-left: 6px solid var(--cantera-terracotta); /* Borde terracota izquierdo idéntico a la imagen */
             box-shadow: var(--shadow-card);
             position: relative;
             overflow: hidden;
-            border-left: 5px solid var(--cantera-terracotta); /* Borde terracota izquierdo idéntico a la imagen */
+            width: 100%;
         }
 
+        /* Degradado sutil en la parte superior del card */
         .content-card::before {
             content: '';
             position: absolute;
@@ -188,121 +96,7 @@
             background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
         }
 
-        /* --- Cabecera con Logotipo Oficial AL LADO del Nombre, dentro del card --- */
-        .site-header-custom {
-            display: flex;
-            flex-direction: row; /* Acomodo exacto lado a lado */
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            text-align: left;
-        }
-
-        .site-logo-container {
-            width: 95px;
-            height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--white);
-            border-radius: 50%;
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
-            border: 2px solid var(--cantera-terracotta);
-            overflow: hidden;
-            padding: 10px;
-            animation: float-logo 5s ease-in-out infinite;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        @keyframes float-logo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .site-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
-            transition: transform 0.4s ease;
-        }
-
-        .site-logo-container:hover img {
-            transform: scale(1.08);
-        }
-
-        .brand-text-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        @media screen and (max-width: 768px) {
-            .site-header-custom {
-                flex-direction: column;
-                text-align: center;
-            }
-            .brand-text-group {
-                align-items: center;
-            }
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--primary-navy);
-            text-decoration: none;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin: 0;
-            transition: color 0.3s ease;
-        }
-
-        .interactive-brand-title:hover {
-            color: var(--cantera-terracotta);
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--cantera-terracotta);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 6px;
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
-            margin: 40px 0;
-            opacity: 0.3;
-        }
-
-        /* Estilo de Imagen Adaptado */
-        .wp-block-image {
-            margin: 0 0 35px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .wp-block-image img {
-            width: 100% !important;
-            max-width: 1024px;
-            height: auto !important;
-            border-radius: 18px !important;
-            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
-            display: block;
-        }
-
-        /* Títulos de Murales (Terracota, Serif) */
+        /* --- Títulos de Murales (Terracota, Serif, con símbolo inicial decorativo) --- */
         .mural-title {
             color: var(--cantera-terracotta);
             font-family: 'Playfair Display', serif; /* Fuente elegante con serifa para títulos de murales */
@@ -310,169 +104,32 @@
             font-weight: 600;
             margin-top: 30px;
             margin-bottom: 5px;
-        }
-
-        /* Párrafos del Cuerpo (Gris, Sans-serif) */
-        .wp-block-paragraph p, .wp-block-paragraph {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px; /* Más espacio para evitar amontonamiento */
-            text-align: justify;
-            line-height: 1.8; /* Mayor alto de línea para legibilidad */
-        }
-
-        /* Títulos de Sección principales (Terracota, Sans-serif) */
-        .content-card .section-title {
-            color: var(--cantera-terracotta);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 40px;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px;
-        }
-
-        /* Lista de Actividades (Gris, Sans-serif) */
-        .content-card ul.wp-block-list {
-            color: #333;
-            padding-left: 20px;
-            margin-bottom: 25px;
-        }
-
-        .content-card ul.wp-block-list li {
-            margin-bottom: 10px;
-            font-size: 1.05rem;
-            text-align: justify;
-            line-height: 1.8;
-        }
-
-        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
-        .media-cta-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        @media screen and (max-width: 768px) {
-            .media-cta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Contenedor de Video Inmersivo Compacto y Elegante */
-        .video-inmersivo-container {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
-        .explore-more-box {
-            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
-            border: 1.5px dashed var(--cantera-terracotta);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .explore-more-box h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.25rem;
             line-height: 1.3;
         }
 
-        .explore-more-box p {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 20px;
+        /* --- Párrafos del Cuerpo (Gris Oscuro, Sans-serif, con símbolo decorativo) --- */
+        .mural-description {
+            color: var(--text-dark-grey);
+            font-family: 'Plus Jakarta Sans', sans-serif; /* Fuente sans-serif limpia para el cuerpo */
+            font-size: 1.05rem;
+            margin-top: 0;
+            margin-bottom: 25px; /* Más espacio para evitar amontonamiento */
+            line-height: 1.8;
+            text-align: justify;
         }
 
-        .btn-explore-catalogue {
-            display: inline-block;
-            background: var(--primary-navy);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
-            margin: 0 auto;
-        }
-
-        .btn-explore-catalogue:hover {
-            background: var(--cantera-terracotta);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
-        }
-
-        /* Créditos y Fuentes Oficiales */
-        .source-credit {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
-            text-align: center;
-        }
-
-        .source-credit a {
-            color: var(--cantera-terracotta);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        .source-credit a:hover {
-            color: var(--primary-navy);
-        }
-
-        /* --- Responsive para Móviles --- */
         @media screen and (max-width: 768px) {
             .sma-main-wrapper {
                 padding: 30px 15px;
             }
-            .interactive-brand-title {
-                font-size: 1.8rem;
-            }
             .content-card {
-                padding: 25px 20px;
+                padding: 30px;
             }
-            .top-action-bar {
-                flex-direction: column;
-                align-items: stretch;
+            .mural-title {
+                font-size: 1.2rem;
+            }
+            .mural-description {
+                font-size: 1rem;
             }
         }
     </style>
@@ -486,117 +143,25 @@
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
-
-        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
-        <div class="top-action-bar">
-            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Inicio
-            </a>
-            
-            <div class="social-quick-links">
-                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
-            </div>
-        </div>
-
-        <!-- Barra de Búsqueda Interna -->
-        <div class="search-container">
-            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
-        </div>
-
-        <!-- Tarjeta con Contenido Detallado de Casa El Nigromante, con borde terracota izquierdo -->
+        <!-- Tarjeta con Contenido Detallado de Murales, con borde terracota izquierdo idéntico -->
         <article class="content-card">
+            
+            <h3 class="mural-title">— “LAS LAVANDERAS” – Por Eleanor Cohen en 1941.</h3>
+            <p class="mural-description">(Este mural fue admirado por Gabriela Mistral, quien paseando por el claustro se detuvo ante la joven Eleanor que se encontraba ocupada pintándolo.)</p>
 
-            <!-- Cabecera Institucional Inmersiva con el Logo Correcto AL LADO del Nombre -->
-            <header class="site-header-custom">
-                <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
-                    <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
-                </div>
-                <div class="brand-text-group">
-                    <a href="#" class="interactive-brand-title">CASA EL NIGROMANTE</a>
-                    <span class="brand-subtitle">Patrimonio de la Humanidad • Historia y Cultura</span>
-                </div>
-            </header>
+            <h3 class="mural-title">— Mural “SIQUEIROS” (Vida y Obra del Generalísimo don Ignacio de Allende)</h3>
+            <p class="mural-description">David Alfaro Siqueiros dio un Cursillo Teórico-Práctico sobre pintura mural a un grupo de veteranos de guerra de los Estados Unidos en 1948. Como colofón de este cursillo se llevó a cabo este mural pero diversas causas impidieron la conclusión de tan importante experimento.</p>
 
-            <hr class="wp-block-separator" />
+            <h3 class="mural-title">— “EL FANATISMO DEL PUEBLO” – Por Pedro Martínez en 1939.</h3>
+            <p class="mural-description">(La Caza del Vampiro)</p>
 
-            <!-- wp:image {"id":221,"sizeSlug":"large","linkDestination":"none"} -->
-            <figure class="wp-block-image size-large">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Casa El Nigromante" class="wp-image-221" />
-            </figure>
-            <!-- /wp:image -->
+            <h3 class="mural-title">— “LOS TEJEDORES” – Por Pedro Martínez en 1940.</h3>
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>El edificio cuenta con los siguientes MURALES:</p>
-            </div>
-            <!-- /wp:paragraph -->
+            <h3 class="mural-title">— “LA CANTINA” – Por Pedro Martínez en septiembre de 1941.</h3>
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3 class="mural-title">“LAS LAVANDERAS” – Por Eleanor Cohen en 1941.</h3>
-                <p>(Este mural fue admirado por Gabriela Mistral, quien paseando por el claustro se detuvo ante la joven Eleanor que se encontraba ocupada pintándolo.)</p>
-            </div>
-            <!-- /wp:paragraph -->
+            <h3 class="mural-title">— “GUANAJUATO ALMACIGO DE PATRIOTAS” por Pedro Martínez en 1941.</h3>
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3 class="mural-title">Mural “SIQUEIROS” (Vida y Obra del Generalísimo don Ignacio de Allende)</h3>
-                <p>David Alfaro Siqueiros dio un Cursillo Teórico-Práctico sobre pintura mural a un grupo de veteranos de guerra de los Estados Unidos en 1948. Como colofón de este cursillo se llevó a cabo este mural pero diversas causas impidieron la conclusión de tan importante experimento.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3 class="mural-title">“EL FANATISMO DEL PUEBLO” – Por Pedro Martínez en 1939.</h3>
-                <p>(La Caza del Vampiro)</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <h2 class="section-title">ACTIVIDADES Y SERVICIOS</h2>
-            <p>El edificio funciona como escuela de Arte y Artesanías impartiéndose clases de:</p>
-            <ul class="wp-block-list">
-                <li class="wp-block-list-item">Dibujo</li>
-                <li class="wp-block-list-item">Pintura</li>
-                <li class="wp-block-list-item">Escultura</li>
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
-            <div class="media-cta-grid">
-                <!-- Sección de Video Inmersivo Reproducible -->
-                <div class="video-inmersivo-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/5baVB-eJceo" 
-                            title="Video de Casa El Nigromante - TV LIBERTAD MX" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- Bloque de Invitación a Seguir Leyendo -->
-                <div class="explore-more-box">
-                    <h3>¿Listo para continuar tu recorrido?</h3>
-                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
-                </div>
-            </div>
-
-            <div class="source-credit" style="margin-top: 10px;">
-                Video cortesía de: <strong>TV LIBERTAD MX Orgullo Guanajuatense</strong> (<a href="https://www.youtube.com/watch?v=5baVB-eJceo" target="_blank" rel="noopener noreferrer">YouTube</a>)
-            </div>
-
-            <!-- Créditos y Fuentes Oficiales -->
-            <div class="source-credit">
-                Fuente e información oficial obtenida de: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende</a>.
-            </div>
-
-        </div>
-
+        </article>
     </div>
 
     <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
