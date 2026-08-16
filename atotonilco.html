@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santuario de Atotonilco - Vive San Miguel de Allende</title>
+    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sanmiguel: #fcfbfa;
+            --white: #ffffff;
+            --primary-navy: #1b2a4a;
+            --cantera-terracotta: #c87d55;
+            --cantera-rose: #d48384;
+            --border-subtle: rgba(200, 125, 85, 0.15);
+            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
+            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-sanmiguel);
+            color: var(--primary-navy);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Lienzo de partículas inmersivas de fondo --- */
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.4s, height 0.4s;
+            filter: blur(50px);
+        }
+
+        .sma-main-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn-home-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1.5px solid var(--primary-navy);
+            padding: 10px 22px;
+            border-radius: 30px;
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+        }
+
+        .btn-home-back:hover {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
+        }
+
+        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
+        .social-quick-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .social-btn.tiktok:hover {
+            background: #000000;
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        /* --- Barra de Búsqueda Interna --- */
+        .search-container {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .site-search-input {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px 24px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-subtle);
+            background: var(--white);
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--primary-navy);
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .site-search-input:focus {
+            border-color: var(--cantera-terracotta);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
+        }
+
+        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
+        .site-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .site-logo-container {
+            width: 95px;
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
+            border: 2px solid var(--cantera-terracotta);
+            overflow: hidden;
+            padding: 10px;
+            animation: float-logo 5s ease-in-out infinite;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .site-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .site-logo-container:hover img {
+            transform: scale(1.08);
+        }
+
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media screen and (max-width: 768px) {
+            .brand-text-group { align-items: center; }
+        }
+
+        .interactive-brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cantera-terracotta);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 6px;
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
+            margin: 40px 0;
+            opacity: 0.3;
+        }
+
+        /* --- Tarjeta de Contenido Principal --- */
+        .content-card {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 45px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
+        }
+
+        /* Estilo de Imagen Adaptado */
+        .wp-block-image {
+            margin: 0 0 35px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wp-block-image img {
+            width: 100% !important;
+            max-width: 1024px;
+            height: auto !important;
+            border-radius: 18px !important;
+            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
+            display: block;
+        }
+
+        .wp-block-paragraph p, .wp-block-paragraph {
+            font-size: 1.05rem;
+            color: #333333;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .wp-block-list {
+            font-size: 1.05rem;
+            color: #333333;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .wp-block-list li {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
+        .media-cta-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .media-cta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Contenedor de Video Inmersivo Compacto y Elegante */
+        .video-inmersivo-container {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
+        .explore-more-box {
+            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
+            border: 1.5px dashed var(--cantera-terracotta);
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .explore-more-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-navy);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .explore-more-box p {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .btn-explore-catalogue {
+            display: inline-block;
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
+        }
+
+        .btn-explore-catalogue:hover {
+            background: var(--cantera-terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+        }
+
+        /* Créditos y Fuentes Oficiales INAH y Videos */
+        .source-credit {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--cantera-terracotta);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .source-credit a {
+            color: var(--cantera-terracotta);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .source-credit a:hover {
+            color: var(--primary-navy);
+        }
+
+        /* --- Responsive para Móviles --- */
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 30px 15px;
+            }
+            .interactive-brand-title {
+                font-size: 2rem;
+            }
+            .content-card {
+                padding: 25px 20px;
+            }
+            .top-action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lienzo de partículas inmersivas de fondo -->
+    <canvas id="immersive-canvas"></canvas>
+
+    <!-- Animación de fondo interactiva (Sigue el cursor) -->
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
+        <div class="top-action-bar">
+            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Inicio
+            </a>
+            
+            <div class="social-quick-links">
+                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
+            </div>
+        </div>
+
+        <!-- Barra de Búsqueda Interactiva -->
+        <div class="search-container">
+            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
+        </div>
+
+        <!-- Cabecera Institucional Inmersiva SMA -->
+        <header class="site-header-custom">
+            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
+            </div>
+            <div class="brand-text-group">
+                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">SANTUARIO DE ATOTONILCO</a>
+                <span class="brand-subtitle">Patrimonio de la Humanidad • Historia y Fe</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator" />
+
+        <!-- Tarjeta con Contenido Detallado -->
+        <div class="content-card">
+
+            <!-- wp:image -->
+            <figure class="wp-block-image size-large">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Santuario de Jesús Nazareno de Atotonilco" class="wp-image-227" />
+            </figure>
+            <!-- /wp:image -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>El Santuario de Jesús Nazareno de Atotonilco es una joya arquitectónica y un lugar de gran importancia histórica y religiosa en México. Su belleza y significado lo han llevado a ser declarado Patrimonio de la Humanidad por la UNESCO.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>Ubicado a unos 14 kilómetros del centro de San Miguel de Allende, este impresionante templo barroco fue construido en el siglo XVIII por el padre Luis Felipe Neri de Alfaro, inspirado en el Santo Sepulcro de Jerusalén. La edificación, con sus exuberantes detalles y rica iconografía, es una verdadera obra de arte que refleja la fe y la devoción de la época.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p><strong>Un recorrido por el santuario:</strong></p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>Al entrar al santuario, te sorprenderá la profusión de murales, esculturas y pinturas que cubren cada rincón. Estos elementos decorativos, realizados por artistas locales, narran la Pasión de Cristo de manera vívida y emotiva.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:list -->
+            <ul class="wp-block-list">
+                <!-- wp:list-item -->
+                <li><strong>El atrio:</strong> El atrio es un espacio amplio y acogedor, rodeado de árboles y jardines. Es el lugar ideal para reflexionar y conectarse con la naturaleza.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>La iglesia:</strong> Al ingresar a la iglesia, quedarás maravillado por la belleza de su interior. Los muros están cubiertos de murales que representan escenas de la vida de Jesús. El altar mayor es una obra maestra del barroco, con tallas de madera dorada y policromada.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>Las capillas:</strong> El santuario cuenta con varias capillas laterales, cada una dedicada a un santo o misterio diferente. Estas capillas son verdaderas joyas arquitectónicas, con altares ricamente decorados y pinturas de gran belleza.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>El museo:</strong> El museo del santuario alberga una colección de objetos religiosos y obras de arte que ilustran la historia del lugar.</li>
+                <!-- /wp:list-item -->
+            </ul>
+            <!-- /wp:list -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p><strong>La importancia histórica:</strong></p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>El Santuario de Atotonilco no solo es un lugar de culto, sino también un hito en la historia de México. Fue aquí donde el cura Miguel Hidalgo tomó un estandarte con la imagen de la Virgen de Guadalupe como bandera del ejército insurgente durante la Guerra de Independencia.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p><strong>Un lugar de peregrinación:</strong></p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p>Millones de peregrinos visitan el santuario cada año para venerar a Jesús Nazareno y participar en las diversas celebraciones religiosas que se llevan a cabo a lo largo del año. La Semana Santa es una época especialmente importante, cuando se realizan procesiones y representaciones de la Pasión de Cristo.</p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:paragraph -->
+            <div class="wp-block-paragraph">
+                <p><strong>¿Por qué visitar el Santuario de Atotonilco?</strong></p>
+            </div>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:list -->
+            <ul class="wp-block-list">
+                <!-- wp:list-item -->
+                <li><strong>Admirar una obra maestra del barroco:</strong> La arquitectura y la decoración del santuario son simplemente impresionantes.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>Conectar con la historia:</strong> El santuario es un lugar cargado de historia y espiritualidad.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>Experimentar la fe:</strong> Participar en una misa o en alguna otra celebración religiosa es una experiencia única.</li>
+                <!-- /wp:list-item -->
+
+                <!-- wp:list-item -->
+                <li><strong>Disfrutar de la naturaleza:</strong> El entorno natural del santuario es tranquilo y sereno, ideal para relajarse y reflexionar.</li>
+                <!-- /wp:list-item -->
+            </ul>
+            <!-- /wp:list -->
+
+            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
+            <div class="media-cta-grid">
+                <!-- Sección de Video Inmersivo Reproducible -->
+                <div class="video-inmersivo-container">
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/iwV8_J7W3_c" 
+                            title="Video Santuario de Atotonilco" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Bloque de Invitación a Seguir Leyendo -->
+                <div class="explore-more-box">
+                    <h3>¿Listo para continuar tu recorrido?</h3>
+                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
+                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
+                </div>
+            </div>
+
+            <div class="source-credit" style="margin-top: 10px;">
+                Video cortesía de: <strong>Gobierno de la Gente</strong> (<a href="https://www.youtube.com/watch?v=iwV8_J7W3_c" target="_blank" rel="noopener noreferrer">YouTube</a>)
+            </div>
+
+            <!-- Créditos y Fuentes Oficiales -->
+            <div class="source-credit">
+                Fuente e información obtenida de: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende</a>.
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Canvas de partículas inmersivas fluidas
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 140;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 20;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+</body>
+</html>
