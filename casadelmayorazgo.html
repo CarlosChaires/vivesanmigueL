@@ -16,10 +16,16 @@
         /* Navegación y Header */
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .btn-home-back { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--navy); padding: 8px 16px; border-radius: 25px; text-decoration: none; color: var(--navy); font-weight: 700; font-size: 11px; text-transform: uppercase; }
+        
+        /* Redes Sociales */
         .social-links { display: flex; gap: 10px; }
-        .social-link { width: 35px; height: 35px; border: 1px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--navy); text-decoration: none; font-weight: 700; }
+        .social-link { width: 35px; height: 35px; border: 1px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--navy); text-decoration: none; font-weight: 700; transition: 0.3s; }
+        .social-link:hover { background: var(--navy); color: var(--white); }
+
         .logo-box { text-align: center; margin-bottom: 30px; }
-        .logo-box img { width: 120px; cursor: pointer; }
+        .logo-box img { width: 120px; cursor: pointer; transition: 0.3s; }
+        .logo-box img:hover { transform: scale(1.05); }
+        
         h1 { font-family: 'Playfair Display', serif; text-align: center; color: var(--navy); margin-bottom: 40px; }
 
         /* Contenido */
@@ -47,8 +53,8 @@
         <div class="top-nav">
             <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back">🏠 Inicio</a>
             <div class="social-links">
-                <a href="#" class="social-link">IG</a>
-                <a href="#" class="social-link">TK</a>
+                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-link">IG</a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" class="social-link">TK</a>
             </div>
         </div>
 
