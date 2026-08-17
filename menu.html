@@ -98,18 +98,18 @@
             box-shadow: 0 8px 25px rgba(184, 107, 67, 0.2);
         }
 
-        /* --- Cabecera con Logotipo Limpio SIN Círculo --- */
+        /* --- Cabecera con Logotipo Más Grande y Nítido --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 24px;
+            gap: 28px;
             margin-bottom: 50px;
             flex-wrap: wrap;
         }
 
         .site-logo-container {
-            width: 90px;
+            width: 160px; /* Tamaño ampliado para mejor visibilidad */
             height: auto;
             display: flex;
             align-items: center;
@@ -119,7 +119,7 @@
         }
 
         .site-logo-container:hover {
-            transform: scale(1.05) rotate(2deg);
+            transform: scale(1.04);
         }
 
         .site-logo-container img {
@@ -127,6 +127,8 @@
             height: auto;
             object-fit: contain;
             display: block;
+            image-rendering: -webkit-optimize-contrast; /* Máxima definición */
+            filter: drop-shadow(0 10px 20px rgba(184, 107, 67, 0.15));
         }
 
         .interactive-brand-wrapper {
@@ -329,9 +331,8 @@
                 gap: 16px;
                 text-align: center;
             }
-            .interactive-brand-wrapper {
-                align-items: center;
-                text-align: center;
+            .site-logo-container {
+                width: 130px;
             }
             .interactive-brand-title {
                 font-size: 2.2rem;
@@ -551,71 +552,4 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 150;
-                let force = (maxDistance - distance) / maxDistance;
-
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 20;
-                    }
-                }
-
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(184, 107, 67, 0.25)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-    </script>
-</body>
-</html>
+                this.size =
