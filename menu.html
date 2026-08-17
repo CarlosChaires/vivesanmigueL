@@ -374,4 +374,228 @@
         }
 
         .wp-block-search__button:hover {
-            background:
+            background: #9d5735;
+        }
+
+        /* --- Sub-Footer --- */
+        .footer-container-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 10px;
+            border-top: 1px solid rgba(184, 107, 67, 0.15);
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper {
+                padding: 15px 12px;
+            }
+            .sma-collage-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 190px);
+            }
+            .wp-block-pullquote blockquote p {
+                font-size: 1.5rem !important;
+            }
+            .footer-container-custom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <header class="site-header-custom">
+            <div class="site-logo-container" title="Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
+            </div>
+            <div>
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <div class="wp-block-buttons alignwide sma-buttons-container">
+            <div class="wp-block-button sma-pastel-btn">
+                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/menu">PREPARA TU VIAJE</a>
+            </div>
+        </div>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <div class="sma-collage-container">
+            <div class="collage-item">
+                <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos en San Miguel de Allende">
+                <div class="collage-caption">Viñedos y Experiencias</div>
+            </div>
+            <div class="collage-item">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende">
+                <div class="collage-caption">Vuelo en Globo</div>
+            </div>
+            <div class="collage-item">
+                <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Ecos del Pasado">
+                <div class="collage-caption">Historia Colonial</div>
+            </div>
+            <div class="collage-item">
+                <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones">
+                <div class="collage-caption">Tradiciones Vivas</div>
+            </div>
+        </div>
+
+        <div class="wp-block-group alignfull">
+            <figure class="wp-block-pullquote">
+                <blockquote>
+                    <p>¡UN VIAJE AL CORAZÓN!</p>
+                    <cite><strong>Vive la esencia y la magia de San Miguel de Allende</strong></cite>
+                </blockquote>
+            </figure>
+        </div>
+
+        <section class="social-showcase-section">
+            <h3 class="social-showcase-title">Síguenos en nuestra comunidad visual</h3>
+            <p class="social-showcase-desc">Explora reels, historias y los mejores momentos de San Miguel de Allende.</p>
+            <div class="social-buttons-grid">
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="social-card-btn instagram">
+                    📸 Instagram Oficial
+                </a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="social-card-btn tiktok">
+                    🎵 TikTok en Vivo
+                </a>
+            </div>
+        </section>
+
+        <div class="wp-block-group alignfull has-foreground-background-color has-text-color has-background">
+            <div class="wp-block-columns alignwide">
+                <div class="wp-block-column">
+                    <h4 class="wp-block-heading">Sobre nosotros</h4>
+                    <p>Somos una organización especializada en el destino, nuestra finalidad es que usted disfrute de una experiencia inolvidable.</p>
+                </div>
+
+                <div class="wp-block-column">
+                    <h4 class="wp-block-heading">Ponte en contacto</h4>
+                    <ul class="wp-block-list">
+                        <li>vivesma@gmail.com</li>
+                        <li>+52 415 177 36 98</li>
+                    </ul>
+                </div>
+
+                <div class="wp-block-column">
+                    <h4 class="wp-block-heading">Visítanos</h4>
+                    <p>Zona centro, San Miguel de Allende, 37700, México</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="wp-block-group alignwide" style="margin:25px 0;">
+            <form role="search" method="get" action="#" class="wp-block-search">
+                <input type="search" class="wp-block-search__input" placeholder="Busca tu próxima experiencia..." value="" name="s" required />
+                <button type="submit" class="wp-block-search__button">Buscar</button>
+            </form>
+        </div>
+
+        <div class="footer-container-custom">
+            <div style="font-weight: 700; font-size: 13px; color: var(--primary-navy);">Vive San Miguel</div>
+            <div style="font-size: 13px; color: var(--text-muted);">© 2026</div>
+        </div>
+
+    </div>
+
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.8 + 0.4;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.vx = Math.random() * 0.2 - 0.1;
+                this.vy = Math.random() * 0.2 - 0.1;
+                this.color = 'rgba(184, 107, 67, 0.22)';
+            }
+            update() {
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+
+                this.x = this.baseX;
+                this.y = this.baseY;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 16000; // Menos densidad para menor inmersión
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+</body>
+</html>
