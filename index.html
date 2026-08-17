@@ -34,7 +34,7 @@
             min-height: 100vh;
         }
 
-        /* --- Lienzo de Partículas Cuánticas y Sutiles en Tonos Cantera --- */
+        /* --- Lienzo de Partículas Discretas e Inmersivas --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -140,12 +140,12 @@
             background: #ffffff !important;
             color: var(--primary-navy) !important;
             border: 1px solid var(--border-glass) !important;
-            padding: 12px 32px !important;
+            padding: 14px 36px !important;
             border-radius: 30px !important;
             font-weight: 700 !important;
-            font-size: 14px !important;
+            font-size: 14.5px !important;
             text-decoration: none !important;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.06);
             transition: all 0.3s ease !important;
             letter-spacing: 0.5px;
             display: inline-block;
@@ -156,7 +156,7 @@
             color: #ffffff !important;
             border-color: var(--cantera-terracotta) !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(184, 107, 67, 0.25);
+            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.3);
         }
 
         .wp-block-separator {
@@ -166,11 +166,11 @@
             margin: 30px 0;
         }
 
-        /* --- Collage Visual Atractivo con las Imágenes Principales --- */
+        /* --- Collage Visual Atractivo --- */
         .sma-collage-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            grid-template-rows: 240px 240px;
+            grid-template-rows: 250px 250px;
             gap: 16px;
             margin-bottom: 40px;
             border-radius: 28px;
@@ -242,7 +242,7 @@
         /* --- Pullquote / Cita --- */
         .wp-block-pullquote {
             text-align: center;
-            margin: 40px 0 20px 0;
+            margin: 40px 0 25px 0;
             border: none;
             padding: 0;
         }
@@ -264,28 +264,64 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- Galería Instagram --- */
-        .wp-block-jetpack-instagram-gallery {
+        /* --- Sección de Redes Sociales Destacadas (Inmersivas y Visibles) --- */
+        .social-showcase-section {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            padding: 40px 30px;
             text-align: center;
-            margin: 30px 0;
+            margin: 40px 0;
+            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
         }
 
-        .wp-block-jetpack-instagram-gallery a {
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743);
-            color: #ffffff;
-            padding: 15px 35px;
-            border-radius: 30px;
+        .social-showcase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--primary-navy);
+            margin-bottom: 10px;
             font-weight: 700;
-            font-size: 13.5px;
+        }
+
+        .social-showcase-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .social-buttons-grid {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .social-card-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 30px;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 14px;
             text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.25);
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
 
-        .wp-block-jetpack-instagram-gallery a:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 12px 30px rgba(220, 39, 67, 0.35);
+        .social-card-btn.instagram {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-card-btn.tiktok {
+            background: #010101;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-card-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
         }
 
         /* --- Footer Elegante --- */
@@ -388,37 +424,6 @@
             gap: 15px;
         }
 
-        .wp-block-social-links {
-            display: flex;
-            gap: 10px;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .wp-block-social-link a {
-            width: 38px;
-            height: 38px;
-            background: #ffffff;
-            border: 1px solid var(--border-glass);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 12px;
-            box-shadow: 0 4px 10px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s ease;
-        }
-
-        .wp-block-social-link a:hover {
-            background: var(--cantera-terracotta);
-            color: #ffffff;
-            border-color: var(--cantera-terracotta);
-        }
-
         @media screen and (max-width: 768px) {
             .sma-main-wrapper {
                 padding: 20px 16px;
@@ -461,7 +466,7 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
-        <!-- Botón Único de Navegación: Prepara tu Viaje -->
+        <!-- Botón Único de Navegación: Prepara tu Viaje (Con tu link de menú) -->
         <div class="wp-block-buttons alignwide sma-buttons-container">
             <div class="wp-block-button sma-pastel-btn">
                 <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/menu">PREPARA TU VIAJE</a>
@@ -493,21 +498,31 @@
             </figure>
         </div>
 
-        <!-- Cita e Instagram -->
+        <!-- Cita Turística -->
         <div class="wp-block-group alignfull">
             <div style="height:20px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
 
             <figure class="wp-block-pullquote">
                 <blockquote>
                     <p>¡UN VIAJE AL CORAZÓN!</p>
-                    <cite><strong>¡Descubre la magia de San Miguel de Allende en Instagram!</strong></cite>
+                    <cite><strong>Vive la esencia y la magia de San Miguel de Allende</strong></cite>
                 </blockquote>
             </figure>
-
-            <div class="wp-block-jetpack-instagram-gallery">
-                <a href="https://www.instagram.com/sanmiigueldeallende/" rel="noopener noreferrer" target="_blank">Explorar Galería en Instagram</a>
-            </div>
         </div>
+
+        <!-- Sección de Redes Sociales Destacadas e Inmersivas (Grandes y Atractivas para el Visitante) -->
+        <section class="social-showcase-section">
+            <h3 class="social-showcase-title">Síguenos en nuestra comunidad visual</h3>
+            <p class="social-showcase-desc">Explora reels, historias y los mejores momentos de San Miguel de Allende creados para ti.</p>
+            <div class="social-buttons-grid">
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="social-card-btn instagram">
+                    📸 Instagram Oficial
+                </a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="social-card-btn tiktok">
+                    🎵 TikTok en Vivo
+                </a>
+            </div>
+        </section>
 
         <!-- Pie de Página Institucional -->
         <div class="wp-block-group alignfull has-foreground-background-color has-text-color has-background">
@@ -543,10 +558,7 @@
         <!-- Sub-Footer Dock -->
         <div class="footer-container-custom">
             <div style="font-weight: 700; font-size: 13px; letter-spacing: 0.5px; color: var(--primary-navy);">Vive San Miguel</div>
-            <ul class="wp-block-social-links">
-                <li class="wp-block-social-link"><a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" title="Instagram">IG</a></li>
-                <li class="wp-block-social-link"><a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok">TK</a></li>
-            </ul>
+            <div style="font-size: 13px; color: var(--text-muted);">© 2026</div>
         </div>
 
     </div>
