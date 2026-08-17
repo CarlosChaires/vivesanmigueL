@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel - Guía Turística de San Miguel de Allende</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-sanmiguel: #fcf9f5;
-            --surface-glass: rgba(255, 255, 255, 0.92);
-            --surface-card: rgba(255, 255, 255, 0.98);
+            --bg-sanmiguel: #fbf9f6;
+            --surface-glass: rgba(255, 255, 255, 0.95);
             --cantera-terracotta: #b86b43;
             --cantera-rose: #d48384;
-            --cantera-gold: #df9e7d;
             --primary-navy: #1b2a4a;
-            --text-main: #1f2733;
-            --text-muted: #55606d;
-            --border-glow: rgba(184, 107, 67, 0.25);
+            --text-main: #232b38;
+            --text-muted: #626d7a;
+            --border-glass: rgba(184, 107, 67, 0.15);
         }
 
         *, *::before, *::after {
@@ -27,17 +25,16 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #fcf9f5 0%, #f4ede4 50%, #f9f4ed 100%);
+            background-color: var(--bg-sanmiguel);
             color: var(--text-main);
             line-height: 1.7;
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
         }
 
-        /* --- Lienzo de Partículas Consteladas de Fondo (Tonos Cantera / Atardecer) --- */
+        /* --- Lienzo de Partículas Sutiles y Elegantes --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -48,100 +45,53 @@
             z-index: 0;
         }
 
-        /* --- Orbe de Luz Orgánica Dinámica que Sigue el Cursor --- */
+        /* --- Aura Suave del Puntero (Inmersión Reducida y Balanceada) --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 750px;
-            height: 750px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.28) 0%, rgba(184, 107, 67, 0.18) 45%, rgba(223, 158, 125, 0.08) 75%, transparent 90%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(184, 107, 67, 0.12) 0%, rgba(212, 131, 132, 0.06) 50%, transparent 75%);
+            border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            filter: blur(55px);
-            mix-blend-mode: multiply;
+            filter: blur(40px);
             transition: width 0.3s ease, height 0.3s ease;
         }
 
         .sma-main-wrapper {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
+            max-width: 1050px;
             margin: 0 auto;
-            padding: 60px 24px;
+            padding: 40px 24px;
         }
 
-        /* --- Botón de Inicio --- */
-        .sma-inicio-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sma-inicio-btn {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--border-glow) !important;
-            padding: 14px 36px !important;
-            border-radius: 40px !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            text-decoration: none !important;
-            display: inline-block;
-            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.12);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 1px;
-        }
-
-        .sma-inicio-btn:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(184, 107, 67, 0.35);
-        }
-
-        /* --- Cabecera Holográfica Ultra Nítida sobre Fondo Claro --- */
+        /* --- Cabecera Oficial Limpia con tu Logotipo --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 32px;
-            margin-bottom: 60px;
+            gap: 22px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
+            text-align: center;
         }
 
         .site-logo-container {
-            width: 120px;
-            height: 120px;
+            width: 85px;
+            height: 85px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, rgba(184, 107, 67, 0.18) 0%, rgba(255, 255, 255, 0.98) 75%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #ffffff;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid rgba(184, 107, 67, 0.4);
-            box-shadow: 0 15px 35px rgba(184, 107, 67, 0.2);
-            animation: float-logo 6s ease-in-out infinite;
-            cursor: pointer;
-            padding: 14px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .site-logo-container:hover {
-            transform: scale(1.12) rotate(8deg);
-            box-shadow: 0 20px 45px rgba(184, 107, 67, 0.35);
-            border-color: var(--cantera-terracotta);
-        }
-
-        @keyframes float-logo {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(4deg); }
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.12);
+            padding: 10px;
         }
 
         .site-logo-container img {
@@ -151,573 +101,277 @@
             display: block;
         }
 
-        .interactive-brand-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-        }
-
         .interactive-brand-title {
             font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 3.4rem;
+            font-size: 2.4rem;
             font-weight: 800;
             color: var(--primary-navy);
             text-decoration: none;
-            position: relative;
-            cursor: pointer;
-            display: inline-block;
-            transition: color 0.3s ease;
-            letter-spacing: -1px;
+            display: block;
             line-height: 1.1;
-        }
-
-        .interactive-brand-title::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            bottom: -6px;
-            left: 0;
-            background-color: var(--cantera-terracotta);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 2px;
-        }
-
-        .interactive-brand-title:hover {
-            color: var(--cantera-terracotta);
-        }
-
-        .interactive-brand-title:hover::after {
-            width: 100%;
+            letter-spacing: -1px;
         }
 
         .brand-subtitle-badge {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             color: var(--cantera-terracotta);
-            margin-top: 10px;
-            font-weight: 800;
+            margin-top: 5px;
+            font-weight: 700;
+            display: block;
         }
 
-        h2.wp-block-heading {
-            font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.6rem;
-            color: var(--primary-navy);
-            margin-bottom: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+        /* --- Botón Único de Navegación: Prepara tu Viaje (Con tu link de menú) --- */
+        .sma-buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .sma-pastel-btn .wp-block-button__link {
+            background: #ffffff !important;
+            color: var(--primary-navy) !important;
+            border: 1px solid var(--border-glass) !important;
+            padding: 13px 32px !important;
+            border-radius: 30px !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            transition: all 0.3s ease !important;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .sma-pastel-btn .wp-block-button__link:hover {
+            background: var(--cantera-terracotta) !important;
+            color: #ffffff !important;
+            border-color: var(--cantera-terracotta) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 107, 67, 0.25);
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: rgba(184, 107, 67, 0.15);
+            margin: 30px 0;
+        }
+
+        /* --- Collage Visual Organizado (4 Secciones Clave) --- */
+        .sma-collage-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 250px 250px;
+            gap: 16px;
+            margin-bottom: 35px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(27, 42, 74, 0.08);
+            border: 1px solid var(--border-glass);
+            background: #fff;
+        }
+
+        .collage-item {
+            position: relative;
+            overflow: hidden;
+            background: #f4eee9;
+        }
+
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .collage-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .collage-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(0deg, rgba(27,42,74,0.82) 0%, transparent 100%);
+            color: #ffffff;
+            padding: 20px 18px 12px 18px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* --- Cita Turística --- */
+        .wp-block-pullquote {
             text-align: center;
+            margin: 35px 0 20px 0;
+            border: none;
+            padding: 0;
         }
 
-        /* --- Tarjetas 3D Cristalinas Ultra Nítidas sobre Fondo Claro --- */
+        .wp-block-pullquote blockquote p {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem !important;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .wp-block-pullquote cite {
+            font-style: normal;
+            font-size: 0.95rem;
+            color: var(--cantera-terracotta);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Sección de Redes Sociales Visibles y Atractivas --- */
+        .social-showcase-section {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-align: center;
+            margin: 35px 0;
+            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.04);
+        }
+
+        .social-showcase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .social-showcase-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .social-buttons-grid {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .social-card-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 13.5px;
+            text-decoration: none;
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .social-card-btn.instagram {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-card-btn.tiktok {
+            background: #111111;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .social-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        /* --- Footer Institucional Elegante --- */
+        .has-foreground-background-color {
+            background: var(--primary-navy) !important;
+            border-radius: 28px;
+            padding: 45px 30px;
+            margin-top: 35px;
+            color: #ffffff !important;
+            box-shadow: 0 20px 50px rgba(27, 42, 74, 0.12);
+        }
+
+        .has-foreground-background-color h4 {
+            font-family: 'Playfair Display', serif;
+            color: #f4d0a9 !important;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .has-foreground-background-color p, 
+        .has-foreground-background-color li {
+            color: #94a3b8 !important;
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .wp-block-list {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .wp-block-list li {
+            margin-bottom: 5px;
+        }
+
         .wp-block-columns {
             display: flex;
+            gap: 25px;
             flex-wrap: wrap;
-            gap: 32px;
-            margin-bottom: 3rem;
-            align-items: stretch;
         }
 
         .wp-block-column {
             flex: 1;
-            min-width: 320px;
-            background: var(--surface-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 28px;
-            padding: 34px 30px;
-            box-shadow: 0 20px 45px rgba(27, 42, 74, 0.08);
-            border: 1px solid var(--border-glow);
+            min-width: 200px;
+        }
+
+        /* --- Buscador --- */
+        .wp-block-search {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            will-change: transform;
-            position: relative;
-            overflow: hidden;
+            justify-content: center;
+            margin: 30px 0;
         }
 
-        .wp-block-column::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 150%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(184, 107, 67, 0.08), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.7s ease;
+        .wp-block-search__input {
+            width: 100%;
+            max-width: 420px;
+            padding: 13px 20px;
+            background: #ffffff;
+            border: 1px solid var(--border-glass);
+            border-radius: 25px;
+            color: var(--primary-navy);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.03);
+            transition: border-color 0.3s ease;
         }
 
-        .wp-block-column:hover::before {
-            left: 150%;
-        }
-
-        .wp-block-column:hover {
-            transform: translateY(-12px) rotateX(4deg) rotateY(-4deg) scale(1.03);
-            box-shadow: 0 35px 70px rgba(184, 107, 67, 0.2), 0 0 30px rgba(212, 131, 132, 0.2);
+        .wp-block-search__input:focus {
             border-color: var(--cantera-terracotta);
-            background: rgba(255, 255, 255, 0.99);
         }
 
-        .wp-block-image {
-            margin: 0 0 24px 0;
-            overflow: hidden;
-            border-radius: 20px;
-            width: 100%;
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f4ede4;
-            position: relative;
+        .wp-block-search__button {
+            background: var(--cantera-terracotta);
+            color: #ffffff;
+            border: none;
+            padding: 0 22px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.3s ease;
         }
 
-        .wp-block-image img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
-            filter: contrast(1.05) saturate(1.1);
-        }
-
-        .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.1);
-            filter: contrast(1.15) saturate(1.2);
-        }
-
-        .card-content-area {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
-        }
-
-        .wp-block-buttons {
-            display: flex;
-            justify-content: center;
-            margin: 18px 0;
-            flex-shrink: 0;
-        }
-
-        .wp-block-button__link {
-            background: #ffffff !important;
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--cantera-terracotta) !important;
-            padding: 15px 30px !important;
-            border-radius: 40px !important;
-            font-weight: 700 !important;
-            font-size: 14.5px !important;
-            text-decoration: none !important;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(184, 107, 67, 0.08);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 1px;
-            text-align: center;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wp-block-button__link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(184, 107, 67, 0.15), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .wp-block-button__link:hover::before {
-            left: 100%;
-        }
-
-        .wp-block-button__link:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.3);
-        }
-
-        /* --- Tipografía Nítida y Clara sobre Fondo Claro --- */
-        p.is-service-description, p {
-            color: var(--text-muted) !important;
-            font-size: 15px !important;
-            font-weight: 500 !important;
-            line-height: 1.75 !important;
-            margin: 10px 0 0 0;
-            text-align: center;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        strong {
-            color: var(--primary-navy) !important;
-            font-weight: 700 !important;
-        }
-
-        /* --- Sección Secundaria de Alto Impacto --- */
-        .wp-block-group.has-background {
-            background: linear-gradient(135deg, rgba(212, 131, 132, 0.08) 0%, rgba(184, 107, 67, 0.06) 100%) !important;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 36px;
-            padding: 60px 24px;
-            margin: 60px 0;
-            border: 1px solid rgba(184, 107, 67, 0.22);
-            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.05);
-        }
-
-        /* --- Footer --- */
-        .footer-brand-section {
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
-            border-top: 1px solid var(--border-glow);
-        }
-
-        .footer-brand-section p {
-            font-weight: 800 !important;
-            color: var(--primary-navy) !important;
-            letter-spacing: 3.5px;
-            text-transform: uppercase;
-            font-size: 13px !important;
-        }
-
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 16px;
-            }
-            .site-header-custom {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            .interactive-brand-wrapper {
-                align-items: center;
-                text-align: center;
-            }
-            .interactive-brand-title {
-                font-size: 2.4rem;
-            }
-            h2.wp-block-heading {
-                font-size: 1.9rem;
-            }
-            .wp-block-image {
-                height: 190px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Lienzo de constelación cuántica interactiva en tiempo real sobre fondo claro -->
-    <canvas id="immersive-canvas"></canvas>
-
-    <!-- Núcleo de Luz Orgánica de Cursor -->
-    <div id="cursor-glow"></div>
-
-    <div class="sma-main-wrapper">
-
-        <!-- Botón de Inicio / Index Superior -->
-        <div class="sma-inicio-container">
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="sma-inicio-btn">🏠 Inicio</a>
-        </div>
-
-        <!-- Cabecera Holográfica -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
-            </div>
-            <div class="interactive-brand-wrapper">
-                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
-                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
-            </div>
-        </header>
-
-        <!-- Sección Principal 1 -->
-        <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
-            <h2 class="wp-block-heading alignwide">Descubre la magia de San Miguel de Allende: ¡Planifica tu visita hoy!</h2>
-
-            <div class="wp-block-group alignwide" style="margin-top:0;margin-bottom:0">
-                <!-- Fila 1 -->
-                <div class="wp-block-columns alignwide">
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="Mapa Turístico">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/mapa.html" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
-                            </div>
-                            <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000" alt="Eventos">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
-                            </div>
-                            <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000" alt="Ecos del pasado">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
-                            </div>
-                            <p>Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fila 2 -->
-                <div class="wp-block-columns alignwide">
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
-                            </div>
-                            <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w1000" alt="Tradiciones">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
-                            </div>
-                            <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000" alt="Rutas temáticas">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
-                            </div>
-                            <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección Secundaria Interactiva -->
-        <div class="wp-block-group alignfull has-background">
-            <div class="wp-block-columns alignwide">
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="Autobuses locales">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&amp;usp=drive_link" target="_blank" rel="noopener noreferrer">Rutas de autobuses locales</a>
-                        </div>
-                        <p class="is-service-description">Información esencial para utilizar el transporte público local y moverte como un residente.</p>
-                    </div>
-                </div>
-
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000" alt="Viñedos">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
-                        </div>
-                        <p>Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.</p>
-                    </div>
-                </div>
-
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="Tours">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="#">Tours</a>
-                        </div>
-                        <p>Explora a profundidad de la mano de expertos locales que enriquecerán cada paso de tu visita.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer institucional -->
-        <div class="footer-brand-section">
-            <p>vivesanmiguel.com</p>
-        </div>
-
-    </div>
-
-    <!-- Script de Motor de Partículas y Tarjetas 3D Holográficas sobre Fondo Claro -->
-    <script>
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let glowX = mouseX, glowY = mouseY;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.15;
-            glowY += (mouseY - glowY) * 0.15;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
-
-        // Inclinación 3D Avanzada en Tarjetas
-        const cards = document.querySelectorAll('.wp-block-column');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -12;
-                const rotateY = ((x - centerX) / centerX) * 12;
-                card.style.transform = `translateY(-12px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
-
-        // Motor de Canvas Ultra Inmersivo con Tonos Cantera y Terracota sobre Fondo Blanco/Claro
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2.8 + 0.8;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 10;
-                this.vx = Math.random() * 0.7 - 0.35;
-                this.vy = Math.random() * 0.7 - 0.35;
-                
-                const palette = [
-                    'rgba(184, 107, 67, 0.65)', // Terracota
-                    'rgba(212, 131, 132, 0.7)',  // Rosa Cantera
-                    'rgba(223, 158, 125, 0.65)'  // Oro Colonial
-                ];
-                this.color = palette[Math.floor(Math.random() * palette.length)];
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 220;
-                let force = (maxDistance - distance) / maxDistance;
-
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.8;
-                    this.y -= forceDirectionY * force * this.density * 0.8;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 18;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 18;
-                    }
-                }
-
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 7500;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    let dx = particles[i].x - particles[j].x;
-                    let dy = particles[i].y - particles[j].y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 130) {
-                        ctx.strokeStyle = `rgba(184, 107, 67, ${0.25 * (1 - dist / 130)})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-    </script>
-</body>
-</html>
+        .wp-block-search__button:hover {
+            background:
