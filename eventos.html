@@ -1,314 +1,191 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda de Eventos - Vive San Miguel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-sanmiguel: #fbf9f6;
-            --surface-glass: rgba(255, 255, 255, 0.96);
-            --cantera-terracotta: #b86b43;
-            --cantera-rose: #d48384;
-            --primary-navy: #1b2a4a;
-            --text-main: #232b38;
-            --text-muted: #626d7a;
-            --border-glass: rgba(184, 107, 67, 0.18);
-        }
+<script>
+        const eventosRespaldo = [
+            {
+                titulo: "Festival Internacional Cervantino en SMA",
+                descripcion: "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenario históricos de la ciudad.",
+                fecha: "Próximamente",
+                lugar: "Centro Histórico",
+                costo: "Entrada libre / Variable"
+            },
+            {
+                titulo: "Recorrido de Viñedos y Cata de Altura",
+                descripcion: "Vive una experiencia enológica exclusiva con catas guiadas y maridajes en los mejores viñedos de la región.",
+                fecha: "Fines de semana",
+                lugar: "Viñedos San Lucas / San José la Vista",
+                costo: "Desde $800 MXN"
+            },
+            {
+                titulo: "Conciertos en la Parroquia y Jardín Principal",
+                descripcion: "Música en vivo, serenatas tradicionales y un ambiente colonial inigualable bajo elAtardecer sanmiguelense.",
+                fecha: "Diario por la tarde",
+                lugar: "Jardín Principal",
+                costo: "Evento gratuito"
+            }
+        ];
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--text-main);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-        }
-
-        /* --- Lienzo de Partículas Discretas e Inmersivas --- */
-        #immersive-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* --- Aura Suave que Sigue el Puntero del Cursor --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.2) 0%, rgba(184, 107, 67, 0.1) 50%, transparent 80%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            filter: blur(50px);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-
-        .sma-main-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
-
-        /* --- Cabecera con Logotipo Oficial SIN Círculo (Limpio y en Alta Definición) --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        .site-logo-container {
-            width: 130px;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .site-logo-container:hover {
-            transform: scale(1.04);
-        }
-
-        .site-logo-container img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            filter: drop-shadow(0 8px 20px rgba(184, 107, 67, 0.15));
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            text-decoration: none;
-            display: block;
-            line-height: 1.1;
-            letter-spacing: -1px;
-        }
-
-        .brand-subtitle-badge {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--cantera-terracotta);
-            margin-top: 6px;
-            font-weight: 700;
-            display: block;
-        }
-
-        /* --- Botón de Volver al Inicio --- */
-        .sma-buttons-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-
-        .sma-pastel-btn .wp-block-button__link {
-            background: #ffffff !important;
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--border-glass) !important;
-            padding: 12px 30px !important;
-            border-radius: 30px !important;
-            font-weight: 700 !important;
-            font-size: 13.5px !important;
-            text-decoration: none !important;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.06);
-            transition: all 0.3s ease !important;
-            letter-spacing: 0.5px;
-            display: inline-block;
-        }
-
-        .sma-pastel-btn .wp-block-button__link:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.3);
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: rgba(184, 107, 67, 0.15);
-            margin: 30px 0;
-        }
-
-        /* --- Título de Sección --- */
-        .header-title-area {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header-title-area h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.3rem;
-            color: var(--primary-navy);
-            margin-bottom: 10px;
-        }
-
-        .header-title-area p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        /* --- Cuadrícula de Tarjetas Uniformes 3D --- */
-        .wp-block-columns {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 3rem;
-        }
-
-        .wp-block-column {
-            background: var(--surface-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 22px;
-            padding: 28px 24px;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.06);
-            border: 1px solid var(--border-glass);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wp-block-column:hover {
-            transform: translateY(-8px) scale(1.015);
-            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
-            border-color: var(--cantera-terracotta);
-            background: rgba(255, 255, 255, 0.99);
-        }
-
-        .wp-block-column h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            font-size: 1.3rem;
-            margin-top: 0;
-            margin-bottom: 12px;
-        }
-
-        .wp-block-column p {
-            color: var(--text-muted) !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 0 0 20px 0;
-        }
-
-        .event-meta {
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            font-weight: 600;
-            background: rgba(184, 107, 67, 0.06);
-            padding: 12px 16px;
-            border-radius: 12px;
-            line-height: 1.6;
-            border: 1px solid rgba(184, 107, 67, 0.1);
-        }
-
-        /* --- Footer --- */
-        .footer-brand-section {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-glass);
-        }
-
-        .footer-brand-section p {
-            font-weight: 800 !important;
-            color: var(--primary-navy) !important;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 12px !important;
-        }
-
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper { padding: 25px 16px; }
-            .site-header-custom { flex-direction: column; gap: 16px; text-align: center; }
-            .site-logo-container { width: 110px; }
-            .interactive-brand-title { font-size: 2.2rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <canvas id="immersive-canvas"></canvas>
-    <div id="cursor-glow"></div>
-
-    <div class="sma-main-wrapper">
-
-        <header class="site-header-custom">
-            <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
-            </div>
-            <div>
-                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
-                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
-            </div>
-        </header>
-
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-
-        <div class="sma-buttons-container">
-            <div class="wp-block-button sma-pastel-btn">
-                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/">← Volver al Inicio</a>
-            </div>
-        </div>
-
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-
-        <div class="header-title-area">
-            <h2>Agenda Cultural y de Eventos</h2>
-            <p>Sincronizada automáticamente en tiempo real con las mejores actividades de la ciudad.</p>
-        </div>
-
-        <div id="contenedor-eventos" class="wp-block-columns">
-            <p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted);">Cargando la cartelera de eventos...</p>
-        </div>
-
-        <div class="footer-brand-section">
-            <p>vivesanmiguel.com</p>
-        </div>
-
-    </div>
-
-    <script>
-        // Carga automática del JSON generado por el script diario
         async function cargarEventosDinamicos() {
+            let contenedor = document.getElementById('contenedor-eventos');
             try {
-                let respuesta = await fetch('eventos_sma.json');
+                let respuesta = await fetch('eventos_sma.json?' + new Date().getTime());
+                if (!respuesta.ok) throw new Error("No se pudo cargar el JSON");
                 let eventos = await respuesta.json();
-                let contenedor = document.getElementById('contenedor-eventos');
                 
-                if (!eventos || eventos.length === 0
+                if (!eventos || eventos.length === 0) {
+                    mostrarTarjetas(eventosRespaldo);
+                    return;
+                }
+
+                mostrarTarjetas(eventos);
+            } catch (error) {
+                // Si falla o no encuentra el JSON, usa el respaldo instantáneo
+                mostrarTarjetas(eventosRespaldo);
+            }
+        }
+
+        function mostrarTarjetas(lista) {
+            let contenedor = document.getElementById('contenedor-eventos');
+            contenedor.innerHTML = '';
+            lista.forEach(ev => {
+                let tarjeta = document.createElement('div');
+                tarjeta.className = 'wp-block-column';
+                tarjeta.innerHTML = `
+                    <div>
+                        <h3>${ev.titulo}</h3>
+                        <p>${ev.descripcion}</p>
+                    </div>
+                    <div class="event-meta">
+                        📅 ${ev.fecha}<br>
+                        📍 ${ev.lugar}<br>
+                        💰 ${ev.costo}
+                    </div>
+                `;
+                contenedor.appendChild(tarjeta);
+            });
+            inicializarEfecto3D();
+        }
+
+        function inicializarEfecto3D() {
+            const cards = document.querySelectorAll('.wp-block-column');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -6;
+                    const rotateY = ((x - centerX) / centerX) * 6;
+                    card.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.015)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
+                });
+            });
+        }
+
+        cargarEventosDinamicos();
+
+        // Control del Aura y Partículas Inmersivas
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(184, 107, 67, 0.35)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 160;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 25;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 25;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
