@@ -34,7 +34,7 @@
             min-height: 100vh;
         }
 
-        /* --- Lienzo de Partículas Discretas e Inmersivas --- */
+        /* --- Lienzo de Partículas Cuánticas y Constelación con Efecto de Logotipo --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -415,7 +415,7 @@
 </head>
 <body>
 
-    <!-- Lienzo de Partículas Discretas e Inmersivas -->
+    <!-- Lienzo de Partículas con Conversión Dinámica al Logotipo -->
     <canvas id="immersive-canvas"></canvas>
     <div id="cursor-glow"></div>
 
@@ -443,7 +443,7 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
-        <!-- Collage Visual Organizado de 4 Secciones (Viñedos, Vuelo en Globo, Historia y Tradiciones) -->
+        <!-- Collage Visual Organizado de 4 Secciones -->
         <div class="sma-collage-container">
             <div class="collage-item">
                 <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos en San Miguel de Allende">
@@ -528,7 +528,7 @@
 
     </div>
 
-    <!-- Script de Efecto Sutil de Puntero y Partículas -->
+    <!-- Script Avanzado: Las Partículas Forman el Logotipo y Reaccionan al Cursor -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -553,55 +553,91 @@
 
         let width, height;
         let particles = [];
+        let logoCoordinates = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            generateLogoShape();
         }
 
         window.addEventListener('resize', resize);
-        resize();
+
+        // Cargar la imagen del logotipo para extraer sus puntos (silueta)
+        function generateLogoShape() {
+            logoCoordinates = [];
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            // Usamos un proxy o cargamos directo el enlace directo procesado de imagen
+            img.src = "https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz";
+            
+            img.onload = function() {
+                const offScreenCanvas = document.createElement('canvas');
+                const offCtx = offScreenCanvas.getContext('2d');
+                const size = 180; // Resolución de muestreo de la silueta
+                offScreenCanvas.width = size;
+                offScreenCanvas.height = size;
+                
+                offCtx.drawImage(img, 0, 0, size, size);
+                const imgData = offCtx.getImageData(0, 0, size, size).data;
+
+                const targetCoords = [];
+                const step = 3; // Muestreo de píxeles
+                
+                for (let y = 0; y < size; y += step) {
+                    for (let x = 0; x < size; x += step) {
+                        const alphaIndex = (y * size + x) * 4 + 3;
+                        if (imgData[alphaIndex] > 128) { // Si el píxel es visible
+                            // Centrar y escalar el logotipo en el fondo
+                            targetCoords.push({
+                                x: (width / 2) - (size * 1.5) + (x * 3),
+                                y: (height / 2) - (size * 1.5) + (y * 3)
+                            });
+                        }
+                    }
+                }
+
+                // Asignar objetivos a las partículas
+                particles.forEach((p, index) => {
+                    if (targetCoords.length > 0) {
+                        const target = targetCoords[index % targetCoords.length];
+                        p.targetX = target.x;
+                        p.targetY = target.y;
+                    }
+                });
+            };
+        }
 
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
+                this.targetX = this.x;
+                this.targetY = this.y;
+                this.size = Math.random() * 2.2 + 0.6;
                 this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-                this.color = 'rgba(184, 107, 67, 0.35)';
+                this.color = 'rgba(184, 107, 67, 0.45)';
             }
             update() {
+                // Atracción suave hacia la forma del logotipo en el fondo
+                let dxTarget = this.targetX - this.x;
+                let dyTarget = this.targetY - this.y;
+                this.x += dxTarget * 0.03;
+                this.y += dyTarget * 0.03;
+
+                // Interacción con el cursor del mouse
                 let dx = mouseX - this.x;
                 let dy = mouseY - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 160;
-                let force = (maxDistance - distance) / maxDistance;
+                let maxDistance = 140;
 
                 if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 25;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 25;
-                    }
+                    let force = (maxDistance - distance) / maxDistance;
+                    let forceDirectionX = dx / distance;
+                    let forceDirectionY = dy / distance;
+                    this.x -= forceDirectionX * force * this.density * 0.6;
+                    this.y -= forceDirectionY * force * this.density * 0.6;
                 }
-
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
             }
             draw() {
                 ctx.fillStyle = this.color;
@@ -614,17 +650,33 @@
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 10000;
+            let numberOfParticles = 700; // Cantidad de partículas de fondo formando el logo
             for (let i = 0; i < numberOfParticles; i++) {
                 particles.push(new Particle());
             }
+            generateLogoShape();
         }
 
         initParticles();
+        resize();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
+            
             for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 90) {
+                        ctx.strokeStyle = `rgba(184, 107, 67, ${0.2 * (1 - dist / 90)})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
                 particles[i].update();
                 particles[i].draw();
             }
