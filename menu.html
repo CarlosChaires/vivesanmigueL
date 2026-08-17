@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-sanmiguel: #fbf9f6;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #b86b43;
-            --cantera-rose: #d48384;
-            --cantera-gold: #df9e7d;
-            --text-main: #232b38;
-            --text-muted: #626d7a;
-            --border-subtle: rgba(184, 107, 67, 0.18);
+            --bg-deep: #0a0e17;
+            --surface-glass: rgba(18, 26, 43, 0.75);
+            --surface-card: rgba(25, 36, 60, 0.85);
+            --cantera-terracotta: #ff7e47;
+            --cantera-rose: #ff5e7e;
+            --cantera-gold: #ffb347;
+            --text-main: #f4f6fb;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(255, 126, 71, 0.35);
         }
 
         *, *::before, *::after {
@@ -26,15 +26,16 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-sanmiguel);
+            background: var(--bg-deep);
             color: var(--text-main);
             line-height: 1.7;
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
 
-        /* --- Lienzo Inmersivo Cuántico Ultra Avanzado --- */
+        /* --- Lienzo de Partículas Cuánticas y Constelación Holográfica Interactiva --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -45,105 +46,98 @@
             z-index: 0;
         }
 
-        /* --- Núcleo de Luz Holográfica de Cursor Multicapa --- */
+        /* --- Aura de Plasma Viva que Sigue el Cursor --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 750px;
-            height: 750px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.28) 0%, rgba(184, 107, 67, 0.15) 45%, rgba(223, 158, 125, 0.05) 70%, transparent 90%);
-            border-radius: 38% 62% 65% 35% / 45% 35% 65% 55%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(255, 94, 126, 0.28) 0%, rgba(255, 126, 71, 0.18) 40%, rgba(255, 179, 71, 0.08) 70%, transparent 85%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             filter: blur(55px);
-            mix-blend-mode: multiply;
-            animation: morph-glow 10s ease-in-out infinite alternate;
-        }
-
-        @keyframes morph-glow {
-            0% { border-radius: 38% 62% 65% 35% / 45% 35% 65% 55%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-            50% { border-radius: 60% 40% 40% 60% / 55% 60% 40% 45%; transform: translate(-50%, -50%) rotate(180deg) scale(1.12); }
-            100% { border-radius: 42% 58% 50% 50% / 35% 45% 55% 65%; transform: translate(-50%, -50%) rotate(360deg) scale(0.95); }
+            mix-blend-mode: screen;
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
         .sma-main-wrapper {
             position: relative;
             z-index: 2;
-            max-width: 1160px;
+            max-width: 1180px;
             margin: 0 auto;
-            padding: 50px 24px;
+            padding: 60px 24px;
         }
 
-        /* --- Botón de Inicio Superior --- */
+        /* --- Botón de Inicio --- */
         .sma-inicio-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .sma-inicio-btn {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(16px);
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--border-subtle) !important;
-            padding: 11px 28px !important;
+            background: rgba(25, 36, 60, 0.9) !important;
+            backdrop-filter: blur(20px);
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-glow) !important;
+            padding: 12px 32px !important;
             border-radius: 40px !important;
             font-weight: 600 !important;
             font-size: 13px !important;
             text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.06);
+            box-shadow: 0 0 25px rgba(255, 126, 71, 0.15);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .sma-inicio-btn:hover {
             background: var(--cantera-terracotta) !important;
-            color: var(--white) !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(184, 107, 67, 0.3);
+            color: #ffffff !important;
+            border-color: #fff !important;
+            transform: translateY(-4px) scale(1.06);
+            box-shadow: 0 0 35px rgba(255, 126, 71, 0.6);
         }
 
-        /* --- Cabecera Inmersiva --- */
+        /* --- Cabecera Holográfica Inmersiva --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 28px;
-            margin-bottom: 50px;
+            gap: 30px;
+            margin-bottom: 60px;
             flex-wrap: wrap;
         }
 
         .site-logo-container {
-            width: 105px;
-            height: 105px;
+            width: 110px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, rgba(184, 107, 67, 0.15) 0%, rgba(255, 255, 255, 0.95) 75%);
-            backdrop-filter: blur(16px);
+            background: radial-gradient(circle, rgba(255, 126, 71, 0.3) 0%, rgba(18, 26, 43, 0.9) 75%);
+            backdrop-filter: blur(25px);
             border-radius: 50%;
             overflow: hidden;
-            border: 1px solid rgba(184, 107, 67, 0.3);
-            box-shadow: 0 20px 45px rgba(184, 107, 67, 0.18);
+            border: 2px solid rgba(255, 126, 71, 0.5);
+            box-shadow: 0 0 40px rgba(255, 126, 71, 0.3);
             animation: float-logo 6s ease-in-out infinite;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-            padding: 12px;
+            padding: 14px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .site-logo-container:hover {
-            transform: scale(1.1) rotate(6deg);
-            box-shadow: 0 25px 55px rgba(184, 107, 67, 0.35);
-            border-color: var(--cantera-terracotta);
+            transform: scale(1.12) rotate(8deg);
+            box-shadow: 0 0 60px rgba(255, 94, 126, 0.6);
+            border-color: var(--cantera-rose);
         }
 
         @keyframes float-logo {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
         }
 
         .site-logo-container img {
@@ -151,6 +145,7 @@
             height: 100%;
             object-fit: contain;
             display: block;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
         }
 
         .interactive-brand-wrapper {
@@ -162,9 +157,9 @@
 
         .interactive-brand-title {
             font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            color: var(--primary-navy);
+            color: #ffffff;
             text-decoration: none;
             position: relative;
             cursor: pointer;
@@ -172,7 +167,7 @@
             transition: color 0.3s ease;
             letter-spacing: -1px;
             line-height: 1.1;
-            text-shadow: 0 10px 30px rgba(27, 42, 74, 0.08);
+            text-shadow: 0 0 30px rgba(255, 126, 71, 0.4);
         }
 
         .interactive-brand-title::after {
@@ -182,7 +177,7 @@
             height: 3px;
             bottom: -6px;
             left: 0;
-            background-color: var(--cantera-terracotta);
+            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
             transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             border-radius: 2px;
         }
@@ -196,85 +191,90 @@
         }
 
         .brand-subtitle-badge {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--cantera-terracotta);
+            letter-spacing: 4px;
+            color: var(--cantera-gold);
             margin-top: 8px;
-            font-weight: 700;
+            font-weight: 750;
+            text-shadow: 0 0 15px rgba(255, 179, 71, 0.3);
         }
 
         h2.wp-block-heading {
             font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.3rem;
-            color: var(--primary-navy);
-            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 3.5rem;
             font-weight: 700;
             letter-spacing: -0.5px;
             text-align: center;
+            text-shadow: 0 0 25px rgba(255, 126, 71, 0.25);
         }
 
-        /* --- Tarjetas con Efecto de Profundidad 3D Inmersivo y Holográfico --- */
+        /* --- Tarjetas con Estilo Glassmorphism Espacial e Inclinación 3D Viva --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
-            gap: 28px;
-            margin-bottom: 2.5rem;
+            gap: 32px;
+            margin-bottom: 3rem;
             align-items: stretch;
         }
 
         .wp-block-column {
             flex: 1;
             min-width: 320px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 26px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 28px;
             padding: 32px 28px;
-            box-shadow: 0 20px 45px rgba(27, 42, 74, 0.05);
-            border: 1px solid var(--border-subtle);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-glow);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
             transform-style: preserve-3d;
             perspective: 1000px;
             will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de brillo láser deslizante al pasar el mouse */
+        .wp-block-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 126, 71, 0.1), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.7s ease;
+        }
+
+        .wp-block-column:hover::before {
+            left: 150%;
         }
 
         .wp-block-column:hover {
-            transform: translateY(-10px) rotateX(2deg) rotateY(-2deg) scale(1.02);
-            box-shadow: 0 35px 70px rgba(184, 107, 67, 0.22), 0 0 30px rgba(212, 131, 132, 0.2);
-            border-color: rgba(184, 107, 67, 0.4);
-            background: rgba(255, 255, 255, 0.98);
+            transform: translateY(-12px) rotateX(4deg) rotateY(-4deg) scale(1.03);
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.7), 0 0 45px rgba(255, 126, 71, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: var(--cantera-terracotta);
         }
 
         .wp-block-image {
-            margin: 0 0 20px 0;
+            margin: 0 0 22px 0;
             overflow: hidden;
-            border-radius: 18px;
+            border-radius: 20px;
             width: 100%;
-            height: 200px;
+            height: 210px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f4eee9;
-            flex-shrink: 0;
+            background: #111827;
             position: relative;
-        }
-
-        .wp-block-image::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 60%, rgba(27, 42, 74, 0.15) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        .wp-block-column:hover .wp-block-image::after {
-            opacity: 1;
         }
 
         .wp-block-image img {
@@ -282,12 +282,12 @@
             height: 100% !important;
             object-fit: cover !important;
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
-            filter: contrast(1.02) saturate(1.05);
+            filter: contrast(1.1) saturate(1.2);
         }
 
         .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.08);
-            filter: contrast(1.08) saturate(1.15);
+            transform: scale(1.1);
+            filter: contrast(1.2) saturate(1.35);
         }
 
         .card-content-area {
@@ -305,79 +305,66 @@
         }
 
         .wp-block-button__link {
-            background: var(--white) !important;
-            color: var(--primary-navy) !important;
+            background: linear-gradient(135deg, rgba(25, 36, 60, 0.9), rgba(40, 56, 90, 0.9)) !important;
+            color: #ffffff !important;
             border: 1px solid var(--cantera-terracotta) !important;
-            padding: 13px 28px !important;
+            padding: 14px 28px !important;
             border-radius: 40px !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
             font-size: 14px !important;
             text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 6px 20px rgba(184, 107, 67, 0.08);
+            box-shadow: 0 0 20px rgba(255, 126, 71, 0.2);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             text-align: center;
             width: 100%;
             position: relative;
             overflow: hidden;
         }
 
-        .wp-block-button__link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .wp-block-button__link:hover::before {
-            left: 100%;
-        }
-
         .wp-block-button__link:hover {
-            background: var(--cantera-terracotta) !important;
-            color: var(--white) !important;
+            background: linear-gradient(135deg, var(--cantera-terracotta), var(--cantera-rose)) !important;
+            color: #ffffff !important;
+            border-color: #fff !important;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.3);
+            box-shadow: 0 0 35px rgba(255, 94, 126, 0.6);
         }
 
         p.is-service-description, p {
             color: var(--text-muted);
             font-size: 14.5px !important;
-            line-height: 1.6;
+            line-height: 1.65;
             margin: 8px 0 0 0;
             text-align: center;
         }
 
-        /* --- Sección Secundaria Inmersiva --- */
+        /* --- Sección Secundaria de Alto Impacto Holográfico --- */
         .wp-block-group.has-background {
-            background: linear-gradient(135deg, rgba(212, 131, 132, 0.1) 0%, rgba(184, 107, 67, 0.08) 100%) !important;
-            backdrop-filter: blur(20px);
-            border-radius: 34px;
-            padding: 50px 24px;
-            margin: 50px 0;
-            border: 1px solid rgba(184, 107, 67, 0.22);
-            box-shadow: 0 30px 60px rgba(27, 42, 74, 0.04);
+            background: linear-gradient(135deg, rgba(25, 36, 60, 0.8), rgba(18, 26, 43, 0.9)) !important;
+            backdrop-filter: blur(25px);
+            border-radius: 36px;
+            padding: 60px 24px;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 126, 71, 0.3);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         /* --- Footer --- */
         .footer-brand-section {
             text-align: center;
             padding: 40px 20px;
-            margin-top: 50px;
-            border-top: 1px solid var(--border-subtle);
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 126, 71, 0.2);
         }
 
         .footer-brand-section p {
             font-weight: 700;
-            color: var(--primary-navy);
-            letter-spacing: 2px;
+            color: var(--cantera-gold);
+            letter-spacing: 3px;
             text-transform: uppercase;
             font-size: 12px !important;
+            text-shadow: 0 0 15px rgba(255, 179, 71, 0.4);
         }
 
         @media screen and (max-width: 768px) {
@@ -386,7 +373,7 @@
             }
             .site-header-custom {
                 flex-direction: column;
-                gap: 16px;
+                gap: 20px;
                 text-align: center;
             }
             .interactive-brand-wrapper {
@@ -394,10 +381,10 @@
                 text-align: center;
             }
             .interactive-brand-title {
-                font-size: 2.2rem;
+                font-size: 2.3rem;
             }
             h2.wp-block-heading {
-                font-size: 1.7rem;
+                font-size: 1.8rem;
             }
             .wp-block-image {
                 height: 180px;
@@ -407,10 +394,10 @@
 </head>
 <body>
 
-    <!-- Lienzo Cuántico Inmersivo de Fondo Avanzado -->
+    <!-- Lienzo de constelación cuántica interactiva en tiempo real -->
     <canvas id="immersive-canvas"></canvas>
 
-    <!-- Núcleo de Luz Interactiva Avanzada -->
+    <!-- Núcleo de Plasma de Cursor -->
     <div id="cursor-glow"></div>
 
     <div class="sma-main-wrapper">
@@ -420,7 +407,7 @@
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="sma-inicio-btn">🏠 Inicio</a>
         </div>
 
-        <!-- Cabecera con Logotipo y Guía Turística -->
+        <!-- Cabecera Holográfica -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
@@ -564,7 +551,7 @@
 
     </div>
 
-    <!-- Script de Motor Cuántico Inmersivo Avanzado y Dinámica de Tarjetas 3D -->
+    <!-- Script de Motor Cuántico, Constelaciones y Tarjetas 3D Holográficas -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -576,15 +563,15 @@
         });
 
         function animateGlow() {
-            glowX += (mouseX - glowX) * 0.1;
-            glowY += (mouseY - glowY) * 0.1;
+            glowX += (mouseX - glowX) * 0.15;
+            glowY += (mouseY - glowY) * 0.15;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
 
-        // Efecto Inmersivo 3D por Inclinación en Tarjetas
+        // Inclinación 3D Avanzada en Tarjetas
         const cards = document.querySelectorAll('.wp-block-column');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -593,16 +580,16 @@
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -10;
-                const rotateY = ((x - centerX) / centerX) * 10;
-                card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                const rotateX = ((y - centerY) / centerY) * -14;
+                const rotateY = ((x - centerX) / centerX) * 14;
+                card.style.transform = `translateY(-12px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
             });
         });
 
-        // Canvas de Partículas Dinámicas Avanzadas con Conexiones de Red Holográfica
+        // Motor de Canvas Ultra Inmersivo con Red Constelada Dinámica
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -621,12 +608,21 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.5 + 0.6;
+                this.size = Math.random() * 2.8 + 0.8;
                 this.baseX = this.x;
                 this.baseY = this.y;
-                this.density = (Math.random() * 25) + 5;
-                this.vx = Math.random() * 0.5 - 0.25;
-                this.vy = Math.random() * 0.5 - 0.25;
+                this.density = (Math.random() * 30) + 10;
+                this.vx = Math.random() * 0.8 - 0.4;
+                this.vy = Math.random() * 0.8 - 0.4;
+                
+                // Colores vibrantes de neón y atardecer moderno (cero sepia)
+                const palette = [
+                    'rgba(255, 126, 71, 0.75)', // Terracota Neón
+                    'rgba(255, 94, 126, 0.75)',  // Rosa Neón
+                    'rgba(255, 179, 71, 0.75)',  // Oro Brillante
+                    'rgba(96, 165, 250, 0.65)'   // Azul Estelar
+                ];
+                this.color = palette[Math.floor(Math.random() * palette.length)];
             }
             update() {
                 let dx = mouseX - this.x;
@@ -634,18 +630,18 @@
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 let forceDirectionX = dx / distance;
                 let forceDirectionY = dy / distance;
-                let maxDistance = 180;
+                let maxDistance = 220;
                 let force = (maxDistance - distance) / maxDistance;
 
                 if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.6;
-                    this.y -= forceDirectionY * force * this.density * 0.6;
+                    this.x -= forceDirectionX * force * this.density * 0.8;
+                    this.y -= forceDirectionY * force * this.density * 0.8;
                 } else {
                     if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 25;
+                        this.x -= (this.x - this.baseX) / 18;
                     }
                     if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 25;
+                        this.y -= (this.y - this.baseY) / 18;
                     }
                 }
 
@@ -658,7 +654,7 @@
                 if (this.baseY > height) this.baseY = 0;
             }
             draw() {
-                ctx.fillStyle = 'rgba(184, 107, 67, 0.35)';
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
@@ -668,7 +664,7 @@
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 8500;
+            let numberOfParticles = (width * height) / 7000;
             for (let i = 0; i < numberOfParticles; i++) {
                 particles.push(new Particle());
             }
@@ -679,15 +675,15 @@
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
             
-            // Dibujar líneas de conexión cuántica entre partículas cercanas
+            // Red de constelación de líneas cuánticas interactivas
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     let dx = particles[i].x - particles[j].x;
                     let dy = particles[i].y - particles[j].y;
                     let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 110) {
-                        ctx.strokeStyle = `rgba(184, 107, 67, ${0.12 * (1 - dist / 110)})`;
-                        ctx.lineWidth = 0.6;
+                    if (dist < 130) {
+                        ctx.strokeStyle = `rgba(255, 126, 71, ${0.3 * (1 - dist / 130)})`;
+                        ctx.lineWidth = 0.9;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
