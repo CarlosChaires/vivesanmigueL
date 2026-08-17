@@ -69,7 +69,7 @@
             padding: 40px 24px;
         }
 
-        /* --- Cabecera con Logotipo Oficial e Identidad --- */
+        /* --- Cabecera con Logotipo Oficial SIN Círculo (Limpio y de buena resolución) --- */
         .site-header-custom {
             display: flex;
             align-items: center;
@@ -81,31 +81,25 @@
         }
 
         .site-logo-container {
-            width: 90px;
-            height: 90px;
+            width: 130px;
+            height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            border-radius: 50%;
-            overflow: hidden;
-            border: 1px solid var(--border-glass);
-            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.15);
-            animation: float-logo 5s ease-in-out infinite;
-            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
-        @keyframes float-logo {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+        .site-logo-container:hover {
+            transform: scale(1.04);
         }
 
         .site-logo-container img {
             width: 100%;
-            height: 100%;
+            height: auto;
             object-fit: contain;
             display: block;
+            filter: drop-shadow(0 8px 20px rgba(184, 107, 67, 0.15));
         }
 
         .interactive-brand-title {
@@ -166,12 +160,12 @@
             margin: 30px 0;
         }
 
-        /* --- Tarjetas 3D Cristalinas Ultra Nítidas sobre Fondo Claro --- */
+        /* --- Tarjetas 3D Uniformes y Compactas --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
-            gap: 32px;
-            margin-bottom: 3rem;
+            gap: 24px;
+            margin-bottom: 2rem;
             align-items: stretch;
         }
 
@@ -181,34 +175,34 @@
             background: var(--surface-glass);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border-radius: 28px;
-            padding: 34px 30px;
-            box-shadow: 0 20px 45px rgba(27, 42, 74, 0.08);
+            border-radius: 22px;
+            padding: 24px 22px;
+            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.06);
             border: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             transform-style: preserve-3d;
             perspective: 1000px;
-            will-change: transform;
             position: relative;
             overflow: hidden;
         }
 
         .wp-block-column:hover {
-            transform: translateY(-12px) rotateX(4deg) rotateY(-4deg) scale(1.03);
-            box-shadow: 0 35px 70px rgba(184, 107, 67, 0.2), 0 0 30px rgba(212, 131, 132, 0.2);
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
             border-color: var(--cantera-terracotta);
             background: rgba(255, 255, 255, 0.99);
         }
 
+        /* --- Imágenes de Tarjetas Uniformes (Altura Estándar Perfecta) --- */
         .wp-block-image {
-            margin: 0 0 24px 0;
+            margin: 0 0 16px 0;
             overflow: hidden;
-            border-radius: 20px;
+            border-radius: 14px;
             width: 100%;
-            height: 220px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -220,13 +214,13 @@
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
             filter: contrast(1.05) saturate(1.1);
         }
 
         .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.1);
-            filter: contrast(1.15) saturate(1.2);
+            transform: scale(1.08);
+            filter: contrast(1.12) saturate(1.18);
         }
 
         .card-content-area {
@@ -239,19 +233,19 @@
         .wp-block-buttons {
             display: flex;
             justify-content: center;
-            margin: 18px 0;
+            margin: 12px 0;
             flex-shrink: 0;
         }
 
-        /* --- ESTILO UNIFICADO Y ARMÓNICO PARA TODOS LOS BOTONES DE LAS TARJETAS --- */
+        /* --- Estilo Armónico y Uniforme para los Botones Internos --- */
         .wp-block-button__link {
             background: #ffffff !important;
             color: var(--primary-navy) !important;
             border: 1px solid var(--border-glass) !important;
-            padding: 13px 28px !important;
-            border-radius: 30px !important;
+            padding: 10px 24px !important;
+            border-radius: 25px !important;
             font-weight: 700 !important;
-            font-size: 14px !important;
+            font-size: 13.5px !important;
             text-decoration: none !important;
             display: inline-block !important;
             box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04) !important;
@@ -266,15 +260,15 @@
             color: #ffffff !important;
             border-color: var(--cantera-terracotta) !important;
             transform: translateY(-2px) !important;
-            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.25) !important;
+            box-shadow: 0 6px 20px rgba(184, 107, 67, 0.25) !important;
         }
 
         p.is-service-description, p {
             color: var(--text-muted) !important;
-            font-size: 15px !important;
+            font-size: 13.5px !important;
             font-weight: 500 !important;
-            line-height: 1.75 !important;
-            margin: 10px 0 0 0;
+            line-height: 1.6 !important;
+            margin: 6px 0 0 0;
             text-align: center;
         }
 
@@ -287,56 +281,56 @@
         .wp-block-group.has-background {
             background: linear-gradient(135deg, rgba(212, 131, 132, 0.08) 0%, rgba(184, 107, 67, 0.06) 100%) !important;
             backdrop-filter: blur(25px);
-            border-radius: 36px;
-            padding: 60px 24px;
-            margin: 60px 0;
+            border-radius: 28px;
+            padding: 45px 24px;
+            margin: 40px 0;
             border: 1px solid rgba(184, 107, 67, 0.22);
-            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.05);
+            box-shadow: 0 20px 40px rgba(27, 42, 74, 0.04);
         }
 
         /* --- Sección de Redes Sociales Destacadas --- */
         .social-showcase-section {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--border-glass);
-            border-radius: 28px;
-            padding: 40px 30px;
+            border-radius: 24px;
+            padding: 35px 25px;
             text-align: center;
-            margin: 40px 0;
+            margin: 35px 0;
             box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
         }
 
         .social-showcase-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             color: var(--primary-navy);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
 
         .social-showcase-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
         .social-buttons-grid {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
         .social-card-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 15px 30px;
-            border-radius: 35px;
+            gap: 10px;
+            padding: 13px 26px;
+            border-radius: 30px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13.5px;
             text-decoration: none;
             color: #ffffff;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
         }
 
@@ -350,33 +344,33 @@
         }
 
         .social-card-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         /* --- Footer --- */
         .footer-brand-section {
             text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
+            padding: 30px 20px;
+            margin-top: 40px;
             border-top: 1px solid var(--border-glass);
         }
 
         .footer-brand-section p {
             font-weight: 800 !important;
             color: var(--primary-navy) !important;
-            letter-spacing: 3.5px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-size: 13px !important;
+            font-size: 12px !important;
         }
 
         @media screen and (max-width: 768px) {
-            .sma-main-wrapper { padding: 30px 16px; }
-            .site-header-custom { flex-direction: column; gap: 20px; text-align: center; }
-            .interactive-brand-wrapper { align-items: center; text-align: center; }
-            .interactive-brand-title { font-size: 2.4rem; }
-            h2.wp-block-heading { font-size: 1.9rem; }
-            .wp-block-image { height: 190px; }
+            .sma-main-wrapper { padding: 25px 16px; }
+            .site-header-custom { flex-direction: column; gap: 16px; text-align: center; }
+            .site-logo-container { width: 110px; }
+            .interactive-brand-title { font-size: 2.2rem; }
+            h2.wp-block-heading { font-size: 1.7rem; }
+            .wp-block-image { height: 150px; }
         }
     </style>
 </head>
@@ -388,7 +382,7 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera Oficial con Logotipo -->
+        <!-- Cabecera Oficial con Logotipo (Sin círculo, limpio y ampliado) -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
@@ -577,7 +571,7 @@
         }
         animateGlow();
 
-        // Inclinación 3D Avanzada en Tarjetas
+        // Inclinación 3D Sutil y Uniforme en Tarjetas
         const cards = document.querySelectorAll('.wp-block-column');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -586,9 +580,9 @@
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -10;
-                const rotateY = ((x - centerX) / centerX) * 10;
-                card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.025)`;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+                card.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.015)`;
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
@@ -659,26 +653,4 @@
             }
         }
 
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-    </script>
-</body>
-</html>
+        function init`
