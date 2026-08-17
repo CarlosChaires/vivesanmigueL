@@ -243,48 +243,30 @@
             flex-shrink: 0;
         }
 
-        /* --- NUEVO ESTILO DE BOTÓN INTERACTIVO SÚPER HERMOSO PARA "MAPA TURÍSTICO" --- */
-        .sma-map-btn {
-            background: linear-gradient(135deg, var(--cantera-terracotta), var(--cantera-rose)) !important;
-            color: #ffffff !important;
-            border: none !important;
-            padding: 16px 32px !important;
-            border-radius: 40px !important;
-            font-family: 'Playfair Display', serif !important;
-            font-size: 1.25rem !important;
+        /* --- ESTILO UNIFICADO Y ARMÓNICO PARA TODOS LOS BOTONES DE LAS TARJETAS --- */
+        .wp-block-button__link {
+            background: #ffffff !important;
+            color: var(--primary-navy) !important;
+            border: 1px solid var(--border-glass) !important;
+            padding: 13px 28px !important;
+            border-radius: 30px !important;
             font-weight: 700 !important;
-            letter-spacing: 0.5px !important;
+            font-size: 14px !important;
             text-decoration: none !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 10px !important;
-            box-shadow: 0 12px 30px rgba(184, 107, 67, 0.35) !important;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            display: inline-block !important;
+            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04) !important;
+            transition: all 0.3s ease !important;
+            letter-spacing: 0.5px !important;
+            text-align: center !important;
             width: 100% !important;
-            position: relative;
-            overflow: hidden;
         }
 
-        .sma-map-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .sma-map-btn:hover::before {
-            left: 100%;
-        }
-
-        .sma-map-btn:hover {
-            transform: translateY(-4px) scale(1.03) !important;
-            box-shadow: 0 18px 40px rgba(184, 107, 67, 0.5) !important;
-            background: linear-gradient(135deg, #a35b37, #c27071) !important;
+        .wp-block-button__link:hover {
+            background: var(--cantera-terracotta) !important;
+            color: #ffffff !important;
+            border-color: var(--cantera-terracotta) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.25) !important;
         }
 
         p.is-service-description, p {
@@ -441,7 +423,7 @@
                         </figure>
                         <div class="card-content-area">
                             <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button sma-map-btn" href="https://carloschaires.github.io/vivesanmigueL/mapa.html" target="_blank" rel="noopener noreferrer">🗺️ Mapa Turístico</a>
+                                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/mapa.html" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
                             </div>
                             <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
                         </div>
@@ -687,14 +669,15 @@
 
         initParticles();
 
-        fn = function animateParticles() {
+        function animateParticles() {
             ctx.clearRect(0, 0, width, height);
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
             }
             requestAnimationFrame(animateParticles);
-        };
+        }
+
         animateParticles();
     </script>
 </body>
