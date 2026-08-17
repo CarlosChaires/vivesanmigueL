@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-sanmiguel: #fbf9f5;
-            --surface-glass: rgba(255, 255, 255, 0.94);
+            --bg-sanmiguel: #fcf9f5;
+            --surface-glass: rgba(255, 255, 255, 0.95);
             --cantera-terracotta: #b86b43;
             --cantera-rose: #d48384;
             --cantera-gold: #df9e7d;
             --primary-navy: #1b2a4a;
             --text-main: #1f2733;
             --text-muted: #55606d;
-            --border-glow: rgba(184, 107, 67, 0.28);
+            --border-glow: rgba(184, 107, 67, 0.35);
         }
 
         *, *::before, *::after {
@@ -32,11 +32,10 @@
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
         }
 
-        /* --- Lienzo de Partículas Consteladas de Fondo (Tonos Cantera / Atardecer) --- */
+        /* --- Lienzo de Partículas Cuánticas y Constelación Interactiva --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -47,19 +46,19 @@
             z-index: 0;
         }
 
-        /* --- Orbe de Luz Orgánica Dinámica que Sigue el Cursor --- */
+        /* --- Aura Luminosa Viva que Sigue el Cursor --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.3) 0%, rgba(184, 107, 67, 0.2) 45%, rgba(223, 158, 125, 0.09) 75%, transparent 90%);
+            width: 850px;
+            height: 850px;
+            background: radial-gradient(circle, rgba(212, 131, 132, 0.35) 0%, rgba(184, 107, 67, 0.22) 40%, rgba(223, 158, 125, 0.1) 70%, transparent 88%);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            filter: blur(60px);
+            filter: blur(55px);
             mix-blend-mode: multiply;
             transition: width 0.3s ease, height 0.3s ease;
         }
@@ -67,9 +66,103 @@
         .sma-main-wrapper {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
-            padding: 60px 24px;
+            padding: 50px 24px;
+        }
+
+        /* --- HERO COLLAGE INTERACTIVO ESPECIAL DE INICIO (EFECTO CINE Y ZOOM 3D) --- */
+        .sma-hero-collage-container {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            border-radius: 38px;
+            overflow: hidden;
+            box-shadow: 0 35px 80px rgba(27, 42, 74, 0.22);
+            border: 2px solid rgba(184, 107, 67, 0.4);
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-navy);
+            transform-style: preserve-3d;
+            perspective: 1200px;
+        }
+
+        .collage-grid-bg {
+            position: absolute;
+            inset: -20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 6px;
+            opacity: 0.85;
+            filter: brightness(0.95) contrast(1.15);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sma-hero-collage-container:hover .collage-grid-bg {
+            transform: scale(1.06) rotate(1deg);
+        }
+
+        .collage-item {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s ease;
+            filter: saturate(1.1);
+        }
+
+        .collage-item:hover img {
+            transform: scale(1.15);
+            filter: saturate(1.3) contrast(1.2);
+        }
+
+        .collage-overlay-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            background: rgba(27, 42, 74, 0.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 45px 65px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            max-width: 820px;
+            margin: 0 20px;
+            animation: float-badge 6s ease-in-out infinite;
+        }
+
+        @keyframes float-badge {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .collage-overlay-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 14px 0;
+            letter-spacing: -1px;
+            text-shadow: 0 0 30px rgba(184, 107, 67, 0.8);
+        }
+
+        .collage-overlay-content p {
+            color: #fdeee2 !important;
+            font-size: 1.2rem !important;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: 0.8px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
         }
 
         /* --- Botón de Inicio --- */
@@ -103,13 +196,13 @@
             box-shadow: 0 15px 40px rgba(184, 107, 67, 0.35);
         }
 
-        /* --- Cabecera Holográfica Ultra Nítida sobre Fondo Claro --- */
+        /* --- Cabecera --- */
         .site-header-custom {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 32px;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             flex-wrap: wrap;
         }
 
@@ -121,7 +214,6 @@
             justify-content: center;
             background: radial-gradient(circle, rgba(184, 107, 67, 0.18) 0%, rgba(255, 255, 255, 0.98) 75%);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid rgba(184, 107, 67, 0.4);
@@ -210,7 +302,7 @@
             text-align: center;
         }
 
-        /* --- Tarjetas 3D Cristalinas Ultra Nítidas sobre Fondo Claro --- */
+        /* --- Tarjetas 3D Cristalinas Ultra Inmersivas --- */
         .wp-block-columns {
             display: flex;
             flex-wrap: wrap;
@@ -257,8 +349,8 @@
         }
 
         .wp-block-column:hover {
-            transform: translateY(-12px) rotateX(4deg) rotateY(-4deg) scale(1.03);
-            box-shadow: 0 35px 70px rgba(184, 107, 67, 0.2), 0 0 30px rgba(212, 131, 132, 0.2);
+            transform: translateY(-14px) rotateX(5deg) rotateY(-5deg) scale(1.035);
+            box-shadow: 0 40px 80px rgba(184, 107, 67, 0.25), 0 0 35px rgba(212, 131, 132, 0.25);
             border-color: var(--cantera-terracotta);
             background: rgba(255, 255, 255, 0.99);
         }
@@ -285,8 +377,8 @@
         }
 
         .wp-block-column:hover .wp-block-image img {
-            transform: scale(1.1);
-            filter: contrast(1.15) saturate(1.2);
+            transform: scale(1.12);
+            filter: contrast(1.15) saturate(1.25);
         }
 
         .card-content-area {
@@ -345,7 +437,7 @@
             box-shadow: 0 10px 30px rgba(184, 107, 67, 0.3);
         }
 
-        /* --- Tipografía Nítida y Clara sobre Fondo Claro --- */
+        /* --- Tipografía Nítida y Clara --- */
         p.is-service-description, p {
             color: var(--text-muted) !important;
             font-size: 15px !important;
@@ -394,6 +486,12 @@
             .sma-main-wrapper {
                 padding: 30px 16px;
             }
+            .sma-hero-collage-container {
+                height: 380px;
+            }
+            .collage-overlay-content h1 {
+                font-size: 2.2rem;
+            }
             .site-header-custom {
                 flex-direction: column;
                 gap: 20px;
@@ -417,7 +515,7 @@
 </head>
 <body>
 
-    <!-- Lienzo de constelación cuántica interactiva en tiempo real sobre fondo claro -->
+    <!-- Lienzo de constelación cuántica interactiva en tiempo real -->
     <canvas id="immersive-canvas"></canvas>
 
     <!-- Núcleo de Luz Orgánica de Cursor -->
@@ -441,9 +539,25 @@
             </div>
         </header>
 
+        <!-- HERO COLLAGE INTERACTIVO ESPECIAL DE INICIO -->
+        <div class="sma-hero-collage-container">
+            <div class="collage-grid-bg">
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/imagen-de-whatsapp-2025-03-24-a-las-20.57.57_9e3d6df2.jpg?w=1024" alt="San Miguel 1"></div>
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/gemini_generated_image_dj40g5dj40g5dj40.png?w=1024" alt="San Miguel 2"></div>
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="San Miguel 3"></div>
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/vino.png?w=1024" alt="San Miguel 4"></div>
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="San Miguel 5"></div>
+                <div class="collage-item"><img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="San Miguel 6"></div>
+            </div>
+            <div class="collage-overlay-content">
+                <h1>El Corazón de México</h1>
+                <p>Una experiencia visual y sensorial única para descubrir cada rincón mágico de San Miguel de Allende.</p>
+            </div>
+        </div>
+
         <!-- Sección Principal 1 -->
         <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
-            <h2 class="wp-block-heading alignwide">Descubre la magia de San Miguel de Allende: ¡Planifica tu visita hoy!</h2>
+            <h2 class="wp-block-heading alignwide">Explora las experiencias diseñadas para ti</h2>
 
             <div class="wp-block-group alignwide" style="margin-top:0;margin-bottom:0">
                 <!-- Fila 1 -->
@@ -594,7 +708,7 @@
         }
         animateGlow();
 
-        // Inclinación 3D Avanzada en Tarjetas
+        // Inclinación 3D Avanzada en Tarjetas y Hero Collage
         const cards = document.querySelectorAll('.wp-block-column');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -610,6 +724,21 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
             });
+        });
+
+        const heroCollage = document.querySelector('.sma-hero-collage-container');
+        heroCollage.addEventListener('mousemove', (e) => {
+            const rect = heroCollage.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -6;
+            const rotateY = ((x - centerX) / centerX) * 6;
+            heroCollage.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
+        });
+        heroCollage.addEventListener('mouseleave', () => {
+            heroCollage.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
         });
 
         // Motor de Canvas Ultra Inmersivo con Tonos Cantera y Terracota sobre Fondo Blanco/Claro
@@ -639,9 +768,9 @@
                 this.vy = Math.random() * 0.7 - 0.35;
                 
                 const palette = [
-                    'rgba(184, 107, 67, 0.65)', // Terracota
-                    'rgba(212, 131, 132, 0.7)',  // Rosa Cantera
-                    'rgba(223, 158, 125, 0.65)'  // Oro Colonial
+                    'rgba(184, 107, 67, 0.65)',
+                    'rgba(212, 131, 132, 0.7)',
+                    'rgba(223, 158, 125, 0.65)'
                 ];
                 this.color = palette[Math.floor(Math.random() * palette.length)];
             }
