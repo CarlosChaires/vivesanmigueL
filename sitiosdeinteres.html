@@ -7,14 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-sanmiguel: #fcf9f5;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #b86b43;
+            --bg-sanmiguel: #fbf9f6;
+            --surface-glass: rgba(255, 255, 255, 0.88);
+            --surface-card: rgba(255, 255, 255, 0.96);
+            --cantera-terracotta: #c87d55;
             --cantera-rose: #d48384;
+            --primary-navy: #1b2a4a;
             --text-main: #232b38;
-            --text-muted: #626d7a;
-            --border-subtle: rgba(184, 107, 67, 0.15);
+            --text-muted: #717c89;
+            --border-glass: rgba(200, 125, 85, 0.15);
         }
 
         *, *::before, *::after {
@@ -31,6 +32,7 @@
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
 
         #immersive-canvas {
@@ -49,7 +51,7 @@
             left: 0;
             width: 650px;
             height: 650px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.22) 0%, rgba(184, 107, 67, 0.12) 50%, transparent 80%);
+            background: radial-gradient(circle, rgba(212, 131, 132, 0.22) 0%, rgba(200, 125, 85, 0.12) 50%, transparent 80%);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -72,9 +74,10 @@
         }
 
         .sma-inicio-btn {
-            background: var(--white) !important;
+            background: var(--surface-card) !important;
+            backdrop-filter: blur(10px);
             color: var(--primary-navy) !important;
-            border: 1px solid var(--border-subtle) !important;
+            border: 1px solid var(--border-glass) !important;
             padding: 10px 26px !important;
             border-radius: 40px !important;
             font-weight: 600 !important;
@@ -88,10 +91,10 @@
 
         .sma-inicio-btn:hover {
             background: var(--cantera-terracotta) !important;
-            color: var(--white) !important;
+            color: #ffffff !important;
             border-color: var(--cantera-terracotta) !important;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.2);
+            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.25);
         }
 
         .site-header-custom {
@@ -110,12 +113,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.9);
+            background: radial-gradient(circle, rgba(200, 125, 85, 0.15) 0%, rgba(255, 255, 255, 0.95) 70%);
             backdrop-filter: blur(12px);
             border-radius: 50%;
             overflow: hidden;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 15px 35px rgba(184, 107, 67, 0.12);
+            border: 1px solid rgba(200, 125, 85, 0.3);
+            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
             animation: float-logo 5s ease-in-out infinite;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -124,7 +127,7 @@
 
         .site-logo-container:hover {
             transform: scale(1.08) rotate(3deg);
-            box-shadow: 0 20px 45px rgba(184, 107, 67, 0.22);
+            box-shadow: 0 20px 45px rgba(200, 125, 85, 0.35);
         }
 
         @keyframes float-logo {
@@ -158,6 +161,7 @@
             transition: color 0.3s ease;
             letter-spacing: -1px;
             line-height: 1.1;
+            text-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
         }
 
         .interactive-brand-title::after {
@@ -186,7 +190,7 @@
             letter-spacing: 3px;
             color: var(--cantera-terracotta);
             margin-top: 8px;
-            font-weight: 700;
+            font-weight: 750;
         }
 
         /* --- Grid Moderno de Tarjetas (Estilo Galería Profesional) --- */
@@ -198,13 +202,13 @@
         }
 
         .destination-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--surface-glass);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -213,8 +217,8 @@
 
         .destination-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
-            border-color: rgba(184, 107, 67, 0.4);
+            box-shadow: 0 25px 50px rgba(200, 125, 85, 0.18);
+            border-color: rgba(200, 125, 85, 0.4);
             background: rgba(255, 255, 255, 1);
         }
 
@@ -248,7 +252,8 @@
         }
 
         .destination-card .wp-block-button__link {
-            background: var(--white) !important;
+            background: var(--surface-card) !important;
+            backdrop-filter: blur(10px);
             color: var(--primary-navy) !important;
             border: 1px solid var(--cantera-terracotta) !important;
             padding: 12px 26px !important;
@@ -257,7 +262,7 @@
             font-size: 13px !important;
             text-decoration: none !important;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(184, 107, 67, 0.06);
+            box-shadow: 0 4px 15px rgba(200, 125, 85, 0.08);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
             letter-spacing: 0.5px;
             text-align: center;
@@ -266,16 +271,16 @@
 
         .destination-card .wp-block-button__link:hover {
             background: var(--cantera-terracotta) !important;
-            color: var(--white) !important;
+            color: #ffffff !important;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.25);
+            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.25);
         }
 
         .footer-brand-section {
             text-align: center;
             padding: 40px 20px;
             margin-top: 50px;
-            border-top: 1px solid var(--border-subtle);
+            border-top: 1px solid var(--border-glass);
         }
 
         .footer-brand-section p {
@@ -341,7 +346,7 @@
             <div class="destination-card">
                 <div class="card-image-wrapper">
                     <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende">
+                        <img src="https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000" alt="Museo Casa de Allende">
                     </a>
                 </div>
                 <div class="card-body">
@@ -355,7 +360,7 @@
             <div class="destination-card">
                 <div class="card-image-wrapper">
                     <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal">
+                        <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000" alt="Casa del Mayorazgo de la Canal">
                     </a>
                 </div>
                 <div class="card-body">
@@ -369,7 +374,7 @@
             <div class="destination-card">
                 <div class="card-image-wrapper">
                     <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835" alt="Univerciudad Casa del Nigromante">
+                        <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w1000" alt="Univerciudad Casa del Nigromante">
                     </a>
                 </div>
                 <div class="card-body">
@@ -383,7 +388,7 @@
             <div class="destination-card">
                 <div class="card-image-wrapper">
                     <a href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez">
+                        <img src="https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000" alt="Centro Cultural Ignacio Ramírez">
                     </a>
                 </div>
                 <div class="card-body">
@@ -397,7 +402,7 @@
             <div class="destination-card">
                 <div class="card-image-wrapper">
                     <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024" alt="Instituto Allende">
+                        <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000" alt="Instituto Allende">
                     </a>
                 </div>
                 <div class="card-body">
@@ -581,7 +586,7 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.2 + 0.5;
+                this.size = Math.random() * 2.2 + 0.6;
                 this.baseX = this.x;
                 this.baseY = this.y;
                 this.density = (Math.random() * 20) + 5;
@@ -598,8 +603,8 @@
                 let force = (maxDistance - distance) / maxDistance;
 
                 if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
+                    this.x -= forceDirectionX * force * this.density * 0.6;
+                    this.y -= forceDirectionY * force * this.density * 0.6;
                 } else {
                     if (this.x !== this.baseX) {
                         this.x -= (this.x - this.baseX) / 20;
@@ -618,7 +623,7 @@
                 if (this.baseY > height) this.baseY = 0;
             }
             draw() {
-                ctx.fillStyle = 'rgba(184, 107, 67, 0.25)';
+                ctx.fillStyle = 'rgba(200, 125, 85, 0.35)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
@@ -628,7 +633,7 @@
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 10000;
+            let numberOfParticles = (width * height) / 9000;
             for (let i = 0; i < numberOfParticles; i++) {
                 particles.push(new Particle());
             }
