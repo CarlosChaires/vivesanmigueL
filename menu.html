@@ -253,4 +253,406 @@
         }
 
         strong {
-            color: var(--primary-navy) !important
+            color: var(--primary-navy) !important;
+            font-weight: 700 !important;
+        }
+
+        /* --- Sección Secundaria de Alto Impacto --- */
+        .wp-block-group.has-background {
+            background: linear-gradient(135deg, rgba(212, 131, 132, 0.08) 0%, rgba(184, 107, 67, 0.06) 100%) !important;
+            backdrop-filter: blur(25px);
+            border-radius: 36px;
+            padding: 60px 24px;
+            margin: 60px 0;
+            border: 1px solid rgba(184, 107, 67, 0.22);
+            box-shadow: 0 25px 50px rgba(27, 42, 74, 0.05);
+        }
+
+        /* --- Sección de Redes Sociales Destacadas --- */
+        .social-showcase-section {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            padding: 40px 30px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
+        }
+
+        .social-showcase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--primary-navy);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .social-showcase-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .social-buttons-grid {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .social-card-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 30px;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .social-card-btn.instagram {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-card-btn.tiktok {
+            background: #010101;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-card-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        /* --- Footer --- */
+        .footer-brand-section {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .footer-brand-section p {
+            font-weight: 800 !important;
+            color: var(--primary-navy) !important;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            font-size: 13px !important;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sma-main-wrapper { padding: 30px 16px; }
+            .site-header-custom { flex-direction: column; gap: 20px; text-align: center; }
+            .interactive-brand-wrapper { align-items: center; text-align: center; }
+            .interactive-brand-title { font-size: 2.4rem; }
+            h2.wp-block-heading { font-size: 1.9rem; }
+            .wp-block-image { height: 190px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lienzo de Partículas Discretas e Inmersivas -->
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <!-- Cabecera Oficial con Logotipo -->
+        <header class="site-header-custom">
+            <div class="site-logo-container" title="Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
+            </div>
+            <div>
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <!-- Botón Único de Navegación: Prepara tu Viaje -->
+        <div class="wp-block-buttons alignwide sma-buttons-container">
+            <div class="wp-block-button sma-pastel-btn">
+                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/menu">PREPARA TU VIAJE</a>
+            </div>
+        </div>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <!-- Sección Principal 1 -->
+        <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
+            <h2 class="wp-block-heading alignwide">Descubre la magia de San Miguel de Allende: ¡Planifica tu visita hoy!</h2>
+
+            <div class="wp-block-group alignwide" style="margin-top:0;margin-bottom:0">
+                <!-- Fila 1 -->
+                <div class="wp-block-columns alignwide">
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://lh3.googleusercontent.com/d/17TZ0GQqNKqTB-KAtJOJuBj0-558SxiBS" alt="Mapa Turístico">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/mapa.html" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
+                            </div>
+                            <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
+                        </div>
+                    </div>
+
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000" alt="Eventos">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
+                            </div>
+                            <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
+                        </div>
+                    </div>
+
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000" alt="Ecos del pasado">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
+                            </div>
+                            <p>Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="wp-block-columns alignwide">
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
+                            </div>
+                            <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
+                        </div>
+                    </div>
+
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w1000" alt="Tradiciones">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
+                            </div>
+                            <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
+                        </div>
+                    </div>
+
+                    <div class="wp-block-column">
+                        <figure class="wp-block-image size-large">
+                            <img src="https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000" alt="Rutas temáticas">
+                        </figure>
+                        <div class="card-content-area">
+                            <div class="wp-block-buttons">
+                                <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
+                            </div>
+                            <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Secundaria Interactiva -->
+        <div class="wp-block-group alignfull has-background">
+            <div class="wp-block-columns alignwide">
+                <div class="wp-block-column">
+                    <figure class="wp-block-image size-large">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/whatsapp-image-2025-03-27-at-4.31.39-pm.jpeg?w=1024" alt="Autobuses locales">
+                    </figure>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="https://www.google.com/maps/d/edit?mid=1gzM69h44xQ4ZpXQKjUeNAgG4MC9NloPn&usp=drive_link" target="_blank" rel="noopener noreferrer">Rutas de autobuses locales</a>
+                        </div>
+                        <p class="is-service-description">Información esencial para utilizar el transporte público local y moverte como un residente.</p>
+                    </div>
+                </div>
+
+                <div class="wp-block-column">
+                    <figure class="wp-block-image size-large">
+                        <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000" alt="Viñedos">
+                    </figure>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
+                        </div>
+                        <p>Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.</p>
+                    </div>
+                </div>
+
+                <div class="wp-block-column">
+                    <figure class="wp-block-image size-large">
+                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024" alt="Tours">
+                    </figure>
+                    <div class="card-content-area">
+                        <div class="wp-block-buttons">
+                            <a class="wp-block-button__link wp-element-button" href="#">Tours</a>
+                        </div>
+                        <p>Explora a profundidad de la mano de expertos locales que enriquecerán cada paso de tu visita.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Redes Sociales Destacadas e Inmersivas -->
+        <section class="social-showcase-section">
+            <h3 class="social-showcase-title">Síguenos en nuestra comunidad visual</h3>
+            <p class="social-showcase-desc">Explora reels, historias y los mejores momentos de San Miguel de Allende creados para ti.</p>
+            <div class="social-buttons-grid">
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="social-card-btn instagram">
+                    📸 Instagram Oficial
+                </a>
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="social-card-btn tiktok">
+                    🎵 TikTok en Vivo
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer institucional -->
+        <div class="footer-brand-section">
+            <p>vivesanmiguel.com</p>
+        </div>
+
+    </div>
+
+    <!-- Script de Efecto Sutil de Puntero y Partículas -->
+    <script>
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Inclinación 3D Avanzada en Tarjetas
+        const cards = document.querySelectorAll('.wp-block-column');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.025)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(184, 107, 67, 0.35)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 160;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 25;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 25;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+</body>
+</html>
