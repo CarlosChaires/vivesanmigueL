@@ -8,8 +8,7 @@
     <style>
         :root {
             --bg-sanmiguel: #fcf9f5;
-            --surface-glass: rgba(255, 255, 255, 0.92);
-            --surface-card: rgba(255, 255, 255, 0.98);
+            --surface-glass: rgba(255, 255, 255, 0.94);
             --cantera-terracotta: #b86b43;
             --cantera-rose: #d48384;
             --cantera-gold: #df9e7d;
@@ -37,7 +36,7 @@
             min-height: 100vh;
         }
 
-        /* --- Lienzo de Partículas Consteladas de Fondo (Tonos Cantera / Atardecer) --- */
+        /* --- Lienzo de Partículas Cuánticas y Silueta de Logotipo en Reposo --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -48,20 +47,19 @@
             z-index: 0;
         }
 
-        /* --- Orbe de Luz Orgánica Dinámica que Sigue el Cursor --- */
+        /* --- Luz Sutil del Cursor (Equilibrada) --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 750px;
-            height: 750px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.28) 0%, rgba(184, 107, 67, 0.18) 45%, rgba(223, 158, 125, 0.08) 75%, transparent 90%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(184, 107, 67, 0.15) 0%, rgba(212, 131, 132, 0.08) 50%, transparent 80%);
+            border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            filter: blur(55px);
-            mix-blend-mode: multiply;
+            filter: blur(45px);
             transition: width 0.3s ease, height 0.3s ease;
         }
 
@@ -418,7 +416,7 @@
 </head>
 <body>
 
-    <!-- Lienzo de constelación cuántica interactiva en tiempo real sobre fondo claro -->
+    <!-- Lienzo interactivo: Las partículas forman el logotipo en reposo y se dispersan suavemente al mover el cursor -->
     <canvas id="immersive-canvas"></canvas>
 
     <!-- Núcleo de Luz Orgánica de Cursor -->
@@ -575,27 +573,34 @@
 
     </div>
 
-    <!-- Script de Motor de Partículas y Tarjetas 3D Holográficas sobre Fondo Claro -->
+    <!-- Script de Motor Cuántico Equilibrado: Forma el Logo en Reposo y Reacciona al Mover el Cursor -->
     <script>
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
+        let isMoving = false;
+        let moveTimeout;
 
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+            isMoving = true;
+            clearTimeout(moveTimeout);
+            moveTimeout = setTimeout(() => {
+                isMoving = false; // Si el usuario deja de mover el mouse, las partículas regresan a formar el logo
+            }, 1200);
         });
 
         function animateGlow() {
-            glowX += (mouseX - glowX) * 0.15;
-            glowY += (mouseY - glowY) * 0.15;
+            glowX += (mouseX - glowX) * 0.12;
+            glowY += (mouseY - glowY) * 0.12;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
 
-        // Inclinación 3D Avanzada en Tarjetas
+        // Tarjetas 3D
         const cards = document.querySelectorAll('.wp-block-column');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -613,67 +618,98 @@
             });
         });
 
-        // Motor de Canvas Ultra Inmersivo con Tonos Cantera y Terracota sobre Fondo Blanco/Claro
+        // Motor de Partículas que Forman el Logotipo en Reposo
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
 
         let width, height;
         let particles = [];
+        let logoPoints = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            extractLogoShape();
         }
 
         window.addEventListener('resize', resize);
-        resize();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2.8 + 0.8;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 10;
-                this.vx = Math.random() * 0.7 - 0.35;
-                this.vy = Math.random() * 0.7 - 0.35;
+        function extractLogoShape() {
+            logoPoints = [];
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = "https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz=w500";
+            
+            img.onload = function() {
+                const tempCanvas = document.createElement('canvas');
+                const tCtx = tempCanvas.getContext('2d');
+                const sampleSize = 120; // Resolución optimizada
+                tempCanvas.width = sampleSize;
+                tempCanvas.height = sampleSize;
                 
-                const palette = [
-                    'rgba(184, 107, 67, 0.65)', // Terracota
-                    'rgba(212, 131, 132, 0.7)',  // Rosa Cantera
-                    'rgba(223, 158, 125, 0.65)'  // Oro Colonial
-                ];
-                this.color = palette[Math.floor(Math.random() * palette.length)];
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 220;
-                let force = (maxDistance - distance) / maxDistance;
+                tCtx.drawImage(img, 0, 0, sampleSize, sampleSize);
+                const data = tCtx.getImageData(0, 0, sampleSize, sampleSize).data;
 
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.8;
-                    this.y -= forceDirectionY * force * this.density * 0.8;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 18;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 18;
+                const points = [];
+                const gap = 3;
+                
+                for (let y = 0; y < sampleSize; y += gap) {
+                    for (let x = 0; x < sampleSize; x += gap) {
+                        const alpha = data[(y * sampleSize + x) * 4 + 3];
+                        if (alpha > 140) {
+                            points.push({
+                                x: (width / 2) - (sampleSize * 1.8) + (x * 3),
+                                y: (height / 2) - (sampleSize * 1.8) + (y * 3)
+                            });
+                        }
                     }
                 }
 
-                this.baseX += this.vx;
-                this.baseY += this.vy;
+                particles.forEach((p, index) => {
+                    if (points.length > 0) {
+                        const target = points[index % points.length];
+                        p.originX = target.x;
+                        p.originY = target.y;
+                    }
+                });
+            };
+        }
 
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
+        class QuantumParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.originX = this.x;
+                this.originY = this.y;
+                this.size = Math.random() * 2.2 + 0.6;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(184, 107, 67, 0.45)';
+            }
+            update() {
+                if (!isMoving) {
+                    // En reposo: las partículas se atraen suavemente para formar la silueta del logotipo de fondo
+                    let dx = this.originX - this.x;
+                    let dy = this.originY - this.y;
+                    this.x += dx * 0.04;
+                    this.y += dy * 0.04;
+                } else {
+                    // Al interactuar/mover el cursor: se dispersan de forma orgánica
+                    let dx = mouseX - this.x;
+                    let dy = mouseY - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let maxDist = 150;
+
+                    if (dist < maxDist) {
+                        let force = (maxDist - dist) / maxDist;
+                        this.x -= (dx / dist) * force * 15;
+                        this.y -= (dy / dist) * force * 15;
+                    } else {
+                        // Regresar lentamente al origen si están lejos del mouse
+                        this.x += (this.originX - this.x) * 0.02;
+                        this.y += (this.originY - this.y) * 0.02;
+                    }
+                }
             }
             draw() {
                 ctx.fillStyle = this.color;
@@ -686,15 +722,17 @@
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 7500;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
+            let count = 550; // Cantidad equilibrada de partículas
+            for (let i = 0; i < count; i++) {
+                particles.push(new QuantumParticle());
             }
+            extractLogoShape();
         }
 
         initParticles();
+        resize();
 
-        function animateParticles() {
+        function animate() {
             ctx.clearRect(0, 0, width, height);
             
             for (let i = 0; i < particles.length; i++) {
@@ -702,9 +740,9 @@
                     let dx = particles[i].x - particles[j].x;
                     let dy = particles[i].y - particles[j].y;
                     let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 130) {
-                        ctx.strokeStyle = `rgba(184, 107, 67, ${0.25 * (1 - dist / 130)})`;
-                        ctx.lineWidth = 0.8;
+                    if (dist < 100 && !isMoving) {
+                        ctx.strokeStyle = `rgba(184, 107, 67, ${0.15 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -714,10 +752,10 @@
                 particles[i].update();
                 particles[i].draw();
             }
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(animate);
         }
 
-        animateParticles();
+        animate();
     </script>
 </body>
 </html>
