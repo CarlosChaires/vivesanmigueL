@@ -166,11 +166,11 @@
             margin: 30px 0;
         }
 
-        /* --- Collage Visual Atractivo --- */
+        /* --- Collage Visual Organizado (Incluyendo Viñedos, Globo, Historia y Tradiciones) --- */
         .sma-collage-container {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: 250px 250px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 260px 260px;
             gap: 16px;
             margin-bottom: 40px;
             border-radius: 28px;
@@ -183,10 +183,6 @@
             position: relative;
             overflow: hidden;
             background: #f4eee9;
-        }
-
-        .collage-item.main-feature {
-            grid-row: span 2;
         }
 
         .collage-item img {
@@ -207,49 +203,24 @@
             right: 0;
             background: linear-gradient(0deg, rgba(27,42,74,0.85) 0%, transparent 100%);
             color: #ffffff;
-            padding: 20px 20px 15px 20px;
+            padding: 22px 20px 15px 20px;
             font-family: 'Playfair Display', serif;
             font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        /* --- Sección Vuelo en Globo --- */
-        .has-background-light-background-color {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(16px);
-            border-radius: 28px;
-            padding: 40px 20px;
-            margin: 35px 0;
-            border: 1px solid var(--border-glass);
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.04);
-        }
-
-        .wp-block-image.aligncenter img {
-            max-width: 480px;
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(184, 107, 67, 0.15);
-            transition: transform 0.5s ease;
-        }
-
-        .wp-block-image.aligncenter img:hover {
-            transform: scale(1.02);
-        }
-
-        /* --- Pullquote / Cita --- */
+        /* --- Cita Turística --- */
         .wp-block-pullquote {
             text-align: center;
-            margin: 40px 0 25px 0;
+            margin: 45px 0 25px 0;
             border: none;
             padding: 0;
         }
 
         .wp-block-pullquote blockquote p {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem !important;
+            font-size: 2.1rem !important;
             font-weight: 700;
             color: var(--primary-navy);
             margin: 0 0 10px 0;
@@ -264,7 +235,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- Sección de Redes Sociales Destacadas (Inmersivas y Visibles) --- */
+        /* --- Sección de Redes Sociales Destacadas e Inmersivas --- */
         .social-showcase-section {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--border-glass);
@@ -430,10 +401,7 @@
             }
             .sma-collage-container {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(3, 200px);
-            }
-            .collage-item.main-feature {
-                grid-row: span 1;
+                grid-template-rows: repeat(4, 220px);
             }
             .wp-block-pullquote blockquote p {
                 font-size: 1.6rem !important;
@@ -466,7 +434,7 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
-        <!-- Botón Único de Navegación: Prepara tu Viaje (Con tu link de menú) -->
+        <!-- Botón Único de Navegación: Prepara tu Viaje -->
         <div class="wp-block-buttons alignwide sma-buttons-container">
             <div class="wp-block-button sma-pastel-btn">
                 <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/menu">PREPARA TU VIAJE</a>
@@ -475,32 +443,29 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
-        <!-- Collage Visual Atractivo con las Imágenes Principales (Viñedos, Ecos del Pasado y Tradiciones) -->
+        <!-- Collage Visual Organizado de 4 Secciones (Viñedos, Vuelo en Globo, Historia y Tradiciones) -->
         <div class="sma-collage-container">
-            <div class="collage-item main-feature">
+            <div class="collage-item">
                 <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos en San Miguel de Allende">
-                <div class="collage-caption">Viñedos y Experiencias de Altura</div>
+                <div class="collage-caption">Viñedos y Experiencias</div>
+            </div>
+            <div class="collage-item">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende">
+                <div class="collage-caption">Vuelo en Globo</div>
             </div>
             <div class="collage-item">
                 <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Ecos del Pasado">
-                <div class="collage-caption" style="font-size: 0.9rem;">Historia Colonial</div>
+                <div class="collage-caption">Historia Colonial</div>
             </div>
             <div class="collage-item">
                 <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones">
-                <div class="collage-caption" style="font-size: 0.9rem;">Tradiciones Vivas</div>
+                <div class="collage-caption">Tradiciones Vivas</div>
             </div>
-        </div>
-
-        <!-- Bloque Destacado Vuelo en Globo -->
-        <div class="wp-block-group alignfull has-background-light-background-color has-background">
-            <figure class="wp-block-image aligncenter size-full is-resized alignfull">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende" class="wp-image-136" />
-            </figure>
         </div>
 
         <!-- Cita Turística -->
         <div class="wp-block-group alignfull">
-            <div style="height:20px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
+            <div style="height:10px" aria-hidden="true" class="wp-block-spacer desktop-only"></div>
 
             <figure class="wp-block-pullquote">
                 <blockquote>
@@ -510,7 +475,7 @@
             </figure>
         </div>
 
-        <!-- Sección de Redes Sociales Destacadas e Inmersivas (Grandes y Atractivas para el Visitante) -->
+        <!-- Sección de Redes Sociales Destacadas e Inmersivas -->
         <section class="social-showcase-section">
             <h3 class="social-showcase-title">Síguenos en nuestra comunidad visual</h3>
             <p class="social-showcase-desc">Explora reels, historias y los mejores momentos de San Miguel de Allende creados para ti.</p>
