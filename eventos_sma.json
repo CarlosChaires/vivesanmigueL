@@ -1,9 +1,79 @@
 [
     {
-        "titulo": "Agenda Turística San Miguel",
-        "descripcion": "Descubre los próximos eventos y actividades en la ciudad.",
-        "fecha": "Cartelera vigente",
-        "lugar": "San Miguel de Allende",
-        "costo": "Varía según evento"
+        "titulo": "Home",
+        "descripcion": "Home",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Gastronomia",
+        "descripcion": "Gastronomia",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Hoteles",
+        "descripcion": "Hoteles",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Bodas",
+        "descripcion": "Bodas",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Viñedos",
+        "descripcion": "Viñedos",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Aventura",
+        "descripcion": "Aventura",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Bienestar",
+        "descripcion": "Bienestar",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Shopping",
+        "descripcion": "Shopping",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Eventos",
+        "descripcion": "Eventos",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Blog",
+        "descripcion": "Blog",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
+    },
+    {
+        "titulo": "Servicios",
+        "descripcion": "Servicios",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles"
     }
 ]
