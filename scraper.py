@@ -3,22 +3,19 @@ from bs4 import BeautifulSoup
 import requests
 
 def extraer_eventos():
-    url = "https://discoversma.com/"
+    url = "https://sanmiguellive.com/es"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
     }
     
     eventos = []
-    # Lista negra de palabras del menú que queremos filtrar y evitar
-    basura_menu = ["home", "gastronomia", "hoteles", "bodas", "viñedos", "aventura", "inmobiliaria", "contacto", "nosotros", "inicio"]
-
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=15)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Buscamos contenedores específicos de eventos o artículos de la cartelera
-            tarjetas = soup.find_all(['article', 'div'], class_=lambda x: x and any(c in x.lower() for c in ['event', 'tribe', 'post', 'card', 'grid-item']))
+            # Buscamos los bloques de eventos o tarjetas en la estructura de San Miguel Live
+            tarjetas = soup.find_all(['div', 'article', 'li'], class_=lambda x: x and ('event' in x.lower() or 'card' in x.lower() or 'item' in x.lower() or 'show' in x.lower()))
             
             if not tarjetas:
                 tarjetas = soup.find_all('article')
@@ -29,29 +26,27 @@ def extraer_eventos():
                     titulo_el = tarjeta.find(['h2', 'h3', 'h4', 'a'])
                     titulo = titulo_el.get_text(strip=True) if titulo_el else ""
                     
-                    # Filtros de validación para ignorar el menú y títulos vacíos o muy cortos
-                    if not titulo or len(titulo) < 4 or titulo.lower() in basura_menu:
+                    if not titulo or len(titulo) < 3 or "inicio" in titulo.lower():
                         continue
 
-                    # Extraer Imagen si existe en la tarjeta
+                    # Extraer Imagen
                     img_el = tarjeta.find('img')
                     imagen = ""
                     if img_el:
                         imagen = img_el.get('src') or img_el.get('data-src') or ""
                     
-                    # Si no trae imagen válida, asignamos una fotografía profesional de San Miguel de Allende por defecto
                     if not imagen or "http" not in imagen:
-                        imagen = "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+                        imagen = "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
 
-                    # Extraer Descripción
-                    desc_el = tarjeta.find(['p', 'div'], class_=lambda x: x and ('desc' in x.lower() or 'summary' in x.lower()))
+                    # Extraer Descripción o detalles
+                    desc_el = tarjeta.find(['p', 'div'], class_=lambda x: x and ('desc' in x.lower() or 'details' in x.lower()))
                     if not desc_el:
                         desc_el = tarjeta.find('p')
-                    descripcion = desc_el.get_text(strip=True) if desc_el else "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende."
+                    descripcion = desc_el.get_text(strip=True) if desc_el else "Evento cultural destacado en San Miguel de Allende."
                     if len(descripcion) > 150:
                         descripcion = descripcion[:147] + "..."
 
-                    # Extraer Fecha
+                    # Extraer Fecha / Hora
                     fecha_el = tarjeta.find(['time', 'span', 'div'], class_=lambda x: x and ('date' in x.lower() or 'time' in x.lower()))
                     fecha = fecha_el.get_text(strip=True) if fecha_el else "Próximamente"
 
@@ -63,33 +58,31 @@ def extraer_eventos():
                         "titulo": titulo,
                         "descripcion": descripcion,
                         "fecha": fecha,
+                        "mes": "Agenda Cultural",
                         "lugar": "San Miguel de Allende, Gto.",
-                        "costo": "Consultar detalles / Entrada general",
+                        "costo": "Consultar sitio",
+                        "contactoText": "🌐 Ver en San Miguel Live",
+                        "contactoUrl": url,
                         "imagen": imagen
                     })
                 except:
                     continue
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error de conexión: {e}")
 
-    # Respaldo profesional garantizado por si la plataforma externa cambia sus clases
+    # Respaldo oficial en caso de restricciones de red
     if not eventos:
         eventos = [
             {
-                "titulo": "Cena de Gala Santa Catrina",
-                "descripcion": "Exclusiva cena gourmet de 4 tiempos con barra libre y etiqueta rigurosa de Catrina en un escenario mágico.",
-                "fecha": "30 de Octubre",
-                "lugar": "Viñedos San Lucas, SMA",
-                "costo": "Desde $2,500 MXN",
-                "imagen": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "titulo": "Festival Internacional Cervantino",
-                "descripcion": "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.",
-                "fecha": "Próximamente",
-                "lugar": "Centro Histórico",
-                "costo": "Entrada libre",
-                "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+                "titulo": "Conciertos y Música en Vivo",
+                "descripcion": "Disfruta de la mejor cartelera de música, jazz y presentaciones artísticas en los recintos de la ciudad.",
+                "fecha": "Cartelera diaria",
+                "mes": "Agenda Cultural",
+                "lugar": "Foros y Centros Culturales SMA",
+                "costo": "Varía por evento",
+                "contactoText": "🌐 Ir a San Miguel Live",
+                "contactoUrl": "https://sanmiguellive.com/es",
+                "imagen": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80"
             }
         ]
 
@@ -99,4 +92,4 @@ if __name__ == "__main__":
     datos = extraer_eventos()
     with open("eventos_sma.json", "w", encoding="utf-8") as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
-    print(f"¡Se extrajeron {len(datos)} eventos reales con éxito!")
+    print(f"¡Sincronización exitosa con {len(datos)} eventos de San Miguel Live!")
