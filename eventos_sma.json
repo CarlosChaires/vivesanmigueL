@@ -1,18 +1,106 @@
 [
     {
-        "titulo": "Cena de Gala Santa Catrina",
-        "descripcion": "Exclusiva cena gourmet de 4 tiempos con barra libre y etiqueta rigurosa de Catrina en un escenario mágico.",
-        "fecha": "30 de Octubre",
-        "lugar": "Viñedos San Lucas, SMA",
-        "costo": "Desde $2,500 MXN",
-        "imagen": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
+        "titulo": "Featured Events",
+        "descripcion": "View all",
+        "fecha": "August 7, 2026–August 23, 2026",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
     },
     {
-        "titulo": "Festival Internacional Cervantino",
-        "descripcion": "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.",
+        "titulo": "No Reviews",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
         "fecha": "Próximamente",
-        "lugar": "Centro Histórico",
-        "costo": "Entrada libre",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 17, 2027",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 17, 2027",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 19, 2026, 10:00 am–4:00 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 19, 2026, 10:00 am–4:00 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 21, 2026, 10:00 am–4:00 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 21, 2026, 10:00 am–4:00 pmSeptember 18, 2026, 10:00 am–4:00 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 22, 2026",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 22, 2026August 22, 2027August 22, 2028August 22, 2029August 22, 2030",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 22, 2026, 10:30 pm–6:30 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 22, 2026, 10:30 pm–6:30 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 24, 2026, 9:30 am–3:00 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 24, 2026, 9:30 am–3:00 pmSeptember 15, 2026, 9:30 am–3:00 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 28, 2026",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 28, 2026August 28, 2027",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "August 31, 2026, 10:00 am–12:00 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "August 31, 2026, 10:00 am–12:00 pmSeptember 28, 2026, 10:00 am–12:00 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "September 4, 2026, 10:00 am–4:00 pm",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "September 4, 2026, 10:00 am–4:00 pm",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "September 5, 2026",
+        "descripcion": "Vive una experiencia inolvidable en este evento especial de San Miguel de Allende.",
+        "fecha": "September 5, 2026September 12, 2026September 19, 2026October 3, 2026October 9, 2026October 10, 2026More",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Login",
+        "descripcion": "",
+        "fecha": "Próximamente",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar detalles / Entrada general",
+        "imagen": "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
     }
 ]
