@@ -22,23 +22,81 @@
             color: var(--text-main);
             min-height: 100vh;
         }
-        .wrapper { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
         .header { text-align: center; margin-bottom: 40px; }
         .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary-navy); margin-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .header p { color: var(--text-muted); }
+        
+        .mes-seccion { margin-bottom: 40px; }
+        .mes-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-navy);
+            border-bottom: 2px solid var(--border-glass);
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
         .card {
             background: var(--surface-glass);
             border-radius: 20px;
-            padding: 24px;
+            overflow: hidden;
             box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
             border: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.3s ease;
         }
+        .card:hover { transform: translateY(-6px); }
+        .card-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
         .card h3 { color: var(--primary-navy); margin-top: 0; font-family: 'Playfair Display', serif; font-size: 1.3rem; }
-        .card p { color: var(--text-muted); font-size: 0.95rem; }
-        .meta { font-size: 0.85rem; color: var(--cantera-terracotta); font-weight: 600; margin-top: 15px; line-height: 1.5; background: rgba(184, 107, 67, 0.05); padding: 10px; border-radius: 10px; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+        
+        .meta { 
+            font-size: 0.85rem; 
+            color: var(--cantera-terracotta); 
+            font-weight: 600; 
+            line-height: 1.6; 
+            background: rgba(184, 107, 67, 0.05); 
+            padding: 12px; 
+            border-radius: 12px; 
+            margin-bottom: 16px;
+        }
+
+        .contacto-box {
+            border-top: 1px solid rgba(184, 107, 67, 0.15);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+        .contacto-box p {
+            font-size: 0.85rem !important;
+            margin: 0 0 10px 0 !important;
+            color: var(--primary-navy) !important;
+            font-weight: 600;
+        }
+        .btn-contacto {
+            display: block;
+            text-align: center;
+            background: var(--primary-navy);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background 0.3s ease;
+        }
+        .btn-contacto:hover {
+            background: var(--cantera-terracotta);
+        }
+
         .btn-volver {
             display: inline-block; margin-bottom: 30px;
             padding: 10px 24px; background: #fff; color: var(--primary-navy);
@@ -54,52 +112,117 @@
         
         <div class="header">
             <h1>Agenda Cultural y de Eventos</h1>
-            <p>Sincronizada con las mejores actividades de San Miguel de Allende.</p>
+            <p>Clasificada por mes con información de contacto y reservas directas.</p>
         </div>
 
-        <div id="contenedor-eventos" class="grid">
-            <p style="text-align: center; grid-column: 1/-1;">Cargando cartelera...</p>
+        <div id="contenedor-meses">
+            <p style="text-align: center;">Cargando cartelera...</p>
         </div>
     </div>
 
     <script>
-        const respaldo = [
-            { titulo: "Festival Cervantino SMA", descripcion: "Expresiones artísticas y teatro en escenarios históricos.", fecha: "Próximamente", lugar: "Centro Histórico", costo: "Entrada libre" },
-            { titulo: "Cata en Viñedos Locales", descripcion: "Experiencia enológica exclusiva con catas y maridajes.", fecha: "Fines de semana", lugar: "Viñedos de la región", costo: "Desde $800 MXN" }
+        const eventosCompletos = [
+            { 
+                titulo: "Cena de Gala Santa Catrina", 
+                descripcion: "Vive una noche de gala inolvidable con cena gourmet de 4 tiempos, barra libre y rigurosa etiqueta de Catrina en Viñedos San Lucas.", 
+                fecha: "30 de Octubre", 
+                mes: "Octubre",
+                lugar: "Viñedos San Lucas, SMA", 
+                costo: "Desde $2,500 MXN",
+                contactoText: "📞 (415) 155 9141",
+                contactoUrl: "https://discoversma.com/",
+                imagen: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
+            },
+            { 
+                titulo: "Festival Internacional Cervantino", 
+                descripcion: "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.", 
+                fecha: "Próximamente", 
+                mes: "Próximos Eventos",
+                lugar: "Centro Histórico", 
+                costo: "Entrada libre",
+                contactoText: "🌐 Sitio Oficial Cervantino",
+                contactoUrl: "https://discoversma.com/",
+                imagen: "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+            },
+            { 
+                titulo: "Recorrido de Viñedos y Cata de Altura", 
+                descripcion: "Experiencia enológica exclusiva con catas guiadas y maridajes en los mejores viñedos vitivinícolas de la región.", 
+                fecha: "Fines de semana", 
+                mes: "Próximos Eventos",
+                lugar: "Ruta del Vino SMA", 
+                costo: "Desde $800 MXN",
+                contactoText: "📞 Reservas y Accesos",
+                contactoUrl: "https://discoversma.com/",
+                imagen: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80"
+            },
+            { 
+                titulo: "Conciertos Tradicionales en el Jardín", 
+                descripcion: "Música en vivo, serenatas y un ambiente colonial inigualable bajo el icónico atardecer sanmiguelense.", 
+                fecha: "Diario por la tarde", 
+                mes: "Actividades Diarias",
+                lugar: "Jardín Principal", 
+                costo: "Evento gratuito",
+                contactoText: "ℹ️ Más Información",
+                contactoUrl: "https://discoversma.com/",
+                imagen: "https://images.unsplash.com/photo-1588619446215-2882798e987c?auto=format&fit=crop&w=800&q=80"
+            }
         ];
 
-        async function cargar() {
-            try {
-                let res = await fetch('eventos_sma.json?' + new Date().getTime());
-                if (!res.ok) throw new Error();
-                let data = await res.json();
-                pintar(data.length ? data : respaldo);
-            } catch {
-                pintar(respaldo);
+        function renderizarPorMes(eventos) {
+            let contenedor = document.getElementById('contenedor-meses');
+            contenedor.innerHTML = '';
+
+            let grupos = {};
+            eventos.forEach(ev => {
+                let m = ev.mes || "Próximamente";
+                if (!grupos[m]) grupos[m] = [];
+                grupos[m].push(ev);
+            });
+
+            for (let mes in grupos) {
+                let seccion = document.createElement('div');
+                seccion.className = 'mes-seccion';
+                
+                let tituloMes = document.createElement('h2');
+                tituloMes.className = 'mes-titulo';
+                tituloMes.textContent = mes;
+                seccion.appendChild(tituloMes);
+
+                let grid = document.createElement('div');
+                grid.className = 'grid';
+
+                grupos[mes].forEach(ev => {
+                    let tarjeta = document.createElement('div');
+                    tarjeta.className = 'card';
+                    tarjeta.innerHTML = `
+                        <img src="${ev.imagen}" alt="${ev.titulo}" class="card-img">
+                        <div class="card-body">
+                            <div>
+                                <h3>${ev.titulo}</h3>
+                                <p>${ev.descripcion}</p>
+                            </div>
+                            <div>
+                                <div class="meta">
+                                    📅 ${ev.fecha} <br>
+                                    📍 ${ev.lugar} <br>
+                                    💰 ${ev.costo}
+                                </div>
+                                <div class="contacto-box">
+                                    <p>${ev.contactoText}</p>
+                                    <a href="${ev.contactoUrl}" target="_blank" rel="noopener noreferrer" class="btn-contacto">Solicitar Más Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(tarjeta);
+                });
+
+                seccion.appendChild(grid);
+                contenedor.appendChild(seccion);
             }
         }
 
-        function pintar(lista) {
-            let cont = document.getElementById('contenedor-eventos');
-            cont.innerHTML = '';
-            lista.forEach(ev => {
-                let div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <div>
-                        <h3>${ev.titulo}</h3>
-                        <p>${ev.descripcion}</p>
-                    </div>
-                    <div class="meta">
-                        📅 ${ev.fecha} <br>
-                        📍 ${ev.lugar} <br>
-                        💰 ${ev.costo}
-                    </div>
-                `;
-                cont.appendChild(div);
-            });
-        }
-        cargar();
+        renderizarPorMes(eventosCompletos);
     </script>
 </body>
 </html>
