@@ -115,4 +115,395 @@
 
         .brand-subtitle-badge {
             font-size: 0.75rem;
-            text-transform
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--cantera-terracotta);
+            margin-top: 6px;
+            font-weight: 700;
+            display: block;
+        }
+
+        /* --- Botón de Volver al Inicio --- */
+        .sma-buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .sma-pastel-btn .wp-block-button__link {
+            background: #ffffff !important;
+            color: var(--primary-navy) !important;
+            border: 1px solid var(--border-glass) !important;
+            padding: 12px 30px !important;
+            border-radius: 30px !important;
+            font-weight: 700 !important;
+            font-size: 13.5px !important;
+            text-decoration: none !important;
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.06);
+            transition: all 0.3s ease !important;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .sma-pastel-btn .wp-block-button__link:hover {
+            background: var(--cantera-terracotta) !important;
+            color: #ffffff !important;
+            border-color: var(--cantera-terracotta) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.3);
+        }
+
+        .wp-block-separator {
+            border: none;
+            height: 1px;
+            background: rgba(184, 107, 67, 0.15);
+            margin: 30px 0;
+        }
+
+        /* --- Título Limpio --- */
+        .header-title-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-title-area h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.3rem;
+            color: var(--primary-navy);
+            margin: 0;
+        }
+
+        .mes-seccion { margin-bottom: 40px; }
+        .mes-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-navy);
+            border-bottom: 2px solid var(--border-glass);
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+        }
+
+        /* --- Tarjetas Uniformes --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.06);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
+            border-color: var(--cantera-terracotta);
+            background: rgba(255, 255, 255, 0.99);
+        }
+        .card-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .card h3 { color: var(--primary-navy); margin-top: 0; font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 12px; }
+        .card p { color: var(--text-muted) !important; font-size: 14px !important; line-height: 1.6 !important; margin: 0 0 20px 0; }
+        
+        .meta { 
+            font-size: 0.85rem; 
+            color: var(--cantera-terracotta); 
+            font-weight: 600; 
+            line-height: 1.6; 
+            background: rgba(184, 107, 67, 0.06); 
+            padding: 12px 16px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(184, 107, 67, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .contacto-box {
+            border-top: 1px solid rgba(184, 107, 67, 0.15);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+        .contacto-box p {
+            font-size: 0.85rem !important;
+            margin: 0 0 10px 0 !important;
+            color: var(--primary-navy) !important;
+            font-weight: 600;
+        }
+        .btn-contacto {
+            display: block;
+            text-align: center;
+            background: var(--primary-navy);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background 0.3s ease;
+        }
+        .btn-contacto:hover {
+            background: var(--cantera-terracotta);
+        }
+
+        /* --- Footer --- */
+        .footer-brand-section {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .footer-brand-section p {
+            font-weight: 800 !important;
+            color: var(--primary-navy) !important;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 12px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="sma-main-wrapper">
+
+        <header class="site-header-custom">
+            <div class="site-logo-container" title="Vive San Miguel">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
+            </div>
+            <div>
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
+                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
+            </div>
+        </header>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <div class="sma-buttons-container">
+            <div class="wp-block-button sma-pastel-btn">
+                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/">← Volver al Inicio</a>
+            </div>
+        </div>
+
+        <hr class="wp-block-separator has-alpha-channel-opacity" />
+
+        <div class="header-title-area">
+            <h2>Agenda Cultural y de Eventos</h2>
+        </div>
+
+        <div id="contenedor-meses"></div>
+
+        <div class="footer-brand-section">
+            <p>vivesanmiguel.com</p>
+        </div>
+
+    </div>
+
+    <script>
+        const eventosCompletos = [
+            { 
+                titulo: "Cena de Gala Santa Catrina", 
+                descripcion: "Vive una noche de gala inolvidable. Disfruta de una exquisita cena gourmet de 4 tiempos con barra libre en bebidas seleccionadas en el Restaurante Vinícola de Viñedos San Lucas. Exige etiqueta rigurosa de Catrina o Catrín.", 
+                fecha: "30 de Octubre de 2025", 
+                mes: "Octubre",
+                lugar: "Buenavista Km. 26, San Miguel de Allende", 
+                costo: "Desde $2,500 MXN por persona",
+                contactoText: "📞 (415) 155 9141",
+                contactoUrl: "tel:4151559141",
+                imagen: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
+            },
+            { 
+                titulo: "Festival Internacional Cervantino en SMA", 
+                descripcion: "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.", 
+                fecha: "Próximamente", 
+                mes: "Próximos Eventos",
+                lugar: "Centro Histórico", 
+                costo: "Entrada libre",
+                contactoText: "🌐 Sitio Oficial",
+                contactoUrl: "https://sanmiguellive.com/es",
+                imagen: "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+            },
+            { 
+                titulo: "Recorrido de Viñedos y Cata de Altura", 
+                descripcion: "Experiencia enológica exclusiva con catas guiadas y maridajes en los mejores viñedos vitivinícolas de la región.", 
+                fecha: "Fines de semana", 
+                mes: "Próximos Eventos",
+                lugar: "Ruta del Vino SMA", 
+                costo: "Desde $800 MXN",
+                contactoText: "📞 Reservas y Accesos",
+                contactoUrl: "https://sanmiguellive.com/es",
+                imagen: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        function renderizarPorMes(eventos) {
+            let contenedor = document.getElementById('contenedor-meses');
+            contenedor.innerHTML = '';
+
+            let grupos = {};
+            eventos.forEach(ev => {
+                let m = ev.mes || "Próximamente";
+                if (!grupos[m]) grupos[m] = [];
+                grupos[m].push(ev);
+            });
+
+            for (let mes in grupos) {
+                let seccion = document.createElement('div');
+                seccion.className = 'mes-seccion';
+                
+                let tituloMes = document.createElement('h2');
+                tituloMes.className = 'mes-titulo';
+                tituloMes.textContent = mes;
+                seccion.appendChild(tituloMes);
+
+                let grid = document.createElement('div');
+                grid.className = 'grid';
+
+                grupos[mes].forEach(ev => {
+                    let tarjeta = document.createElement('div');
+                    tarjeta.className = 'card';
+                    tarjeta.innerHTML = `
+                        <img src="${ev.imagen}" alt="${ev.titulo}" class="card-img">
+                        <div class="card-body">
+                            <div>
+                                <h3>${ev.titulo}</h3>
+                                <p>${ev.descripcion}</p>
+                            </div>
+                            <div>
+                                <div class="meta">
+                                    📅 ${ev.fecha} <br>
+                                    📍 ${ev.lugar} <br>
+                                    💰 ${ev.costo}
+                                </div>
+                                <div class="contacto-box">
+                                    <p>${ev.contactoText}</p>
+                                    <a href="${ev.contactoUrl}" target="_blank" rel="noopener noreferrer" class="btn-contacto">Solicitar Más Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(tarjeta);
+                });
+
+                seccion.appendChild(grid);
+                contenedor.appendChild(seccion);
+            }
+        }
+
+        renderizarPorMes(eventosCompletos);
+
+        // Control del Aura y Partículas Inmersivas
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(184, 107, 67, 0.35)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = 160;
+                let force = (maxDistance - distance) / maxDistance;
+
+                if (distance < maxDistance) {
+                    this.x -= forceDirectionX * force * this.density * 0.5;
+                    this.y -= forceDirectionY * force * this.density * 0.5;
+                } else {
+                    if (this.x !== this.baseX) {
+                        this.x -= (this.x - this.baseX) / 25;
+                    }
+                    if (this.y !== this.baseY) {
+                        this.y -= (this.y - this.baseY) / 25;
+                    }
+                }
+
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+
+                if (this.baseX < 0) this.baseX = width;
+                if (this.baseX > width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = height;
+                if (this.baseY > height) this.baseY = 0;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (width * height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+</body>
+</html>
