@@ -1,79 +1,18 @@
 [
     {
-        "titulo": "Home",
-        "descripcion": "Home",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
+        "titulo": "Cena de Gala Santa Catrina",
+        "descripcion": "Exclusiva cena gourmet de 4 tiempos con barra libre y etiqueta rigurosa de Catrina en un escenario mágico.",
+        "fecha": "30 de Octubre",
+        "lugar": "Viñedos San Lucas, SMA",
+        "costo": "Desde $2,500 MXN",
+        "imagen": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
     },
     {
-        "titulo": "Gastronomia",
-        "descripcion": "Gastronomia",
+        "titulo": "Festival Internacional Cervantino",
+        "descripcion": "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.",
         "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Hoteles",
-        "descripcion": "Hoteles",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Bodas",
-        "descripcion": "Bodas",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Viñedos",
-        "descripcion": "Viñedos",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Aventura",
-        "descripcion": "Aventura",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Bienestar",
-        "descripcion": "Bienestar",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Shopping",
-        "descripcion": "Shopping",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Eventos",
-        "descripcion": "Eventos",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Blog",
-        "descripcion": "Blog",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
-    },
-    {
-        "titulo": "Servicios",
-        "descripcion": "Servicios",
-        "fecha": "Próximamente",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar detalles"
+        "lugar": "Centro Histórico",
+        "costo": "Entrada libre",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     }
 ]
