@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- SheetJS para lectura y escritura de Excel (.xlsx / .csv) -->
+  <!-- SheetJS para lectura y escritura de Excel (.xlsx) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     :root {
@@ -112,7 +112,7 @@
       font-size: 0.85rem;
       cursor: pointer;
       transition: var(--transicion);
-      display: none; /* Oculto por defecto hasta autenticación */
+      display: none; /* Oculto hasta autenticarse */
       align-items: center;
       gap: 0.5rem;
     }
@@ -231,6 +231,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       font-weight: 500;
+      z-index: 2;
     }
 
     .event-body {
@@ -285,6 +286,7 @@
       gap: 0.5rem;
       opacity: 0;
       transition: var(--transicion);
+      z-index: 2;
     }
 
     .admin-logged .event-card:hover .card-actions {
@@ -529,17 +531,14 @@
         </div>
       </div>
       <div class="admin-actions-group">
-        <!-- Botón para descargar plantilla de Excel formateada -->
         <button class="admin-trigger btn-template" id="templateBtn" onclick="downloadExcelTemplate()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           Descargar Plantilla Excel
         </button>
-        <!-- Botón para subir Excel masivo -->
         <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           Subir Excel Masivo
         </button>
-        <!-- Botón para agregar evento individual -->
         <button class="admin-trigger" id="manageBtn" onclick="openAdminModal()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           + Nuevo Evento
@@ -594,7 +593,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel completado. Si no lo tienes, puedes descargarlo previamente con el botón <strong>"Descargar Plantilla Excel"</strong>.
+        Sube tu archivo Excel. <strong>Nota sobre imágenes:</strong> Si subes tus imágenes directamente aquí, el sistema las comprimirá y almacenará de forma temporal en tu navegador, eliminándose automáticamente en cuanto pase la fecha del evento.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -606,7 +605,7 @@
     </div>
   </div>
 
-  <!-- Modal de Administración Individual (Crear / Editar Eventos) -->
+  <!-- Modal de Administración Individual -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -627,7 +626,7 @@
             <input type="text" id="eventCategoryInput" required placeholder="Ej. Gastronomía, Arte">
           </div>
           <div class="form-group">
-            <label for="eventDateInput">Fecha y Mes del Evento</label>
+            <label for="eventDateInput">Fecha del Evento</label>
             <input type="date" id="eventDateInput" required>
           </div>
         </div>
@@ -644,8 +643,9 @@
         </div>
 
         <div class="form-group">
-          <label for="eventImgInput">URL de Imagen</label>
-          <input type="url" id="eventImgInput" required placeholder="https://images.unsplash.com/...">
+          <label for="eventImgFile">Imagen del Evento (Se borra automáticamente al pasar la fecha)</label>
+          <input type="file" id="eventImgFile" accept="image/*">
+          <input type="hidden" id="eventImgInput">
         </div>
 
         <div class="form-group">
@@ -701,17 +701,33 @@
       "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
     };
 
+    // Función de limpieza automática: elimina eventos cuya fecha ya haya pasado respecto a hoy
+    function cleanExpiredEvents(events) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return events.filter(ev => {
+        if (!ev.date) return false;
+        const eventDate = new Date(ev.date + 'T00:00:00');
+        return eventDate >= today;
+      });
+    }
+
     function getEvents() {
       const data = localStorage.getItem('sma_events');
-      if (!data) {
-        localStorage.setItem('sma_events', JSON.stringify(defaultEvents));
-        return defaultEvents;
+      let events = data ? JSON.parse(data) : defaultEvents;
+      
+      // Aplicar filtro automático de expiración
+      const filteredEvents = cleanExpiredEvents(events);
+      if (filteredEvents.length !== events.length) {
+        localStorage.setItem('sma_events', JSON.stringify(filteredEvents));
       }
-      return JSON.parse(data);
+      return filteredEvents;
     }
 
     function saveEvents(events) {
-      localStorage.setItem('sma_events', JSON.stringify(events));
+      const cleaned = cleanExpiredEvents(events);
+      localStorage.setItem('sma_events', JSON.stringify(cleaned));
       renderEvents();
     }
 
@@ -743,7 +759,7 @@
       const events = getEvents();
 
       if (events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
+        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento. Los eventos pasados se han depurado automáticamente.</div>';
         return;
       }
 
@@ -774,11 +790,14 @@
         `;
 
         group.items.forEach(ev => {
+          const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
+          const imgSrc = ev.img && ev.img.trim() !== "" ? ev.img : fallbackImg;
+
           html += `
             <div class="event-card">
               <div class="event-img-wrapper">
                 <span class="event-category">${ev.category}</span>
-                <img src="${ev.img}" alt="${ev.name}" loading="lazy">
+                <img src="${imgSrc}" alt="${ev.name}" loading="lazy" onerror="this.src='${fallbackImg}'">
                 <div class="card-actions">
                   <button class="action-btn" onclick="openEditModal('${ev.id}')" title="Editar evento">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
@@ -812,7 +831,6 @@
       container.innerHTML = html;
     }
 
-    // Función para descargar la plantilla de Excel prediseñada
     function downloadExcelTemplate() {
       const templateData = [
         {
@@ -836,22 +854,12 @@
       ];
 
       const worksheet = XLSX.utils.json_to_sheet(templateData);
-      
-      // Ajustar anchos de columnas sugeridos
       worksheet['!cols'] = [
-        {wch: 40}, // name
-        {wch: 15}, // category
-        {wch: 12}, // date
-        {wch: 12}, // time
-        {wch: 15}, // price
-        {wch: 60}, // img
-        {wch: 50}  // desc
+        {wch: 40}, {wch: 15}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 60}, {wch: 50}
       ];
 
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
-      
-      // Descargar archivo .xlsx
       XLSX.writeFile(workbook, "plantilla_eventos_vive_san_miguel.xlsx");
     }
 
@@ -891,7 +899,7 @@
       }
     }
 
-    // Modal Excel Masivo
+    // Excel Masivo
     function openExcelModal() {
       document.getElementById('excelFileInput').value = '';
       document.getElementById('excelModal').classList.add('active');
@@ -954,11 +962,12 @@
       reader.readAsArrayBuffer(file);
     }
 
-    // Gestión individual
+    // Gestión individual con compresión temporal de imagen local
     function openAdminModal() {
       document.getElementById('modalTitle').innerText = 'Nuevo Evento';
       document.getElementById('eventForm').reset();
       document.getElementById('eventId').value = '';
+      document.getElementById('eventImgInput').value = '';
       document.getElementById('adminModal').classList.add('active');
     }
 
@@ -974,7 +983,8 @@
       document.getElementById('eventDateInput').value = ev.date;
       document.getElementById('eventTimeInput').value = ev.time;
       document.getElementById('eventPriceInput').value = ev.price;
-      document.getElementById('eventImgInput').value = ev.img;
+      document.getElementById('eventImgInput').value = ev.img || '';
+      document.getElementById('eventImgFile').value = '';
       document.getElementById('eventDescInput').value = ev.desc;
 
       document.getElementById('adminModal').classList.add('active');
@@ -984,6 +994,47 @@
       document.getElementById('adminModal').classList.remove('active');
     }
 
+    // Procesar archivo de imagen local a Base64 optimizado
+    document.getElementById('eventImgFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 600;
+          let width = img.width;
+            let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Comprimir a JPEG con calidad 0.8
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          document.getElementById('eventImgInput').value = dataUrl;
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
     function handleFormSubmit(e) {
       e.preventDefault();
       const id = document.getElementById('eventId').value;
@@ -992,10 +1043,20 @@
       const date = document.getElementById('eventDateInput').value;
       const time = document.getElementById('eventTimeInput').value;
       const price = document.getElementById('eventPriceInput').value;
-      const img = document.getElementById('eventImgInput').value;
+      let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
 
       let events = getEvents();
+
+      // Si no se seleccionó una nueva imagen al editar, conservar la anterior
+      if (id && !img) {
+        const existing = events.find(ev => ev.id === id);
+        if (existing) img = existing.img;
+      }
+
+      if (!img) {
+        img = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
+      }
 
       if (id) {
         events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, img, desc } : ev);
