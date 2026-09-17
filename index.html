@@ -14,13 +14,13 @@
             --bg-sanmiguel: #fbf9f6;
             --cantera-terracotta: #b86b43;
             --cantera-terracotta-dark: #9c5531;
-            --cantera-rose: #d48384;
+            --cantera-ocre: #c28835;
             --primary-navy: #1b2a4a;
             --text-main: #232b38;
             --text-muted: #626d7a;
             --surface-white: #ffffff;
-            --border-glass: rgba(184, 107, 67, 0.18);
-            --shadow-warm: 0 16px 36px rgba(184, 107, 67, 0.09);
+            --border-glass: rgba(184, 107, 67, 0.14);
+            --shadow-warm: 0 12px 32px rgba(184, 107, 67, 0.06);
         }
 
         *, *::before, *::after {
@@ -37,12 +37,11 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             background-image: 
-                radial-gradient(circle at 50% -10%, rgba(212, 131, 132, 0.18) 0%, rgba(184, 107, 67, 0.08) 40%, transparent 70%),
-                radial-gradient(circle at 100% 60%, rgba(212, 131, 132, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% -10%, rgba(184, 107, 67, 0.06) 0%, rgba(194, 136, 53, 0.03) 40%, transparent 70%),
                 linear-gradient(180deg, #fffdfb 0%, #fbf9f6 50%, #f7f3ee 100%);
         }
 
-        /* --- Header Flotante Moderno --- */
+        /* --- Header Flotante Limpio --- */
         .site-nav-wrap {
             position: sticky;
             top: 20px;
@@ -53,7 +52,7 @@
         }
 
         .nav-capsule {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(14px);
             border: 1px solid var(--border-glass);
             border-radius: 60px;
@@ -61,7 +60,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 8px 24px rgba(27, 42, 74, 0.05);
+            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.04);
         }
 
         .brand-link {
@@ -71,33 +70,24 @@
             text-decoration: none;
         }
 
-        .brand-logo-frame {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1.5px solid var(--cantera-rose);
-            padding: 4px;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(184, 107, 67, 0.15);
+        .brand-logo {
+            height: 46px;
+            width: auto;
+            object-fit: contain;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            filter: drop-shadow(0 2px 4px rgba(184, 107, 67, 0.12));
             transition: transform 0.3s ease;
         }
 
-        .brand-link:hover .brand-logo-frame {
-            transform: scale(1.08) rotate(4deg);
-        }
-
-        .brand-logo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .brand-link:hover .brand-logo {
+            transform: scale(1.05);
         }
 
         .brand-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.45rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--primary-navy);
             letter-spacing: -0.5px;
@@ -107,13 +97,13 @@
             background: var(--cantera-terracotta);
             color: #ffffff;
             text-decoration: none;
-            padding: 11px 26px;
+            padding: 10px 24px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 13.5px;
-            letter-spacing: 0.5px;
+            font-size: 13px;
+            letter-spacing: 0.4px;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 18px rgba(184, 107, 67, 0.25);
+            box-shadow: 0 4px 14px rgba(184, 107, 67, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -121,14 +111,14 @@
 
         .btn-nav-action:hover {
             background: var(--cantera-terracotta-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(184, 107, 67, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(184, 107, 67, 0.3);
         }
 
-        /* --- Hero de Entrada --- */
+        /* --- Hero de Entrada Uniforme y Estético --- */
         .index-hero {
-            max-width: 1140px;
-            margin: 40px auto 30px auto;
+            max-width: 1080px;
+            margin: 50px auto 40px auto;
             padding: 0 20px;
             text-align: center;
         }
@@ -139,30 +129,30 @@
             gap: 8px;
             background: #ffffff;
             border: 1px solid var(--border-glass);
-            padding: 7px 20px;
+            padding: 6px 18px;
             border-radius: 40px;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2.8px;
+            letter-spacing: 2.5px;
             color: var(--cantera-terracotta);
-            box-shadow: 0 4px 14px rgba(184, 107, 67, 0.08);
-            margin-bottom: 22px;
+            box-shadow: 0 3px 10px rgba(184, 107, 67, 0.05);
+            margin-bottom: 20px;
         }
 
         .destination-tag::before {
             content: '✦';
-            color: var(--cantera-rose);
+            color: var(--cantera-ocre);
         }
 
         .hero-heading {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.6rem, 6vw, 4.4rem);
+            font-size: clamp(2.4rem, 5.5vw, 4rem);
             font-weight: 800;
-            line-height: 1.06;
+            line-height: 1.1;
             color: var(--primary-navy);
             margin-bottom: 16px;
-            letter-spacing: -1px;
+            letter-spacing: -0.8px;
         }
 
         .hero-heading span {
@@ -170,69 +160,68 @@
         }
 
         .hero-desc {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 35px auto;
+            max-width: 620px;
+            margin: 0 auto 32px auto;
             font-weight: 400;
         }
 
-        /* --- El Botón Estrella: PREPARA TU VIAJE --- */
+        /* --- Botón Principal Estilizado --- */
         .main-action-zone {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 45px;
+            gap: 10px;
+            margin-bottom: 40px;
         }
 
         .btn-main-planner {
             display: inline-flex;
             align-items: center;
-            gap: 14px;
-            padding: 20px 52px;
+            gap: 12px;
+            padding: 18px 46px;
             background: linear-gradient(135deg, var(--cantera-terracotta) 0%, var(--cantera-terracotta-dark) 100%);
             color: #ffffff !important;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 800;
-            font-size: 15px;
-            letter-spacing: 2px;
+            font-size: 14.5px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            box-shadow: 0 16px 36px rgba(184, 107, 67, 0.35);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 2px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 30px rgba(184, 107, 67, 0.28);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .btn-main-planner:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 22px 48px rgba(184, 107, 67, 0.45);
-            background: linear-gradient(135deg, #c77449 0%, var(--cantera-terracotta) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px rgba(184, 107, 67, 0.38);
         }
 
         .btn-hint {
-            font-size: 13px;
+            font-size: 12.5px;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        /* --- Buscador Rápido de Bienvenida --- */
+        /* --- Buscador Minimalista --- */
         .quick-search-box {
-            max-width: 600px;
-            margin: 0 auto 55px auto;
+            max-width: 580px;
+            margin: 0 auto 60px auto;
             background: #ffffff;
             border-radius: 50px;
-            padding: 8px 10px 8px 24px;
+            padding: 6px 8px 6px 22px;
             display: flex;
             align-items: center;
-            border: 1.5px solid var(--border-glass);
+            border: 1px solid var(--border-glass);
             box-shadow: var(--shadow-warm);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .quick-search-box:focus-within {
             border-color: var(--cantera-terracotta);
-            box-shadow: 0 18px 40px rgba(184, 107, 67, 0.16);
+            box-shadow: 0 14px 34px rgba(184, 107, 67, 0.12);
         }
 
         .quick-search-box input {
@@ -240,7 +229,7 @@
             border: none;
             outline: none;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14.5px;
+            font-size: 14px;
             color: var(--text-main);
             background: transparent;
         }
@@ -253,10 +242,10 @@
             background: var(--cantera-terracotta);
             color: #ffffff;
             border: none;
-            padding: 13px 28px;
+            padding: 12px 26px;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 13.5px;
+            font-size: 13px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
@@ -265,10 +254,10 @@
             background: var(--cantera-terracotta-dark);
         }
 
-        /* --- Showcase de Postales: 4 Puertas a San Miguel --- */
+        /* --- Showcase de Postales Uniforme --- */
         .teaser-section {
-            max-width: 1140px;
-            margin: 0 auto 65px auto;
+            max-width: 1080px;
+            margin: 0 auto 60px auto;
             padding: 0 20px;
         }
 
@@ -279,80 +268,79 @@
 
         .teaser-header h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.1rem;
+            font-size: 2rem;
             color: var(--primary-navy);
             margin-bottom: 6px;
         }
 
         .teaser-header p {
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14.5px;
         }
 
-        /* Diseño asimétrico y dinámico de postales */
         .teaser-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
+            gap: 18px;
         }
 
         .teaser-card {
             position: relative;
-            border-radius: 22px;
+            border-radius: 20px;
             overflow: hidden;
             background: #ede7df;
             border: 1px solid var(--border-glass);
             box-shadow: var(--shadow-warm);
             text-decoration: none;
             display: block;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .teaser-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 24px 50px rgba(184, 107, 67, 0.18);
-            border-color: rgba(184, 107, 67, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 42px rgba(184, 107, 67, 0.15);
+            border-color: rgba(184, 107, 67, 0.3);
         }
 
-        .card-col-7 { grid-column: span 7; height: 320px; }
-        .card-col-5 { grid-column: span 5; height: 320px; }
+        .card-col-7 { grid-column: span 7; height: 300px; }
+        .card-col-5 { grid-column: span 5; height: 300px; }
 
         .teaser-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
-            filter: brightness(0.95);
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+            filter: brightness(0.96);
         }
 
         .teaser-card:hover img {
-            transform: scale(1.06);
-            filter: brightness(1.02);
+            transform: scale(1.04);
+            filter: brightness(1.01);
         }
 
         .card-backdrop {
             position: absolute;
             inset: 0;
-            background: linear-gradient(0deg, rgba(27, 42, 74, 0.88) 0%, rgba(27, 42, 74, 0.25) 60%, transparent 100%);
+            background: linear-gradient(0deg, rgba(27, 42, 74, 0.85) 0%, rgba(27, 42, 74, 0.2) 60%, transparent 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 24px;
+            padding: 22px;
             color: #ffffff;
         }
 
         .card-tag {
-            font-size: 11px;
+            font-size: 10.5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--cantera-rose);
+            letter-spacing: 1.8px;
+            color: var(--cantera-ocre);
             font-weight: 700;
             margin-bottom: 4px;
         }
 
         .card-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             line-height: 1.2;
             display: flex;
@@ -361,53 +349,53 @@
         }
 
         .card-arrow {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transform: translateX(0);
             transition: transform 0.3s ease;
-            color: var(--cantera-rose);
+            color: var(--cantera-ocre);
         }
 
         .teaser-card:hover .card-arrow {
-            transform: translateX(5px);
+            transform: translateX(4px);
         }
 
         /* --- Cita Turística Emocional --- */
         .quote-showcase {
-            max-width: 1140px;
-            margin: 0 auto 65px auto;
+            max-width: 1080px;
+            margin: 0 auto 60px auto;
             padding: 0 20px;
         }
 
         .quote-inner {
             background: #ffffff;
             border: 1px solid var(--border-glass);
-            border-radius: 26px;
-            padding: 48px 30px;
+            border-radius: 24px;
+            padding: 42px 24px;
             text-align: center;
             box-shadow: var(--shadow-warm);
         }
 
         .quote-inner h3 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 2.7rem);
+            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
             font-weight: 700;
             color: var(--primary-navy);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-style: italic;
         }
 
         .quote-inner p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--cantera-terracotta);
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        /* --- Redes Sociales --- */
+        /* --- Redes Sociales Sofisticadas --- */
         .social-showcase {
-            max-width: 1140px;
-            margin: 0 auto 75px auto;
+            max-width: 1080px;
+            margin: 0 auto 70px auto;
             padding: 0 20px;
             text-align: center;
         }
@@ -415,28 +403,28 @@
         .social-box {
             background: #ffffff;
             border: 1px solid var(--border-glass);
-            border-radius: 26px;
-            padding: 42px 24px;
+            border-radius: 24px;
+            padding: 38px 24px;
             box-shadow: var(--shadow-warm);
         }
 
         .social-box h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.85rem;
+            font-size: 1.7rem;
             color: var(--primary-navy);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .social-box p {
             color: var(--text-muted);
-            font-size: 15px;
-            margin-bottom: 24px;
+            font-size: 14.5px;
+            margin-bottom: 22px;
         }
 
         .social-group {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
@@ -444,83 +432,91 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 13px 30px;
+            padding: 12px 26px;
             border-radius: 30px;
             color: #ffffff;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13.5px;
             text-decoration: none;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
         }
 
+        .btn-social svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+            flex-shrink: 0;
+        }
+
         .btn-social.ig {
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366);
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
         .btn-social.tt {
-            background: #1b2a4a;
+            background: #010101;
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .btn-social:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.14);
         }
 
-        /* --- Footer Cantera & Navy Oficial --- */
+        /* --- Footer Uniforme --- */
         .site-footer {
             background: var(--primary-navy);
             color: #ffffff;
-            padding: 60px 24px 30px 24px;
-            border-radius: 32px 32px 0 0;
+            padding: 55px 24px 28px 24px;
+            border-radius: 28px 28px 0 0;
         }
 
         .footer-grid {
-            max-width: 1140px;
-            margin: 0 auto 45px auto;
+            max-width: 1080px;
+            margin: 0 auto 40px auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
+            gap: 36px;
         }
 
         .footer-grid h4 {
             font-family: 'Playfair Display', serif;
             color: #f7d2bc;
-            font-size: 1.25rem;
-            margin-bottom: 14px;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
         }
 
         .footer-grid p, .footer-grid li {
             color: #b0bbca;
-            font-size: 14px;
-            line-height: 1.8;
+            font-size: 13.5px;
+            line-height: 1.75;
             list-style: none;
         }
 
         .footer-dock {
-            max-width: 1140px;
+            max-width: 1080px;
             margin: 0 auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 12.5px;
             color: #8c98a8;
         }
 
         @media (max-width: 768px) {
             .card-col-7, .card-col-5 {
                 grid-column: span 12;
-                height: 240px;
+                height: 220px;
             }
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 26px;
             }
             .footer-dock {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
                 text-align: center;
             }
         }
@@ -532,9 +528,7 @@
     <header class="site-nav-wrap">
         <nav class="nav-capsule">
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-link">
-                <div class="brand-logo-frame">
-                    <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
-                </div>
+                <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
                 <span class="brand-title">Vive San Miguel</span>
             </a>
             <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-nav-action">
@@ -557,7 +551,7 @@
             Empieza a descubrir la magia: callejones de cantera, atardeceres en viñedos, leyendas coloniales y terrazas inolvidables.
         </p>
 
-        <!-- Botón Protagonista que lleva al menú con todo lo que se puede hacer -->
+        <!-- Botón Protagonista -->
         <div class="main-action-zone">
             <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-main-planner">
                 <span>PREPARA TU VIAJE</span>
@@ -566,7 +560,7 @@
             <span class="btn-hint">Entra a la guía completa con hoteles, restaurantes, rutas y tours</span>
         </div>
 
-        <!-- Buscador de Entrada Rápida -->
+        <!-- Buscador Rápido -->
         <form class="quick-search-box" role="search">
             <input type="search" placeholder="Busca terrazas, viñedos, hoteles boutique, galerías..." required>
             <button type="submit">Buscar</button>
@@ -645,11 +639,15 @@
             <h3>Nuestra Comunidad Visual</h3>
             <p>Inspírate con reels, historias y los rincones más fotografiados de San Miguel.</p>
             <div class="social-group">
+                <!-- Instagram Original -->
                 <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="btn-social ig">
-                    📸 Instagram Oficial
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    Instagram Oficial
                 </a>
+                <!-- TikTok Original -->
                 <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="btn-social tt">
-                    🎵 TikTok en Vivo
+                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    TikTok en Vivo
                 </a>
             </div>
         </div>
