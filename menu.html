@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+    <!-- SheetJS para importación/exportación de Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
         :root {
@@ -85,6 +87,7 @@
             margin-bottom: 25px;
             flex-wrap: wrap;
             text-align: center;
+            position: relative;
         }
 
         .site-logo-container {
@@ -134,7 +137,10 @@
         .sma-buttons-container {
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .sma-pastel-btn .wp-block-button__link {
@@ -158,6 +164,36 @@
             border-color: var(--cantera-terracotta) !important;
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(184, 107, 67, 0.25);
+        }
+
+        /* Controles de Administración (Ocultos hasta iniciar sesión) */
+        .admin-controls-group {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .admin-controls-group.active {
+            display: flex;
+        }
+
+        .btn-admin-action {
+            background: rgba(184, 107, 67, 0.1);
+            color: var(--cantera-terracotta);
+            border: 1px solid rgba(184, 107, 67, 0.3);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin-action:hover {
+            background: var(--cantera-terracotta);
+            color: #ffffff;
         }
 
         .wp-block-separator {
@@ -294,7 +330,7 @@
             font-weight: 700 !important;
         }
 
-        /* --- Sección Secundaria de Alto Impacto (Hospedaje & Gastronomía) --- */
+        /* --- Sección Secundaria de Alto Impacto --- */
         .wp-block-group.has-background {
             background: linear-gradient(135deg, rgba(184, 107, 67, 0.06) 0%, rgba(194, 136, 53, 0.04) 100%) !important;
             backdrop-filter: blur(20px);
@@ -372,20 +408,174 @@
             box-shadow: 0 8px 22px rgba(0,0,0,0.15);
         }
 
-        /* --- Footer --- */
-        .footer-brand-section {
+        /* --- Footer Institucional con Logo, Nombre y Candado Sumamente Discreto Abajo --- */
+        .site-footer-custom {
             text-align: center;
-            padding: 25px 20px;
-            margin-top: 35px;
+            padding: 40px 20px 30px 20px;
+            margin-top: 40px;
             border-top: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
         }
 
-        .footer-brand-section p {
-            font-weight: 800 !important;
-            color: var(--primary-navy) !important;
-            letter-spacing: 3px;
+        .footer-brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 6px rgba(184, 107, 67, 0.2));
+        }
+
+        .footer-brand-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            letter-spacing: -0.3px;
+        }
+
+        /* Candado extremadamente sutil y discreto en la parte inferior */
+        .footer-lock-discreet {
+            background: transparent;
+            border: none;
+            color: #b5b0a8;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .footer-lock-discreet:hover {
+            opacity: 1;
+            color: var(--cantera-terracotta);
+            background: rgba(184, 107, 67, 0.05);
+        }
+
+        .footer-copy {
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            font-size: 11.5px !important;
+            font-size: 11px;
+        }
+
+        /* --- Modales de Autenticación y Edición --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(28, 24, 22, 0.5);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--primary-navy);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            background: var(--bg-sanmiguel);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--cantera-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-submit {
+            background: var(--cantera-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-submit:hover {
+            background: var(--cantera-terracotta-dark);
+        }
+
+        .error-msg {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
         }
 
         @media screen and (max-width: 768px) {
@@ -395,6 +585,7 @@
             .interactive-brand-title { font-size: 2rem; }
             .wp-block-heading { font-size: 1.5rem; }
             .wp-block-image { height: 140px; }
+            .footer-brand-wrap { flex-direction: column; gap: 6px; }
         }
     </style>
 </head>
@@ -406,7 +597,7 @@
 
     <div class="sma-main-wrapper">
 
-        <!-- Cabecera Oficial con Logotipo (Sin círculo, limpio y ampliado) -->
+        <!-- Cabecera Oficial con Logotipo (Limpia y profesional) -->
         <header class="site-header-custom">
             <div class="site-logo-container" title="Vive San Miguel">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
@@ -419,6 +610,14 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
+        <!-- Controles de Administración (Excel y Edición Rápida) -->
+        <div class="admin-controls-group" id="adminControls">
+            <button class="btn-admin-action" onclick="downloadTemplate()">📥 Descargar Plantilla Excel</button>
+            <button class="btn-admin-action" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
+            <button class="btn-admin-action" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
+
         <!-- Botón Único de Navegación: Prepara tu Viaje -->
         <div class="wp-block-buttons alignwide sma-buttons-container">
             <div class="wp-block-button sma-pastel-btn">
@@ -428,130 +627,20 @@
 
         <hr class="wp-block-separator has-alpha-channel-opacity" />
 
-        <!-- Sección Principal: Guía Esencial -->
+        <!-- Sección Principal: Guía Esencial Dinámica -->
         <div class="wp-block-group alignfull is-style-default" style="margin-top:0;margin-bottom:0;">
             <h2 class="wp-block-heading alignwide">Explora la magia y la cultura</h2>
 
-            <div class="wp-block-group alignwide" style="margin-top:0;margin-bottom:0">
-                <!-- Fila 1 -->
-                <div class="wp-block-columns alignwide">
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/17TZ0GQqNKqTB-KAtJOJuBj0-558SxiBS" alt="Mapa Turístico">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/mapa.html" target="_blank" rel="noopener noreferrer">Mapa Turístico</a>
-                            </div>
-                            <p class="is-service-description">Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000" alt="Eventos">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://discoversma.com/" target="_blank" rel="noopener noreferrer">Eventos</a>
-                            </div>
-                            <p>Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000" alt="Ecos del pasado">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/09/16/historia/" target="_blank" rel="noopener noreferrer">Ecos del pasado</a>
-                            </div>
-                            <p>Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fila 2 -->
-                <div class="wp-block-columns alignwide">
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png" alt="Sitios de interés">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/" target="_blank" rel="noopener noreferrer">Sitios de interés</a>
-                            </div>
-                            <p class="is-service-description">Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w1000" alt="Tradiciones">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="#">Tradiciones</a>
-                            </div>
-                            <p>Sumérgete en el corazón de nuestras costumbres, donde el pasado cobra vida en celebraciones llenas de significado.</p>
-                        </div>
-                    </div>
-
-                    <div class="wp-block-column">
-                        <figure class="wp-block-image size-large">
-                            <img src="https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000" alt="Rutas temáticas">
-                        </figure>
-                        <div class="card-content-area">
-                            <div class="wp-block-buttons">
-                                <a class="wp-block-button__link wp-element-button" href="#">Rutas temáticas</a>
-                            </div>
-                            <p>Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="wp-block-group alignwide" id="mainGridContainer" style="margin-top:0;margin-bottom:0">
+                <!-- Se inyecta dinámicamente vía JavaScript -->
             </div>
         </div>
 
-        <!-- Sección Secundaria: Hospedaje, Gastronomía y Viñedos -->
+        <!-- Sección Secundaria: Hospedaje, Gastronomía, Guías Turísticos, Aventura y Romance -->
         <div class="wp-block-group alignfull has-background">
-            <h2 class="wp-block-heading alignwide" style="margin-bottom: 20px;">Estadía y Sabor</h2>
-            <div class="wp-block-columns alignwide">
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80" alt="Hospedaje">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="#">Hospedaje</a>
-                        </div>
-                        <p class="is-service-description">Encuentra hoteles históricos, haciendas y estancias con vistas privilegiadas a la Parroquia.</p>
-                    </div>
-                </div>
-
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Gastronomía y Terrazas">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="#">Gastronomía</a>
-                        </div>
-                        <p>Deleita tu paladar en alta cocina internacional, restaurantes de autor y emblemáticas terrazas con atardeceres únicos.</p>
-                    </div>
-                </div>
-
-                <div class="wp-block-column">
-                    <figure class="wp-block-image size-large">
-                        <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000" alt="Viñedos">
-                    </figure>
-                    <div class="card-content-area">
-                        <div class="wp-block-buttons">
-                            <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/" target="_blank" rel="noopener noreferrer">Viñedos</a>
-                        </div>
-                        <p>Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.</p>
-                    </div>
-                </div>
+            <h2 class="wp-block-heading alignwide" style="margin-bottom: 20px;">Estadía, Sabor y Experiencias</h2>
+            <div class="wp-block-columns alignwide" id="secondaryGridContainer">
+                <!-- Se inyecta dinámicamente vía JavaScript -->
             </div>
         </div>
 
@@ -559,27 +648,416 @@
         <section class="social-showcase-section">
             <h3 class="social-showcase-title">Nuestra Comunidad Visual</h3>
             <p class="social-showcase-desc">Explora reels, historias y los mejores momentos de San Miguel de Allende creados para ti.</p>
-            <div class="social-buttons-grid">
-                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="social-card-btn instagram">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    Instagram Oficial
-                </a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="social-card-btn tiktok">
-                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-                    TikTok en Vivo
-                </a>
+            <div class="social-buttons-grid" id="socialButtonsContainer">
+                <!-- Se inyecta dinámicamente -->
             </div>
         </section>
 
-        <!-- Footer institucional -->
-        <div class="footer-brand-section">
-            <p>vivesanmiguel.com</p>
-        </div>
+        <!-- Footer Institucional con Logo, Nombre y Candado Sumamente Discreto Abajo -->
+        <footer class="site-footer-custom">
+            <div class="footer-brand-wrap">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="footer-logo-img">
+                <span class="footer-brand-text">Vive San Miguel</span>
+            </div>
+            <button class="footer-lock-discreet" onclick="openLoginModal()" title="Acceso Administrativo">
+                🔒 Admin
+            </button>
+            <p class="footer-copy">vivesanmiguel.com</p>
+        </footer>
 
     </div>
 
-    <!-- Script de Efecto Sutil de Puntero y Partículas -->
+    <!-- Modal de Login -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Acceso Restringido</h3>
+                <button class="close-modal" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="usernameInput">Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-msg" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-submit">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Edición de Elementos (CMS Frontend) -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="editModalTitle">Editar Apartado</h3>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editForm" onsubmit="saveEditedItem(event)">
+                <input type="hidden" id="editItemKey">
+                <div class="form-group">
+                    <label for="editTitle">Título</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDesc">Descripción</label>
+                    <textarea id="editDesc" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editLink">Enlace (URL)</label>
+                    <input type="text" id="editLink" required>
+                </div>
+                <div class="form-group">
+                    <label for="editImg">Imagen (URL)</label>
+                    <input type="text" id="editImg" required>
+                </div>
+                <button type="submit" class="btn-modal-submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script de Lógica, CMS, Partículas y Animaciones -->
     <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+
+        // Estructura de datos por defecto (Incluyendo Fila 1 y Fila 2 con Guías Turísticos)
+        const defaultSiteData = {
+            mainItems: [
+                {
+                    key: 'item_mapa',
+                    title: 'Mapa Turístico',
+                    desc: 'Nuestro <strong>Mapa Turístico Digital</strong> es tu llave maestra para desbloquear los secretos de esta encantadora ciudad colonial.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/mapa.html',
+                    img: 'https://lh3.googleusercontent.com/d/17TZ0GQqNKqTB-KAtJOJuBj0-558SxiBS'
+                },
+                {
+                    key: 'item_eventos',
+                    title: 'Eventos',
+                    desc: 'Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.',
+                    link: 'https://discoversma.com/',
+                    img: 'https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000'
+                },
+                {
+                    key: 'item_historia',
+                    title: 'Ecos del pasado',
+                    desc: 'Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/09/16/historia/',
+                    img: 'https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000'
+                },
+                {
+                    key: 'item_sitios',
+                    title: 'Sitios de interés',
+                    desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/sitios-de-interes/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png'
+                },
+                {
+                    key: 'item_guias',
+                    title: 'Guías Turísticos',
+                    desc: 'Conecta con guías certificados y expertos locales para descubrir las mejores historias, leyendas y rincones ocultos.',
+                    link: '#',
+                    img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_rutas',
+                    title: 'Rutas temáticas',
+                    desc: 'Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.',
+                    link: '#',
+                    img: 'https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000'
+                }
+            ],
+            secondaryItems: [
+                {
+                    key: 'item_hospedaje',
+                    title: 'Hospedaje',
+                    desc: 'Encuentra hoteles históricos, haciendas y estancias con vistas privilegiadas a la Parroquia.',
+                    link: '#',
+                    img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_gastronomia',
+                    title: 'Gastronomía',
+                    desc: 'Deleita tu paladar en alta cocina internacional, restaurantes de autor y emblemáticas terrazas con atardeceres únicos.',
+                    link: '#',
+                    img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_aventura',
+                    title: 'Aventura',
+                    desc: 'Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y experiencias al aire libre inolvidables.',
+                    link: '#',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024'
+                },
+                {
+                    key: 'item_romance',
+                    title: 'Romance',
+                    desc: 'Callejones iluminados con faroles, cenas privadas a la luz de las velas y el escenario perfecto para parejas y bodas.',
+                    link: '#',
+                    img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_vinedos',
+                    title: 'Viñedos',
+                    desc: 'Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.',
+                    link: 'https://vivemigueldeallende.wordpress.com/2025/03/24/vinedos/',
+                    img: 'https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000'
+                }
+            ],
+            socialItems: [
+                {
+                    name: 'Instagram Oficial',
+                    url: 'https://www.instagram.com/sanmiigueldeallende/',
+                    class: 'instagram',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
+                },
+                {
+                    name: 'TikTok en Vivo',
+                    url: 'https://www.tiktok.com/@vivesanmiguel.com',
+                    class: 'tiktok',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>'
+                }
+            ]
+        };
+
+        function getStoredData() {
+            const data = localStorage.getItem('sma_site_data');
+            if (!data) {
+                localStorage.setItem('sma_site_data', JSON.stringify(defaultSiteData));
+                return defaultSiteData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredData(data) {
+            localStorage.setItem('sma_site_data', JSON.stringify(data));
+            renderSite();
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        function renderSite() {
+            const data = getStoredData();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+
+            // Renderizar Main Grid (Filas de 3)
+            const mainContainer = document.getElementById('mainGridContainer');
+            mainContainer.innerHTML = '';
+            
+            let mainHtml = '';
+            for (let i = 0; i < data.mainItems.length; i += 3) {
+                mainHtml += '<div class="wp-block-columns alignwide">';
+                for (let j = i; j < Math.min(i + 3, data.mainItems.length); j++) {
+                    const item = data.mainItems[j];
+                    mainHtml += `
+                        <div class="wp-block-column">
+                            <figure class="wp-block-image size-large">
+                                <img src="${item.img}" alt="${item.title}">
+                            </figure>
+                            <div class="card-content-area">
+                                <div class="wp-block-buttons">
+                                    <a class="wp-block-button__link wp-element-button" href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>
+                                </div>
+                                <p>${item.desc}</p>
+                                ${isLogged ? `<button class="btn-admin-action" style="margin-top:10px;" onclick="openEditModal('mainItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                mainHtml += '</div>';
+            }
+            mainContainer.innerHTML = mainHtml;
+
+            // Renderizar Secondary Grid (Hospedaje, Gastronomía, Aventura, Romance, Viñedos)
+            const secContainer = document.getElementById('secondaryGridContainer');
+            secContainer.innerHTML = '';
+            let secHtml = '';
+            for (let i = 0; i < data.secondaryItems.length; i += 3) {
+                secHtml += '<div class="wp-block-columns alignwide" style="width:100%;">';
+                for (let j = i; j < Math.min(i + 3, data.secondaryItems.length); j++) {
+                    const item = data.secondaryItems[j];
+                    secHtml += `
+                        <div class="wp-block-column">
+                            <figure class="wp-block-image size-large">
+                                <img src="${item.img}" alt="${item.title}">
+                            </figure>
+                            <div class="card-content-area">
+                                <div class="wp-block-buttons">
+                                    <a class="wp-block-button__link wp-element-button" href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>
+                                </div>
+                                <p>${item.desc}</p>
+                                ${isLogged ? `<button class="btn-admin-action" style="margin-top:10px;" onclick="openEditModal('secondaryItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                secHtml += '</div>';
+            }
+            secContainer.innerHTML = secHtml;
+
+            // Renderizar Redes Sociales
+            const socialContainer = document.getElementById('socialButtonsContainer');
+            socialContainer.innerHTML = '';
+            data.socialItems.forEach(soc => {
+                socialContainer.innerHTML += `
+                    <a href="${soc.url}" target="_blank" rel="noopener noreferrer" class="social-card-btn ${soc.class}">
+                        ${soc.svg} ${soc.name}
+                    </a>
+                `;
+            });
+        }
+
+        // Sistema de Autenticación
+        function openLoginModal() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            if (isLogged) {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('usernameInput').value;
+            const p = document.getElementById('passwordInput').value;
+            if (u === AUTH_USER && p === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderSite();
+                alert('¡Sesión iniciada con éxito! Ahora puedes editar cualquier apartado.');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderSite();
+            alert('Sesión cerrada correctamente.');
+        }
+
+        // Sistema de Edición Modal CMS
+        let currentEditingCategory = null;
+        let currentEditingKey = null;
+
+        function openEditModal(category, key) {
+            const data = getStoredData();
+            const item = data[category].find(el => el.key === key);
+            if (!item) return;
+
+            currentEditingCategory = category;
+            currentEditingKey = key;
+
+            document.getElementById('editModalTitle').innerText = `Editar: ${item.title}`;
+            document.getElementById('editTitle').value = item.title;
+            document.getElementById('editDesc').value = item.desc;
+            document.getElementById('editLink').value = item.link;
+            document.getElementById('editImg').value = item.img;
+
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedItem(e) {
+            e.preventDefault();
+            const data = getStoredData();
+            const list = data[currentEditingCategory];
+            const index = list.findIndex(el => el.key === currentEditingKey);
+
+            if (index !== -1) {
+                list[index].title = document.getElementById('editTitle').value;
+                list[index].desc = document.getElementById('editDesc').value;
+                list[index].link = document.getElementById('editLink').value;
+                list[index].img = document.getElementById('editImg').value;
+                
+                saveStoredData(data);
+                closeEditModal();
+                alert('¡Apartado actualizado correctamente!');
+            }
+        }
+
+        // Carga y Descarga Masiva Excel
+        function downloadTemplate() {
+            const data = getStoredData();
+            const flatData = [...data.mainItems, ...data.secondaryItems].map(el => ({
+                titulo: el.title,
+                descripcion: el.desc,
+                enlace: el.link,
+                imagen_url: el.img
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ContenidoWeb");
+            XLSX.writeFile(workbook, "plantilla_contenido_vivesanmiguel.xlsx");
+        }
+
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+
+                    if (json.length > 0) {
+                        const data = getStoredData();
+                        json.forEach((row, idx) => {
+                            if (idx < data.mainItems.length) {
+                                if (row.titulo) data.mainItems[idx].title = row.titulo;
+                                if (row.descripcion) data.mainItems[idx].desc = row.descripcion;
+                                if (row.enlace) data.mainItems[idx].link = row.enlace;
+                                if (row.imagen_url) data.mainItems[idx].img = row.imagen_url;
+                            }
+                        });
+                        saveStoredData(data);
+                        alert('¡Importación masiva completada con éxito!');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Inicialización al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderSite();
+        });
+
+        // Script de Efecto Sutil de Puntero y Partículas
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
@@ -597,24 +1075,6 @@
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
-
-        // Inclinación 3D Sutil y Uniforme en Tarjetas
-        const cards = document.querySelectorAll('.wp-block-column');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -5;
-                const rotateY = ((x - centerX) / centerX) * 5;
-                card.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
 
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
@@ -667,9 +1127,9 @@
                 this.baseY += this.vy;
 
                 if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
+                if (this.baseX > width) this.baseX = width;
                 if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
+                if (this.baseY > height) this.baseY = height;
             }
             draw() {
                 ctx.fillStyle = this.color;
