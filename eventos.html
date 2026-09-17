@@ -49,7 +49,7 @@
       width: 100%;
     }
 
-    /* Encabezado minimalista editorial con Logo */
+    /* Encabezado minimalista editorial con Logo transparente */
     header {
       display: flex;
       justify-content: space-between;
@@ -68,14 +68,13 @@
     }
 
     .brand-logo {
-      width: 60px;
-      height: 60px;
+      height: 65px;
+      width: auto;
       object-fit: contain;
-      border-radius: 12px;
-      background: var(--blanco);
-      padding: 4px;
-      border: 1px solid var(--borde);
-      box-shadow: var(--sombra-suave);
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      filter: drop-shadow(0 2px 4px rgba(28, 24, 22, 0.08));
     }
 
     .header-title span {
@@ -523,7 +522,7 @@
     <!-- Encabezado -->
     <header>
       <div class="brand-container">
-        <!-- Logo integrado de Vive San Miguel -->
+        <!-- Logo transparente y adaptado -->
         <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="header-title">
           <span>Patrimonio y Tradición</span>
@@ -593,7 +592,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. <strong>Nota sobre imágenes:</strong> Si subes tus imágenes directamente aquí, el sistema las comprimirá y almacenará de forma temporal en tu navegador, eliminándose automáticamente en cuanto pase la fecha del evento.
+        Sube tu archivo Excel. <strong>Nota sobre imágenes:</strong> Las imágenes subidas se almacenan temporalmente en tu navegador y se purgan de forma automática al expirar la fecha de cada evento.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -643,7 +642,7 @@
         </div>
 
         <div class="form-group">
-          <label for="eventImgFile">Imagen del Evento (Se borra automáticamente al pasar la fecha)</label>
+          <label for="eventImgFile">Imagen del Evento (Se elimina automáticamente al pasar la fecha)</label>
           <input type="file" id="eventImgFile" accept="image/*">
           <input type="hidden" id="eventImgInput">
         </div>
@@ -701,7 +700,7 @@
       "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
     };
 
-    // Función de limpieza automática: elimina eventos cuya fecha ya haya pasado respecto a hoy
+    // Depuración automática: remueve eventos cuya fecha haya expirado
     function cleanExpiredEvents(events) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -717,7 +716,6 @@
       const data = localStorage.getItem('sma_events');
       let events = data ? JSON.parse(data) : defaultEvents;
       
-      // Aplicar filtro automático de expiración
       const filteredEvents = cleanExpiredEvents(events);
       if (filteredEvents.length !== events.length) {
         localStorage.setItem('sma_events', JSON.stringify(filteredEvents));
@@ -1007,7 +1005,7 @@
           const MAX_WIDTH = 800;
           const MAX_HEIGHT = 600;
           let width = img.width;
-            let height = img.height;
+          let height = img.height;
 
           if (width > height) {
             if (width > MAX_WIDTH) {
@@ -1026,7 +1024,6 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Comprimir a JPEG con calidad 0.8
           const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
           document.getElementById('eventImgInput').value = dataUrl;
         };
@@ -1048,7 +1045,6 @@
 
       let events = getEvents();
 
-      // Si no se seleccionó una nueva imagen al editar, conservar la anterior
       if (id && !img) {
         const existing = events.find(ev => ev.id === id);
         if (existing) img = existing.img;
