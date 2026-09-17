@@ -282,8 +282,25 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.4rem;
       font-weight: 600;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.5rem;
       color: var(--noche);
+    }
+
+    .event-location {
+      font-size: 0.85rem;
+      color: var(--terracota);
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      transition: var(--transicion);
+    }
+
+    .event-location:hover {
+      color: var(--cantera-hover);
+      text-decoration: underline;
     }
 
     .event-desc {
@@ -312,6 +329,27 @@
     .event-price {
       font-weight: 600;
       color: var(--terracota);
+    }
+
+    .event-link-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      text-align: center;
+      background: rgba(217, 120, 100, 0.08);
+      color: var(--terracota);
+      border: 1px solid rgba(217, 120, 100, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transicion);
+    }
+
+    .event-link-btn:hover {
+      background: var(--cantera);
+      color: var(--blanco);
+      border-color: var(--cantera);
     }
 
     /* Acciones de Tarjeta */
@@ -685,6 +723,16 @@
         </div>
 
         <div class="form-group">
+          <label for="eventLocationInput">Dirección / Lugar (Se abrirá en Google Maps al tocarla)</label>
+          <input type="text" id="eventLocationInput" required placeholder="Ej. Jardín Principal, Centro, San Miguel de Allende">
+        </div>
+
+        <div class="form-group">
+          <label for="eventWebInput">Sitio Web / Enlace de Referencia (Opcional)</label>
+          <input type="url" id="eventWebInput" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
           <label for="eventImgFile">Imagen del Evento (Se elimina automáticamente al pasar la fecha)</label>
           <input type="file" id="eventImgFile" accept="image/*">
           <input type="hidden" id="eventImgInput">
@@ -712,6 +760,8 @@
         date: "2026-10-15",
         time: "18:30 hrs",
         price: "Entrada Libre",
+        location: "Jardín Principal, Centro Histórico, San Miguel de Allende",
+        web: "https://discoversma.com",
         img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
         desc: "Presentación estelar de danza contemporánea y música virreinal en el corazón de la plaza principal."
       },
@@ -722,6 +772,8 @@
         date: "2026-10-30",
         time: "20:00 hrs",
         price: "$2,500 MXN",
+        location: "Viñedos San Lucas, San Miguel de Allende",
+        web: "",
         img: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
         desc: "Experiencia gourmet de 4 tiempos con maridaje en vinícola exclusiva. Rigurosa etiqueta de catrina o catrín."
       },
@@ -732,6 +784,8 @@
         date: "2026-11-02",
         time: "17:00 hrs",
         price: "Entrada Libre",
+        location: "Plaza Cívica, San Miguel de Allende",
+        web: "",
         img: "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?auto=format&fit=crop&w=800&q=80",
         desc: "Exhibición monumental de ofrendas florales, catrinas monumentales y procesión iluminada por candiles."
       }
@@ -835,12 +889,21 @@
           const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
           const imgSrc = ev.img && ev.img.trim() !== "" ? ev.img : fallbackImg;
           
-          // Formatear la fecha para mostrar el día exacto de forma elegante
+          // Formatear la fecha para mostrar el día exacto
           const dateObj = new Date(ev.date + 'T00:00:00');
           const dayNum = dateObj.getDate();
           const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
           const dayNameStr = dayNames[dateObj.getDay()];
           const exactDateLabel = `${dayNameStr} ${dayNum}`;
+
+          // Enlace web opcional
+          const webLinkHtml = ev.web && ev.web.trim() !== "" 
+            ? `<a href="${ev.web}" target="_blank" rel="noopener noreferrer" class="event-link-btn">Visitar Sitio Web →</a>` 
+            : '';
+
+          // Generar enlace directo a Google Maps con la dirección del evento
+          const locationText = ev.location && ev.location.trim() !== "" ? ev.location : "San Miguel de Allende";
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationText + ", San Miguel de Allende")}`;
 
           html += `
             <div class="event-card">
@@ -859,7 +922,12 @@
               </div>
               <div class="event-body">
                 <h3 class="event-name">${ev.name}</h3>
+                <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="event-location" title="Ver ubicación en Google Maps">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span>${locationText}</span>
+                </a>
                 <p class="event-desc">${ev.desc}</p>
+                ${webLinkHtml}
                 <div class="event-meta">
                   <div class="event-time">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3"/></svg>
@@ -889,6 +957,8 @@
           date: "2026-11-15",
           time: "19:00 hrs",
           price: "Entrada Libre",
+          location: "Jardín Principal, Centro, San Miguel de Allende",
+          web: "https://discoversma.com",
           img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
           desc: "Disfruta de una velada musical inolvidable al aire libre frente a la Parroquia de San Miguel Arcángel."
         },
@@ -898,6 +968,8 @@
           date: "2026-12-05",
           time: "16:00 hrs",
           price: "$850 MXN",
+          location: "Viñedos San Lucas, San Miguel de Allende",
+          web: "",
           img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
           desc: "Recorrido guiado por cavas locales con degustación de etiquetas selectas de Guanajuato."
         }
@@ -905,7 +977,7 @@
 
       const worksheet = XLSX.utils.json_to_sheet(templateData);
       worksheet['!cols'] = [
-        {wch: 40}, {wch: 15}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 60}, {wch: 50}
+        {wch: 40}, {wch: 15}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 35}, {wch: 25}, {wch: 60}, {wch: 50}
       ];
 
       const workbook = XLSX.utils.book_new();
@@ -992,6 +1064,8 @@
                 date: String(row.date || '2026-10-01'),
                 time: String(row.time || '18:00 hrs'),
                 price: String(row.price || 'Entrada Libre'),
+                location: String(row.location || 'San Miguel de Allende'),
+                web: String(row.web || ''),
                 img: String(row.img || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'),
                 desc: String(row.desc || '')
               };
@@ -1033,6 +1107,8 @@
       document.getElementById('eventDateInput').value = ev.date;
       document.getElementById('eventTimeInput').value = ev.time;
       document.getElementById('eventPriceInput').value = ev.price;
+      document.getElementById('eventLocationInput').value = ev.location || '';
+      document.getElementById('eventWebInput').value = ev.web || '';
       document.getElementById('eventImgInput').value = ev.img || '';
       document.getElementById('eventImgFile').value = '';
       document.getElementById('eventDescInput').value = ev.desc;
@@ -1092,6 +1168,8 @@
       const date = document.getElementById('eventDateInput').value;
       const time = document.getElementById('eventTimeInput').value;
       const price = document.getElementById('eventPriceInput').value;
+      const location = document.getElementById('eventLocationInput').value;
+      const web = document.getElementById('eventWebInput').value;
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
 
@@ -1107,11 +1185,11 @@
       }
 
       if (id) {
-        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, img, desc } : ev);
+        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
-          name, category, date, time, price, img, desc
+          name, category, date, time, price, location, web, img, desc
         };
         events.push(newEv);
       }
