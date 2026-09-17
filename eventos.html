@@ -1,509 +1,1028 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda de Eventos - Vive San Miguel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-sanmiguel: #fbf9f6;
-            --surface-glass: rgba(255, 255, 255, 0.96);
-            --cantera-terracotta: #b86b43;
-            --cantera-rose: #d48384;
-            --primary-navy: #1b2a4a;
-            --text-main: #232b38;
-            --text-muted: #626d7a;
-            --border-glass: rgba(184, 107, 67, 0.18);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartelera de Eventos | Vive San Miguel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- SheetJS para lectura y escritura de Excel (.xlsx / .csv) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --cantera: #d97864;
+      --cantera-hover: #c46551;
+      --terracota: #a64b2a;
+      --ocre: #d99b26;
+      --noche: #1c1816;
+      --fondo: #fbf9f6;
+      --blanco: #ffffff;
+      --gris-suave: #f0ebe4;
+      --gris-texto: #6b635e;
+      --borde: rgba(28, 24, 22, 0.08);
+      --sombra-suave: 0 10px 30px -10px rgba(28, 24, 22, 0.06);
+      --transicion: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--text-main);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--fondo);
+      color: var(--noche);
+      line-height: 1.6;
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        /* --- Lienzo de Partículas Discretas e Inmersivas --- */
-        #immersive-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-        /* --- Aura Suave que Sigue el Puntero del Cursor --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.2) 0%, rgba(184, 107, 67, 0.1) 50%, transparent 80%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            filter: blur(50px);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
+    /* Encabezado minimalista editorial con Logo */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--borde);
+      padding-bottom: 1.5rem;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
 
-        .sma-main-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
 
-        /* --- Cabecera con Logotipo Oficial SIN Círculo --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: var(--blanco);
+      padding: 4px;
+      border: 1px solid var(--borde);
+      box-shadow: var(--sombra-suave);
+    }
 
-        .site-logo-container {
-            width: 130px;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+    .header-title span {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--terracota);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
 
-        .site-logo-container:hover {
-            transform: scale(1.04);
-        }
+    .header-title h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.6rem);
+      font-weight: 500;
+      color: var(--noche);
+    }
 
-        .site-logo-container img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            filter: drop-shadow(0 8px 20px rgba(184, 107, 67, 0.15));
-        }
+    /* Contenedor de botones de administración */
+    .admin-actions-group {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            text-decoration: none;
-            display: block;
-            line-height: 1.1;
-            letter-spacing: -1px;
-        }
+    .admin-trigger {
+      background: transparent;
+      border: 1px solid var(--borde);
+      color: var(--gris-texto);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transicion);
+      display: none; /* Oculto por defecto hasta autenticación */
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-        .brand-subtitle-badge {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--cantera-terracotta);
-            margin-top: 6px;
-            font-weight: 700;
-            display: block;
-        }
+    .admin-trigger.visible {
+      display: inline-flex;
+    }
 
-        /* --- Botón de Volver al Inicio --- */
-        .sma-buttons-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+    .admin-trigger:hover {
+      border-color: var(--cantera);
+      color: var(--cantera);
+      background: rgba(217, 120, 100, 0.03);
+    }
 
-        .sma-pastel-btn .wp-block-button__link {
-            background: #ffffff !important;
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--border-glass) !important;
-            padding: 12px 30px !important;
-            border-radius: 30px !important;
-            font-weight: 700 !important;
-            font-size: 13.5px !important;
-            text-decoration: none !important;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.06);
-            transition: all 0.3s ease !important;
-            letter-spacing: 0.5px;
-            display: inline-block;
-        }
+    .admin-trigger.btn-excel {
+      background: rgba(46, 125, 50, 0.05);
+      border-color: rgba(46, 125, 50, 0.2);
+      color: #2e7d32;
+    }
 
-        .sma-pastel-btn .wp-block-button__link:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(184, 107, 67, 0.3);
-        }
+    .admin-trigger.btn-excel:hover {
+      background: #2e7d32;
+      color: var(--blanco);
+      border-color: #2e7d32;
+    }
 
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: rgba(184, 107, 67, 0.15);
-            margin: 30px 0;
-        }
+    .admin-trigger.btn-template {
+      background: rgba(217, 155, 38, 0.05);
+      border-color: rgba(217, 155, 38, 0.3);
+      color: #b37a12;
+    }
 
-        /* --- Título Limpio --- */
-        .header-title-area {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .admin-trigger.btn-template:hover {
+      background: var(--ocre);
+      color: var(--blanco);
+      border-color: var(--ocre);
+    }
 
-        .header-title-area h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.3rem;
-            color: var(--primary-navy);
-            margin: 0;
-        }
+    /* Secciones por Mes */
+    .month-section {
+      margin-bottom: 4rem;
+    }
 
-        .mes-seccion { margin-bottom: 40px; }
-        .mes-titulo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--primary-navy);
-            border-bottom: 2px solid var(--border-glass);
-            padding-bottom: 8px;
-            margin-bottom: 24px;
-        }
+    .month-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--terracota);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
 
-        /* --- Tarjetas Uniformes --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .card {
-            background: var(--surface-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.06);
-            border: 1px solid var(--border-glass);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-8px) scale(1.015);
-            box-shadow: 0 25px 50px rgba(184, 107, 67, 0.15);
-            border-color: var(--cantera-terracotta);
-            background: rgba(255, 255, 255, 0.99);
-        }
-        .card-img {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-        }
-        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
-        .card h3 { color: var(--primary-navy); margin-top: 0; font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 12px; }
-        .card p { color: var(--text-muted) !important; font-size: 14px !important; line-height: 1.6 !important; margin: 0 0 20px 0; }
-        
-        .meta { 
-            font-size: 0.85rem; 
-            color: var(--cantera-terracotta); 
-            font-weight: 600; 
-            line-height: 1.6; 
-            background: rgba(184, 107, 67, 0.06); 
-            padding: 12px 16px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(184, 107, 67, 0.1);
-            margin-bottom: 16px;
-        }
+    .month-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--borde);
+    }
 
-        .contacto-box {
-            border-top: 1px solid rgba(184, 107, 67, 0.15);
-            padding-top: 12px;
-            margin-top: auto;
-        }
-        .contacto-box p {
-            font-size: 0.85rem !important;
-            margin: 0 0 10px 0 !important;
-            color: var(--primary-navy) !important;
-            font-weight: 600;
-        }
-        .btn-contacto {
-            display: block;
-            text-align: center;
-            background: var(--primary-navy);
-            color: #fff;
-            padding: 10px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-            transition: background 0.3s ease;
-        }
-        .btn-contacto:hover {
-            background: var(--cantera-terracotta);
-        }
+    /* Grid de Eventos */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+    }
 
-        /* --- Footer --- */
-        .footer-brand-section {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-glass);
-        }
+    .event-card {
+      background: var(--blanco);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+      box-shadow: var(--sombra-suave);
+      transition: var(--transicion);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
 
-        .footer-brand-section p {
-            font-weight: 800 !important;
-            color: var(--primary-navy) !important;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 12px !important;
-        }
-    </style>
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(28, 24, 22, 0.1);
+      border-color: rgba(217, 120, 100, 0.3);
+    }
+
+    .event-img-wrapper {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      background: var(--gris-suave);
+      overflow: hidden;
+    }
+
+    .event-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .event-card:hover .event-img-wrapper img {
+      transform: scale(1.03);
+    }
+
+    .event-category {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(28, 24, 22, 0.75);
+      backdrop-filter: blur(4px);
+      color: var(--blanco);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .event-body {
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .event-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--noche);
+    }
+
+    .event-desc {
+      font-size: 0.95rem;
+      color: var(--gris-texto);
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .event-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--borde);
+      padding-top: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--gris-texto);
+    }
+
+    .event-time {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .event-price {
+      font-weight: 600;
+      color: var(--terracota);
+    }
+
+    /* Acciones de Tarjeta */
+    .card-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: var(--transicion);
+    }
+
+    .admin-logged .event-card:hover .card-actions {
+      opacity: 1;
+    }
+
+    .action-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--borde);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transicion);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .action-btn:hover {
+      background: var(--cantera);
+      color: var(--blanco);
+      border-color: var(--cantera);
+    }
+
+    /* Footer con Candado Discreto */
+    footer {
+      margin-top: 5rem;
+      border-top: 1px solid var(--borde);
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--gris-texto);
+    }
+
+    .footer-lock {
+      background: none;
+      border: none;
+      color: var(--gris-texto);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transicion);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+    }
+
+    .footer-lock:hover {
+      color: var(--cantera);
+      background: rgba(217, 120, 100, 0.05);
+    }
+
+    /* Modales */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 24, 22, 0.5);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transicion);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: var(--blanco);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: translateY(20px);
+      transition: var(--transicion);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .modal-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gris-texto);
+      transition: var(--transicion);
+    }
+
+    .close-modal:hover {
+      color: var(--noche);
+    }
+
+    /* Formularios */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--noche);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      background: var(--fondo);
+      color: var(--noche);
+      transition: var(--transicion);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--cantera);
+      background: var(--blanco);
+      box-shadow: 0 0 0 3px rgba(217, 120, 100, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .btn-primary {
+      background: var(--cantera);
+      color: var(--blanco);
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transicion);
+      margin-top: 1rem;
+    }
+
+    .btn-primary:hover {
+      background: var(--cantera-hover);
+    }
+
+    .error-msg {
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .excel-instructions {
+      font-size: 0.85rem;
+      color: var(--gris-texto);
+      margin-bottom: 1.2rem;
+      background: var(--gris-suave);
+      padding: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .excel-instructions code {
+      background: #e2dad0;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--gris-texto);
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .admin-actions-group {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
-<body>
+<body id="pageBody">
 
-    <canvas id="immersive-canvas"></canvas>
-    <div id="cursor-glow"></div>
-
-    <div class="sma-main-wrapper">
-
-        <header class="site-header-custom">
-            <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
-            </div>
-            <div>
-                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
-                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
-            </div>
-        </header>
-
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-
-        <div class="sma-buttons-container">
-            <div class="wp-block-button sma-pastel-btn">
-                <a class="wp-block-button__link wp-element-button" href="https://carloschaires.github.io/vivesanmigueL/">← Volver al Inicio</a>
-            </div>
+  <div class="container">
+    <!-- Encabezado -->
+    <header>
+      <div class="brand-container">
+        <!-- Logo integrado de Vive San Miguel -->
+        <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="header-title">
+          <span>Patrimonio y Tradición</span>
+          <h1>Cartelera de Eventos</h1>
         </div>
+      </div>
+      <div class="admin-actions-group">
+        <!-- Botón para descargar plantilla de Excel formateada -->
+        <button class="admin-trigger btn-template" id="templateBtn" onclick="downloadExcelTemplate()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Descargar Plantilla Excel
+        </button>
+        <!-- Botón para subir Excel masivo -->
+        <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          Subir Excel Masivo
+        </button>
+        <!-- Botón para agregar evento individual -->
+        <button class="admin-trigger" id="manageBtn" onclick="openAdminModal()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          + Nuevo Evento
+        </button>
+      </div>
+    </header>
 
-        <hr class="wp-block-separator has-alpha-channel-opacity" />
-
-        <div class="header-title-area">
-            <h2>Agenda Cultural y de Eventos</h2>
-        </div>
-
-        <div id="contenedor-meses"></div>
-
-        <div class="footer-brand-section">
-            <p>vivesanmiguel.com</p>
-        </div>
-
+    <!-- Contenedor dinámico separado por mes -->
+    <div id="eventsContainer">
+      <!-- Los eventos se inyectan dinámicamente aquí -->
     </div>
+  </div>
 
-    <script>
-        const eventosCompletos = [
-            { 
-                titulo: "Cena de Gala Santa Catrina", 
-                descripcion: "Vive una noche de gala inolvidable. Disfruta de una exquisita cena gourmet de 4 tiempos con barra libre en bebidas seleccionadas en el Restaurante Vinícola de Viñedos San Lucas. Exige etiqueta rigurosa de Catrina o Catrín.", 
-                fecha: "30 de Octubre de 2025", 
-                mes: "Octubre",
-                lugar: "Buenavista Km. 26, San Miguel de Allende", 
-                costo: "Desde $2,500 MXN por persona",
-                contactoText: "📞 (415) 155 9141",
-                contactoUrl: "tel:4151559141",
-                imagen: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80"
-            },
-            { 
-                titulo: "Festival Internacional Cervantino en SMA", 
-                descripcion: "Disfruta de expresiones artísticas, música y teatro de clase mundial en los escenarios históricos de la ciudad.", 
-                fecha: "Próximamente", 
-                mes: "Próximos Eventos",
-                lugar: "Centro Histórico", 
-                costo: "Entrada libre",
-                contactoText: "🌐 Sitio Oficial",
-                contactoUrl: "https://sanmiguellive.com/es",
-                imagen: "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-            },
-            { 
-                titulo: "Recorrido de Viñedos y Cata de Altura", 
-                descripcion: "Experiencia enológica exclusiva con catas guiadas y maridajes en los mejores viñedos vitivinícolas de la región.", 
-                fecha: "Fines de semana", 
-                mes: "Próximos Eventos",
-                lugar: "Ruta del Vino SMA", 
-                costo: "Desde $800 MXN",
-                contactoText: "📞 Reservas y Accesos",
-                contactoUrl: "https://sanmiguellive.com/es",
-                imagen: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80"
-            }
-        ];
+  <!-- Footer con Candado Discreto -->
+  <footer>
+    <div>Vive San Miguel de Allende &copy; 2026</div>
+    <div>
+      <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span id="lockLabel">Acceso Admin</span>
+      </button>
+    </div>
+  </footer>
 
-        function renderizarPorMes(eventos) {
-            let contenedor = document.getElementById('contenedor-meses');
-            contenedor.innerHTML = '';
+  <!-- Modal de Login -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3>Acceso Restringido</h3>
+        <button class="close-modal" onclick="closeLoginModal()">&times;</button>
+      </div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="usernameInput">Usuario</label>
+          <input type="text" id="usernameInput" required placeholder="Usuario">
+        </div>
+        <div class="form-group">
+          <label for="passwordInput">Contraseña</label>
+          <input type="password" id="passwordInput" required placeholder="Contraseña">
+        </div>
+        <div class="error-msg" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+        <button type="submit" class="btn-primary">Ingresar</button>
+      </form>
+    </div>
+  </div>
 
-            let grupos = {};
-            eventos.forEach(ev => {
-                let m = ev.mes || "Próximamente";
-                if (!grupos[m]) grupos[m] = [];
-                grupos[m].push(ev);
-            });
+  <!-- Modal de Subida Masiva Excel -->
+  <div class="modal-overlay" id="excelModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Carga Masiva de Eventos</h3>
+        <button class="close-modal" onclick="closeExcelModal()">&times;</button>
+      </div>
+      <div class="excel-instructions">
+        Sube tu archivo Excel completado. Si no lo tienes, puedes descargarlo previamente con el botón <strong>"Descargar Plantilla Excel"</strong>.
+      </div>
+      <form id="excelForm" onsubmit="handleExcelUpload(event)">
+        <div class="form-group">
+          <label for="excelFileInput">Seleccionar Archivo Excel (.xlsx)</label>
+          <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" required>
+        </div>
+        <button type="submit" class="btn-primary">Importar Eventos</button>
+      </form>
+    </div>
+  </div>
 
-            for (let mes in grupos) {
-                let seccion = document.createElement('div');
-                seccion.className = 'mes-seccion';
-                
-                let tituloMes = document.createElement('h2');
-                tituloMes.className = 'mes-titulo';
-                tituloMes.textContent = mes;
-                seccion.appendChild(tituloMes);
+  <!-- Modal de Administración Individual (Crear / Editar Eventos) -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Nuevo Evento</h3>
+        <button class="close-modal" onclick="openAdminModalClose()">&times;</button>
+      </div>
+      <form id="eventForm" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" id="eventId">
+        
+        <div class="form-group">
+          <label for="eventNameInput">Nombre del Evento</label>
+          <input type="text" id="eventNameInput" required placeholder="Ej. Cata Nocturna en Viñedos">
+        </div>
 
-                let grid = document.createElement('div');
-                grid.className = 'grid';
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventCategoryInput">Categoría</label>
+            <input type="text" id="eventCategoryInput" required placeholder="Ej. Gastronomía, Arte">
+          </div>
+          <div class="form-group">
+            <label for="eventDateInput">Fecha y Mes del Evento</label>
+            <input type="date" id="eventDateInput" required>
+          </div>
+        </div>
 
-                grupos[mes].forEach(ev => {
-                    let tarjeta = document.createElement('div');
-                    tarjeta.className = 'card';
-                    tarjeta.innerHTML = `
-                        <img src="${ev.imagen}" alt="${ev.titulo}" class="card-img">
-                        <div class="card-body">
-                            <div>
-                                <h3>${ev.titulo}</h3>
-                                <p>${ev.descripcion}</p>
-                            </div>
-                            <div>
-                                <div class="meta">
-                                    📅 ${ev.fecha} <br>
-                                    📍 ${ev.lugar} <br>
-                                    💰 ${ev.costo}
-                                </div>
-                                <div class="contacto-box">
-                                    <p>${ev.contactoText}</p>
-                                    <a href="${ev.contactoUrl}" target="_blank" rel="noopener noreferrer" class="btn-contacto">Solicitar Más Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(tarjeta);
-                });
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventTimeInput">Horario</label>
+            <input type="text" id="eventTimeInput" required placeholder="Ej. 19:00 hrs">
+          </div>
+          <div class="form-group">
+            <label for="eventPriceInput">Costo</label>
+            <input type="text" id="eventPriceInput" required placeholder="Ej. $850 MXN o Entrada Libre">
+          </div>
+        </div>
 
-                seccion.appendChild(grid);
-                contenedor.appendChild(seccion);
-            }
+        <div class="form-group">
+          <label for="eventImgInput">URL de Imagen</label>
+          <input type="url" id="eventImgInput" required placeholder="https://images.unsplash.com/...">
+        </div>
+
+        <div class="form-group">
+          <label for="eventDescInput">Descripción</label>
+          <textarea id="eventDescInput" required placeholder="Breve descripción inmersiva del evento..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Guardar Evento</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const AUTH_USER = "vivesanmiguel";
+    const AUTH_PASS = "c4rl0s1107";
+
+    const defaultEvents = [
+      {
+        id: "ev-1",
+        name: "Festival Internacional Cervantino - Extensión SMA",
+        category: "Cultura",
+        date: "2026-10-15",
+        time: "18:30 hrs",
+        price: "Entrada Libre",
+        img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+        desc: "Presentación estelar de danza contemporánea y música virreinal en el corazón de la plaza principal."
+      },
+      {
+        id: "ev-2",
+        name: "Cena de Gala Tradicional Santa Catrina",
+        category: "Gastronomía",
+        date: "2026-10-30",
+        time: "20:00 hrs",
+        price: "$2,500 MXN",
+        img: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
+        desc: "Experiencia gourmet de 4 tiempos con maridaje en vinícola exclusiva. Rigurosa etiqueta de catrina o catrín."
+      },
+      {
+        id: "ev-3",
+        name: "Noche de Altares y Tradiciones",
+        category: "Tradición",
+        date: "2026-11-02",
+        time: "17:00 hrs",
+        price: "Entrada Libre",
+        img: "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?auto=format&fit=crop&w=800&q=80",
+        desc: "Exhibición monumental de ofrendas florales, catrinas monumentales y procesión iluminada por candiles."
+      }
+    ];
+
+    const nombresMeses = {
+      "01": "Enero", "02": "Febrero", "03": "Marzo", "04": "Abril",
+      "05": "Mayo", "06": "Junio", "07": "Julio", "08": "Agosto",
+      "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+    };
+
+    function getEvents() {
+      const data = localStorage.getItem('sma_events');
+      if (!data) {
+        localStorage.setItem('sma_events', JSON.stringify(defaultEvents));
+        return defaultEvents;
+      }
+      return JSON.parse(data);
+    }
+
+    function saveEvents(events) {
+      localStorage.setItem('sma_events', JSON.stringify(events));
+      renderEvents();
+    }
+
+    function checkSession() {
+      const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+      const manageBtn = document.getElementById('manageBtn');
+      const excelBtn = document.getElementById('excelBtn');
+      const templateBtn = document.getElementById('templateBtn');
+      const lockLabel = document.getElementById('lockLabel');
+      const body = document.getElementById('pageBody');
+
+      if (isLogged) {
+        manageBtn.classList.add('visible');
+        excelBtn.classList.add('visible');
+        templateBtn.classList.add('visible');
+        body.classList.add('admin-logged');
+        lockLabel.innerText = "Cerrar Sesión";
+      } else {
+        manageBtn.classList.remove('visible');
+        excelBtn.classList.remove('visible');
+        templateBtn.classList.remove('visible');
+        body.classList.remove('admin-logged');
+        lockLabel.innerText = "Acceso Admin";
+      }
+    }
+
+    function renderEvents() {
+      const container = document.getElementById('eventsContainer');
+      const events = getEvents();
+
+      if (events.length === 0) {
+        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
+        return;
+      }
+
+      events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      const grouped = {};
+      events.forEach(ev => {
+        if (!ev.date) return;
+        const [year, month] = ev.date.split('-');
+        const key = `${year}-${month}`;
+        if (!grouped[key]) {
+          grouped[key] = {
+            year: year,
+            monthName: nombresMeses[month] || month,
+            items: []
+          };
         }
+        grouped[key].items.push(ev);
+      });
 
-        renderizarPorMes(eventosCompletos);
+      let html = '';
+      for (const key in grouped) {
+        const group = grouped[key];
+        html += `
+          <div class="month-section">
+            <h2 class="month-title">${group.monthName} ${group.year}</h2>
+            <div class="events-grid">
+        `;
 
-        // Control del Aura y Partículas Inmersivas
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let glowX = mouseX, glowY = mouseY;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+        group.items.forEach(ev => {
+          html += `
+            <div class="event-card">
+              <div class="event-img-wrapper">
+                <span class="event-category">${ev.category}</span>
+                <img src="${ev.img}" alt="${ev.name}" loading="lazy">
+                <div class="card-actions">
+                  <button class="action-btn" onclick="openEditModal('${ev.id}')" title="Editar evento">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                  </button>
+                  <button class="action-btn" onclick="deleteEvent('${ev.id}')" title="Eliminar evento">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="event-body">
+                <h3 class="event-name">${ev.name}</h3>
+                <p class="event-desc">${ev.desc}</p>
+                <div class="event-meta">
+                  <div class="event-time">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3"/></svg>
+                    <span>${ev.time}</span>
+                  </div>
+                  <div class="event-price">${ev.price}</div>
+                </div>
+              </div>
+            </div>
+          `;
         });
 
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.1;
-            glowY += (mouseY - glowY) * 0.1;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
+        html += `
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Función para descargar la plantilla de Excel prediseñada
+    function downloadExcelTemplate() {
+      const templateData = [
+        {
+          name: "Ejemplo: Concierto de Jazz en el Jardín Principal",
+          category: "Cultura",
+          date: "2026-11-15",
+          time: "19:00 hrs",
+          price: "Entrada Libre",
+          img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+          desc: "Disfruta de una velada musical inolvidable al aire libre frente a la Parroquia de San Miguel Arcángel."
+        },
+        {
+          name: "Ejemplo: Cata de Vinos y Quesos Artesanales",
+          category: "Gastronomía",
+          date: "2026-12-05",
+          time: "16:00 hrs",
+          price: "$850 MXN",
+          img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+          desc: "Recorrido guiado por cavas locales con degustación de etiquetas selectas de Guanajuato."
         }
-        animateGlow();
+      ];
 
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
+      const worksheet = XLSX.utils.json_to_sheet(templateData);
+      
+      // Ajustar anchos de columnas sugeridos
+      worksheet['!cols'] = [
+        {wch: 40}, // name
+        {wch: 15}, // category
+        {wch: 12}, // date
+        {wch: 12}, // time
+        {wch: 15}, // price
+        {wch: 60}, // img
+        {wch: 50}  // desc
+      ];
 
-        let width, height;
-        let particles = [];
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
+      
+      // Descargar archivo .xlsx
+      XLSX.writeFile(workbook, "plantilla_eventos_vive_san_miguel.xlsx");
+    }
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+    // Autenticación
+    function openLoginModal() {
+      const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+      if (isLogged) {
+        if (confirm("¿Desea cerrar la sesión de administración?")) {
+          localStorage.removeItem('sma_admin_logged');
+          checkSession();
+          renderEvents();
         }
+        return;
+      }
+      document.getElementById('usernameInput').value = '';
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginModal').classList.add('active');
+    }
 
-        window.addEventListener('resize', resize);
-        resize();
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-                this.color = 'rgba(184, 107, 67, 0.35)';
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('usernameInput').value;
+      const pass = document.getElementById('passwordInput').value;
+
+      if (user === AUTH_USER && pass === AUTH_PASS) {
+        localStorage.setItem('sma_admin_logged', 'true');
+        closeLoginModal();
+        checkSession();
+        renderEvents();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    // Modal Excel Masivo
+    function openExcelModal() {
+      document.getElementById('excelFileInput').value = '';
+      document.getElementById('excelModal').classList.add('active');
+    }
+
+    function closeExcelModal() {
+      document.getElementById('excelModal').classList.remove('active');
+    }
+
+    function handleExcelUpload(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('excelFileInput');
+      if (!fileInput.files.length) return;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonSheet = XLSX.utils.sheet_to_json(worksheet);
+
+          if (!jsonSheet.length) {
+            alert('El archivo Excel está vacío o no tiene el formato correcto.');
+            return;
+          }
+
+          let events = getEvents();
+          let count = 0;
+
+          jsonSheet.forEach(row => {
+            if (row.name && row.date) {
+              const newEv = {
+                id: 'ev-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                name: String(row.name || ''),
+                category: String(row.category || 'General'),
+                date: String(row.date || '2026-10-01'),
+                time: String(row.time || '18:00 hrs'),
+                price: String(row.price || 'Entrada Libre'),
+                img: String(row.img || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'),
+                desc: String(row.desc || '')
+              };
+              events.push(newEv);
+              count++;
             }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 160;
-                let force = (maxDistance - distance) / maxDistance;
+          });
 
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 25;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 25;
-                    }
-                }
-
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
+          saveEvents(events);
+          closeExcelModal();
+          alert(`¡Se importaron exitosamente ${count} eventos desde tu archivo Excel!`);
+        } catch (error) {
+          console.error(error);
+          alert('Hubo un error al procesar el archivo Excel. Asegúrate de usar la plantilla descargable.');
         }
+      };
 
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
+      reader.readAsArrayBuffer(file);
+    }
 
-        initParticles();
+    // Gestión individual
+    function openAdminModal() {
+      document.getElementById('modalTitle').innerText = 'Nuevo Evento';
+      document.getElementById('eventForm').reset();
+      document.getElementById('eventId').value = '';
+      document.getElementById('adminModal').classList.add('active');
+    }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
+    function openEditModal(id) {
+      const events = getEvents();
+      const ev = events.find(item => item.id === id);
+      if (!ev) return;
 
-        animateParticles();
-    </script>
+      document.getElementById('modalTitle').innerText = 'Editar Evento';
+      document.getElementById('eventId').value = ev.id;
+      document.getElementById('eventNameInput').value = ev.name;
+      document.getElementById('eventCategoryInput').value = ev.category;
+      document.getElementById('eventDateInput').value = ev.date;
+      document.getElementById('eventTimeInput').value = ev.time;
+      document.getElementById('eventPriceInput').value = ev.price;
+      document.getElementById('eventImgInput').value = ev.img;
+      document.getElementById('eventDescInput').value = ev.desc;
+
+      document.getElementById('adminModal').classList.add('active');
+    }
+
+    function openAdminModalClose() {
+      document.getElementById('adminModal').classList.remove('active');
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('eventId').value;
+      const name = document.getElementById('eventNameInput').value;
+      const category = document.getElementById('eventCategoryInput').value;
+      const date = document.getElementById('eventDateInput').value;
+      const time = document.getElementById('eventTimeInput').value;
+      const price = document.getElementById('eventPriceInput').value;
+      const img = document.getElementById('eventImgInput').value;
+      const desc = document.getElementById('eventDescInput').value;
+
+      let events = getEvents();
+
+      if (id) {
+        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, img, desc } : ev);
+      } else {
+        const newEv = {
+          id: 'ev-' + Date.now(),
+          name, category, date, time, price, img, desc
+        };
+        events.push(newEv);
+      }
+
+      saveEvents(events);
+      openAdminModalClose();
+    }
+
+    function deleteEvent(id) {
+      if (confirm('¿Está seguro de eliminar este evento de la cartelera?')) {
+        let events = getEvents();
+        events = events.filter(ev => ev.id !== id);
+        saveEvents(events);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkSession();
+      renderEvents();
+    });
+  </script>
 </body>
 </html>
