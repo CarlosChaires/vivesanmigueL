@@ -256,6 +256,21 @@
       z-index: 2;
     }
 
+    .event-date-badge {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      color: var(--noche);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      z-index: 2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
     .event-body {
       padding: 1.8rem;
       display: flex;
@@ -789,7 +804,8 @@
         return;
       }
 
-      events.sort((a, b) => new Date(a.date) - new Date(b.date));
+      // Ordenar estrictamente por fecha ascendente (Año, Mes, Día)
+      events.sort((a, b) => new Date(a.date + 'T00:00:00') - new Date(b.date + 'T00:00:00'));
 
       const grouped = {};
       events.forEach(ev => {
@@ -818,11 +834,19 @@
         group.items.forEach(ev => {
           const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
           const imgSrc = ev.img && ev.img.trim() !== "" ? ev.img : fallbackImg;
+          
+          // Formatear la fecha para mostrar el día exacto de forma elegante
+          const dateObj = new Date(ev.date + 'T00:00:00');
+          const dayNum = dateObj.getDate();
+          const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+          const dayNameStr = dayNames[dateObj.getDay()];
+          const exactDateLabel = `${dayNameStr} ${dayNum}`;
 
           html += `
             <div class="event-card">
               <div class="event-img-wrapper">
                 <span class="event-category">${ev.category}</span>
+                <span class="event-date-badge">${exactDateLabel}</span>
                 <img src="${imgSrc}" alt="${ev.name}" loading="lazy" onerror="this.src='${fallbackImg}'">
                 <div class="card-actions">
                   <button class="action-btn" onclick="openEditModal('${ev.id}')" title="Editar evento">
