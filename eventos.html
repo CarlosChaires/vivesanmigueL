@@ -188,21 +188,23 @@
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
     
-    // URL de Apps Script conectada y activa
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbysdEVBuvDg4CO5z3Ia7bcn6w1Ziz8rG2cmtyJxHna6Pt7DcHossByuTcEPAp6srefM/exec";
+    // Nueva URL de Apps Script integrada correctamente
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyb8kDsw0DIaHM7Oxa3L8UQLMitv8qCHdzBxe8534FOCWNSXPE1TJgUx3gmAD5eI4TD/exec";
 
     let globalEvents = [];
 
     function formatDateToSpanish(dateString) {
       if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
-      if (!cleanStr) return 'Fecha por confirmar';
+      if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
 
       try {
         let date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
           const parts = cleanStr.split('-');
           date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        } else if (cleanStr.includes('T') && cleanStr.includes('Z')) {
+          date = new Date(cleanStr);
         } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
           date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
         } else {
@@ -240,6 +242,8 @@
 
         globalEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
+          const imgValue = getVal(item, ['img', 'imagen', 'url', 'photo']);
+          
           return {
             id: 'ev-sheets-' + index,
             name: getVal(item, ['name', 'nombre', 'evento']) || 'Evento sin nombre',
@@ -249,7 +253,7 @@
             time: getVal(item, ['time', 'horario', 'hora']) || 'Todo el día',
             price: getVal(item, ['price', 'costo', 'precio']) || 'Acceso Libre',
             location: getVal(item, ['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende',
-            img: getVal(item, ['img', 'imagen', 'url']) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            img: imgValue || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             desc: getVal(item, ['desc', 'descripcion', 'descripción']) || 'Sin descripción detallada.'
           };
         });
@@ -257,7 +261,7 @@
         renderEvents();
       } catch (error) {
         console.error("Error al sincronizar con Sheets:", error);
-        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento o hubo un problema de conexión.</div>`;
+        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento.</div>`;
       }
     }
 
@@ -352,7 +356,7 @@
           alert('¡Evento agregado y guardado en Google Sheets con éxito!');
           document.getElementById('eventModal').classList.remove('active');
           e.target.reset();
-          fetchGoogleSheetData(); // Recargar datos desde Google Sheets
+          fetchGoogleSheetData(); 
         } else {
           alert('Error al guardar: ' + result.message);
         }
