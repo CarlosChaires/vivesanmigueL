@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- SheetJS para lectura de Excel y CSV -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     :root {
       --cantera: #d97864;
@@ -77,8 +75,8 @@
     .admin-trigger { display: none; }
     .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
 
-    .admin-trigger.btn-excel { background: rgba(46, 125, 50, 0.05); border-color: rgba(46, 125, 50, 0.2); color: #2e7d32; }
-    .admin-trigger.btn-excel:hover { background: #2e7d32; color: var(--blanco); }
+    .admin-trigger.btn-sync { background: rgba(46, 125, 50, 0.05); border-color: rgba(46, 125, 50, 0.2); color: #2e7d32; }
+    .admin-trigger.btn-sync:hover { background: #2e7d32; color: var(--blanco); }
 
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
 
@@ -112,11 +110,6 @@
     .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
     .event-price { font-weight: 600; color: var(--terracota); }
 
-    .card-actions { position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; opacity: 0; transition: var(--transicion); z-index: 2; }
-    .admin-logged .event-card:hover .card-actions { opacity: 1; }
-    .action-btn { background: rgba(255, 255, 255, 0.9); border: 1px solid var(--borde); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .action-btn:hover { background: var(--cantera); color: var(--blanco); }
-
     footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
     .footer-actions { display: flex; gap: 1rem; align-items: center; }
     .footer-lock, .footer-reset { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
@@ -124,11 +117,10 @@
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 400px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
     .form-group { margin-bottom: 1.25rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
-    input, textarea { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); }
+    input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); }
     .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
     .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
   </style>
@@ -146,25 +138,24 @@
       </div>
       <div class="admin-actions-group">
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-        <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">Sincronizar Sheets / Excel</button>
-        <button class="admin-trigger" id="manageBtn" onclick="openAdminModal()">+ Nuevo Evento</button>
+        <button class="admin-trigger btn-sync visible" id="syncBtn" onclick="fetchGoogleSheetData()">Sincronizar Sheets</button>
       </div>
     </header>
 
-    <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
+    <div id="eventsContainer"><div class="empty-state">Conectando con Google Sheets y cargando cartelera...</div></div>
   </div>
 
   <footer>
     <div>Vive San Miguel de Allende &copy; 2026</div>
     <div class="footer-actions">
-      <button class="footer-reset" onclick="resetDefaults()" title="Restaurar eventos iniciales">🔄 Restaurar Base</button>
+      <button class="footer-reset" onclick="fetchGoogleSheetData()" title="Forzar recarga">🔄 Actualizar Datos</button>
       <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
     </div>
   </footer>
 
   <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
-    <div class="modal-box" style="max-width: 400px;">
+    <div class="modal-box">
       <h3>Acceso Restringido</h3>
       <form onsubmit="handleLogin(event)" style="margin-top: 1rem;">
         <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
@@ -174,97 +165,78 @@
     </div>
   </div>
 
-  <!-- Modal Excel -->
-  <div class="modal-overlay" id="excelModal">
-    <div class="modal-box">
-      <h3>Sincronización con Google Sheets / Excel</h3>
-      <p style="font-size: 0.85rem; color: var(--gris-texto); margin-bottom: 1rem;">Sube tu archivo .xlsx descargado desde Google Sheets para actualizar la cartelera de forma masiva.</p>
-      <form onsubmit="handleExcelUpload(event)" style="margin-top: 1rem;">
-        <div class="form-group"><label>Archivo .xlsx</label><input type="file" id="excelFileInput" accept=".xlsx" required></div>
-        <button type="submit" class="btn-primary">Importar y Actualizar Web</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Admin (Crear / Editar Evento) -->
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box">
-      <h3 id="modalTitle">Nuevo Evento</h3>
-      <form onsubmit="handleFormSubmit(event)" style="margin-top: 1rem;">
-        <input type="hidden" id="eventId">
-        <div class="form-group"><label>Nombre</label><input type="text" id="eventNameInput" required></div>
-        <div class="form-row">
-          <div class="form-group"><label>Categoría</label><input type="text" id="eventCategoryInput" required></div>
-          <div class="form-group"><label>Fecha (AAAA-MM-DD)</label><input type="date" id="eventDateInput" required></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Horario</label><input type="text" id="eventTimeInput" required></div>
-          <div class="form-group"><label>Costo</label><input type="text" id="eventPriceInput" required></div>
-        </div>
-        <div class="form-group"><label>Lugar</label><input type="text" id="eventLocationInput" required></div>
-        <div class="form-group"><label>Imagen (URL)</label><input type="url" id="eventImgInput" placeholder="https://..."></div>
-        <div class="form-group"><label>Descripción</label><textarea id="eventDescInput" required></textarea></div>
-        <button type="submit" class="btn-primary" id="saveBtnText">Guardar Evento</button>
-      </form>
-    </div>
-  </div>
-
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const STORAGE_KEY = "vivesanmiguel_events_local_v11";
-
-    const defaultEvents = [
-      { id: "ev-1", name: "Inauguración de la Feria", category: "Feria SMA", date: "2026-09-25", time: "18:00 hrs", price: "Acceso General", location: "Recinto Ferial", img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80", desc: "Gran apertura con juegos mecánicos y pirotecnia." },
-      { id: "ev-2", name: "Cena de Gala Santa Catrina", category: "Gastronomía", date: "2026-10-30", time: "20:00 hrs", price: "$2,500 MXN", location: "Viñedos San Lucas", img: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80", desc: "Experiencia gourmet de 4 tiempos." }
-    ];
+    // Enlace TSV directo proporcionado por el usuario
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkQpk6tPdLeSm4sBtfS-rXWUGXzmD3-F3ZpsF383Yo97WiYLdzf6WMEAfkFfxnrRz_ZSprMMHmQss/pub?output=tsv";
 
     let globalEvents = [];
 
-    function loadEvents() {
+    // Función para descargar y parsear los datos directamente del Google Sheet en tiempo real
+    async function fetchGoogleSheetData() {
+      const container = document.getElementById('eventsContainer');
+      container.innerHTML = '<div class="empty-state">Sincronizando con Google Sheets...</div>';
+
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        globalEvents = stored ? JSON.parse(stored) : defaultEvents;
-        if (!Array.isArray(globalEvents) || globalEvents.length === 0) {
-          globalEvents = defaultEvents;
+        const response = await fetch(SHEET_URL);
+        if (!response.ok) throw new Error('No se pudo conectar con la hoja de cálculo.');
+        
+        const tsvText = await response.text();
+        const rows = tsvText.split('\n').map(row => row.split('\t'));
+        
+        if (rows.length < 2) {
+          throw new Error('La hoja de cálculo está vacía o no tiene suficientes datos.');
         }
-      } catch (e) {
-        console.error("Error al cargar localStorage, usando valores por defecto:", e);
-        globalEvents = defaultEvents;
-      }
-      renderEvents();
-    }
 
-    function saveEvents(events) {
-      globalEvents = events;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
-      renderEvents();
-    }
+        // Obtener cabeceras de la primera fila y limpiarlas
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        
+        globalEvents = [];
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i];
+          if (cols.length < headers.length) continue;
 
-    function resetDefaults() {
-      if (confirm("¿Deseas restaurar los eventos predeterminados de fábrica?")) {
-        localStorage.removeItem(STORAGE_KEY);
-        loadEvents();
-        alert("Eventos restaurados correctamente.");
+          let eventObj = {};
+          headers.forEach((header, index) => {
+            eventObj[header] = cols[index] ? cols[index].trim() : '';
+          });
+
+          // Mapeo flexible de columnas para asegurar compatibilidad con nombres comunes en español
+          globalEvents.push({
+            id: 'ev-sheets-' + i,
+            name: eventObj.nombre || eventObj.evento || eventObj.name || 'Evento sin nombre',
+            category: eventObj.categoria || eventObj.categoría || eventObj.category || 'General',
+            date: eventObj.fecha || eventObj.date || '2026-10-01',
+            time: eventObj.horario || eventObj.hora || eventObj.time || 'Todo el día',
+            price: eventObj.costo || eventObj.precio || eventObj.price || 'Acceso Libre',
+            location: eventObj.lugar || eventObj.ubicacion || eventObj.location || 'San Miguel de Allende',
+            img: eventObj.imagen || eventObj.img || eventObj.url || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            desc: eventObj.descripcion || eventObj.desc || eventObj.descripción || 'Sin descripción detallada.'
+          });
+        }
+
+        renderEvents();
+      } catch (error) {
+        console.error("Error al sincronizar Sheets:", error);
+        container.innerHTML = `<div class="empty-state" style="color: var(--cantera);">Error al sincronizar con Google Sheets. Verifica que la hoja esté publicada en la web como TSV/CSV.<br><small>${error.message}</small></div>`;
       }
     }
 
     function checkSession() {
       const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
-      document.getElementById('manageBtn').classList.toggle('visible', isLogged);
-      document.getElementById('excelBtn').classList.toggle('visible', isLogged);
       document.body.classList.toggle('admin-logged', isLogged);
       document.getElementById('lockLabel').innerText = isLogged ? "Cerrar Sesión" : "Acceso Admin";
     }
 
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
-      if (!globalEvents || !globalEvents.length) { 
-        container.innerHTML = '<div class="empty-state">No hay eventos registrados. Usa el panel de administración para agregar uno.</div>'; 
+      if (!globalEvents.length) { 
+        container.innerHTML = '<div class="empty-state">No se encontraron eventos en la hoja de cálculo.</div>'; 
         return; 
       }
       
-      // Ordenar por fecha cronológicamente
+      // Ordenar cronológicamente por fecha
       globalEvents.sort((a, b) => new Date(a.date || '2026-01-01') - new Date(b.date || '2026-01-01'));
       
       let html = '';
@@ -272,13 +244,9 @@
         html += `
           <div class="event-card">
             <div class="event-img-wrapper">
-              <span class="event-category">${ev.category || 'General'}</span>
-              <span class="event-date-badge">${ev.date || 'Por definir'}</span>
-              <img src="${ev.img || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
-              <div class="card-actions">
-                <button class="action-btn" onclick="openEditModal('${ev.id}')" title="Editar">✏️</button>
-                <button class="action-btn" onclick="deleteEvent('${ev.id}')" title="Eliminar">🗑️</button>
-              </div>
+              <span class="event-category">${ev.category}</span>
+              <span class="event-date-badge">${ev.date}</span>
+              <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
             </div>
             <div class="event-body">
               <h3 class="event-name">${ev.name}</h3>
@@ -298,139 +266,24 @@
       if (localStorage.getItem('sma_admin_logged') === 'true') {
         localStorage.removeItem('sma_admin_logged');
         checkSession();
+        alert('Sesión cerrada correctamente.');
       } else {
         document.getElementById('loginModal').classList.add('active');
       }
     }
-    function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
     
     function handleLogin(e) {
       e.preventDefault();
       if(document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
         localStorage.setItem('sma_admin_logged', 'true');
-        closeLoginModal(); 
+        document.getElementById('loginModal').classList.remove('active');
         checkSession();
-        document.getElementById('usernameInput').value = '';
-        document.getElementById('passwordInput').value = '';
+        alert('¡Bienvenido, Administrador!');
       } else { 
         alert('Credenciales incorrectas'); 
       }
     }
 
-    function openAdminModal() {
-      document.getElementById('modalTitle').innerText = "Nuevo Evento";
-      document.getElementById('saveBtnText').innerText = "Guardar Evento";
-      document.getElementById('eventId').value = '';
-      document.getElementById('eventNameInput').value = '';
-      document.getElementById('eventCategoryInput').value = '';
-      document.getElementById('eventDateInput').value = '';
-      document.getElementById('eventTimeInput').value = '';
-      document.getElementById('eventPriceInput').value = '';
-      document.getElementById('eventLocationInput').value = '';
-      document.getElementById('eventImgInput').value = '';
-      document.getElementById('eventDescInput').value = '';
-      document.getElementById('adminModal').classList.add('active');
-    }
-
-    function openEditModal(id) {
-      const ev = globalEvents.find(item => item.id === id);
-      if (!ev) return;
-      document.getElementById('modalTitle').innerText = "Editar Evento";
-      document.getElementById('saveBtnText').innerText = "Actualizar Cambios";
-      document.getElementById('eventId').value = ev.id;
-      document.getElementById('eventNameInput').value = ev.name || '';
-      document.getElementById('eventCategoryInput').value = ev.category || '';
-      document.getElementById('eventDateInput').value = ev.date || '';
-      document.getElementById('eventTimeInput').value = ev.time || '';
-      document.getElementById('eventPriceInput').value = ev.price || '';
-      document.getElementById('eventLocationInput').value = ev.location || '';
-      document.getElementById('eventImgInput').value = ev.img || '';
-      document.getElementById('eventDescInput').value = ev.desc || '';
-      document.getElementById('adminModal').classList.add('active');
-    }
-
-    function openExcelModal() { document.getElementById('excelModal').classList.add('active'); }
-
-    function handleExcelUpload(e) {
-      e.preventDefault();
-      const fileInput = document.getElementById('excelFileInput');
-      if (!fileInput.files.length) return;
-
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const jsonSheet = XLSX.utils.sheet_to_json(worksheet);
-
-          if (!jsonSheet.length) {
-            alert('El archivo está vacío o no contiene filas legibles.');
-            return;
-          }
-
-          const mappedEvents = jsonSheet.map((row, index) => ({
-            id: 'ev-sheet-' + Date.now() + '-' + index,
-            name: row.Nombre || row.name || row.Evento || 'Evento sin nombre',
-            category: row.Categoria || row.category || row.Categoría || 'General',
-            date: row.Fecha || row.date || '2026-10-01',
-            time: row.Horario || row.time || row.Hora || 'Todo el día',
-            price: row.Costo || row.price || row.Precio || 'Acceso Libre',
-            location: row.Lugar || row.location || row.Ubicación || 'San Miguel de Allende',
-            img: row.Imagen || row.img || row.URL || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-            desc: row.Descripcion || row.desc || row.Descripción || 'Sin descripción detallada.'
-          }));
-
-          saveEvents(mappedEvents);
-          document.getElementById('excelModal').classList.remove('active');
-          fileInput.value = '';
-          alert('¡Cartelera sincronizada y actualizada correctamente!');
-        } catch (err) {
-          console.error(err);
-          alert('Ocurrió un error al procesar el archivo Excel. Verifica que las columnas sean correctas.');
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    function handleFormSubmit(e) {
-      e.preventDefault();
-      const id = document.getElementById('eventId').value;
-      const eventData = {
-        id: id ? id : 'ev-' + Date.now(),
-        name: document.getElementById('eventNameInput').value,
-        category: document.getElementById('eventCategoryInput').value,
-        date: document.getElementById('eventDateInput').value,
-        time: document.getElementById('eventTimeInput').value,
-        price: document.getElementById('eventPriceInput').value,
-        location: document.getElementById('eventLocationInput').value,
-        img: document.getElementById('eventImgInput').value || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-        desc: document.getElementById('eventDescInput').value
-      };
-
-      if (id) {
-        // Editar evento existente
-        globalEvents = globalEvents.map(ev => ev.id === id ? eventData : ev);
-      } else {
-        // Agregar nuevo evento
-        globalEvents.push(eventData);
-      }
-
-      saveEvents(globalEvents);
-      document.getElementById('adminModal').classList.remove('active');
-      e.target.reset();
-    }
-
-    function deleteEvent(id) {
-      if(confirm('¿Estás seguro de eliminar este evento?')) {
-        saveEvents(globalEvents.filter(ev => ev.id !== id));
-      }
-    }
-
-    // Cerrar modales haciendo clic fuera de la caja
     window.onclick = function(event) {
       if (event.target.classList.contains('modal-overlay')) {
         event.target.classList.remove('active');
@@ -439,7 +292,7 @@
 
     document.addEventListener('DOMContentLoaded', () => { 
       checkSession(); 
-      loadEvents(); 
+      fetchGoogleSheetData(); // Carga automática al iniciar la página
     });
   </script>
 </body>
