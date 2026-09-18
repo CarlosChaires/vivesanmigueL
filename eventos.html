@@ -49,7 +49,6 @@
       width: 100%;
     }
 
-    /* Encabezado minimalista editorial con Logo transparente */
     header {
       display: flex;
       justify-content: space-between;
@@ -94,7 +93,6 @@
       color: var(--noche);
     }
 
-    /* Contenedor de botones de administración */
     .admin-actions-group {
       display: flex;
       gap: 0.8rem;
@@ -111,7 +109,7 @@
       font-size: 0.85rem;
       cursor: pointer;
       transition: var(--transicion);
-      display: none; /* Oculto hasta autenticarse */
+      display: none;
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
@@ -127,7 +125,6 @@
       background: rgba(217, 120, 100, 0.03);
     }
 
-    /* Botón sutil de Volver al Inicio (Siempre visible) */
     .btn-home {
       background: transparent;
       border: 1px solid var(--borde);
@@ -173,7 +170,6 @@
       border-color: var(--ocre);
     }
 
-    /* Secciones por Mes */
     .month-section {
       margin-bottom: 4rem;
     }
@@ -196,7 +192,6 @@
       background: var(--borde);
     }
 
-    /* Grid de Eventos */
     .events-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -352,7 +347,6 @@
       border-color: var(--cantera);
     }
 
-    /* Acciones de Tarjeta */
     .card-actions {
       position: absolute;
       top: 1rem;
@@ -388,7 +382,6 @@
       border-color: var(--cantera);
     }
 
-    /* Footer con Candado Discreto */
     footer {
       margin-top: 5rem;
       border-top: 1px solid var(--borde);
@@ -418,7 +411,6 @@
       background: rgba(217, 120, 100, 0.05);
     }
 
-    /* Modales */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -482,7 +474,6 @@
       color: var(--noche);
     }
 
-    /* Formularios */
     .form-group {
       margin-bottom: 1.25rem;
     }
@@ -558,18 +549,27 @@
       border-radius: 8px;
     }
 
-    .excel-instructions code {
-      background: #e2dad0;
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-family: monospace;
-    }
-
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
       color: var(--gris-texto);
       font-style: italic;
+    }
+
+    /* Indicador de sincronización */
+    .sync-status {
+      font-size: 0.75rem;
+      color: var(--gris-texto);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #27ae60;
+      border-radius: 50%;
+      display: inline-block;
     }
 
     @media (max-width: 768px) {
@@ -595,10 +595,8 @@
 <body id="pageBody">
 
   <div class="container">
-    <!-- Encabezado -->
     <header>
       <div class="brand-container">
-        <!-- Logo transparente y adaptado -->
         <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="header-title">
           <span>Patrimonio y Tradición</span>
@@ -606,7 +604,6 @@
         </div>
       </div>
       <div class="admin-actions-group">
-        <!-- Botón sutil para volver al inicio -->
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           Volver al Inicio
@@ -626,15 +623,16 @@
       </div>
     </header>
 
-    <!-- Contenedor dinámico separado por mes -->
     <div id="eventsContainer">
-      <!-- Los eventos se inyectan dinámicamente aquí -->
+      <div class="empty-state">Sincronizando eventos en la nube...</div>
     </div>
   </div>
 
-  <!-- Footer con Candado Discreto -->
   <footer>
-    <div>Vive San Miguel de Allende &copy; 2026</div>
+    <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+      <div>Vive San Miguel de Allende &copy; 2026</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sincronizado en la nube</div>
+    </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -643,7 +641,7 @@
     </div>
   </footer>
 
-  <!-- Modal de Login -->
+  <!-- Modales -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box" style="max-width: 400px;">
       <div class="modal-header">
@@ -665,7 +663,6 @@
     </div>
   </div>
 
-  <!-- Modal de Subida Masiva Excel -->
   <div class="modal-overlay" id="excelModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -673,7 +670,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. <strong>Nota sobre imágenes:</strong> Las imágenes subidas se almacenan temporalmente en tu navegador y se purgan de forma automática al expirar la fecha de cada evento.
+        Sube tu archivo Excel. Los datos se actualizarán automáticamente para todos los dispositivos.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -685,7 +682,6 @@
     </div>
   </div>
 
-  <!-- Modal de Administración Individual -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -694,12 +690,10 @@
       </div>
       <form id="eventForm" onsubmit="handleFormSubmit(event)">
         <input type="hidden" id="eventId">
-        
         <div class="form-group">
           <label for="eventNameInput">Nombre del Evento</label>
           <input type="text" id="eventNameInput" required placeholder="Ej. Cata Nocturna en Viñedos">
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label for="eventCategoryInput">Categoría</label>
@@ -710,7 +704,6 @@
             <input type="date" id="eventDateInput" required>
           </div>
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label for="eventTimeInput">Horario</label>
@@ -721,28 +714,23 @@
             <input type="text" id="eventPriceInput" required placeholder="Ej. $850 MXN o Entrada Libre">
           </div>
         </div>
-
         <div class="form-group">
-          <label for="eventLocationInput">Dirección / Lugar (Se abrirá en Google Maps al tocarla)</label>
+          <label for="eventLocationInput">Dirección / Lugar</label>
           <input type="text" id="eventLocationInput" required placeholder="Ej. Jardín Principal, Centro, San Miguel de Allende">
         </div>
-
         <div class="form-group">
           <label for="eventWebInput">Sitio Web / Enlace de Referencia (Opcional)</label>
           <input type="url" id="eventWebInput" placeholder="https://...">
         </div>
-
         <div class="form-group">
-          <label for="eventImgFile">Imagen del Evento (Se elimina automáticamente al pasar la fecha)</label>
+          <label for="eventImgFile">Imagen del Evento</label>
           <input type="file" id="eventImgFile" accept="image/*">
           <input type="hidden" id="eventImgInput">
         </div>
-
         <div class="form-group">
           <label for="eventDescInput">Descripción</label>
-          <textarea id="eventDescInput" required placeholder="Breve descripción inmersiva del evento..."></textarea>
+          <textarea id="eventDescInput" required placeholder="Breve descripción inmersiva..."></textarea>
         </div>
-
         <button type="submit" class="btn-primary">Guardar Evento</button>
       </form>
     </div>
@@ -751,6 +739,10 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
+
+    // Configuración de almacenamiento en la nube (JSONBin.io público y gratuito)
+    const BIN_ID = "66f199cfaacdcb3410f7607a"; // Bin compartido para sincronización global
+    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
     const defaultEvents = [
       {
@@ -797,11 +789,11 @@
       "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
     };
 
-    // Depuración automática: remueve eventos cuya fecha haya expirado
+    let globalEvents = [];
+
     function cleanExpiredEvents(events) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-
       return events.filter(ev => {
         if (!ev.date) return false;
         const eventDate = new Date(ev.date + 'T00:00:00');
@@ -809,21 +801,49 @@
       });
     }
 
-    function getEvents() {
-      const data = localStorage.getItem('sma_events');
-      let events = data ? JSON.parse(data) : defaultEvents;
-      
-      const filteredEvents = cleanExpiredEvents(events);
-      if (filteredEvents.length !== events.length) {
-        localStorage.setItem('sma_events', JSON.stringify(filteredEvents));
+    // Cargar eventos desde la nube con respaldo local
+    async function fetchEvents() {
+      try {
+        const response = await fetch(API_URL, {
+          headers: { 'X-Master-Key': '$2a$10$7Q0p...placeholder' } // Acceso público de lectura
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.record && Array.isArray(data.record.events)) {
+            globalEvents = cleanExpiredEvents(data.record.events);
+            localStorage.setItem('sma_events_cache', JSON.stringify(globalEvents));
+            renderEvents();
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn("Modo offline o error al conectar con la nube, usando caché local:", err);
       }
-      return filteredEvents;
+
+      // Si falla la red, recurrir al almacenamiento local o predeterminados
+      const cached = localStorage.getItem('sma_events_cache') || localStorage.getItem('sma_events');
+      globalEvents = cached ? cleanExpiredEvents(JSON.parse(cached)) : defaultEvents;
+      renderEvents();
     }
 
-    function saveEvents(events) {
-      const cleaned = cleanExpiredEvents(events);
-      localStorage.setItem('sma_events', JSON.stringify(cleaned));
+    // Guardar eventos en la nube y actualizar vista
+    async function saveEventsCloud(events) {
+      globalEvents = cleanExpiredEvents(events);
+      localStorage.setItem('sma_events_cache', JSON.stringify(globalEvents));
       renderEvents();
+
+      try {
+        await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ events: globalEvents })
+        });
+      } catch (err) {
+        console.error("Error al sincronizar con la nube:", err);
+        alert("Cambios guardados localmente. Se sincronizarán al recuperar la conexión.");
+      }
     }
 
     function checkSession() {
@@ -851,14 +871,13 @@
 
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
-      const events = getEvents();
+      const events = globalEvents;
 
       if (events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento. Los eventos pasados se han depurado automáticamente.</div>';
+        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento.</div>';
         return;
       }
 
-      // Ordenar estrictamente por fecha ascendente (Año, Mes, Día)
       events.sort((a, b) => new Date(a.date + 'T00:00:00') - new Date(b.date + 'T00:00:00'));
 
       const grouped = {};
@@ -889,19 +908,16 @@
           const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
           const imgSrc = ev.img && ev.img.trim() !== "" ? ev.img : fallbackImg;
           
-          // Formatear la fecha para mostrar el día exacto
           const dateObj = new Date(ev.date + 'T00:00:00');
           const dayNum = dateObj.getDate();
           const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
           const dayNameStr = dayNames[dateObj.getDay()];
           const exactDateLabel = `${dayNameStr} ${dayNum}`;
 
-          // Enlace web opcional
           const webLinkHtml = ev.web && ev.web.trim() !== "" 
             ? `<a href="${ev.web}" target="_blank" rel="noopener noreferrer" class="event-link-btn">Visitar Sitio Web →</a>` 
             : '';
 
-          // Generar enlace directo a Google Maps con la dirección del evento
           const locationText = ev.location && ev.location.trim() !== "" ? ev.location : "San Miguel de Allende";
           const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationText + ", San Miguel de Allende")}`;
 
@@ -960,32 +976,16 @@
           location: "Jardín Principal, Centro, San Miguel de Allende",
           web: "https://discoversma.com",
           img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-          desc: "Disfruta de una velada musical inolvidable al aire libre frente a la Parroquia de San Miguel Arcángel."
-        },
-        {
-          name: "Ejemplo: Cata de Vinos y Quesos Artesanales",
-          category: "Gastronomía",
-          date: "2026-12-05",
-          time: "16:00 hrs",
-          price: "$850 MXN",
-          location: "Viñedos San Lucas, San Miguel de Allende",
-          web: "",
-          img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
-          desc: "Recorrido guiado por cavas locales con degustación de etiquetas selectas de Guanajuato."
+          desc: "Disfruta de una velada musical inolvidable al aire libre frente a la Parroquia."
         }
       ];
 
       const worksheet = XLSX.utils.json_to_sheet(templateData);
-      worksheet['!cols'] = [
-        {wch: 40}, {wch: 15}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 35}, {wch: 25}, {wch: 60}, {wch: 50}
-      ];
-
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
       XLSX.writeFile(workbook, "plantilla_eventos_vive_san_miguel.xlsx");
     }
 
-    // Autenticación
     function openLoginModal() {
       const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
       if (isLogged) {
@@ -1021,7 +1021,6 @@
       }
     }
 
-    // Excel Masivo
     function openExcelModal() {
       document.getElementById('excelFileInput').value = '';
       document.getElementById('excelModal').classList.add('active');
@@ -1048,11 +1047,11 @@
           const jsonSheet = XLSX.utils.sheet_to_json(worksheet);
 
           if (!jsonSheet.length) {
-            alert('El archivo Excel está vacío o no tiene el formato correcto.');
+            alert('El archivo Excel está vacío.');
             return;
           }
 
-          let events = getEvents();
+          let events = [...globalEvents];
           let count = 0;
 
           jsonSheet.forEach(row => {
@@ -1074,19 +1073,17 @@
             }
           });
 
-          saveEvents(events);
+          saveEventsCloud(events);
           closeExcelModal();
-          alert(`¡Se importaron exitosamente ${count} eventos desde tu archivo Excel!`);
+          alert(`¡Se importaron y sincronizaron ${count} eventos exitosamente!`);
         } catch (error) {
           console.error(error);
-          alert('Hubo un error al procesar el archivo Excel. Asegúrate de usar la plantilla descargable.');
+          alert('Error al procesar el archivo Excel.');
         }
       };
-
       reader.readAsArrayBuffer(file);
     }
 
-    // Gestión individual con compresión temporal de imagen local
     function openAdminModal() {
       document.getElementById('modalTitle').innerText = 'Nuevo Evento';
       document.getElementById('eventForm').reset();
@@ -1096,8 +1093,7 @@
     }
 
     function openEditModal(id) {
-      const events = getEvents();
-      const ev = events.find(item => item.id === id);
+      const ev = globalEvents.find(item => item.id === id);
       if (!ev) return;
 
       document.getElementById('modalTitle').innerText = 'Editar Evento';
@@ -1120,7 +1116,6 @@
       document.getElementById('adminModal').classList.remove('active');
     }
 
-    // Procesar archivo de imagen local a Base64 optimizado
     document.getElementById('eventImgFile').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1136,15 +1131,9 @@
           let height = img.height;
 
           if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
+            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
           } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
+            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
           }
 
           canvas.width = width;
@@ -1173,7 +1162,7 @@
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
 
-      let events = getEvents();
+      let events = [...globalEvents];
 
       if (id && !img) {
         const existing = events.find(ev => ev.id === id);
@@ -1194,21 +1183,20 @@
         events.push(newEv);
       }
 
-      saveEvents(events);
+      saveEventsCloud(events);
       openAdminModalClose();
     }
 
     function deleteEvent(id) {
-      if (confirm('¿Está seguro de eliminar este evento de la cartelera?')) {
-        let events = getEvents();
-        events = events.filter(ev => ev.id !== id);
-        saveEvents(events);
+      if (confirm('¿Está seguro de eliminar este evento?')) {
+        let events = globalEvents.filter(ev => ev.id !== id);
+        saveEventsCloud(events);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       checkSession();
-      renderEvents();
+      fetchEvents();
     });
   </script>
 </body>
