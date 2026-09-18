@@ -187,7 +187,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyb8kDsw0DIaHM7Oxa3L8UQLMitv8qCHdzBxe8534FOCWNSXPE1TJgUx3gmAD5eI4TD/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxYxrq4uYKDjd0Z_kMaIswzPHS9pymsrKtOSk7eKa5DegGXYvFpCboYuvXbK1B4QhMo/exec";
 
     let globalEvents = [];
 
@@ -240,7 +240,7 @@
 
         globalEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
-          const imgValue = getVal(item, ['img', 'imagen', 'url', 'photo']);
+          const imgValue = getVal(item, ['img', 'imagen', 'url', 'foto']);
           
           return {
             id: 'ev-sheets-' + index,
