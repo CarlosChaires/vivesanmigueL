@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Sincronizando cartelera global en la nube...</div>
+      <div class="empty-state">Cargando eventos...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado globalmente en la nube</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sincronizado Activo</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -669,7 +669,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los cambios se actualizarán automáticamente para todos los dispositivos y visitantes del mundo.
+        Sube tu archivo Excel. Los cambios se actualizarán de forma inmediata.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -738,10 +738,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-
-    // Base de datos en la nube pública y gratuita para sincronización global instantánea
-    const BIN_ID = "67c00cbfe41b4d34e44e27f5";
-    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    const STORAGE_KEY = "vivesanmiguel_events_persistent_v3";
 
     const defaultEvents = [
       {
@@ -790,48 +787,25 @@
 
     let globalEvents = [];
 
-    // Cargar eventos desde la nube global
-    async function fetchEvents() {
+    function loadEvents() {
       try {
-        const response = await fetch(API_URL + "/latest", {
-          headers: { 'X-Master-Key': '$2a$10$v...public' }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.record && Array.isArray(data.record.events)) {
-            globalEvents = data.record.events;
-            renderEvents();
-            return;
-          }
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          globalEvents = JSON.parse(stored);
+        } else {
+          globalEvents = defaultEvents;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
         }
-      } catch (err) {
-        console.warn("Modo offline activado, usando caché local.");
+      } catch (e) {
+        globalEvents = defaultEvents;
       }
-
-      const cached = localStorage.getItem('sma_events_global_cache');
-      globalEvents = cached ? JSON.parse(cached) : defaultEvents;
       renderEvents();
     }
 
-    // Guardar cambios directamente en la nube para sincronizar todos los dispositivos
-    async function saveEventsCloud(events) {
+    function saveEvents(events) {
       globalEvents = events;
-      localStorage.setItem('sma_events_global_cache', JSON.stringify(globalEvents));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
       renderEvents();
-
-      try {
-        await fetch(API_URL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': '$2a$10$v...public'
-          },
-          body: JSON.stringify({ events: globalEvents })
-        });
-      } catch (err) {
-        console.error("Error al sincronizar con la nube:", err);
-        alert("Cambio guardado localmente. Se sincronizará en la nube al recuperar conexión estable.");
-      }
     }
 
     function checkSession() {
@@ -862,7 +836,7 @@
       const events = globalEvents;
 
       if (!events || events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento.</div>';
+        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
         return;
       }
 
@@ -1067,9 +1041,9 @@
             }
           });
 
-          saveEventsCloud(events);
+          saveEvents(events);
           closeExcelModal();
-          alert(`¡Se importaron y sincronizaron ${count} eventos en la nube global!`);
+          alert(`¡Se importaron y guardaron ${count} eventos exitosamente!`);
         } catch (error) {
           console.error(error);
           alert('Error al procesar el archivo Excel.');
@@ -1150,12 +1124,11 @@
       const category = document.getElementById('eventCategoryInput').value;
       const date = document.getElementById('eventDateInput').value;
       const time = document.getElementById('eventTimeInput').value;
-      const price = document.getElementById('eventPriceInput5') ? document.getElementById('eventPriceInput5').value : document.getElementById('eventPriceInput').value;
+      const price = document.getElementById('eventPriceInput').value;
       const location = document.getElementById('eventLocationInput').value;
       const web = document.getElementById('eventWebInput').value;
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
-      const priceVal = document.getElementById('eventPriceInput').value;
 
       let events = [...globalEvents];
 
@@ -1169,29 +1142,29 @@
       }
 
       if (id) {
-        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price: priceVal, location, web, img, desc } : ev);
+        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
-          name, category, date, time, price: priceVal, location, web, img, desc
+          name, category, date, time, price, location, web, img, desc
         };
         events.push(newEv);
       }
 
-      saveEventsCloud(events);
+      saveEvents(events);
       openAdminModalClose();
     }
 
     function deleteEvent(id) {
-      if (confirm('¿Está seguro de eliminar este evento de la cartelera global?')) {
+      if (confirm('¿Está seguro de eliminar este evento?')) {
         let events = globalEvents.filter(ev => ev.id !== id);
-        saveEventsCloud(events);
+        saveEvents(events);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       checkSession();
-      fetchEvents();
+      loadEvents();
     });
   </script>
 </body>
