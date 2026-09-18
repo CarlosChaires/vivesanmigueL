@@ -670,7 +670,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions" style="font-size: 0.9rem; color: var(--gris-texto); margin-bottom: 1.5rem;">
-        Sube tu archivo Excel para actualizar la cartelera institucional al instante de forma segura.
+        Sube tu archivo Excel para actualizar la cartelera institucional al instante.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -754,30 +754,6 @@
         web: "https://discoversma.com",
         img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
         desc: "Presentación estelar de danza contemporánea y música virreinal en el corazón de la plaza principal."
-      },
-      {
-        id: "ev-2",
-        name: "Cena de Gala Tradicional Santa Catrina",
-        category: "Gastronomía",
-        date: "2026-10-30",
-        time: "20:00 hrs",
-        price: "$2,500 MXN",
-        location: "Viñedos San Lucas, San Miguel de Allende",
-        web: "",
-        img: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
-        desc: "Experiencia gourmet de 4 tiempos con maridaje en vinícola exclusiva. Rigurosa etiqueta de catrina o catrín."
-      },
-      {
-        id: "ev-3",
-        name: "Noche de Altares y Tradiciones",
-        category: "Tradición",
-        date: "2026-11-02",
-        time: "17:00 hrs",
-        price: "Entrada Libre",
-        location: "Plaza Cívica, San Miguel de Allende",
-        web: "",
-        img: "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?auto=format&fit=crop&w=800&q=80",
-        desc: "Exhibición monumental de ofrendas florales, catrinas monumentales y procesión iluminada por candiles."
       }
     ];
 
@@ -789,8 +765,19 @@
 
     let globalEvents = [];
 
-    function loadEvents() {
+    async function loadEvents() {
       try {
+        // Carga remota directamente desde tu archivo JSON en GitHub Pages
+        const response = await fetch('https://carloschaires.github.io/vivesanmigueL/eventos_sma.json');
+        if (response.ok) {
+          const githubEvents = await response.json();
+          globalEvents = githubEvents;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
+        } else {
+          throw new Error('Error al conectar con GitHub Pages');
+        }
+      } catch (e) {
+        // Respaldo automático local si no hay internet o falla la red
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
           globalEvents = JSON.parse(stored);
@@ -798,8 +785,6 @@
           globalEvents = defaultEvents;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
         }
-      } catch (e) {
-        globalEvents = defaultEvents;
       }
       renderEvents();
     }
@@ -814,7 +799,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(globalEvents, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "respaldo_eventos_vivesanmiguel.json");
+      downloadAnchor.setAttribute("download", "eventos_sma.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -1058,7 +1043,7 @@
 
           saveEvents(events);
           closeExcelModal();
-          alert(`¡Se importaron y guardaron ${count} eventos exitosamente!`);
+          alert(`¡Se importaron y guardaron ${count} eventos exitosamente! Haz clic en "Exportar Respaldo" para descargar tu nuevo JSON y subirlo a GitHub.`);
         } catch (error) {
           console.error(error);
           alert('Error al procesar el archivo Excel.');
@@ -1137,13 +1122,14 @@
       const id = document.getElementById('eventId').value;
       const name = document.getElementById('eventNameInput').value;
       const category = document.getElementById('eventCategoryInput').value;
-      const date = document.getElementById('eventDateInput').value;
+      const date = document.getElementById('eventDateInput'.value);
       const time = document.getElementById('eventTimeInput').value;
       const price = document.getElementById('eventPriceInput').value;
       const location = document.getElementById('eventLocationInput').value;
       const web = document.getElementById('eventWebInput').value;
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
+      const dateInputVal = document.getElementById('eventDateInput').value;
 
       let events = [...globalEvents];
 
@@ -1157,23 +1143,25 @@
       }
 
       if (id) {
-        events = events.map(ev => String(ev.id) === String(id) ? { id, name, category, date, time, price, location, web, img, desc } : ev);
+        events = events.map(ev => String(ev.id) === String(id) ? { id, name, category, date: dateInputVal, time, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
-          name, category, date, time, price, location, web, img, desc
+          name, category, date: dateInputVal, time, price, location, web, img, desc
         };
         events.push(newEv);
       }
 
       saveEvents(events);
       openAdminModalClose();
+      alert('¡Evento guardado localmente! Recuerda dar clic en "Exportar Respaldo" para descargar el archivo JSON actualizado y subirlo a GitHub.');
     }
 
     function deleteEvent(id) {
       if (confirm('¿Está seguro de eliminar este evento de la cartelera?')) {
         let events = globalEvents.filter(ev => String(ev.id) !== String(id));
         saveEvents(events);
+        alert('Evento eliminado. Exporta tu respaldo JSON para actualizar GitHub.');
       }
     }
 
