@@ -65,15 +65,17 @@
 
     .admin-actions-group { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
 
-    .admin-trigger, .btn-home {
+    .admin-trigger, .btn-home, .btn-admin-action {
       background: transparent; border: 1px solid var(--borde); color: var(--gris-texto);
       padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer;
       transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
     }
 
-    .admin-trigger { display: none; }
-    .admin-trigger.visible { display: inline-flex; }
-    .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
+    .admin-trigger, .admin-panel-btn { display: none; }
+    body.admin-logged .admin-panel-btn { display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
+    
+    .admin-trigger:hover, .btn-home:hover, .btn-admin-action:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
+    body.admin-logged .admin-panel-btn:hover { background: var(--cantera-hover); color: var(--blanco); }
 
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
 
@@ -115,11 +117,13 @@
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--blanco); width: 100%; max-width: 400px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-    .form-group { margin-bottom: 1.25rem; }
-    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
-    input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); }
-    .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 450px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .form-group { margin-bottom: 1.1rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
+    input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
+    textarea { resize: vertical; height: 80px; }
+    .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); }
+    .btn-primary:hover { background: var(--cantera-hover); }
     .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
   </style>
 </head>
@@ -135,8 +139,8 @@
         </div>
       </div>
       <div class="admin-actions-group">
+        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento a Sheet</button>
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-        <button class="admin-trigger btn-sync" id="syncBtn" onclick="fetchGoogleSheetData()" style="display:none !important;">Sincronizar Sheets</button>
       </div>
     </header>
 
@@ -153,8 +157,8 @@
   <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3>Acceso Restringido</h3>
-      <form onsubmit="handleLogin(event)" style="margin-top: 1rem;">
+      <h3 style="font-family:'Playfair Display',serif; margin-bottom: 1.2rem;">Acceso Restringido</h3>
+      <form onsubmit="handleLogin(event)">
         <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
         <button type="submit" class="btn-primary">Ingresar</button>
@@ -162,10 +166,30 @@
     </div>
   </div>
 
+  <!-- Modal Agregar Evento a Sheets -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-box">
+      <h3 style="font-family:'Playfair Display',serif; margin-bottom: 1.2rem;">Nuevo Evento en Google Sheet</h3>
+      <form onsubmit="handleSaveEvent(event)">
+        <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
+        <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Feria y Tradición" required></div>
+        <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
+        <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Imagen URL (img)</label><input type="url" id="inputImg" placeholder="https://..." required></div>
+        <div class="form-group"><label>Descripción (desc)</label><textarea id="inputDesc" required></textarea></div>
+        <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Google Sheets</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkQpk6tPdLeSm4sBtfS-rXWUGXzmD3-F3ZpsF383Yo97WiYLdzf6WMEAfkFfxnrRz_ZSprMMHmQss/pub?output=tsv";
+    
+    // URL de Apps Script conectada y activa
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbysdEVBuvDg4CO5z3Ia7bcn6w1Ziz8rG2cmtyJxHna6Pt7DcHossByuTcEPAp6srefM/exec";
 
     let globalEvents = [];
 
@@ -176,7 +200,6 @@
 
       try {
         let date;
-        // Si viene en formato ISO estándar YYYY-MM-DD (como 2026-09-18)
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
           const parts = cleanStr.split('-');
           date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
@@ -188,7 +211,7 @@
 
         if (isNaN(date.getTime())) return cleanStr;
 
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
         let formatted = date.toLocaleDateString('es-ES', options);
         return formatted.charAt(0).toUpperCase() + formatted.slice(1);
       } catch (e) {
@@ -199,57 +222,42 @@
     async function fetchGoogleSheetData() {
       const container = document.getElementById('eventsContainer');
       try {
-        const response = await fetch(SHEET_URL);
-        if (!response.ok) throw new Error('Error al conectar');
+        const response = await fetch(WEB_APP_URL);
+        if (!response.ok) throw new Error('Error al conectar con Web App');
         
-        const tsvText = await response.text();
-        const rows = tsvText.split('\n').map(row => row.split('\t'));
-        
-        if (rows.length < 2) throw new Error('Sin datos');
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
-        const headers = rows[0].map(h => h.trim().toLowerCase());
-        
-        // Función auxiliar para buscar dinámicamente columnas por coincidencia parcial (ej. 'date' o 'fecha')
-        const getColValue = (obj, keys) => {
+        const getVal = (obj, keys) => {
           for (let k of keys) {
-            const foundKey = Object.keys(obj).find(header => header.includes(k));
+            const foundKey = Object.keys(obj).find(header => header.toLowerCase().includes(k));
             if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== '') {
-              return obj[foundKey];
+              return String(obj[foundKey]).trim();
             }
           }
           return '';
         };
 
-        globalEvents = [];
-        for (let i = 1; i < rows.length; i++) {
-          const cols = rows[i];
-          if (cols.length < headers.length) continue;
-
-          let eventObj = {};
-          headers.forEach((header, index) => {
-            eventObj[header] = cols[index] ? cols[index].trim() : '';
-          });
-
-          const rawDateValue = getColValue(eventObj, ['date', 'fecha', 'dia']);
-
-          globalEvents.push({
-            id: 'ev-sheets-' + i,
-            name: getColValue(eventObj, ['name', 'nombre', 'evento']) || 'Evento sin nombre',
-            category: getColValue(eventObj, ['category', 'categoria', 'categoría']) || 'General',
+        globalEvents = data.map((item, index) => {
+          const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
+          return {
+            id: 'ev-sheets-' + index,
+            name: getVal(item, ['name', 'nombre', 'evento']) || 'Evento sin nombre',
+            category: getVal(item, ['category', 'categoria', 'categoría']) || 'General',
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
-            time: getColValue(eventObj, ['time', 'horario', 'hora']) || 'Todo el día',
-            price: getColValue(eventObj, ['price', 'costo', 'precio']) || 'Acceso Libre',
-            location: getColValue(eventObj, ['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende',
-            img: getColValue(eventObj, ['img', 'imagen', 'url']) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-            desc: getColValue(eventObj, ['desc', 'descripcion', 'descripción']) || 'Sin descripción detallada.'
-          });
-        }
+            time: getVal(item, ['time', 'horario', 'hora']) || 'Todo el día',
+            price: getVal(item, ['price', 'costo', 'precio']) || 'Acceso Libre',
+            location: getVal(item, ['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende',
+            img: getVal(item, ['img', 'imagen', 'url']) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            desc: getVal(item, ['desc', 'descripcion', 'descripción']) || 'Sin descripción detallada.'
+          };
+        });
 
         renderEvents();
       } catch (error) {
-        console.error("Error silencioso Sheets:", error);
-        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento. Intente más tarde.</div>`;
+        console.error("Error al sincronizar con Sheets:", error);
+        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento o hubo un problema de conexión.</div>`;
       }
     }
 
@@ -298,6 +306,10 @@
         document.getElementById('loginModal').classList.add('active');
       }
     }
+
+    function openEventModal() {
+      document.getElementById('eventModal').classList.add('active');
+    }
     
     function handleLogin(e) {
       e.preventDefault();
@@ -308,6 +320,48 @@
         alert('¡Bienvenido, Administrador!');
       } else { 
         alert('Credenciales incorrectas'); 
+      }
+    }
+
+    async function handleSaveEvent(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitEventBtn');
+      btn.innerText = "Guardando en Google Sheets...";
+      btn.disabled = true;
+
+      const newRecord = {
+        action: "add",
+        name: document.getElementById('inputName').value,
+        category: document.getElementById('inputCategory').value,
+        date: document.getElementById('inputDate').value,
+        time: document.getElementById('inputTime').value,
+        price: document.getElementById('inputPrice').value,
+        location: document.getElementById('inputLocation').value,
+        img: document.getElementById('inputImg').value,
+        desc: document.getElementById('inputDesc').value
+      };
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: JSON.stringify(newRecord)
+        });
+        const result = await response.json();
+        
+        if(result.status === 'success') {
+          alert('¡Evento agregado y guardado en Google Sheets con éxito!');
+          document.getElementById('eventModal').classList.remove('active');
+          e.target.reset();
+          fetchGoogleSheetData(); // Recargar datos desde Google Sheets
+        } else {
+          alert('Error al guardar: ' + result.message);
+        }
+      } catch(err) {
+        console.error(err);
+        alert('Ocurrió un error de conexión con Apps Script.');
+      } finally {
+        btn.innerText = "Guardar en Google Sheets";
+        btn.disabled = false;
       }
     }
 
