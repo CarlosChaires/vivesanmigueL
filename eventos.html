@@ -117,13 +117,14 @@
     .action-btn { background: rgba(255, 255, 255, 0.9); border: 1px solid var(--borde); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .action-btn:hover { background: var(--cantera); color: var(--blanco); }
 
-    footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); }
-    .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; }
-    .footer-lock:hover { color: var(--cantera); }
+    footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
+    .footer-actions { display: flex; gap: 1rem; align-items: center; }
+    .footer-lock, .footer-reset { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .footer-lock:hover, .footer-reset:hover { color: var(--cantera); }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
     .form-group { margin-bottom: 1.25rem; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
@@ -155,10 +156,13 @@
 
   <footer>
     <div>Vive San Miguel de Allende &copy; 2026</div>
-    <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
+    <div class="footer-actions">
+      <button class="footer-reset" onclick="resetDefaults()" title="Restaurar eventos iniciales">🔄 Restaurar Base</button>
+      <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
+    </div>
   </footer>
 
-  <!-- Modales -->
+  <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box" style="max-width: 400px;">
       <h3>Acceso Restringido</h3>
@@ -170,10 +174,11 @@
     </div>
   </div>
 
+  <!-- Modal Excel -->
   <div class="modal-overlay" id="excelModal">
     <div class="modal-box">
       <h3>Sincronización con Google Sheets / Excel</h3>
-      <p style="font-size: 0.85rem; color: var(--gris-texto); margin-bottom: 1rem;">Sube tu archivo .xlsx exportado desde Google Sheets o selecciona un archivo local actualizado.</p>
+      <p style="font-size: 0.85rem; color: var(--gris-texto); margin-bottom: 1rem;">Sube tu archivo .xlsx descargado desde Google Sheets para actualizar la cartelera de forma masiva.</p>
       <form onsubmit="handleExcelUpload(event)" style="margin-top: 1rem;">
         <div class="form-group"><label>Archivo .xlsx</label><input type="file" id="excelFileInput" accept=".xlsx" required></div>
         <button type="submit" class="btn-primary">Importar y Actualizar Web</button>
@@ -181,6 +186,7 @@
     </div>
   </div>
 
+  <!-- Modal Admin (Crear / Editar Evento) -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <h3 id="modalTitle">Nuevo Evento</h3>
@@ -198,7 +204,7 @@
         <div class="form-group"><label>Lugar</label><input type="text" id="eventLocationInput" required></div>
         <div class="form-group"><label>Imagen (URL)</label><input type="url" id="eventImgInput" placeholder="https://..."></div>
         <div class="form-group"><label>Descripción</label><textarea id="eventDescInput" required></textarea></div>
-        <button type="submit" class="btn-primary">Guardar</button>
+        <button type="submit" class="btn-primary" id="saveBtnText">Guardar Evento</button>
       </form>
     </div>
   </div>
@@ -206,7 +212,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const STORAGE_KEY = "vivesanmiguel_events_local_v10";
+    const STORAGE_KEY = "vivesanmiguel_events_local_v11";
 
     const defaultEvents = [
       { id: "ev-1", name: "Inauguración de la Feria", category: "Feria SMA", date: "2026-09-25", time: "18:00 hrs", price: "Acceso General", location: "Recinto Ferial", img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80", desc: "Gran apertura con juegos mecánicos y pirotecnia." },
@@ -216,8 +222,16 @@
     let globalEvents = [];
 
     function loadEvents() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      globalEvents = stored ? JSON.parse(stored) : defaultEvents;
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        globalEvents = stored ? JSON.parse(stored) : defaultEvents;
+        if (!Array.isArray(globalEvents) || globalEvents.length === 0) {
+          globalEvents = defaultEvents;
+        }
+      } catch (e) {
+        console.error("Error al cargar localStorage, usando valores por defecto:", e);
+        globalEvents = defaultEvents;
+      }
       renderEvents();
     }
 
@@ -225,6 +239,14 @@
       globalEvents = events;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
       renderEvents();
+    }
+
+    function resetDefaults() {
+      if (confirm("¿Deseas restaurar los eventos predeterminados de fábrica?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        loadEvents();
+        alert("Eventos restaurados correctamente.");
+      }
     }
 
     function checkSession() {
@@ -237,11 +259,15 @@
 
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
-      if (!globalEvents.length) { container.innerHTML = '<div class="empty-state">No hay eventos registrados.</div>'; return; }
+      if (!globalEvents || !globalEvents.length) { 
+        container.innerHTML = '<div class="empty-state">No hay eventos registrados. Usa el panel de administración para agregar uno.</div>'; 
+        return; 
+      }
       
-      globalEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+      // Ordenar por fecha cronológicamente
+      globalEvents.sort((a, b) => new Date(a.date || '2026-01-01') - new Date(b.date || '2026-01-01'));
+      
       let html = '';
-      
       globalEvents.forEach(ev => {
         html += `
           <div class="event-card">
@@ -250,6 +276,7 @@
               <span class="event-date-badge">${ev.date || 'Por definir'}</span>
               <img src="${ev.img || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
               <div class="card-actions">
+                <button class="action-btn" onclick="openEditModal('${ev.id}')" title="Editar">✏️</button>
                 <button class="action-btn" onclick="deleteEvent('${ev.id}')" title="Eliminar">🗑️</button>
               </div>
             </div>
@@ -283,15 +310,47 @@
         localStorage.setItem('sma_admin_logged', 'true');
         closeLoginModal(); 
         checkSession();
+        document.getElementById('usernameInput').value = '';
+        document.getElementById('passwordInput').value = '';
       } else { 
         alert('Credenciales incorrectas'); 
       }
     }
 
-    function openAdminModal() { document.getElementById('adminModal').classList.add('active'); }
+    function openAdminModal() {
+      document.getElementById('modalTitle').innerText = "Nuevo Evento";
+      document.getElementById('saveBtnText').innerText = "Guardar Evento";
+      document.getElementById('eventId').value = '';
+      document.getElementById('eventNameInput').value = '';
+      document.getElementById('eventCategoryInput').value = '';
+      document.getElementById('eventDateInput').value = '';
+      document.getElementById('eventTimeInput').value = '';
+      document.getElementById('eventPriceInput').value = '';
+      document.getElementById('eventLocationInput').value = '';
+      document.getElementById('eventImgInput').value = '';
+      document.getElementById('eventDescInput').value = '';
+      document.getElementById('adminModal').classList.add('active');
+    }
+
+    function openEditModal(id) {
+      const ev = globalEvents.find(item => item.id === id);
+      if (!ev) return;
+      document.getElementById('modalTitle').innerText = "Editar Evento";
+      document.getElementById('saveBtnText').innerText = "Actualizar Cambios";
+      document.getElementById('eventId').value = ev.id;
+      document.getElementById('eventNameInput').value = ev.name || '';
+      document.getElementById('eventCategoryInput').value = ev.category || '';
+      document.getElementById('eventDateInput').value = ev.date || '';
+      document.getElementById('eventTimeInput').value = ev.time || '';
+      document.getElementById('eventPriceInput').value = ev.price || '';
+      document.getElementById('eventLocationInput').value = ev.location || '';
+      document.getElementById('eventImgInput').value = ev.img || '';
+      document.getElementById('eventDescInput').value = ev.desc || '';
+      document.getElementById('adminModal').classList.add('active');
+    }
+
     function openExcelModal() { document.getElementById('excelModal').classList.add('active'); }
 
-    // Procesamiento y mapeo automático del archivo Excel proveniente de Sheets
     function handleExcelUpload(e) {
       e.preventDefault();
       const fileInput = document.getElementById('excelFileInput');
@@ -309,11 +368,10 @@
           const jsonSheet = XLSX.utils.sheet_to_json(worksheet);
 
           if (!jsonSheet.length) {
-            alert('El archivo está vacío o no tiene el formato correcto.');
+            alert('El archivo está vacío o no contiene filas legibles.');
             return;
           }
 
-          // Mapeo inteligente adaptado a las columnas comunes de Google Sheets
           const mappedEvents = jsonSheet.map((row, index) => ({
             id: 'ev-sheet-' + Date.now() + '-' + index,
             name: row.Nombre || row.name || row.Evento || 'Evento sin nombre',
@@ -328,10 +386,11 @@
 
           saveEvents(mappedEvents);
           document.getElementById('excelModal').classList.remove('active');
-          alert('¡Cartelera actualizada exitosamente desde Google Sheets / Excel!');
+          fileInput.value = '';
+          alert('¡Cartelera sincronizada y actualizada correctamente!');
         } catch (err) {
           console.error(err);
-          alert('Ocurrió un error al procesar el archivo.');
+          alert('Ocurrió un error al procesar el archivo Excel. Verifica que las columnas sean correctas.');
         }
       };
       reader.readAsArrayBuffer(file);
@@ -339,18 +398,28 @@
 
     function handleFormSubmit(e) {
       e.preventDefault();
-      const newEv = {
-        id: 'ev-' + Date.now(),
+      const id = document.getElementById('eventId').value;
+      const eventData = {
+        id: id ? id : 'ev-' + Date.now(),
         name: document.getElementById('eventNameInput').value,
         category: document.getElementById('eventCategoryInput').value,
-        date: document.getElementById('eventDateInput5'] || document.getElementById('eventDateInput').value,
+        date: document.getElementById('eventDateInput').value,
         time: document.getElementById('eventTimeInput').value,
         price: document.getElementById('eventPriceInput').value,
         location: document.getElementById('eventLocationInput').value,
         img: document.getElementById('eventImgInput').value || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
         desc: document.getElementById('eventDescInput').value
       };
-      saveEvents([...globalEvents, newEv]);
+
+      if (id) {
+        // Editar evento existente
+        globalEvents = globalEvents.map(ev => ev.id === id ? eventData : ev);
+      } else {
+        // Agregar nuevo evento
+        globalEvents.push(eventData);
+      }
+
+      saveEvents(globalEvents);
       document.getElementById('adminModal').classList.remove('active');
       e.target.reset();
     }
@@ -358,6 +427,13 @@
     function deleteEvent(id) {
       if(confirm('¿Estás seguro de eliminar este evento?')) {
         saveEvents(globalEvents.filter(ev => ev.id !== id));
+      }
+    }
+
+    // Cerrar modales haciendo clic fuera de la caja
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        event.target.classList.remove('active');
       }
     }
 
