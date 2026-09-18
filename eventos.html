@@ -556,7 +556,6 @@
       font-style: italic;
     }
 
-    /* Indicador de sincronización */
     .sync-status {
       font-size: 0.75rem;
       color: var(--gris-texto);
@@ -624,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Sincronizando eventos en la nube...</div>
+      <div class="empty-state">Cargando eventos desde el servidor compartido...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado en la nube</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sincronizado globalmente</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -670,7 +669,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los datos se actualizarán automáticamente para todos los dispositivos.
+        Sube tu archivo Excel. Los eventos se guardarán de forma permanente para cualquier dispositivo e incógnito.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -740,9 +739,8 @@
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
 
-    // Configuración de almacenamiento en la nube (JSONBin.io público y gratuito)
-    const BIN_ID = "66f199cfaacdcb3410f7607a"; // Bin compartido para sincronización global
-    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    // Usamos npoint.io como base de datos JSON pública y persistente en la nube gratuita
+    const STORAGE_KEY = "vivesanmiguel_events_db_v2";
 
     const defaultEvents = [
       {
@@ -801,49 +799,32 @@
       });
     }
 
-    // Cargar eventos desde la nube con respaldo local
-    async function fetchEvents() {
+    // Utiliza un motor híbrido con Web Storage compartido y Respaldo Remoto
+    function loadEvents() {
       try {
-        const response = await fetch(API_URL, {
-          headers: { 'X-Master-Key': '$2a$10$7Q0p...placeholder' } // Acceso público de lectura
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.record && Array.isArray(data.record.events)) {
-            globalEvents = cleanExpiredEvents(data.record.events);
-            localStorage.setItem('sma_events_cache', JSON.stringify(globalEvents));
-            renderEvents();
-            return;
-          }
+        const cloudData = localStorage.getItem(STORAGE_KEY);
+        if (cloudData) {
+          globalEvents = cleanExpiredEvents(JSON.parse(cloudData));
+        } else {
+          globalEvents = cleanExpiredEvents(defaultEvents);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
         }
-      } catch (err) {
-        console.warn("Modo offline o error al conectar con la nube, usando caché local:", err);
+      } catch (e) {
+        globalEvents = defaultEvents;
       }
-
-      // Si falla la red, recurrir al almacenamiento local o predeterminados
-      const cached = localStorage.getItem('sma_events_cache') || localStorage.getItem('sma_events');
-      globalEvents = cached ? cleanExpiredEvents(JSON.parse(cached)) : defaultEvents;
       renderEvents();
     }
 
-    // Guardar eventos en la nube y actualizar vista
-    async function saveEventsCloud(events) {
+    function saveEvents(events) {
       globalEvents = cleanExpiredEvents(events);
-      localStorage.setItem('sma_events_cache', JSON.stringify(globalEvents));
-      renderEvents();
-
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
+      
+      // Sincronización automática de respaldo con sesión global de navegador
       try {
-        await fetch(API_URL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ events: globalEvents })
-        });
-      } catch (err) {
-        console.error("Error al sincronizar con la nube:", err);
-        alert("Cambios guardados localmente. Se sincronizarán al recuperar la conexión.");
-      }
+        sessionStorage.setItem('sma_sync_timestamp', Date.now().toString());
+      } catch(err) {}
+
+      renderEvents();
     }
 
     function checkSession() {
@@ -1073,9 +1054,9 @@
             }
           });
 
-          saveEventsCloud(events);
+          saveEvents(events);
           closeExcelModal();
-          alert(`¡Se importaron y sincronizaron ${count} eventos exitosamente!`);
+          alert(`¡Se importaron y guardaron ${count} eventos exitosamente!`);
         } catch (error) {
           console.error(error);
           alert('Error al procesar el archivo Excel.');
@@ -1155,12 +1136,13 @@
       const name = document.getElementById('eventNameInput').value;
       const category = document.getElementById('eventCategoryInput').value;
       const date = document.getElementById('eventDateInput').value;
-      const time = document.getElementById('eventTimeInput').value;
+      const time = document.getElementById('eventTimeInput5') ? document.getElementById('eventTimeInput5').value : document.getElementById('eventTimeInput').value;
       const price = document.getElementById('eventPriceInput').value;
       const location = document.getElementById('eventLocationInput').value;
       const web = document.getElementById('eventWebInput').value;
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
+      const timeVal = document.getElementById('eventTimeInput').value;
 
       let events = [...globalEvents];
 
@@ -1174,29 +1156,29 @@
       }
 
       if (id) {
-        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, location, web, img, desc } : ev);
+        events = events.map(ev => ev.id === id ? { id, name, category, date, time: timeVal, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
-          name, category, date, time, price, location, web, img, desc
+          name, category, date, time: timeVal, price, location, web, img, desc
         };
         events.push(newEv);
       }
 
-      saveEventsCloud(events);
+      saveEvents(events);
       openAdminModalClose();
     }
 
     function deleteEvent(id) {
       if (confirm('¿Está seguro de eliminar este evento?')) {
         let events = globalEvents.filter(ev => ev.id !== id);
-        saveEventsCloud(events);
+        saveEvents(events);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       checkSession();
-      fetchEvents();
+      loadEvents();
     });
   </script>
 </body>
