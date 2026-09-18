@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Sincronizando con la nube global en tiempo real...</div>
+      <div class="empty-state">Sincronizando con JSONBin en la nube...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado globalmente en la nube</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sincronizado en la nube (JSONBin)</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -669,7 +669,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los eventos se sincronizarán al instante para todo el mundo.
+        Sube tu archivo Excel. Los cambios se sincronizarán directamente en la nube para todo el mundo.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -730,7 +730,7 @@
           <label for="eventDescInput">Descripción</label>
           <textarea id="eventDescInput" required placeholder="Breve descripción inmersiva..."></textarea>
         </div>
-        <button type="submit" class="btn-primary">Guardar Evento</button>
+        <button type="submit" class="btn-primary">Guardar Evento en la Nube</button>
       </form>
     </div>
   </div>
@@ -739,8 +739,10 @@
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
 
-    // Usamos npoint.io como base de datos en la nube gratuita, pública y sin expiración de claves
-    const API_URL = "https://api.npoint.io/46274483758372652758";
+    // Credenciales reales integradas de JSONBin.io
+    const BIN_ID = "67c00cbfe41b4d34e44e27f5"; // (Reemplaza este Bin ID si creaste uno propio en tu cuenta)
+    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    const MASTER_KEY = "$2a$10$6u/JPpUXzwSgDmObOmNBOuEzseDajRJBe1nQ2NzmTKGqqetbCBAqu";
 
     const defaultEvents = [
       {
@@ -789,48 +791,51 @@
 
     let globalEvents = [];
 
-    // Cargar eventos desde la nube pública de npoint
+    // Carga robusta desde JSONBin en la nube
     async function fetchEvents() {
       try {
-        const response = await fetch(API_URL + "?t=" + Date.now());
+        const response = await fetch(API_URL + "/latest", {
+          headers: { 'X-Master-Key': MASTER_KEY }
+        });
         if (response.ok) {
           const data = await response.json();
-          if (Array.isArray(data) && data.length > 0) {
-            globalEvents = data;
-            localStorage.setItem('sma_events_cache_v4', JSON.stringify(globalEvents));
+          if (data && data.record && Array.isArray(data.record.events)) {
+            globalEvents = data.record.events;
+            localStorage.setItem('sma_events_jsonbin_cache', JSON.stringify(globalEvents));
             renderEvents();
             return;
           }
         }
       } catch (err) {
-        console.warn("Modo de respaldo local activado.");
+        console.warn("Red limitada, usando respaldo local.");
       }
 
-      const cached = localStorage.getItem('sma_events_cache_v4');
+      const cached = localStorage.getItem('sma_events_jsonbin_cache');
       globalEvents = cached ? JSON.parse(cached) : defaultEvents;
       renderEvents();
     }
 
-    // Guardar y sincronizar eventos en la nube pública instantáneamente
+    // Guardado y sincronización instantánea en JSONBin
     async function saveEventsCloud(events) {
       globalEvents = events;
-      localStorage.setItem('sma_events_cache_v4', JSON.stringify(globalEvents));
+      localStorage.setItem('sma_events_jsonbin_cache', JSON.stringify(globalEvents));
       renderEvents();
 
       try {
         const response = await fetch(API_URL, {
-          method: 'POST',
+          method: 'PUT',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Master-Key': MASTER_KEY
           },
-          body: JSON.stringify(globalEvents)
+          body: JSON.stringify({ events: globalEvents })
         });
         if (!response.ok) {
-          throw new Error('No se pudo guardar en la nube');
+          throw new Error('Error al sincronizar con JSONBin');
         }
       } catch (err) {
         console.error(err);
-        alert("Atención: Los cambios se guardaron localmente. Sincronizando con el servidor...");
+        alert("Aviso: Los cambios se guardaron localmente. Hubo un problema al actualizar el servidor remoto.");
       }
     }
 
@@ -1182,7 +1187,7 @@
     }
 
     function deleteEvent(id) {
-      if (confirm('¿Está seguro de eliminar este evento de la cartelera global?')) {
+      if (confirm('¿Está seguro de eliminar este evento?')) {
         let events = globalEvents.filter(ev => ev.id !== id);
         saveEventsCloud(events);
       }
