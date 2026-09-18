@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Sincronizando con JSONBin en la nube...</div>
+      <div class="empty-state">Cargando cartelera...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado en la nube (JSONBin)</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sistema de Eventos Activo</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -669,14 +669,14 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los cambios se sincronizarán directamente en la nube para todo el mundo.
+        Sube tu archivo Excel. Los datos se actualizarán de inmediato.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
           <label for="excelFileInput">Seleccionar Archivo Excel (.xlsx)</label>
           <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" required>
         </div>
-        <button type="submit" class="btn-primary">Importar y Sincronizar</button>
+        <button type="submit" class="btn-primary">Importar Eventos</button>
       </form>
     </div>
   </div>
@@ -730,7 +730,7 @@
           <label for="eventDescInput">Descripción</label>
           <textarea id="eventDescInput" required placeholder="Breve descripción inmersiva..."></textarea>
         </div>
-        <button type="submit" class="btn-primary">Guardar Evento en la Nube</button>
+        <button type="submit" class="btn-primary">Guardar Evento</button>
       </form>
     </div>
   </div>
@@ -738,11 +738,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-
-    // Credenciales reales integradas de JSONBin.io
-    const BIN_ID = "67c00cbfe41b4d34e44e27f5"; // (Reemplaza este Bin ID si creaste uno propio en tu cuenta)
-    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-    const MASTER_KEY = "$2a$10$6u/JPpUXzwSgDmObOmNBOuEzseDajRJBe1nQ2NzmTKGqqetbCBAqu";
+    const STORAGE_KEY = "vivesanmiguel_events_master_v5";
 
     const defaultEvents = [
       {
@@ -791,52 +787,26 @@
 
     let globalEvents = [];
 
-    // Carga robusta desde JSONBin en la nube
-    async function fetchEvents() {
+    // Sistema robusto de almacenamiento local persistente blindado
+    function loadEvents() {
       try {
-        const response = await fetch(API_URL + "/latest", {
-          headers: { 'X-Master-Key': MASTER_KEY }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.record && Array.isArray(data.record.events)) {
-            globalEvents = data.record.events;
-            localStorage.setItem('sma_events_jsonbin_cache', JSON.stringify(globalEvents));
-            renderEvents();
-            return;
-          }
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          globalEvents = JSON.parse(stored);
+        } else {
+          globalEvents = defaultEvents;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
         }
-      } catch (err) {
-        console.warn("Red limitada, usando respaldo local.");
+      } catch (e) {
+        globalEvents = defaultEvents;
       }
-
-      const cached = localStorage.getItem('sma_events_jsonbin_cache');
-      globalEvents = cached ? JSON.parse(cached) : defaultEvents;
       renderEvents();
     }
 
-    // Guardado y sincronización instantánea en JSONBin
-    async function saveEventsCloud(events) {
+    function saveEvents(events) {
       globalEvents = events;
-      localStorage.setItem('sma_events_jsonbin_cache', JSON.stringify(globalEvents));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
       renderEvents();
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': MASTER_KEY
-          },
-          body: JSON.stringify({ events: globalEvents })
-        });
-        if (!response.ok) {
-          throw new Error('Error al sincronizar con JSONBin');
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Aviso: Los cambios se guardaron localmente. Hubo un problema al actualizar el servidor remoto.");
-      }
     }
 
     function checkSession() {
@@ -867,7 +837,7 @@
       const events = globalEvents;
 
       if (!events || events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento.</div>';
+        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
         return;
       }
 
@@ -991,7 +961,7 @@
         if (confirm("¿Desea cerrar la sesión de administración?")) {
           localStorage.removeItem('sma_admin_logged');
           checkSession();
-          fetchEvents();
+          renderEvents();
         }
         return;
       }
@@ -1014,7 +984,7 @@
         localStorage.setItem('sma_admin_logged', 'true');
         closeLoginModal();
         checkSession();
-        fetchEvents();
+        renderEvents();
       } else {
         document.getElementById('loginError').style.display = 'block';
       }
@@ -1072,9 +1042,9 @@
             }
           });
 
-          saveEventsCloud(events);
+          saveEvents(events);
           closeExcelModal();
-          alert(`¡Se importaron y sincronizaron ${count} eventos en la nube!`);
+          alert(`¡Se importaron y guardaron ${count} eventos exitosamente!`);
         } catch (error) {
           console.error(error);
           alert('Error al procesar el archivo Excel.');
@@ -1182,20 +1152,20 @@
         events.push(newEv);
       }
 
-      saveEventsCloud(events);
+      saveEvents(events);
       openAdminModalClose();
     }
 
     function deleteEvent(id) {
       if (confirm('¿Está seguro de eliminar este evento?')) {
         let events = globalEvents.filter(ev => ev.id !== id);
-        saveEventsCloud(events);
+        saveEvents(events);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       checkSession();
-      fetchEvents();
+      loadEvents();
     });
   </script>
 </body>
