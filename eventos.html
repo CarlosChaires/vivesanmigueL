@@ -170,6 +170,18 @@
       border-color: var(--ocre);
     }
 
+    .admin-trigger.btn-backup {
+      background: rgba(166, 75, 42, 0.05);
+      border-color: rgba(166, 75, 42, 0.2);
+      color: var(--terracota);
+    }
+
+    .admin-trigger.btn-backup:hover {
+      background: var(--terracota);
+      color: var(--blanco);
+      border-color: var(--terracota);
+    }
+
     .month-section {
       margin-bottom: 4rem;
     }
@@ -533,22 +545,6 @@
       background: var(--cantera-hover);
     }
 
-    .error-msg {
-      color: #c0392b;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    .excel-instructions {
-      font-size: 0.85rem;
-      color: var(--gris-texto);
-      margin-bottom: 1.2rem;
-      background: var(--gris-suave);
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
-
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
@@ -607,13 +603,17 @@
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           Volver al Inicio
         </a>
+        <button class="admin-trigger btn-backup" id="exportBtn" onclick="exportBackup()" title="Descargar Respaldo JSON">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Exportar Respaldo
+        </button>
         <button class="admin-trigger btn-template" id="templateBtn" onclick="downloadExcelTemplate()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          Descargar Plantilla Excel
+          Plantilla Excel
         </button>
         <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          Subir Excel Masivo
+          Subir Excel
         </button>
         <button class="admin-trigger" id="manageBtn" onclick="openAdminModal()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Cargando cartelera...</div>
+      <div class="empty-state">Cargando cartelera cultural...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sistema de Eventos Activo</div>
+      <div class="sync-status"><span class="sync-dot"></span> Panel Administrador Activo</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -640,7 +640,7 @@
     </div>
   </footer>
 
-  <!-- Modales -->
+  <!-- Modal de Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box" style="max-width: 400px;">
       <div class="modal-header">
@@ -656,12 +656,13 @@
           <label for="passwordInput">Contraseña</label>
           <input type="password" id="passwordInput" required placeholder="Contraseña">
         </div>
-        <div class="error-msg" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+        <div class="error-msg" id="loginError" style="color: #c0392b; font-size: 0.85rem; margin-top: 0.5rem; display: none;">Credenciales incorrectas.</div>
         <button type="submit" class="btn-primary">Ingresar</button>
       </form>
     </div>
   </div>
 
+  <!-- Modal de Excel -->
   <div class="modal-overlay" id="excelModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -669,7 +670,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los datos se actualizarán de inmediato.
+        Sube tu archivo Excel para actualizar la cartelera institucional al instante.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -681,6 +682,7 @@
     </div>
   </div>
 
+  <!-- Modal de Administración Individual -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -738,7 +740,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const STORAGE_KEY = "vivesanmiguel_events_master_v5";
+    const STORAGE_KEY = "vivesanmiguel_events_v7";
 
     const defaultEvents = [
       {
@@ -787,7 +789,6 @@
 
     let globalEvents = [];
 
-    // Sistema robusto de almacenamiento local persistente blindado
     function loadEvents() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -809,11 +810,22 @@
       renderEvents();
     }
 
+    function exportBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(globalEvents, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "respaldo_eventos_vivesanmiguel.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
     function checkSession() {
       const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
       const manageBtn = document.getElementById('manageBtn');
       const excelBtn = document.getElementById('excelBtn');
       const templateBtn = document.getElementById('templateBtn');
+      const exportBtn = document.getElementById('exportBtn');
       const lockLabel = document.getElementById('lockLabel');
       const body = document.getElementById('pageBody');
 
@@ -821,12 +833,14 @@
         manageBtn.classList.add('visible');
         excelBtn.classList.add('visible');
         templateBtn.classList.add('visible');
+        exportBtn.classList.add('visible');
         body.classList.add('admin-logged');
         lockLabel.innerText = "Cerrar Sesión";
       } else {
         manageBtn.classList.remove('visible');
         excelBtn.classList.remove('visible');
         templateBtn.classList.remove('visible');
+        exportBtn.classList.remove('visible');
         body.classList.remove('admin-logged');
         lockLabel.innerText = "Acceso Admin";
       }
@@ -1062,7 +1076,7 @@
     }
 
     function openEditModal(id) {
-      const ev = globalEvents.find(item => item.id === id);
+      const ev = globalEvents.find(item => String(item.id) === String(id));
       if (!ev) return;
 
       document.getElementById('modalTitle').innerText = 'Editar Evento';
@@ -1134,7 +1148,7 @@
       let events = [...globalEvents];
 
       if (id && !img) {
-        const existing = events.find(ev => ev.id === id);
+        const existing = events.find(ev => String(ev.id) === String(id));
         if (existing) img = existing.img;
       }
 
@@ -1143,7 +1157,7 @@
       }
 
       if (id) {
-        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, location, web, img, desc } : ev);
+        events = events.map(ev => String(ev.id) === String(id) ? { id, name, category, date, time, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
@@ -1157,8 +1171,8 @@
     }
 
     function deleteEvent(id) {
-      if (confirm('¿Está seguro de eliminar este evento?')) {
-        let events = globalEvents.filter(ev => ev.id !== id);
+      if (confirm('¿Está seguro de eliminar este evento de la cartelera?')) {
+        let events = globalEvents.filter(ev => String(ev.id) !== String(id));
         saveEvents(events);
       }
     }
