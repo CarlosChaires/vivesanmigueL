@@ -136,7 +136,6 @@
       </div>
       <div class="admin-actions-group">
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-        <!-- Botón de Sheets totalmente oculto al público -->
         <button class="admin-trigger btn-sync" id="syncBtn" onclick="fetchGoogleSheetData()" style="display:none !important;">Sincronizar Sheets</button>
       </div>
     </header>
@@ -170,32 +169,42 @@
 
     let globalEvents = [];
 
-    // Formatear fecha numérica a texto legible con día en letra (ej. "Miércoles, 30 de Septiembre de 2026")
+    // Función robusta de formateo de fecha (compatible con cadenas directas de texto o formato numérico/ISO)
     function formatDateToSpanish(dateString) {
       if (!dateString) return 'Fecha por confirmar';
+      const cleanStr = String(dateString).trim();
+      if (!cleanStr) return 'Fecha por confirmar';
+
+      // Si Google Sheets o el usuario ya ingresaron una cadena de texto descriptiva (ej. "30 de Octubre", "Sábado 30", etc.), se respeta directamente
+      if (isNaN(Date.parse(cleanStr)) && isNaN(Number(cleanStr))) {
+        return cleanStr;
+      }
+
       try {
-        // Asegurar formato compatible reemplazando guiones por barras o parseando directamente
-        const parts = dateString.split(/[-/]/);
         let date;
-        if (parts.length === 3) {
-          // Asumir formato AAAA-MM-DD o DD-MM-AAAA
-          if (parts[0].length === 4) {
-            date = new Date(parts[0], parts[1] - 1, parts[2]);
-          } else {
-            date = new Date(parts[2], parts[1] - 1, parts[0]);
-          }
+        // Revisar formato numérico de serie de Excel si aplica
+        if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
         } else {
-          date = new Date(dateString);
+          const parts = cleanStr.split(/[-/]/);
+          if (parts.length === 3) {
+            if (parts[0].length === 4) {
+              date = new Date(parts[0], parts[1] - 1, parts[2]);
+            } else {
+              date = new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+          } else {
+            date = new Date(cleanStr);
+          }
         }
 
-        if (isNaN(date.getTime())) return dateString; // Si no es fecha válida, devolver texto original
+        if (isNaN(date.getTime())) return cleanStr;
 
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         let formatted = date.toLocaleDateString('es-ES', options);
-        // Capitalizar primera letra del día
         return formatted.charAt(0).toUpperCase() + formatted.slice(1);
       } catch (e) {
-        return dateString;
+        return cleanStr;
       }
     }
 
@@ -222,12 +231,14 @@
             eventObj[header] = cols[index] ? cols[index].trim() : '';
           });
 
+          const rawDateValue = eventObj.fecha || eventObj.date || '';
+
           globalEvents.push({
             id: 'ev-sheets-' + i,
             name: eventObj.nombre || eventObj.evento || eventObj.name || 'Evento sin nombre',
             category: eventObj.categoria || eventObj.categoría || eventObj.category || 'General',
-            rawDate: eventObj.fecha || eventObj.date || '',
-            date: formatDateToSpanish(eventObj.fecha || eventObj.date),
+            rawDate: rawDateValue,
+            date: formatDateToSpanish(rawDateValue),
             time: eventObj.horario || eventObj.hora || eventObj.time || 'Todo el día',
             price: eventObj.costo || eventObj.precio || eventObj.price || 'Acceso Libre',
             location: eventObj.lugar || eventObj.ubicacion || eventObj.location || 'San Miguel de Allende',
@@ -255,9 +266,6 @@
         container.innerHTML = '<div class="empty-state">No hay eventos disponibles por el momento.</div>'; 
         return; 
       }
-      
-      // Ordenar por fecha cruda cronológicamente
-      globalEvents.sort((a, b) => new Date(a.rawDate || '2026-01-01') - new Date(b.rawDate || '2026-01-01'));
       
       let html = '';
       globalEvents.forEach(ev => {
