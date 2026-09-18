@@ -169,33 +169,21 @@
 
     let globalEvents = [];
 
-    // Función robusta de formateo de fecha (compatible con cadenas directas de texto o formato numérico/ISO)
     function formatDateToSpanish(dateString) {
       if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
       if (!cleanStr) return 'Fecha por confirmar';
 
-      // Si Google Sheets o el usuario ya ingresaron una cadena de texto descriptiva (ej. "30 de Octubre", "Sábado 30", etc.), se respeta directamente
-      if (isNaN(Date.parse(cleanStr)) && isNaN(Number(cleanStr))) {
-        return cleanStr;
-      }
-
       try {
         let date;
-        // Revisar formato numérico de serie de Excel si aplica
-        if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+        // Si viene en formato ISO estándar YYYY-MM-DD (como 2026-09-18)
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+          const parts = cleanStr.split('-');
+          date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
           date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
         } else {
-          const parts = cleanStr.split(/[-/]/);
-          if (parts.length === 3) {
-            if (parts[0].length === 4) {
-              date = new Date(parts[0], parts[1] - 1, parts[2]);
-            } else {
-              date = new Date(parts[2], parts[1] - 1, parts[0]);
-            }
-          } else {
-            date = new Date(cleanStr);
-          }
+          date = new Date(cleanStr);
         }
 
         if (isNaN(date.getTime())) return cleanStr;
@@ -221,6 +209,17 @@
 
         const headers = rows[0].map(h => h.trim().toLowerCase());
         
+        // Función auxiliar para buscar dinámicamente columnas por coincidencia parcial (ej. 'date' o 'fecha')
+        const getColValue = (obj, keys) => {
+          for (let k of keys) {
+            const foundKey = Object.keys(obj).find(header => header.includes(k));
+            if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== '') {
+              return obj[foundKey];
+            }
+          }
+          return '';
+        };
+
         globalEvents = [];
         for (let i = 1; i < rows.length; i++) {
           const cols = rows[i];
@@ -231,19 +230,19 @@
             eventObj[header] = cols[index] ? cols[index].trim() : '';
           });
 
-          const rawDateValue = eventObj.fecha || eventObj.date || '';
+          const rawDateValue = getColValue(eventObj, ['date', 'fecha', 'dia']);
 
           globalEvents.push({
             id: 'ev-sheets-' + i,
-            name: eventObj.nombre || eventObj.evento || eventObj.name || 'Evento sin nombre',
-            category: eventObj.categoria || eventObj.categoría || eventObj.category || 'General',
+            name: getColValue(eventObj, ['name', 'nombre', 'evento']) || 'Evento sin nombre',
+            category: getColValue(eventObj, ['category', 'categoria', 'categoría']) || 'General',
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
-            time: eventObj.horario || eventObj.hora || eventObj.time || 'Todo el día',
-            price: eventObj.costo || eventObj.precio || eventObj.price || 'Acceso Libre',
-            location: eventObj.lugar || eventObj.ubicacion || eventObj.location || 'San Miguel de Allende',
-            img: eventObj.imagen || eventObj.img || eventObj.url || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-            desc: eventObj.descripcion || eventObj.desc || eventObj.descripción || 'Sin descripción detallada.'
+            time: getColValue(eventObj, ['time', 'horario', 'hora']) || 'Todo el día',
+            price: getColValue(eventObj, ['price', 'costo', 'precio']) || 'Acceso Libre',
+            location: getColValue(eventObj, ['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende',
+            img: getColValue(eventObj, ['img', 'imagen', 'url']) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            desc: getColValue(eventObj, ['desc', 'descripcion', 'descripción']) || 'Sin descripción detallada.'
           });
         }
 
