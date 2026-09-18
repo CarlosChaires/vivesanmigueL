@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Cargando eventos desde el servidor compartido...</div>
+      <div class="empty-state">Cargando eventos...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado globalmente</div>
+      <div class="sync-status"><span class="sync-dot"></span> Almacenamiento Local Activo</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -669,7 +669,7 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los eventos se guardarán de forma permanente para cualquier dispositivo e incógnito.
+        Sube tu archivo Excel. Los datos se registrarán en la memoria persistente local.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
@@ -738,9 +738,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-
-    // Usamos npoint.io como base de datos JSON pública y persistente en la nube gratuita
-    const STORAGE_KEY = "vivesanmiguel_events_db_v2";
+    const STORAGE_KEY = "vivesanmiguel_events_persistent_v3";
 
     const defaultEvents = [
       {
@@ -789,24 +787,13 @@
 
     let globalEvents = [];
 
-    function cleanExpiredEvents(events) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return events.filter(ev => {
-        if (!ev.date) return false;
-        const eventDate = new Date(ev.date + 'T00:00:00');
-        return eventDate >= today;
-      });
-    }
-
-    // Utiliza un motor híbrido con Web Storage compartido y Respaldo Remoto
     function loadEvents() {
       try {
-        const cloudData = localStorage.getItem(STORAGE_KEY);
-        if (cloudData) {
-          globalEvents = cleanExpiredEvents(JSON.parse(cloudData));
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          globalEvents = JSON.parse(stored);
         } else {
-          globalEvents = cleanExpiredEvents(defaultEvents);
+          globalEvents = defaultEvents;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
         }
       } catch (e) {
@@ -816,14 +803,8 @@
     }
 
     function saveEvents(events) {
-      globalEvents = cleanExpiredEvents(events);
+      globalEvents = events;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
-      
-      // Sincronización automática de respaldo con sesión global de navegador
-      try {
-        sessionStorage.setItem('sma_sync_timestamp', Date.now().toString());
-      } catch(err) {}
-
       renderEvents();
     }
 
@@ -854,8 +835,8 @@
       const container = document.getElementById('eventsContainer');
       const events = globalEvents;
 
-      if (events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento.</div>';
+      if (!events || events.length === 0) {
+        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
         return;
       }
 
@@ -864,7 +845,10 @@
       const grouped = {};
       events.forEach(ev => {
         if (!ev.date) return;
-        const [year, month] = ev.date.split('-');
+        const parts = ev.date.split('-');
+        if (parts.length < 2) return;
+        const year = parts[0];
+        const month = parts[1];
         const key = `${year}-${month}`;
         if (!grouped[key]) {
           grouped[key] = {
@@ -889,11 +873,14 @@
           const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
           const imgSrc = ev.img && ev.img.trim() !== "" ? ev.img : fallbackImg;
           
-          const dateObj = new Date(ev.date + 'T00:00:00');
-          const dayNum = dateObj.getDate();
-          const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-          const dayNameStr = dayNames[dateObj.getDay()];
-          const exactDateLabel = `${dayNameStr} ${dayNum}`;
+          let exactDateLabel = ev.date;
+          try {
+            const dateObj = new Date(ev.date + 'T00:00:00');
+            const dayNum = dateObj.getDate();
+            const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            const dayNameStr = dayNames[dateObj.getDay()];
+            exactDateLabel = `${dayNameStr} ${dayNum}`;
+          } catch(err) {}
 
           const webLinkHtml = ev.web && ev.web.trim() !== "" 
             ? `<a href="${ev.web}" target="_blank" rel="noopener noreferrer" class="event-link-btn">Visitar Sitio Web →</a>` 
@@ -905,7 +892,7 @@
           html += `
             <div class="event-card">
               <div class="event-img-wrapper">
-                <span class="event-category">${ev.category}</span>
+                <span class="event-category">${ev.category || 'General'}</span>
                 <span class="event-date-badge">${exactDateLabel}</span>
                 <img src="${imgSrc}" alt="${ev.name}" loading="lazy" onerror="this.src='${fallbackImg}'">
                 <div class="card-actions">
@@ -923,14 +910,14 @@
                   <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                   <span>${locationText}</span>
                 </a>
-                <p class="event-desc">${ev.desc}</p>
+                <p class="event-desc">${ev.desc || ''}</p>
                 ${webLinkHtml}
                 <div class="event-meta">
                   <div class="event-time">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3"/></svg>
-                    <span>${ev.time}</span>
+                    <span>${ev.time || 'Por definir'}</span>
                   </div>
-                  <div class="event-price">${ev.price}</div>
+                  <div class="event-price">${ev.price || 'Entrada Libre'}</div>
                 </div>
               </div>
             </div>
@@ -1136,13 +1123,12 @@
       const name = document.getElementById('eventNameInput').value;
       const category = document.getElementById('eventCategoryInput').value;
       const date = document.getElementById('eventDateInput').value;
-      const time = document.getElementById('eventTimeInput5') ? document.getElementById('eventTimeInput5').value : document.getElementById('eventTimeInput').value;
+      const time = document.getElementById('eventTimeInput').value;
       const price = document.getElementById('eventPriceInput').value;
       const location = document.getElementById('eventLocationInput').value;
       const web = document.getElementById('eventWebInput').value;
       let img = document.getElementById('eventImgInput').value;
       const desc = document.getElementById('eventDescInput').value;
-      const timeVal = document.getElementById('eventTimeInput').value;
 
       let events = [...globalEvents];
 
@@ -1156,11 +1142,11 @@
       }
 
       if (id) {
-        events = events.map(ev => ev.id === id ? { id, name, category, date, time: timeVal, price, location, web, img, desc } : ev);
+        events = events.map(ev => ev.id === id ? { id, name, category, date, time, price, location, web, img, desc } : ev);
       } else {
         const newEv = {
           id: 'ev-' + Date.now(),
-          name, category, date, time: timeVal, price, location, web, img, desc
+          name, category, date, time, price, location, web, img, desc
         };
         events.push(newEv);
       }
