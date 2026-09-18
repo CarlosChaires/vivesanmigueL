@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- SheetJS para lectura de Excel (.xlsx) local -->
+  <!-- SheetJS para lectura de Excel y CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     :root {
@@ -80,13 +80,6 @@
     .admin-trigger.btn-excel { background: rgba(46, 125, 50, 0.05); border-color: rgba(46, 125, 50, 0.2); color: #2e7d32; }
     .admin-trigger.btn-excel:hover { background: #2e7d32; color: var(--blanco); }
 
-    .month-section { margin-bottom: 4rem; }
-    .month-title {
-      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600;
-      color: var(--terracota); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
-    }
-    .month-title::after { content: ""; flex: 1; height: 1px; background: var(--borde); }
-
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
 
     .event-card {
@@ -114,7 +107,7 @@
 
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
     .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .event-location { font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500; text-decoration: none; }
+    .event-location { font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500; }
     .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.5rem; flex: 1; }
     .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
     .event-price { font-weight: 600; color: var(--terracota); }
@@ -152,7 +145,7 @@
       </div>
       <div class="admin-actions-group">
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-        <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">Subir Excel</button>
+        <button class="admin-trigger btn-excel" id="excelBtn" onclick="openExcelModal()">Sincronizar Sheets / Excel</button>
         <button class="admin-trigger" id="manageBtn" onclick="openAdminModal()">+ Nuevo Evento</button>
       </div>
     </header>
@@ -179,10 +172,11 @@
 
   <div class="modal-overlay" id="excelModal">
     <div class="modal-box">
-      <h3>Carga Masiva (Excel)</h3>
+      <h3>Sincronización con Google Sheets / Excel</h3>
+      <p style="font-size: 0.85rem; color: var(--gris-texto); margin-bottom: 1rem;">Sube tu archivo .xlsx exportado desde Google Sheets o selecciona un archivo local actualizado.</p>
       <form onsubmit="handleExcelUpload(event)" style="margin-top: 1rem;">
         <div class="form-group"><label>Archivo .xlsx</label><input type="file" id="excelFileInput" accept=".xlsx" required></div>
-        <button type="submit" class="btn-primary">Importar</button>
+        <button type="submit" class="btn-primary">Importar y Actualizar Web</button>
       </form>
     </div>
   </div>
@@ -195,7 +189,7 @@
         <div class="form-group"><label>Nombre</label><input type="text" id="eventNameInput" required></div>
         <div class="form-row">
           <div class="form-group"><label>Categoría</label><input type="text" id="eventCategoryInput" required></div>
-          <div class="form-group"><label>Fecha</label><input type="date" id="eventDateInput" required></div>
+          <div class="form-group"><label>Fecha (AAAA-MM-DD)</label><input type="date" id="eventDateInput" required></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Horario</label><input type="text" id="eventTimeInput" required></div>
@@ -252,11 +246,11 @@
         html += `
           <div class="event-card">
             <div class="event-img-wrapper">
-              <span class="event-category">${ev.category}</span>
-              <span class="event-date-badge">${ev.date}</span>
-              <img src="${ev.img}" alt="${ev.name}">
+              <span class="event-category">${ev.category || 'General'}</span>
+              <span class="event-date-badge">${ev.date || 'Por definir'}</span>
+              <img src="${ev.img || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
               <div class="card-actions">
-                <button class="action-btn" onclick="deleteEvent('${ev.id}')">🗑️</button>
+                <button class="action-btn" onclick="deleteEvent('${ev.id}')" title="Eliminar">🗑️</button>
               </div>
             </div>
             <div class="event-body">
@@ -282,16 +276,66 @@
       }
     }
     function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+    
     function handleLogin(e) {
       e.preventDefault();
       if(document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
         localStorage.setItem('sma_admin_logged', 'true');
-        closeLoginModal(); checkSession();
-      } else { alert('Credenciales incorrectas'); }
+        closeLoginModal(); 
+        checkSession();
+      } else { 
+        alert('Credenciales incorrectas'); 
+      }
     }
 
     function openAdminModal() { document.getElementById('adminModal').classList.add('active'); }
     function openExcelModal() { document.getElementById('excelModal').classList.add('active'); }
+
+    // Procesamiento y mapeo automático del archivo Excel proveniente de Sheets
+    function handleExcelUpload(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('excelFileInput');
+      if (!fileInput.files.length) return;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonSheet = XLSX.utils.sheet_to_json(worksheet);
+
+          if (!jsonSheet.length) {
+            alert('El archivo está vacío o no tiene el formato correcto.');
+            return;
+          }
+
+          // Mapeo inteligente adaptado a las columnas comunes de Google Sheets
+          const mappedEvents = jsonSheet.map((row, index) => ({
+            id: 'ev-sheet-' + Date.now() + '-' + index,
+            name: row.Nombre || row.name || row.Evento || 'Evento sin nombre',
+            category: row.Categoria || row.category || row.Categoría || 'General',
+            date: row.Fecha || row.date || '2026-10-01',
+            time: row.Horario || row.time || row.Hora || 'Todo el día',
+            price: row.Costo || row.price || row.Precio || 'Acceso Libre',
+            location: row.Lugar || row.location || row.Ubicación || 'San Miguel de Allende',
+            img: row.Imagen || row.img || row.URL || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            desc: row.Descripcion || row.desc || row.Descripción || 'Sin descripción detallada.'
+          }));
+
+          saveEvents(mappedEvents);
+          document.getElementById('excelModal').classList.remove('active');
+          alert('¡Cartelera actualizada exitosamente desde Google Sheets / Excel!');
+        } catch (err) {
+          console.error(err);
+          alert('Ocurrió un error al procesar el archivo.');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
 
     function handleFormSubmit(e) {
       e.preventDefault();
@@ -299,7 +343,7 @@
         id: 'ev-' + Date.now(),
         name: document.getElementById('eventNameInput').value,
         category: document.getElementById('eventCategoryInput').value,
-        date: document.getElementById('eventDateInput').value,
+        date: document.getElementById('eventDateInput5'] || document.getElementById('eventDateInput').value,
         time: document.getElementById('eventTimeInput').value,
         price: document.getElementById('eventPriceInput').value,
         location: document.getElementById('eventLocationInput').value,
@@ -308,15 +352,19 @@
       };
       saveEvents([...globalEvents, newEv]);
       document.getElementById('adminModal').classList.remove('active');
+      e.target.reset();
     }
 
     function deleteEvent(id) {
-      if(confirm('¿Eliminar evento?')) {
+      if(confirm('¿Estás seguro de eliminar este evento?')) {
         saveEvents(globalEvents.filter(ev => ev.id !== id));
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => { checkSession(); loadEvents(); });
+    document.addEventListener('DOMContentLoaded', () => { 
+      checkSession(); 
+      loadEvents(); 
+    });
   </script>
 </body>
 </html>
