@@ -1,5 +1,41 @@
 [
   {
+    "id": "ev-feria-1",
+    "name": "Inauguración de la Feria de San Miguel de Allende",
+    "category": "Feria SMA",
+    "date": "2026-09-25",
+    "time": "18:00 hrs",
+    "price": "Acceso General",
+    "location": "Recinto Ferial, San Miguel de Allende",
+    "web": "",
+    "img": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80",
+    "desc": "Gran apertura oficial de la feria patronal con juegos mecánicos, expo ganadera, pabellón artesanal y pirotecnia."
+  },
+  {
+    "id": "ev-feria-2",
+    "name": "Concierto Estelar de Feria: Teatro del Pueblo",
+    "category": "Feria SMA",
+    "date": "2026-09-27",
+    "time": "21:00 hrs",
+    "price": "Incluido con boleto de entrada",
+    "location": "Teatro del Pueblo - Recinto Ferial",
+    "web": "",
+    "img": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80",
+    "desc": "Presentación musical en vivo de artistas estelares nacionales en el escenario principal del recinto ferial."
+  },
+  {
+    "id": "ev-feria-3",
+    "name": "Tradicional Alborada y Entrada de la Alfarería",
+    "category": "Tradición",
+    "date": "2026-09-28",
+    "time": "04:00 hrs",
+    "price": "Entrada Libre",
+    "location": "Parroquia de San Miguel Arcángel y Calles Principales",
+    "web": "",
+    "img": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+    "desc": "La emblemática celebración con estrellas de cartón, bandas de viento, mojigangas y repique de campanas al amanecer."
+  },
+  {
     "id": "ev-1",
     "name": "Festival Internacional Cervantino - Extensión SMA",
     "category": "Cultura",
