@@ -71,12 +71,9 @@
       transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
     }
 
-    .admin-trigger.visible { display: inline-flex; }
     .admin-trigger { display: none; }
+    .admin-trigger.visible { display: inline-flex; }
     .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
-
-    .admin-trigger.btn-sync { background: rgba(46, 125, 50, 0.05); border-color: rgba(46, 125, 50, 0.2); color: #2e7d32; }
-    .admin-trigger.btn-sync:hover { background: #2e7d32; color: var(--blanco); }
 
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
 
@@ -98,9 +95,10 @@
     }
 
     .event-date-badge {
-      position: absolute; bottom: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(4px); color: var(--noche); padding: 0.25rem 0.6rem;
+      position: absolute; bottom: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px); color: var(--noche); padding: 0.3rem 0.8rem;
       border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 2;
+      text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
@@ -112,8 +110,8 @@
 
     footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
     .footer-actions { display: flex; gap: 1rem; align-items: center; }
-    .footer-lock, .footer-reset { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-    .footer-lock:hover, .footer-reset:hover { color: var(--cantera); }
+    .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .footer-lock:hover { color: var(--cantera); }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -138,17 +136,17 @@
       </div>
       <div class="admin-actions-group">
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-        <button class="admin-trigger btn-sync visible" id="syncBtn" onclick="fetchGoogleSheetData()">Sincronizar Sheets</button>
+        <!-- Botón de Sheets totalmente oculto al público -->
+        <button class="admin-trigger btn-sync" id="syncBtn" onclick="fetchGoogleSheetData()" style="display:none !important;">Sincronizar Sheets</button>
       </div>
     </header>
 
-    <div id="eventsContainer"><div class="empty-state">Conectando con Google Sheets y cargando cartelera...</div></div>
+    <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
   </div>
 
   <footer>
     <div>Vive San Miguel de Allende &copy; 2026</div>
     <div class="footer-actions">
-      <button class="footer-reset" onclick="fetchGoogleSheetData()" title="Forzar recarga">🔄 Actualizar Datos</button>
       <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
     </div>
   </footer>
@@ -168,28 +166,50 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    // Enlace TSV directo proporcionado por el usuario
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkQpk6tPdLeSm4sBtfS-rXWUGXzmD3-F3ZpsF383Yo97WiYLdzf6WMEAfkFfxnrRz_ZSprMMHmQss/pub?output=tsv";
 
     let globalEvents = [];
 
-    // Función para descargar y parsear los datos directamente del Google Sheet en tiempo real
+    // Formatear fecha numérica a texto legible con día en letra (ej. "Miércoles, 30 de Septiembre de 2026")
+    function formatDateToSpanish(dateString) {
+      if (!dateString) return 'Fecha por confirmar';
+      try {
+        // Asegurar formato compatible reemplazando guiones por barras o parseando directamente
+        const parts = dateString.split(/[-/]/);
+        let date;
+        if (parts.length === 3) {
+          // Asumir formato AAAA-MM-DD o DD-MM-AAAA
+          if (parts[0].length === 4) {
+            date = new Date(parts[0], parts[1] - 1, parts[2]);
+          } else {
+            date = new Date(parts[2], parts[1] - 1, parts[0]);
+          }
+        } else {
+          date = new Date(dateString);
+        }
+
+        if (isNaN(date.getTime())) return dateString; // Si no es fecha válida, devolver texto original
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let formatted = date.toLocaleDateString('es-ES', options);
+        // Capitalizar primera letra del día
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      } catch (e) {
+        return dateString;
+      }
+    }
+
     async function fetchGoogleSheetData() {
       const container = document.getElementById('eventsContainer');
-      container.innerHTML = '<div class="empty-state">Sincronizando con Google Sheets...</div>';
-
       try {
         const response = await fetch(SHEET_URL);
-        if (!response.ok) throw new Error('No se pudo conectar con la hoja de cálculo.');
+        if (!response.ok) throw new Error('Error al conectar');
         
         const tsvText = await response.text();
         const rows = tsvText.split('\n').map(row => row.split('\t'));
         
-        if (rows.length < 2) {
-          throw new Error('La hoja de cálculo está vacía o no tiene suficientes datos.');
-        }
+        if (rows.length < 2) throw new Error('Sin datos');
 
-        // Obtener cabeceras de la primera fila y limpiarlas
         const headers = rows[0].map(h => h.trim().toLowerCase());
         
         globalEvents = [];
@@ -202,12 +222,12 @@
             eventObj[header] = cols[index] ? cols[index].trim() : '';
           });
 
-          // Mapeo flexible de columnas para asegurar compatibilidad con nombres comunes en español
           globalEvents.push({
             id: 'ev-sheets-' + i,
             name: eventObj.nombre || eventObj.evento || eventObj.name || 'Evento sin nombre',
             category: eventObj.categoria || eventObj.categoría || eventObj.category || 'General',
-            date: eventObj.fecha || eventObj.date || '2026-10-01',
+            rawDate: eventObj.fecha || eventObj.date || '',
+            date: formatDateToSpanish(eventObj.fecha || eventObj.date),
             time: eventObj.horario || eventObj.hora || eventObj.time || 'Todo el día',
             price: eventObj.costo || eventObj.precio || eventObj.price || 'Acceso Libre',
             location: eventObj.lugar || eventObj.ubicacion || eventObj.location || 'San Miguel de Allende',
@@ -218,8 +238,8 @@
 
         renderEvents();
       } catch (error) {
-        console.error("Error al sincronizar Sheets:", error);
-        container.innerHTML = `<div class="empty-state" style="color: var(--cantera);">Error al sincronizar con Google Sheets. Verifica que la hoja esté publicada en la web como TSV/CSV.<br><small>${error.message}</small></div>`;
+        console.error("Error silencioso Sheets:", error);
+        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento. Intente más tarde.</div>`;
       }
     }
 
@@ -232,12 +252,12 @@
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
       if (!globalEvents.length) { 
-        container.innerHTML = '<div class="empty-state">No se encontraron eventos en la hoja de cálculo.</div>'; 
+        container.innerHTML = '<div class="empty-state">No hay eventos disponibles por el momento.</div>'; 
         return; 
       }
       
-      // Ordenar cronológicamente por fecha
-      globalEvents.sort((a, b) => new Date(a.date || '2026-01-01') - new Date(b.date || '2026-01-01'));
+      // Ordenar por fecha cruda cronológicamente
+      globalEvents.sort((a, b) => new Date(a.rawDate || '2026-01-01') - new Date(b.rawDate || '2026-01-01'));
       
       let html = '';
       globalEvents.forEach(ev => {
@@ -245,7 +265,7 @@
           <div class="event-card">
             <div class="event-img-wrapper">
               <span class="event-category">${ev.category}</span>
-              <span class="event-date-badge">${ev.date}</span>
+              <span class="event-date-badge">📅 ${ev.date}</span>
               <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
             </div>
             <div class="event-body">
@@ -292,7 +312,7 @@
 
     document.addEventListener('DOMContentLoaded', () => { 
       checkSession(); 
-      fetchGoogleSheetData(); // Carga automática al iniciar la página
+      fetchGoogleSheetData(); 
     });
   </script>
 </body>
