@@ -1,35 +1,38 @@
 [
-    {
-        "titulo": "Crear eventos / Iniciar sesión",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "English",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Iniciar Sesión",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    }
+  {
+    "id": "ev-1",
+    "name": "Festival Internacional Cervantino - Extensión SMA",
+    "category": "Cultura",
+    "date": "2026-10-15",
+    "time": "18:30 hrs",
+    "price": "Entrada Libre",
+    "location": "Jardín Principal, Centro Histórico, San Miguel de Allende",
+    "web": "https://discoversma.com",
+    "img": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+    "desc": "Presentación estelar de danza contemporánea y música virreinal en el corazón de la plaza principal."
+  },
+  {
+    "id": "ev-2",
+    "name": "Cena de Gala Tradicional Santa Catrina",
+    "category": "Gastronomía",
+    "date": "2026-10-30",
+    "time": "20:00 hrs",
+    "price": "$2,500 MXN",
+    "location": "Viñedos San Lucas, San Miguel de Allende",
+    "web": "",
+    "img": "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
+    "desc": "Experiencia gourmet de 4 tiempos con maridaje en vinícola exclusiva. Rigurosa etiqueta de catrina o catrín."
+  },
+  {
+    "id": "ev-3",
+    "name": "Noche de Altares y Tradiciones",
+    "category": "Tradición",
+    "date": "2026-11-02",
+    "time": "17:00 hrs",
+    "price": "Entrada Libre",
+    "location": "Plaza Cívica, San Miguel de Allende",
+    "web": "",
+    "img": "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?auto=format&fit=crop&w=800&q=80",
+    "desc": "Exhibición monumental de ofrendas florales, catrinas monumentales y procesión iluminada por candiles."
+  }
 ]
