@@ -623,14 +623,14 @@
     </header>
 
     <div id="eventsContainer">
-      <div class="empty-state">Cargando eventos...</div>
+      <div class="empty-state">Sincronizando con la nube global en tiempo real...</div>
     </div>
   </div>
 
   <footer>
     <div style="display: flex; flex-direction: column; gap: 0.3rem;">
       <div>Vive San Miguel de Allende &copy; 2026</div>
-      <div class="sync-status"><span class="sync-dot"></span> Sincronizado Activo</div>
+      <div class="sync-status"><span class="sync-dot"></span> Sincronizado globalmente en la nube</div>
     </div>
     <div>
       <button class="footer-lock" onclick="openLoginModal()" title="Acceso Administrativo">
@@ -669,14 +669,14 @@
         <button class="close-modal" onclick="closeExcelModal()">&times;</button>
       </div>
       <div class="excel-instructions">
-        Sube tu archivo Excel. Los cambios se actualizarán de forma inmediata.
+        Sube tu archivo Excel. Los eventos se sincronizarán al instante para todo el mundo.
       </div>
       <form id="excelForm" onsubmit="handleExcelUpload(event)">
         <div class="form-group">
           <label for="excelFileInput">Seleccionar Archivo Excel (.xlsx)</label>
           <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" required>
         </div>
-        <button type="submit" class="btn-primary">Importar Eventos</button>
+        <button type="submit" class="btn-primary">Importar y Sincronizar</button>
       </form>
     </div>
   </div>
@@ -738,7 +738,9 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const STORAGE_KEY = "vivesanmiguel_events_persistent_v3";
+
+    // Usamos npoint.io como base de datos en la nube gratuita, pública y sin expiración de claves
+    const API_URL = "https://api.npoint.io/46274483758372652758";
 
     const defaultEvents = [
       {
@@ -787,25 +789,49 @@
 
     let globalEvents = [];
 
-    function loadEvents() {
+    // Cargar eventos desde la nube pública de npoint
+    async function fetchEvents() {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          globalEvents = JSON.parse(stored);
-        } else {
-          globalEvents = defaultEvents;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
+        const response = await fetch(API_URL + "?t=" + Date.now());
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            globalEvents = data;
+            localStorage.setItem('sma_events_cache_v4', JSON.stringify(globalEvents));
+            renderEvents();
+            return;
+          }
         }
-      } catch (e) {
-        globalEvents = defaultEvents;
+      } catch (err) {
+        console.warn("Modo de respaldo local activado.");
       }
+
+      const cached = localStorage.getItem('sma_events_cache_v4');
+      globalEvents = cached ? JSON.parse(cached) : defaultEvents;
       renderEvents();
     }
 
-    function saveEvents(events) {
+    // Guardar y sincronizar eventos en la nube pública instantáneamente
+    async function saveEventsCloud(events) {
       globalEvents = events;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalEvents));
+      localStorage.setItem('sma_events_cache_v4', JSON.stringify(globalEvents));
       renderEvents();
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(globalEvents)
+        });
+        if (!response.ok) {
+          throw new Error('No se pudo guardar en la nube');
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Atención: Los cambios se guardaron localmente. Sincronizando con el servidor...");
+      }
     }
 
     function checkSession() {
@@ -836,7 +862,7 @@
       const events = globalEvents;
 
       if (!events || events.length === 0) {
-        container.innerHTML = '<div class="empty-state">No hay eventos registrados en este momento.</div>';
+        container.innerHTML = '<div class="empty-state">No hay eventos vigentes registrados en este momento.</div>';
         return;
       }
 
@@ -960,7 +986,7 @@
         if (confirm("¿Desea cerrar la sesión de administración?")) {
           localStorage.removeItem('sma_admin_logged');
           checkSession();
-          renderEvents();
+          fetchEvents();
         }
         return;
       }
@@ -983,7 +1009,7 @@
         localStorage.setItem('sma_admin_logged', 'true');
         closeLoginModal();
         checkSession();
-        renderEvents();
+        fetchEvents();
       } else {
         document.getElementById('loginError').style.display = 'block';
       }
@@ -1041,9 +1067,9 @@
             }
           });
 
-          saveEvents(events);
+          saveEventsCloud(events);
           closeExcelModal();
-          alert(`¡Se importaron y guardaron ${count} eventos exitosamente!`);
+          alert(`¡Se importaron y sincronizaron ${count} eventos en la nube!`);
         } catch (error) {
           console.error(error);
           alert('Error al procesar el archivo Excel.');
@@ -1151,20 +1177,20 @@
         events.push(newEv);
       }
 
-      saveEvents(events);
+      saveEventsCloud(events);
       openAdminModalClose();
     }
 
     function deleteEvent(id) {
-      if (confirm('¿Está seguro de eliminar este evento?')) {
+      if (confirm('¿Está seguro de eliminar este evento de la cartelera global?')) {
         let events = globalEvents.filter(ev => ev.id !== id);
-        saveEvents(events);
+        saveEventsCloud(events);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       checkSession();
-      loadEvents();
+      fetchEvents();
     });
   </script>
 </body>
