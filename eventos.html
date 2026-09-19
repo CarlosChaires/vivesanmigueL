@@ -191,12 +191,11 @@
 
     let globalEvents = [];
 
-    // Función robusta para convertir cualquier URL de Google Drive (o link compartido) en enlace directo de imagen
+    // Función universal para limpiar y convertir cualquier link de imagen (Google Drive, carpetas, web, etc.)
     function parseCloudImageUrl(url) {
       if (!url) return '';
       const cleanUrl = String(url).trim();
       
-      // Si es un enlace de Google Drive
       if (cleanUrl.includes('drive.google.com')) {
         let fileId = '';
         if (cleanUrl.includes('/file/d/')) {
@@ -259,15 +258,20 @@
 
         const getVal = (obj, keys) => {
           for (let k of keys) {
-            const foundKey = Object.keys(obj).find(header => header.toLowerCase().includes(k));
-            if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== '') {
+            // Buscamos coincidencia exacta o parcial ignorando mayúsculas y acentos
+            const foundKey = Object.keys(obj).find(header => {
+              const h = header.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              const target = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              return h === target || h.includes(target);
+            });
+            if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== null && String(obj[foundKey]).trim() !== '') {
               return String(obj[foundKey]).trim();
             }
           }
           return '';
         };
 
-        // Mapear y procesar todos los eventos
+        // Mapear y procesar todos los eventos de Google Sheets
         const allEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
           const rawImgValue = getVal(item, ['img', 'imagen', 'url', 'foto']);
@@ -287,12 +291,12 @@
           };
         });
 
-        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos que ya no están vigentes (cuya fecha ya pasó)
+        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos cuya fecha ya pasó (Vigencia activa)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         globalEvents = allEvents.filter(ev => {
-          if (!ev.rawDate) return true; // Si no tiene fecha definida, lo dejamos visible
+          if (!ev.rawDate) return true; // Si no tiene fecha, lo dejamos visible por precaución
           try {
             let eventDate;
             if (/^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)) {
@@ -303,7 +307,7 @@
             }
             if (isNaN(eventDate.getTime())) return true;
             eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today; // Mantiene estrictamente los eventos de hoy en adelante
+            return eventDate >= today; // Mantiene estrictamente los eventos vigentes de hoy en adelante
           } catch (e) {
             return true;
           }
