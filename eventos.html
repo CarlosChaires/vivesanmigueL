@@ -191,11 +191,12 @@
 
     let globalEvents = [];
 
-    // Función para procesar y convertir enlaces de Google Drive o imágenes a URLs directas válidas
+    // Función robusta para convertir cualquier URL de Google Drive (o link compartido) en enlace directo de imagen
     function parseCloudImageUrl(url) {
       if (!url) return '';
-      const cleanUrl = url.trim();
+      const cleanUrl = String(url).trim();
       
+      // Si es un enlace de Google Drive
       if (cleanUrl.includes('drive.google.com')) {
         let fileId = '';
         if (cleanUrl.includes('/file/d/')) {
@@ -266,7 +267,7 @@
           return '';
         };
 
-        // Mapear los eventos crudos de Google Sheets
+        // Mapear y procesar todos los eventos
         const allEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
           const rawImgValue = getVal(item, ['img', 'imagen', 'url', 'foto']);
@@ -286,12 +287,12 @@
           };
         });
 
-        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos cuya fecha ya pasó (Vigencia activa)
+        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos que ya no están vigentes (cuya fecha ya pasó)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         globalEvents = allEvents.filter(ev => {
-          if (!ev.rawDate) return true; // Si no hay fecha clara, se mantiene visible por precaución
+          if (!ev.rawDate) return true; // Si no tiene fecha definida, lo dejamos visible
           try {
             let eventDate;
             if (/^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)) {
@@ -302,7 +303,7 @@
             }
             if (isNaN(eventDate.getTime())) return true;
             eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today; // Mantiene solo los eventos de hoy en adelante
+            return eventDate >= today; // Mantiene estrictamente los eventos de hoy en adelante
           } catch (e) {
             return true;
           }
