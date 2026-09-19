@@ -119,7 +119,7 @@
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-box { background: var(--blanco); width: 100%; max-width: 450px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
     .form-group { margin-bottom: 1.1rem; }
-    label { display: block; font-size: 0.8, font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
+    label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
     input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
     textarea { resize: vertical; height: 80px; }
     .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); }
@@ -173,7 +173,7 @@
       <form onsubmit="handleSaveEvent(event)">
         <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
         <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Feria y Tradición" required></div>
-        <div class="form-group"><label>Fecha (date)</label><input type="text" id="inputDate" placeholder="2026-09-18" required></div>
+        <div class="form-group"><label>Fecha (date)</label><input type="date" id="inputDate" required></div>
         <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
@@ -191,12 +191,11 @@
 
     let globalEvents = [];
 
-    // Función inteligente para transformar enlaces de Google Drive u otras nubes en URLs directas de imagen
+    // Función para procesar y convertir enlaces de Google Drive o imágenes a URLs directas válidas
     function parseCloudImageUrl(url) {
       if (!url) return '';
       const cleanUrl = url.trim();
       
-      // Si es un enlace de Google Drive tipo /file/d/ID/view o id=ID
       if (cleanUrl.includes('drive.google.com')) {
         let fileId = '';
         if (cleanUrl.includes('/file/d/')) {
@@ -267,7 +266,8 @@
           return '';
         };
 
-        globalEvents = data.map((item, index) => {
+        // Mapear los eventos crudos de Google Sheets
+        const allEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
           const rawImgValue = getVal(item, ['img', 'imagen', 'url', 'foto']);
           const processedImg = parseCloudImageUrl(rawImgValue);
@@ -286,6 +286,28 @@
           };
         });
 
+        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos cuya fecha ya pasó (Vigencia activa)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        globalEvents = allEvents.filter(ev => {
+          if (!ev.rawDate) return true; // Si no hay fecha clara, se mantiene visible por precaución
+          try {
+            let eventDate;
+            if (/^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)) {
+              const parts = ev.rawDate.split('-');
+              eventDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            } else {
+              eventDate = new Date(ev.rawDate);
+            }
+            if (isNaN(eventDate.getTime())) return true;
+            eventDate.setHours(0, 0, 0, 0);
+            return eventDate >= today; // Mantiene solo los eventos de hoy en adelante
+          } catch (e) {
+            return true;
+          }
+        });
+
         renderEvents();
       } catch (error) {
         console.error("Error al sincronizar con Sheets:", error);
@@ -302,7 +324,7 @@
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
       if (!globalEvents.length) { 
-        container.innerHTML = '<div class="empty-state">No hay eventos disponibles por el momento.</div>'; 
+        container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles por el momento.</div>'; 
         return; 
       }
       
@@ -368,7 +390,6 @@
         date: document.getElementById('inputDate').value,
         time: document.getElementById('inputTime').value,
         price: document.getElementById('inputPrice').value,
-        location: document.getElementById('inputLocation5').value,
         location: document.getElementById('inputLocation').value,
         img: document.getElementById('inputImg').value,
         desc: document.getElementById('inputDesc').value
