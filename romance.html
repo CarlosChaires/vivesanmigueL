@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Romance, Bodas y Cenas Románticas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #1EBE5D;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        /* --- Títulos, Buscador y Pestañas / Filtros --- */
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Barra de Búsqueda */
+        .search-bar-wrap {
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+        }
+
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar-wrap input:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .search-bar-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Filtros por Categoría de Romance */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 3.5rem;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Grid de Romance --- */
+        .romance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .romance-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .romance-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
+        }
+
+        /* Carrusel de Fotos */
+        .carousel-container {
+            position: relative;
+            height: 220px;
+            background: #F4EBE6;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
+
+        .price-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .type-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(45, 36, 34, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .romance-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .romance-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .romance-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .romance-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .meta-item i {
+            color: var(--accent-terracotta);
+            width: 16px;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .meta-item:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .romance-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action.map {
+            background: rgba(166, 75, 42, 0.08);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+        }
+
+        .btn-action.map:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .btn-action.web {
+            background: var(--text-main);
+            color: #ffffff;
+        }
+
+        .btn-action.web:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .btn-action.whatsapp {
+            width: 100%;
+            background-color: var(--whatsapp-green);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-action.whatsapp:hover {
+            background-color: var(--whatsapp-dark);
+            transform: translateY(-1px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .romance-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .romance-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
+
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadRomanceTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRomanceExcelUpload(event)">
+            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
+
+        <!-- Título de la Sección -->
+        <div class="section-header">
+            <h1>Romance y Bodas en San Miguel</h1>
+            <p>Encuentra wedding planners expertas, recintos espectaculares para bodas y experiencias o cenas románticas inolvidables.</p>
+        </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-bar-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Busca planeadoras, recintos o cenas románticas..." oninput="handleSearch()">
+        </div>
+
+        <!-- Filtros por Categoría de Romance -->
+        <div class="filter-container" id="filterContainer">
+            <button class="filter-btn active" onclick="filterRomance('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterRomance('Wedding Planners')">Wedding Planners</button>
+            <button class="filter-btn" onclick="filterRomance('Recintos y Haciendas')">Recintos y Haciendas</button>
+            <button class="filter-btn" onclick="filterRomance('Cenas y Experiencias')">Cenas y Experiencias</button>
+        </div>
+
+        <!-- Grid de Romance -->
+        <div class="romance-grid" id="romanceGridContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Apartado de Romance</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedRomance(event)">
+                <input type="hidden" id="editRomanceKey">
+                <div class="input-group">
+                    <label>Nombre del Lugar o Proveedor</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>Categoría</label>
+                    <input type="text" id="editType" required placeholder="Ej. Wedding Planners, Recintos y Haciendas...">
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="editDesc" rows="3" required placeholder="Detalles de los servicios..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Rango de Precio / Inversión</label>
+                    <input type="text" id="editPrice" required placeholder="Ej. $$$ (Cotización personalizada)">
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="editPhone" required>
+                </div>
+                <div class="input-group">
+                    <label>Dirección Escrita</label>
+                    <input type="text" id="editAddress" required placeholder="Ej. Calzada de la Estación 59, Zona Centro">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Google Maps (URL)</label>
+                    <input type="text" id="editMaps" required>
+                </div>
+                <div class="input-group">
+                    <label>Sitio Web (URL)</label>
+                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                </div>
+                <div class="input-group">
+                    <label>Foto 1 (URL del Carrete)</label>
+                    <input type="text" id="editImg1" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 2 (URL del Carrete)</label>
+                    <input type="text" id="editImg2" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 3 (URL del Carrete)</label>
+                    <input type="text" id="editImg3" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+
+        const defaultRomanceData = {
+            romance: [
+                {
+                    key: 'rom_1',
+                    name: 'San Miguel Wedding Planners',
+                    type: 'Wedding Planners',
+                    desc: 'Expertos en diseñar bodas de destino inolvidables, cuidando cada detalle floral, iluminación romántica y coordinación integral.',
+                    price: '$$$$ (Personalizado)',
+                    phone: '+52 415 152 7788',
+                    address: 'Reloj 21, Zona Centro, C.P. 37700',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rom_2',
+                    name: 'Hacienda San José Lavista',
+                    type: 'Recintos y Haciendas',
+                    desc: 'Un recinto majestuoso con viñedos propios y arquitectura colonial, ideal para bodas de ensueño y eventos sociales exclusivos.',
+                    price: '$$$$$ (Exclusivo)',
+                    phone: '+52 415 154 9000',
+                    address: 'Carretera San Miguel - Dolores Km 7.5',
+                    maps: 'https://maps.google.com/?q=Hacienda+San+Jose+Lavista',
+                    web: 'https://sanjoselavista.com',
+                    images: [
+                        'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1545232979-fbf802c63838?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rom_3',
+                    name: 'Cena Privada Bajo las Velas en Terraza',
+                    type: 'Cenas y Experiencias',
+                    desc: 'Disfruta de un menú de 4 tiempos a la luz de las velas con vista directa a la Parroquia de San Miguel Arcángel.',
+                    price: '$$$ ($1,800 - $3,500 MXN p/p)',
+                    phone: '+52 415 152 1467',
+                    address: 'Cuna de Allende 13, Zona Centro',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+                    ]
+                }
+            ]
+        };
+
+        function getStoredRomance() {
+            const data = localStorage.getItem('sma_romance_data');
+            if (!data) {
+                localStorage.setItem('sma_romance_data', JSON.stringify(defaultRomanceData));
+                return defaultRomanceData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredRomance(data, syncCloud = true) {
+            localStorage.setItem('sma_romance_data', JSON.stringify(data));
+            renderRomance(currentFilter, document.getElementById('searchInput').value);
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        async function pushDataToGoogleSheets(data) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data.romance)
+                });
+            } catch (err) {
+                console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        let currentFilter = 'todos';
+
+        function filterRomance(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const query = document.getElementById('searchInput').value;
+            renderRomance(category, query);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            renderRomance(currentFilter, query);
+        }
+
+        function renderRomance(filter = 'todos', searchQuery = '') {
+            const data = getStoredRomance();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('romanceGridContainer');
+            container.innerHTML = '';
+
+            let filtered = filter === 'todos' ? data.romance : data.romance.filter(r => r.type === filter);
+
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(r => r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con esa búsqueda.</p>`;
+                return;
+            }
+
+            filtered.forEach(r => {
+                let slidesHtml = '';
+                r.images.forEach((img, idx) => {
+                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${r.name} foto ${idx+1}"></div>`;
+                });
+
+                const cleanPhone = r.phone.replace(/[^0-9+]/g, '');
+                const cleanWa = cleanPhone.replace('+', '');
+
+                const webButtonHtml = (r.web && r.web !== '#') ? `
+                    <a href="${r.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
+                        <i class="fas fa-globe"></i> Sitio Web
+                    </a>
+                ` : '';
+
+                container.innerHTML += `
+                    <div class="romance-card" id="card-${r.key}">
+                        <div class="carousel-container">
+                            <span class="type-badge">${r.type}</span>
+                            <span class="price-badge">${r.price}</span>
+                            <div class="carousel-slides" id="slides-${r.key}">
+                                ${slidesHtml}
+                            </div>
+                            ${r.images.length > 1 ? `
+                                <button class="carousel-btn prev" onclick="moveSlide('${r.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="carousel-btn next" onclick="moveSlide('${r.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                        </div>
+                        <div class="romance-body">
+                            <div>
+                                <h3 class="romance-name">${r.name}</h3>
+                                <p class="romance-desc">${r.desc}</p>
+                                <div class="romance-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-phone-alt"></i> <span>${r.phone}</span>
+                                    </div>
+                                    <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="romance-actions">
+                                    <div class="action-row">
+                                        <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                            <i class="fas fa-directions"></i> Mapa
+                                        </a>
+                                        ${webButtonHtml}
+                                    </div>
+                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20información%20sobre:%20${encodeURIComponent(r.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                                        <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                                    </a>
+                                </div>
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditRomanceModal('${r.key}')">✏️ Editar Apartado</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Control del carrusel de 3 fotos
+        const slideIndices = {};
+        function moveSlide(key, direction) {
+            if (!slideIndices[key]) slideIndices[key] = 0;
+            const data = getStoredRomance();
+            const r = data.romance.find(el => el.key === key);
+            if (!r) return;
+
+            slideIndices[key] += direction;
+            if (slideIndices[key] >= r.images.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = r.images.length - 1;
+
+            const slider = document.getElementById(`slides-${key}`);
+            if (slider) {
+                slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+            }
+        }
+
+        // Auth & CMS
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderRomance(currentFilter, document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderRomance(currentFilter, document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        let currentEditingKey = null;
+        function openEditRomanceModal(key) {
+            const data = getStoredRomance();
+            const r = data.romance.find(el => el.key === key);
+            if (!r) return;
+            currentEditingKey = key;
+            document.getElementById('editRomanceKey').value = key;
+            document.getElementById('editName').value = r.name;
+            document.getElementById('editType').value = r.type;
+            document.getElementById('editDesc').value = r.desc;
+            document.getElementById('editPrice').value = r.price;
+            document.getElementById('editPhone').value = r.phone;
+            document.getElementById('editAddress').value = r.address;
+            document.getElementById('editMaps').value = r.maps;
+            document.getElementById('editWeb').value = r.web;
+            document.getElementById('editImg1').value = r.images[0] || '';
+            document.getElementById('editImg2').value = r.images[1] || '';
+            document.getElementById('editImg3').value = r.images[2] || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedRomance(e) {
+            e.preventDefault();
+            const data = getStoredRomance();
+            const index = data.romance.findIndex(el => el.key === currentEditingKey);
+            if (index !== -1) {
+                data.romance[index].name = document.getElementById('editName').value;
+                data.romance[index].type = document.getElementById('editType').value;
+                data.romance[index].desc = document.getElementById('editDesc').value;
+                data.romance[index].price = document.getElementById('editPrice').value;
+                data.romance[index].phone = document.getElementById('editPhone').value;
+                data.romance[index].address = document.getElementById('editAddress').value;
+                data.romance[index].maps = document.getElementById('editMaps').value;
+                data.romance[index].web = document.getElementById('editWeb').value;
+                data.romance[index].images = [
+                    document.getElementById('editImg1').value,
+                    document.getElementById('editImg2').value,
+                    document.getElementById('editImg3').value
+                ];
+                saveStoredRomance(data, true);
+                closeEditModal();
+                alert('¡Apartado actualizado con éxito!');
+            }
+        }
+
+        function downloadRomanceTemplate() {
+            const data = getStoredRomance();
+            const flatData = data.romance.map(el => ({
+                nombre: el.name,
+                categoria: el.type,
+                descripcion: el.desc,
+                precio: el.price,
+                telefono: el.phone,
+                direccion: el.address,
+                direccion_maps: el.maps,
+                sitio_web: el.web,
+                foto_1: el.images[0] || '',
+                foto_2: el.images[1] || '',
+                foto_3: el.images[2] || ''
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "RomanceBodas");
+            XLSX.writeFile(workbook, "plantilla_romance_vivesanmiguel.xlsx");
+        }
+
+        function handleRomanceExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredRomance();
+                        json.forEach((row, idx) => {
+                            if (idx < data.romance.length) {
+                                if (row.nombre) data.romance[idx].name = row.nombre;
+                                if (row.categoria) data.romance[idx].type = row.categoria;
+                                if (row.descripcion) data.romance[idx].desc = row.descripcion;
+                                if (row.precio) data.romance[idx].price = row.precio;
+                                if (row.telefono) data.romance[idx].phone = row.telefono;
+                                if (row.direccion) data.romance[idx].address = row.direccion;
+                                if (row.direccion_maps) data.romance[idx].maps = row.direccion_maps;
+                                if (row.sitio_web) data.romance[idx].web = row.sitio_web;
+                                
+                                let imgs = [];
+                                if (row.foto_1) imgs.push(row.foto_1);
+                                if (row.foto_2) imgs.push(row.foto_2);
+                                if (row.foto_3) imgs.push(row.foto_3);
+                                if (imgs.length > 0) data.romance[idx].images = imgs;
+                            }
+                        });
+                        saveStoredRomance(data, true);
+                        alert('¡Importación masiva completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderRomance('todos');
+        });
+
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
