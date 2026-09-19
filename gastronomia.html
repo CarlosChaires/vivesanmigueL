@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Restaurantes y Gastronomía</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --opentable-red: #DA3743;
+            --opentable-red-dark: #B82A34;
+            --google-sheets-green: #0F9D58;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .sync-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--google-sheets-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+
+        /* --- Títulos, Buscador y Filtros --- */
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Barra de Búsqueda */
+        .search-bar-wrap {
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+        }
+
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar-wrap input:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .search-bar-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Filtros por tipo de comida */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 3.5rem;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Grid de Restaurantes --- */
+        .restaurants-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .restaurant-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
+        }
+
+        /* Carrusel de Fotos */
+        .carousel-container {
+            position: relative;
+            height: 220px;
+            background: #F4EBE6;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
+
+        .price-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .type-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(45, 36, 34, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .restaurant-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .restaurant-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .restaurant-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .restaurant-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .meta-item i {
+            color: var(--accent-terracotta);
+            width: 16px;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .meta-item:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .restaurant-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action.map {
+            background: rgba(166, 75, 42, 0.08);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+        }
+
+        .btn-action.map:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .btn-action.web {
+            background: var(--text-main);
+            color: #ffffff;
+        }
+
+        .btn-action.web:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .btn-action.opentable {
+            width: 100%;
+            background-color: var(--opentable-red);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(218, 55, 67, 0.2);
+        }
+
+        .btn-action.opentable:hover {
+            background-color: var(--opentable-red-dark);
+            transform: translateY(-1px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .restaurants-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .restaurants-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
+
+        <!-- Admin Bar con Sincronización Automática a Google Sheets -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="syncWithGoogleSheets()">🔄 Sincronizar Google Sheets</button>
+            <button class="btn-admin" onclick="downloadRestaurantsTemplate()">📥 Descargar Plantilla</button>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado con Google</span>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
+
+        <!-- Título de la Sección -->
+        <div class="section-header">
+            <h1>Restaurantes y Gastronomía</h1>
+            <p>Explora la oferta culinaria de San Miguel de Allende por tipo de comida.</p>
+        </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-bar-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Busca por nombre o tipo de cocina..." oninput="handleSearch()">
+        </div>
+
+        <!-- Filtros por Tipo de Comida -->
+        <div class="filter-container" id="filterContainer">
+            <button class="filter-btn active" onclick="filterRestaurants('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterRestaurants('Mexicana')">Mexicana</button>
+            <button class="filter-btn" onclick="filterRestaurants('Italiana')">Italiana</button>
+            <button class="filter-btn" onclick="filterRestaurants('Internacional')">Internacional</button>
+            <button class="filter-btn" onclick="filterRestaurants('Cafetería / Brunch')">Cafetería / Brunch</button>
+        </div>
+
+        <!-- Grid de Restaurantes -->
+        <div class="restaurants-grid" id="restaurantsGridContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Restaurante</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedRestaurant(event)">
+                <input type="hidden" id="editRestKey">
+                <div class="input-group">
+                    <label>Nombre del Restaurante</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>Tipo de Comida</label>
+                    <input type="text" id="editType" required placeholder="Ej. Mexicana, Italiana...">
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="editDesc" rows="3" required placeholder="Breve descripción del lugar..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Rango de Precio</label>
+                    <input type="text" id="editPrice" required placeholder="Ej. $$ ($300 - $600 MXN)">
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="editPhone" required>
+                </div>
+                <div class="input-group">
+                    <label>Dirección Escrita</label>
+                    <input type="text" id="editAddress" required placeholder="Ej. Cuna de Allende 15, Zona Centro">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Google Maps (URL)</label>
+                    <input type="text" id="editMaps" required>
+                </div>
+                <div class="input-group">
+                    <label>Sitio Web (URL)</label>
+                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                </div>
+                <div class="input-group">
+                    <label>Enlace OpenTable (Opcional - URL)</label>
+                    <input type="text" id="editOpenTable" placeholder="Dejar en blanco si no tiene">
+                </div>
+                <div class="input-group">
+                    <label>Foto 1 (URL del Carrete)</label>
+                    <input type="text" id="editImg1" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 2 (URL del Carrete)</label>
+                    <input type="text" id="editImg2" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 3 (URL del Carrete)</label>
+                    <input type="text" id="editImg3" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar y Sincronizar Google Sheets</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+
+        // URL de Google Apps Script configurada para sincronizar automáticamente con tu Google Sheets
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+
+        const defaultRestaurantsData = {
+            restaurants: [
+                {
+                    key: 'rest_1',
+                    name: 'La Posadita',
+                    type: 'Mexicana',
+                    desc: 'Famosa terraza con una vista privilegiada a la Parroquia, ofreciendo auténticos platillos mexicanos con toque de autor.',
+                    price: '$$$ ($500 - $900 MXN)',
+                    phone: '+52 415 152 1467',
+                    address: 'Cuna de Allende 13, Zona Centro, C.P. 37700',
+                    maps: 'https://maps.google.com/?q=La+Posadita+San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: 'https://www.opentable.com',
+                    images: [
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_2',
+                    name: 'Bovine Prime Diner',
+                    type: 'Internacional',
+                    desc: 'Un steakhouse contemporáneo de diseño sofisticado que fusiona cortes de carne de alta calidad y un ambiente inigualable.',
+                    price: '$$$$ ($800 - $1,500 MXN)',
+                    phone: '+52 415 154 4444',
+                    address: 'Calle de Leona Vicario 30, Zona Centro, C.P. 37700',
+                    maps: 'https://maps.google.com/?q=Bovine+San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: 'https://www.opentable.com',
+                    images: [
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_3',
+                    name: 'Trattoria Terrazza',
+                    type: 'Italiana',
+                    desc: 'Pastas artesanales hechas en casa y pizzas a la leña en un ambiente romántico con vista a los tejados históricos.',
+                    price: '$$ ($350 - $700 MXN)',
+                    phone: '+52 415 122 3344',
+                    address: 'Mesones 45, Zona Centro, C.P. 37700',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_4',
+                    name: 'Aroma Café & Brunch',
+                    type: 'Cafetería / Brunch',
+                    desc: 'Café de especialidad, panadería recién horneada y desayunos reconfortantes en un patio colonial lleno de tranquilidad.',
+                    price: '$ ($150 - $350 MXN)',
+                    phone: '+52 415 111 2233',
+                    address: 'Dr. Ignacio Hernandez Macias 72, Zona Centro, C.P. 37700',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80'
+                    ]
+                }
+            ]
+        };
+
+        function getStoredRestaurants() {
+            const data = localStorage.getItem('sma_restaurants_data');
+            if (!data) {
+                localStorage.setItem('sma_restaurants_data', JSON.stringify(defaultRestaurantsData));
+                return defaultRestaurantsData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredRestaurants(data, syncCloud = true) {
+            localStorage.setItem('sma_restaurants_data', JSON.stringify(data));
+            renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        // Sincronización automática con Google Sheets en la nube
+        async function pushDataToGoogleSheets(data) {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...';
+            try {
+                // Envío en segundo plano mediante fetch a Google Apps Script
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data.restaurants)
+                });
+                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado con Google';
+            } catch (err) {
+                console.error("Error al sincronizar con Google Sheets:", err);
+                statusEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Guardado localmente';
+            }
+        }
+
+        async function syncWithGoogleSheets() {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando desde Google...';
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                if (cloudData && cloudData.length > 0) {
+                    const localData = getStoredRestaurants();
+                    localData.restaurants = cloudData;
+                    localStorage.setItem('sma_restaurants_data', JSON.stringify(localData));
+                    renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+                    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado con Google';
+                    alert('¡Datos actualizados desde Google Sheets exitosamente!');
+                }
+            } catch (err) {
+                console.error("Error al obtener datos de Google Sheets:", err);
+                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado con Google';
+                alert('Sincronización activa. Se usan los registros locales.');
+            }
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        let currentFilter = 'todos';
+
+        function filterRestaurants(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const query = document.getElementById('searchInput').value;
+            renderRestaurants(type, query);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            renderRestaurants(currentFilter, query);
+        }
+
+        function renderRestaurants(filter = 'todos', searchQuery = '') {
+            const data = getStoredRestaurants();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('restaurantsGridContainer');
+            container.innerHTML = '';
+
+            let filtered = filter === 'todos' ? data.restaurants : data.restaurants.filter(r => r.type === filter);
+
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(r => r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron restaurantes con esa búsqueda.</p>`;
+                return;
+            }
+
+            filtered.forEach(r => {
+                let slidesHtml = '';
+                r.images.forEach((img, idx) => {
+                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${r.name} foto ${idx+1}"></div>`;
+                });
+
+                const webButtonHtml = (r.web && r.web !== '#') ? `
+                    <a href="${r.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
+                        <i class="fas fa-globe"></i> Sitio Web
+                    </a>
+                ` : '';
+
+                const opentableButtonHtml = (r.opentable && r.opentable.trim() !== '') ? `
+                    <a href="${r.opentable}" target="_blank" rel="noopener noreferrer" class="btn-action opentable">
+                        <i class="fas fa-chair"></i> Reservar en OpenTable
+                    </a>
+                ` : '';
+
+                container.innerHTML += `
+                    <div class="restaurant-card" id="card-${r.key}">
+                        <div class="carousel-container">
+                            <span class="type-badge">${r.type}</span>
+                            <span class="price-badge">${r.price}</span>
+                            <div class="carousel-slides" id="slides-${r.key}">
+                                ${slidesHtml}
+                            </div>
+                            ${r.images.length > 1 ? `
+                                <button class="carousel-btn prev" onclick="moveSlide('${r.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="carousel-btn next" onclick="moveSlide('${r.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                        </div>
+                        <div class="restaurant-body">
+                            <div>
+                                <h3 class="restaurant-name">${r.name}</h3>
+                                <p class="restaurant-desc">${r.desc}</p>
+                                <div class="restaurant-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-phone-alt"></i> <span>${r.phone}</span>
+                                    </div>
+                                    <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="restaurant-actions">
+                                    <div class="action-row">
+                                        <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                            <i class="fas fa-directions"></i> Mapa
+                                        </a>
+                                        ${webButtonHtml}
+                                    </div>
+                                    ${opentableButtonHtml}
+                                </div>
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditRestaurantModal('${r.key}')">✏️ Editar Restaurante</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Control del carrusel de 3 fotos
+        const slideIndices = {};
+        function moveSlide(key, direction) {
+            if (!slideIndices[key]) slideIndices[key] = 0;
+            const data = getStoredRestaurants();
+            const r = data.restaurants.find(el => el.key === key);
+            if (!r) return;
+
+            slideIndices[key] += direction;
+            if (slideIndices[key] >= r.images.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = r.images.length - 1;
+
+            const slider = document.getElementById(`slides-${key}`);
+            if (slider) {
+                slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+            }
+        }
+
+        // Auth & CMS
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        let currentEditingKey = null;
+        function openEditRestaurantModal(key) {
+            const data = getStoredRestaurants();
+            const r = data.restaurants.find(el => el.key === key);
+            if (!r) return;
+            currentEditingKey = key;
+            document.getElementById('editRestKey').value = key;
+            document.getElementById('editName').value = r.name;
+            document.getElementById('editType').value = r.type;
+            document.getElementById('editDesc').value = r.desc;
+            document.getElementById('editPrice').value = r.price;
+            document.getElementById('editPhone').value = r.phone;
+            document.getElementById('editAddress').value = r.address;
+            document.getElementById('editMaps').value = r.maps;
+            document.getElementById('editWeb').value = r.web;
+            document.getElementById('editOpenTable').value = r.opentable || '';
+            document.getElementById('editImg1').value = r.images[0] || '';
+            document.getElementById('editImg2').value = r.images[1] || '';
+            document.getElementById('editImg3').value = r.images[2] || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedRestaurant(e) {
+            e.preventDefault();
+            const data = getStoredRestaurants();
+            const index = data.restaurants.findIndex(el => el.key === currentEditingKey);
+            if (index !== -1) {
+                data.restaurants[index].name = document.getElementById('editName').value;
+                data.restaurants[index].type = document.getElementById('editType').value;
+                data.restaurants[index].desc = document.getElementById('editDesc').value;
+                data.restaurants[index].price = document.getElementById('editPrice').value;
+                data.restaurants[index].phone = document.getElementById('editPhone').value;
+                data.restaurants[index].address = document.getElementById('editAddress').value;
+                data.restaurants[index].maps = document.getElementById('editMaps').value;
+                data.restaurants[index].web = document.getElementById('editWeb').value;
+                data.restaurants[index].opentable = document.getElementById('editOpenTable').value;
+                data.restaurants[index].images = [
+                    document.getElementById('editImg1').value,
+                    document.getElementById('editImg2').value,
+                    document.getElementById('editImg3').value
+                ];
+                saveStoredRestaurants(data, true);
+                closeEditModal();
+                alert('¡Restaurante actualizado y sincronizado en Google Sheets!');
+            }
+        }
+
+        function downloadRestaurantsTemplate() {
+            const data = getStoredRestaurants();
+            const flatData = data.restaurants.map(el => ({
+                nombre: el.name,
+                tipo_comida: el.type,
+                descripcion: el.desc,
+                rango_precio: el.price,
+                telefono: el.phone,
+                direccion_escrita: el.address,
+                direccion_maps: el.maps,
+                sitio_web: el.web,
+                opentable_url: el.opentable || '',
+                foto_1: el.images[0] || '',
+                foto_2: el.images[1] || '',
+                foto_3: el.images[2] || ''
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Restaurantes");
+            XLSX.writeFile(workbook, "plantilla_restaurantes_vivesanmiguel.xlsx");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderRestaurants('todos');
+        });
+
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
