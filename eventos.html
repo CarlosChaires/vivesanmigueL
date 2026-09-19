@@ -163,7 +163,7 @@
         <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="header-title">
           <span>Patrimonio y Tradición</span>
-          <h1>Cartelera de Eventos y Feria</h1>
+          <h1>Cartelera de Eventos</h1>
         </div>
       </div>
       <div class="admin-actions-group">
@@ -200,7 +200,7 @@
       <h3 style="font-family:'Playfair Display',serif; margin-bottom: 1.2rem;">Nuevo Evento en Google Sheet</h3>
       <form onsubmit="handleSaveEvent(event)">
         <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
-        <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Feria y Tradición" required></div>
+        <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
         <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
         <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
@@ -368,7 +368,6 @@
       
       let html = '';
       globalEvents.forEach(ev => {
-        // Validación limpia: si no hay enlace web, la variable queda vacía y no se renderiza nada
         const webButtonHtml = (ev.link && ev.link !== '') ? `<a href="${ev.link}" target="_blank" class="event-web-link">🌐 Sitio Oficial / Boletos ↗</a>` : '';
         
         html += `
