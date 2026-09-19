@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="admin-actions-group">
-        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento a Sheet</button>
+        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
     </header>
@@ -173,11 +173,11 @@
       <form onsubmit="handleSaveEvent(event)">
         <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
         <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Feria y Tradición" required></div>
-        <div class="form-group"><label>Fecha (date)</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
         <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Imagen URL o ID de Drive (img)</label><input type="text" id="inputImg" placeholder="https://..." required></div>
+        <div class="form-group"><label>Imagen URL o enlace de Google Drive</label><input type="text" id="inputImg" placeholder="https://..." required></div>
         <div class="form-group"><label>Descripción (desc)</label><textarea id="inputDesc" required></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Google Sheets</button>
       </form>
@@ -191,11 +191,12 @@
 
     let globalEvents = [];
 
-    // Función universal para limpiar y convertir cualquier link de imagen (Google Drive, carpetas, web, etc.)
+    // Conversor infalible para enlaces de Google Drive u otras nubes a imagen directa
     function parseCloudImageUrl(url) {
       if (!url) return '';
-      const cleanUrl = String(url).trim();
+      let cleanUrl = String(url).trim();
       
+      // Si es un enlace de Google Drive compartido
       if (cleanUrl.includes('drive.google.com')) {
         let fileId = '';
         if (cleanUrl.includes('/file/d/')) {
@@ -256,12 +257,12 @@
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
+        // Búsqueda inteligente de columnas sin importar mayúsculas, acentos o espacios exactos
         const getVal = (obj, keys) => {
           for (let k of keys) {
-            // Buscamos coincidencia exacta o parcial ignorando mayúsculas y acentos
             const foundKey = Object.keys(obj).find(header => {
-              const h = header.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-              const target = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              const h = header.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+              const target = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
               return h === target || h.includes(target);
             });
             if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== null && String(obj[foundKey]).trim() !== '') {
@@ -271,7 +272,7 @@
           return '';
         };
 
-        // Mapear y procesar todos los eventos de Google Sheets
+        // 1. Mapeo de todos los registros del Google Sheet
         const allEvents = data.map((item, index) => {
           const rawDateValue = getVal(item, ['date', 'fecha', 'dia']);
           const rawImgValue = getVal(item, ['img', 'imagen', 'url', 'foto']);
@@ -291,12 +292,12 @@
           };
         });
 
-        // FILTRAR AUTOMÁTICAMENTE: Ocultar eventos cuya fecha ya pasó (Vigencia activa)
+        // 2. FILTRADO AUTOMÁTICO DE VIGENCIA (Oculta eventos pasados)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         globalEvents = allEvents.filter(ev => {
-          if (!ev.rawDate) return true; // Si no tiene fecha, lo dejamos visible por precaución
+          if (!ev.rawDate) return true; // Si no hay fecha, se muestra por precaución
           try {
             let eventDate;
             if (/^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)) {
@@ -307,7 +308,7 @@
             }
             if (isNaN(eventDate.getTime())) return true;
             eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today; // Mantiene estrictamente los eventos vigentes de hoy en adelante
+            return eventDate >= today; // Solo eventos desde hoy en adelante
           } catch (e) {
             return true;
           }
