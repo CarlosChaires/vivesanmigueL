@@ -3,65 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel — Guía Turística Oficial</title>
+    <title>Vive San Miguel | Guía Turística Oficial</title>
     
+    <!-- Tipografías seleccionadas para diseño editorial de lujo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-sanmiguel: #fbf9f6;
-            --cantera-terracotta: #b86b43;
-            --cantera-terracotta-dark: #9c5531;
-            --cantera-ocre: #c28835;
-            --primary-navy: #1b2a4a;
-            --text-main: #232b38;
-            --text-muted: #626d7a;
-            --surface-white: #ffffff;
-            --border-glass: rgba(184, 107, 67, 0.14);
-            --shadow-warm: 0 16px 40px rgba(184, 107, 67, 0.08);
-            --shadow-hover: 0 24px 55px rgba(184, 107, 67, 0.16);
+            --bg-canvas: #FAF8F5;
+            --surface: #FFFFFF;
+            --text-main: #23201D;
+            --text-muted: #736C65;
+            --terracotta: #A64B2A;
+            --terracotta-dark: #87381C;
+            --cantera-ocre: #C49247;
+            --border-soft: rgba(166, 75, 42, 0.12);
+            --shadow-subtle: 0 10px 30px rgba(35, 32, 29, 0.05);
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-sanmiguel);
+            background-color: var(--bg-canvas);
             color: var(--text-main);
-            line-height: 1.65;
-            overflow-x: hidden;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            background-image: 
-                radial-gradient(circle at 50% -10%, rgba(184, 107, 67, 0.06) 0%, rgba(194, 136, 53, 0.03) 40%, transparent 70%),
-                linear-gradient(180deg, #fffdfb 0%, #fbf9f6 50%, #f7f3ee 100%);
         }
 
-        /* --- Header Flotante Limpio --- */
-        .site-nav-wrap {
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            max-width: 1140px;
+        /* --- HEADER MODERNO Y ELEGANTE --- */
+        header {
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .nav-capsule {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border-glass);
-            border-radius: 60px;
-            padding: 10px 24px;
+            padding: 1.8rem 2rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.04);
+            align-items: center;
         }
 
         .brand-link {
@@ -72,491 +56,398 @@
         }
 
         .brand-logo {
-            height: 46px;
+            height: 44px;
             width: auto;
             object-fit: contain;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            filter: drop-shadow(0 2px 4px rgba(184, 107, 67, 0.12));
-            transition: transform 0.3s ease;
         }
 
-        .brand-link:hover .brand-logo {
-            transform: scale(1.05);
-        }
-
-        .brand-title {
+        .brand-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            letter-spacing: -0.5px;
-        }
-
-        .btn-nav-action {
-            background: var(--cantera-terracotta);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 24px;
-            border-radius: 30px;
+            font-size: 1.35rem;
             font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.4px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(184, 107, 67, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-nav-action:hover {
-            background: var(--cantera-terracotta-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(184, 107, 67, 0.3);
-        }
-
-        /* --- Hero de Entrada Uniforme y Estético --- */
-        .index-hero {
-            max-width: 1080px;
-            margin: 50px auto 40px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .destination-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #ffffff;
-            border: 1px solid var(--border-glass);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: var(--cantera-terracotta);
-            box-shadow: 0 3px 10px rgba(184, 107, 67, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .destination-tag::before {
-            content: '✦';
-            color: var(--cantera-ocre);
-        }
-
-        .hero-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.4rem, 5.5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            color: var(--primary-navy);
-            margin-bottom: 16px;
-            letter-spacing: -0.8px;
-        }
-
-        .hero-heading span {
-            color: var(--cantera-terracotta);
-        }
-
-        .hero-desc {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 620px;
-            margin: 0 auto 32px auto;
-            font-weight: 400;
-        }
-
-        /* --- Botón Principal Estilizado --- */
-        .main-action-zone {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-
-        .btn-main-planner {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 46px;
-            background: linear-gradient(135deg, var(--cantera-terracotta) 0%, var(--cantera-terracotta-dark) 100%);
-            color: #ffffff !important;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 14.5px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            box-shadow: 0 12px 30px rgba(184, 107, 67, 0.28);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-        }
-
-        .btn-main-planner:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 36px rgba(184, 107, 67, 0.38);
-        }
-
-        .btn-hint {
-            font-size: 12.5px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* --- Buscador Minimalista --- */
-        .quick-search-box {
-            max-width: 580px;
-            margin: 0 auto 60px auto;
-            background: #ffffff;
-            border-radius: 50px;
-            padding: 6px 8px 6px 22px;
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-glass);
-            box-shadow: var(--shadow-warm);
-            transition: all 0.3s ease;
-        }
-
-        .quick-search-box:focus-within {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 14px 34px rgba(184, 107, 67, 0.12);
-        }
-
-        .quick-search-box input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14px;
             color: var(--text-main);
-            background: transparent;
+            letter-spacing: -0.3px;
         }
 
-        .quick-search-box input::placeholder {
-            color: #949da6;
-        }
-
-        .quick-search-box button {
-            background: var(--cantera-terracotta);
-            color: #ffffff;
-            border: none;
-            padding: 12px 26px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .quick-search-box button:hover {
-            background: var(--cantera-terracotta-dark);
-        }
-
-        /* --- Showcase de Postales Rediseñado (Tarjetas de Alta Gama) --- */
-        .teaser-section {
-            max-width: 1080px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
-        }
-
-        .teaser-header {
-            text-align: center;
-            margin-bottom: 36px;
-        }
-
-        .teaser-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--primary-navy);
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .teaser-header p {
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        .teaser-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-        }
-
-        .teaser-card {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #ffffff;
-            border: 1px solid var(--border-glass);
-            box-shadow: var(--shadow-warm);
-            text-decoration: none;
-            display: block;
-            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-style: preserve-3d;
-        }
-
-        .teaser-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-ocre));
-            opacity: 0;
-            z-index: 3;
-            transition: opacity 0.3s ease;
-        }
-
-        .teaser-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: var(--shadow-hover);
-            border-color: rgba(184, 107, 67, 0.4);
-        }
-
-        .teaser-card:hover::before {
-            opacity: 1;
-        }
-
-        .card-col-7 { grid-column: span 7; height: 330px; }
-        .card-col-5 { grid-column: span 5; height: 330px; }
-
-        .teaser-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
-            filter: contrast(1.05) saturate(1.1);
-        }
-
-        .teaser-card:hover img {
-            transform: scale(1.07);
-            filter: contrast(1.12) saturate(1.2);
-        }
-
-        .card-backdrop {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(27, 42, 74, 0.05) 30%, rgba(27, 42, 74, 0.7) 65%, rgba(27, 42, 74, 0.92) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 26px;
-            color: #ffffff;
-            z-index: 2;
-            transition: background 0.3s ease;
-        }
-
-        .teaser-card:hover .card-backdrop {
-            background: linear-gradient(180deg, rgba(27, 42, 74, 0.1) 20%, rgba(27, 42, 74, 0.75) 60%, rgba(27, 42, 74, 0.96) 100%);
-        }
-
-        .card-tag {
-            font-size: 11px;
+        .nav-btn {
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 2.2px;
-            color: #f7d2bc;
-            font-weight: 700;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            color: var(--terracotta);
+            text-decoration: none;
+            padding: 10px 22px;
+            border: 1px solid var(--border-soft);
+            background: var(--surface);
+            border-radius: 40px;
+            transition: all 0.3s ease;
         }
 
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            line-height: 1.25;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-        }
-
-        .card-arrow {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
+        .nav-btn:hover {
+            background-color: var(--terracotta);
             color: #ffffff;
-            transform: translateX(0);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-color: var(--terracotta);
         }
 
-        .teaser-card:hover .card-arrow {
-            transform: translateX(6px);
-            background: var(--cantera-terracotta);
-            border-color: var(--cantera-terracotta);
+        /* --- HERO EDITORIAL --- */
+        .hero {
+            max-width: 1300px;
+            margin: 1.5rem auto 5rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 4rem;
+            align-items: center;
         }
 
-        /* --- Cita Turística Emocional --- */
-        .quote-showcase {
-            max-width: 1080px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
-        }
-
-        .quote-inner {
-            background: #ffffff;
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 42px 24px;
-            text-align: center;
-            box-shadow: var(--shadow-warm);
-        }
-
-        .quote-inner h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+        .hero-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
             font-weight: 700;
-            color: var(--primary-navy);
-            margin-bottom: 8px;
+            color: var(--cantera-ocre);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title span {
+            color: var(--terracotta);
             font-style: italic;
         }
 
-        .quote-inner p {
-            font-size: 0.95rem;
-            color: var(--cantera-terracotta);
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
         }
 
-        /* --- Redes Sociales Sofisticadas --- */
-        .social-showcase {
-            max-width: 1080px;
-            margin: 0 auto 70px auto;
-            padding: 0 20px;
-            text-align: center;
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--terracotta);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 18px 38px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(166, 75, 42, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .btn-enter:hover {
+            background-color: var(--terracotta-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(166, 75, 42, 0.35);
+        }
+
+        .hero-cover-img {
+            height: 520px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 45px rgba(35, 32, 29, 0.08);
+        }
+
+        .hero-cover-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .hero-cover-img:hover img {
+            transform: scale(1.03);
+        }
+
+        /* --- CARRETE FOTOGRÁFICO DE INSTAGRAM --- */
+        .insta-feed-section {
+            max-width: 1300px;
+            margin: 0 auto 5.5rem auto;
+            padding: 0 2rem;
+        }
+
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .feed-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .feed-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .feed-handle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--terracotta);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .feed-handle:hover {
+            opacity: 0.8;
+        }
+
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .insta-card {
+            position: relative;
+            height: 310px;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: var(--shadow-subtle);
+            display: block;
+        }
+
+        .insta-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .insta-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(20, 18, 16, 0.1) 20%, rgba(20, 18, 16, 0.8) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+
+        .insta-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .insta-badge {
+            align-self: flex-end;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .insta-info {
+            color: #ffffff;
+        }
+
+        .insta-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #f7d2bc;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .insta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* --- COMUNIDAD & REDES SOCIALES --- */
+        .social-strip {
+            max-width: 1300px;
+            margin: 0 auto 5rem auto;
+            padding: 0 2rem;
         }
 
         .social-box {
-            background: #ffffff;
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 38px 24px;
-            box-shadow: var(--shadow-warm);
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            padding: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-subtle);
         }
 
-        .social-box h3 {
+        .social-text h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.7rem;
-            color: var(--primary-navy);
+            font-size: 1.8rem;
+            font-weight: 600;
             margin-bottom: 6px;
         }
 
-        .social-box p {
+        .social-text p {
             color: var(--text-muted);
-            font-size: 14.5px;
-            margin-bottom: 22px;
+            font-size: 0.95rem;
         }
 
-        .social-group {
+        .social-buttons {
             display: flex;
-            justify-content: center;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .btn-social {
+        .btn-pill {
             display: inline-flex;
             align-items: center;
             gap: 10px;
             padding: 12px 26px;
-            border-radius: 30px;
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 13.5px;
+            border-radius: 40px;
             text-decoration: none;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            font-size: 0.85rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .btn-social svg {
-            width: 18px;
-            height: 18px;
-            fill: #ffffff;
-            flex-shrink: 0;
-        }
-
-        .btn-social.ig {
-            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        }
-
-        .btn-social.tt {
-            background: #010101;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .btn-social:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.14);
-        }
-
-        /* --- Footer Uniforme --- */
-        .site-footer {
-            background: var(--primary-navy);
+        .btn-pill.instagram {
+            background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
             color: #ffffff;
-            padding: 55px 24px 28px 24px;
-            border-radius: 28px 28px 0 0;
         }
 
-        .footer-grid {
-            max-width: 1080px;
-            margin: 0 auto 40px auto;
+        .btn-pill.tiktok {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .btn-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* --- FOOTER REDISEÑADO: LIMPIO, EQUILIBRADO Y SIN TIPOGRAFÍAS PESADAS --- */
+        footer {
+            border-top: 1px solid var(--border-soft);
+            background-color: var(--surface);
+            padding: 4.5rem 2rem 2.5rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1300px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 36px;
+            gap: 3.5rem;
+            margin-bottom: 3.5rem;
         }
 
-        .footer-grid h4 {
-            font-family: 'Playfair Display', serif;
-            color: #f7d2bc;
-            font-size: 1.15rem;
-            margin-bottom: 12px;
+        .footer-col-main p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 440px;
+            margin-top: 1rem;
+            font-weight: 300;
         }
 
-        .footer-grid p, .footer-grid li {
-            color: #b0bbca;
-            font-size: 13.5px;
-            line-height: 1.75;
+        .footer-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--terracotta);
+            margin-bottom: 1.4rem;
+        }
+
+        .footer-list {
             list-style: none;
         }
 
-        .footer-dock {
-            max-width: 1080px;
+        .footer-list li {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-list a:hover {
+            color: var(--terracotta);
+        }
+
+        .footer-bottom {
+            max-width: 1300px;
             margin: 0 auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12.5px;
-            color: #8c98a8;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
-        @media (max-width: 768px) {
-            .card-col-7, .card-col-5 {
-                grid-column: span 12;
-                height: 250px;
-            }
-            .footer-grid {
+        /* --- ADAPTACIÓN RESPONSIVA --- */
+        @media (max-width: 1024px) {
+            .hero {
                 grid-template-columns: 1fr;
-                gap: 26px;
+                gap: 2.5rem;
             }
-            .footer-dock {
+            .insta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .social-box {
                 flex-direction: column;
-                gap: 8px;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .insta-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
                 text-align: center;
             }
         }
@@ -564,158 +455,148 @@
 </head>
 <body>
 
-    <!-- Navegación Flotante -->
-    <header class="site-nav-wrap">
-        <nav class="nav-capsule">
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-link">
-                <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
-                <span class="brand-title">Vive San Miguel</span>
-            </a>
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-nav-action">
-                Planear Mi Viaje →
-            </a>
-        </nav>
+    <!-- Header Flotante Limpio -->
+    <header>
+        <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-link">
+            <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+            <span class="brand-name">Vive San Miguel</span>
+        </a>
+        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="nav-btn">
+            Planear Mi Viaje
+        </a>
     </header>
 
-    <!-- Hero del Index -->
-    <section class="index-hero">
-        <div class="destination-tag">
-            San Miguel de Allende • Patrimonio de la Humanidad
-        </div>
-
-        <h1 class="hero-heading">
-            Tu viaje al corazón de <span>San Miguel de Allende</span>
-        </h1>
-
-        <p class="hero-desc">
-            Empieza a descubrir la magia: callejones de cantera, atardeceres en viñedos, leyendas coloniales y terrazas inolvidables.
-        </p>
-
-        <!-- Botón Protagonista -->
-        <div class="main-action-zone">
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-main-planner">
-                <span>PREPARA TU VIAJE</span>
-                <span>→</span>
+    <!-- Portada Principal -->
+    <section class="hero">
+        <div class="hero-text-zone">
+            <span class="hero-tag">Patrimonio de la Humanidad</span>
+            <h1 class="hero-title">Tu viaje al corazón de <span>San Miguel</span></h1>
+            <p class="hero-desc">
+                Empieza a descubrir la magia: callejones de cantera, atardeceres en viñedos, leyendas coloniales y terrazas inolvidables.
+            </p>
+            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-enter">
+                <span>Prepara tu Viaje</span>
+                <i class="fas fa-arrow-right"></i>
             </a>
-            <span class="btn-hint">Entra a la guía completa con hoteles, restaurantes, rutas y tours</span>
         </div>
 
-        <!-- Buscador Rápido -->
-        <form class="quick-search-box" role="search" onsubmit="event.preventDefault(); window.location.href='https://carloschaires.github.io/vivesanmigueL/menu';">
-            <input type="search" placeholder="Busca terrazas, viñedos, hoteles boutique, galerías..." required>
-            <button type="submit">Buscar</button>
-        </form>
+        <div class="hero-cover-img">
+            <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos y atardecer en San Miguel">
+        </div>
     </section>
 
-    <!-- Teaser Asimétrico de 4 Postales Clave (Tarjetas de Alta Gama con Enlace Directo al Menú) -->
-    <section class="teaser-section">
-        <div class="teaser-header">
-            <h2>Lo que te espera al llegar</h2>
-            <p>Una probadita de las experiencias que puedes planear en nuestra guía</p>
+    <!-- Carrete Fotográfico Estilo Instagram -->
+    <section class="insta-feed-section">
+        <div class="feed-header">
+            <div>
+                <h2>Postales de la Ciudad</h2>
+                <p>Una probadita de las experiencias que puedes planear en nuestra guía</p>
+            </div>
+            <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="feed-handle">
+                <i class="fab fa-instagram"></i> @sanmiigueldeallende
+            </a>
         </div>
 
-        <div class="teaser-grid">
+        <div class="insta-grid">
             <!-- Viñedos -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="teaser-card card-col-7">
-                <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos en San Miguel de Allende">
-                <div class="card-backdrop">
-                    <span class="card-tag">Enoturismo</span>
-                    <div class="card-title">
-                        <span>Viñedos y Catas</span>
-                        <span class="card-arrow">→</span>
+            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
+                <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos y Catas">
+                <div class="insta-overlay">
+                    <span class="insta-badge"><i class="fas fa-wine-glass-alt"></i></span>
+                    <div class="insta-info">
+                        <div class="insta-category">Enoturismo</div>
+                        <div class="insta-title">Viñedos & Catas</div>
                     </div>
                 </div>
             </a>
 
             <!-- Vuelo en Globo -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="teaser-card card-col-5">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en globo en San Miguel de Allende">
-                <div class="card-backdrop">
-                    <span class="card-tag">Aventura</span>
-                    <div class="card-title">
-                        <span>Vuelo en Globo</span>
-                        <span class="card-arrow">→</span>
+            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
+                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en Globo">
+                <div class="insta-overlay">
+                    <span class="insta-badge"><i class="fas fa-wind"></i></span>
+                    <div class="insta-info">
+                        <div class="insta-category">Aventura</div>
+                        <div class="insta-title">Vuelo en Globo</div>
                     </div>
                 </div>
             </a>
 
             <!-- Historia Colonial -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="teaser-card card-col-5">
-                <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Ecos del Pasado">
-                <div class="card-backdrop">
-                    <span class="card-tag">Arquitectura</span>
-                    <div class="card-title">
-                        <span>Historia Colonial</span>
-                        <span class="card-arrow">→</span>
+            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
+                <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Historia Colonial">
+                <div class="insta-overlay">
+                    <span class="insta-badge"><i class="fas fa-landmark"></i></span>
+                    <div class="insta-info">
+                        <div class="insta-category">Arquitectura</div>
+                        <div class="insta-title">Historia Colonial</div>
                     </div>
                 </div>
             </a>
 
-            <!-- Tradiciones -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="teaser-card card-col-7">
-                <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones">
-                <div class="card-backdrop">
-                    <span class="card-tag">Cultura</span>
-                    <div class="card-title">
-                        <span>Tradiciones Vivas</span>
-                        <span class="card-arrow">→</span>
+            <!-- Tradiciones Vivas -->
+            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
+                <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones Vivas">
+                <div class="insta-overlay">
+                    <span class="insta-badge"><i class="fas fa-palette"></i></span>
+                    <div class="insta-info">
+                        <div class="insta-category">Cultura</div>
+                        <div class="insta-title">Tradiciones Vivas</div>
                     </div>
                 </div>
             </a>
         </div>
     </section>
 
-    <!-- Cita de San Miguel -->
-    <section class="quote-showcase">
-        <div class="quote-inner">
-            <h3>¡Un viaje al corazón!</h3>
-            <p>Vive la esencia y la magia de San Miguel de Allende</p>
-        </div>
-    </section>
-
-    <!-- Redes Sociales Oficiales -->
-    <section class="social-showcase">
+    <!-- Comunidad y Redes Oficiales -->
+    <section class="social-strip">
         <div class="social-box">
-            <h3>Nuestra Comunidad Visual</h3>
-            <p>Inspírate con reels, historias y los rincones más fotografiados de San Miguel.</p>
-            <div class="social-group">
-                <!-- Instagram Original -->
-                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="btn-social ig">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    Instagram Oficial
+            <div class="social-text">
+                <h3>Nuestra Comunidad Visual</h3>
+                <p>Inspírate con reels, historias y los rincones más fotografiados de San Miguel.</p>
+            </div>
+            <div class="social-buttons">
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="btn-pill instagram">
+                    <i class="fab fa-instagram"></i> Instagram Oficial
                 </a>
-                <!-- TikTok Original -->
-                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="btn-social tt">
-                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-                    TikTok en Vivo
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="btn-pill tiktok">
+                    <i class="fab fa-tiktok"></i> TikTok en Vivo
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer Oficial (Sin fecha al final) -->
-    <footer class="site-footer">
-        <div class="footer-grid">
-            <div>
-                <h4>Sobre nosotros</h4>
-                <p>Somos una organización especializada en el destino. Nuestra finalidad es inspirarte y guiarte para que disfrutes de una experiencia inolvidable en San Miguel de Allende.</p>
+    <!-- Footer Elegante y Limpio -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-col-main">
+                <div class="brand-link">
+                    <span class="brand-name">Vive San Miguel</span>
+                </div>
+                <p>
+                    Somos una organización especializada en el destino. Nuestra finalidad es inspirarte y guiarte para que disfrutes de una experiencia inolvidable en San Miguel de Allende.
+                </p>
             </div>
 
             <div>
-                <h4>Contacto</h4>
-                <ul>
-                    <li>✉️ vivesma@gmail.com</li>
-                    <li>📞 +52 415 177 36 98</li>
+                <div class="footer-heading">Contacto</div>
+                <ul class="footer-list">
+                    <li><i class="far fa-envelope" style="color: var(--terracotta);"></i> vivesma@gmail.com</li>
+                    <li><i class="fas fa-phone-alt" style="color: var(--terracotta);"></i> +52 415 177 36 98</li>
                 </ul>
             </div>
 
             <div>
-                <h4>Visítanos</h4>
-                <p>Zona Centro Histórico, San Miguel de Allende, C.P. 37700, Guanajuato, México.</p>
+                <div class="footer-heading">Ubicación</div>
+                <ul class="footer-list">
+                    <li><i class="fas fa-map-marker-alt" style="color: var(--terracotta);"></i> Zona Centro Histórico</li>
+                    <li>San Miguel de Allende, C.P. 37700</li>
+                    <li>Guanajuato, México</li>
+                </ul>
             </div>
         </div>
 
-        <div class="footer-dock">
+        <div class="footer-bottom">
             <span>Vive San Miguel — Tu Guía de Confianza</span>
             <span>Todos los derechos reservados</span>
         </div>
