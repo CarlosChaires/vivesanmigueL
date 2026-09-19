@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Guías Turísticos Certificados</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            /* Tonos sutiles entre rosa, beige y blanco */
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #1EBE5D;
+            --instagram-pink: #E1306C;
+            --facebook-blue: #1877F2;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        /* --- Títulos --- */
+        .section-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* --- Grid de Guías Turísticos --- */
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .guide-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
+        }
+
+        .guide-header-img {
+            height: 240px;
+            position: relative;
+            background: #F4EBE6;
+            overflow: hidden;
+        }
+
+        .guide-header-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .guide-card:hover .guide-header-img img {
+            transform: scale(1.04);
+        }
+
+        .credential-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .guide-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .guide-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+        }
+
+        .guide-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .guide-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .guide-meta-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-meta-item i {
+            color: var(--accent-terracotta);
+            width: 16px;
+            text-align: center;
+        }
+
+        /* --- Botones de Redes Sociales Individuales --- */
+        .guide-socials-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .guide-social-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #ffffff;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .guide-social-btn.instagram {
+            background-color: var(--instagram-pink);
+        }
+
+        .guide-social-btn.facebook {
+            background-color: var(--facebook-blue);
+        }
+
+        .guide-social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .guide-social-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: #ffffff;
+            flex-shrink: 0;
+        }
+
+        /* --- Botón WhatsApp --- */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background-color: var(--whatsapp-green);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--whatsapp-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+        }
+
+        .btn-whatsapp svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+
+        /* --- Redes Sociales Generales --- */
+        .social-box {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .social-box h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .social-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-decoration: none;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .social-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .social-btn.instagram {
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .social-btn.tiktok {
+            background: #111111;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .guides-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
+
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadGuidesTemplate()">📥 Descargar Plantilla Excel</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleGuidesExcelUpload(event)">
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
+
+        <!-- Título de la Sección -->
+        <div class="section-header">
+            <h1>Guías Turísticos</h1>
+            <p>Conecta con expertos locales para recorrer la historia, los callejones y la magia de San Miguel.</p>
+        </div>
+
+        <!-- Grid de Guías -->
+        <div class="guides-grid" id="guidesGridContainer"></div>
+
+        <!-- Redes Sociales -->
+        <section class="social-box">
+            <h3>Comunidad Vive San Miguel</h3>
+            <p>Síguenos en nuestras redes sociales oficiales.</p>
+            <div class="social-group" id="socialButtonsContainer"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Guía</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedGuide(event)">
+                <input type="hidden" id="editGuideKey">
+                <div class="input-group">
+                    <label>Nombre del Guía</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>No. de Credencial / Certificación</label>
+                    <input type="text" id="editCredential" required>
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="editPhone" required>
+                </div>
+                <div class="input-group">
+                    <label>Enlace Instagram (URL)</label>
+                    <input type="text" id="editInstagram" placeholder="https://instagram.com/usuario">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Facebook (URL)</label>
+                    <input type="text" id="editFacebook" placeholder="https://facebook.com/usuario">
+                </div>
+                <div class="input-group">
+                    <label>Descripción / Especialidad</label>
+                    <textarea id="editDesc" rows="3" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Foto (URL)</label>
+                    <input type="text" id="editImg" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+
+        const defaultGuidesData = {
+            guides: [
+                {
+                    key: 'guide_1',
+                    name: 'Alejandro Ramírez',
+                    credential: 'SECTUR Cred. #48291',
+                    phone: '+52 415 123 4567',
+                    whatsapp: '524151234567',
+                    instagram: 'https://instagram.com',
+                    facebook: 'https://facebook.com',
+                    desc: 'Especialista en historia colonial, arquitectura barroca y leyendas nocturnas de San Miguel de Allende.',
+                    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80'
+                },
+                {
+                    key: 'guide_2',
+                    name: 'Sofía Valdés',
+                    credential: 'Credencial Guía Local #3092',
+                    phone: '+52 415 987 6543',
+                    whatsapp: '524159876543',
+                    instagram: 'https://instagram.com',
+                    facebook: 'https://facebook.com',
+                    desc: 'Apasionada del arte contemporáneo, galerías independientes y rutas gastronómicas por el centro histórico.',
+                    img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'
+                },
+                {
+                    key: 'guide_3',
+                    name: 'Mateo Cienfuegos',
+                    credential: 'Guía Certificado #7710',
+                    phone: '+52 415 555 8901',
+                    whatsapp: '524155558901',
+                    instagram: 'https://instagram.com',
+                    facebook: 'https://facebook.com',
+                    desc: 'Tours fotográficos en azoteas panorámicas, experiencias en viñedos y recorridos personalizados en atardeceres.',
+                    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80'
+                }
+            ],
+            socialItems: [
+                {
+                    name: 'Instagram',
+                    url: 'https://www.instagram.com/sanmiigueldeallende/',
+                    class: 'instagram',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
+                },
+                {
+                    name: 'TikTok',
+                    url: 'https://www.tiktok.com/@vivesanmiguel.com',
+                    class: 'tiktok',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>'
+                }
+            ]
+        };
+
+        function getStoredGuides() {
+            const data = localStorage.getItem('sma_guides_data');
+            if (!data) {
+                localStorage.setItem('sma_guides_data', JSON.stringify(defaultGuidesData));
+                return defaultGuidesData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredGuides(data) {
+            localStorage.setItem('sma_guides_data', JSON.stringify(data));
+            renderGuidesPage();
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        function renderGuidesPage() {
+            const data = getStoredGuides();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+
+            // Renderizar Guías
+            const container = document.getElementById('guidesGridContainer');
+            container.innerHTML = '';
+            data.guides.forEach(g => {
+                const cleanPhone = g.phone.replace(/[^0-9+]/g, '');
+                const cleanWa = g.whatsapp || cleanPhone.replace('+', '');
+                
+                const instaLink = g.instagram ? `<a href="${g.instagram}" target="_blank" rel="noopener noreferrer" class="guide-social-btn instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> Instagram</a>` : '';
+
+                const fbLink = g.facebook ? `<a href="${g.facebook}" target="_blank" rel="noopener noreferrer" class="guide-social-btn facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg> Facebook</a>` : '';
+
+                container.innerHTML += `
+                    <div class="guide-card">
+                        <div class="guide-header-img">
+                            <img src="${g.img}" alt="${g.name}">
+                            <div class="credential-badge">${g.credential}</div>
+                        </div>
+                        <div class="guide-body">
+                            <div>
+                                <h3 class="guide-name">${g.name}</h3>
+                                <p class="guide-desc">${g.desc}</p>
+                                <div class="guide-meta">
+                                    <div class="guide-meta-item">
+                                        <i class="fas fa-phone-alt"></i> ${g.phone}
+                                    </div>
+                                </div>
+                                <div class="guide-socials-group">
+                                    ${instaLink}
+                                    ${fbLink}
+                                </div>
+                            </div>
+                            <div>
+                                <a href="https://wa.me/${cleanWa}?text=Hola%20${encodeURIComponent(g.name)},%20me%20gustar%C3%ADa%20contratar%20un%20tour%20guiado." target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                                    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.148-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                    Contactar por WhatsApp
+                                </a>
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:8px;" onclick="openEditGuideModal('${g.key}')">✏️ Editar Guía</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Renderizar Redes Sociales
+            const socialContainer = document.getElementById('socialButtonsContainer');
+            socialContainer.innerHTML = '';
+            data.socialItems.forEach(soc => {
+                socialContainer.innerHTML += `
+                    <a href="${soc.url}" target="_blank" rel="noopener noreferrer" class="social-btn ${soc.class}">
+                        ${soc.svg} ${soc.name}
+                    </a>
+                `;
+            });
+        }
+
+        // Auth & CMS
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderGuidesPage();
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderGuidesPage();
+            alert('Sesión cerrada.');
+        }
+
+        let currentEditingKey = null;
+        function openEditGuideModal(key) {
+            const data = getStoredGuides();
+            const g = data.guides.find(el => el.key === key);
+            if (!g) return;
+            currentEditingKey = key;
+            document.getElementById('editGuideKey').value = key;
+            document.getElementById('editName').value = g.name;
+            document.getElementById('editCredential').value = g.credential;
+            document.getElementById('editPhone').value = g.phone;
+            document.getElementById('editInstagram').value = g.instagram || '';
+            document.getElementById('editFacebook').value = g.facebook || '';
+            document.getElementById('editDesc').value = g.desc;
+            document.getElementById('editImg').value = g.img;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedGuide(e) {
+            e.preventDefault();
+            const data = getStoredGuides();
+            const index = data.guides.findIndex(el => el.key === currentEditingKey);
+            if (index !== -1) {
+                data.guides[index].name = document.getElementById('editName').value;
+                data.guides[index].credential = document.getElementById('editCredential').value;
+                data.guides[index].phone = document.getElementById('editPhone').value;
+                data.guides[index].whatsapp = document.getElementById('editPhone').value.replace(/[^0-9]/g, '');
+                data.guides[index].instagram = document.getElementById('editInstagram').value;
+                data.guides[index].facebook = document.getElementById('editFacebook').value;
+                data.guides[index].desc = document.getElementById('editDesc').value;
+                data.guides[index].img = document.getElementById('editImg').value;
+                saveStoredGuides(data);
+                closeEditModal();
+                alert('¡Guía actualizado con éxito!');
+            }
+        }
+
+        function downloadGuidesTemplate() {
+            const data = getStoredGuides();
+            const flatData = data.guides.map(el => ({
+                nombre: el.name,
+                credencial: el.credential,
+                telefono: el.phone,
+                instagram: el.instagram || '',
+                facebook: el.facebook || '',
+                descripcion: el.desc,
+                foto_url: el.img
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "GuiasTuristicos");
+            XLSX.writeFile(workbook, "plantilla_guias_vivesanmiguel.xlsx");
+        }
+
+        function handleGuidesExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredGuides();
+                        json.forEach((row, idx) => {
+                            if (idx < data.guides.length) {
+                                if (row.nombre) data.guides[idx].name = row.nombre;
+                                if (row.credencial) data.guides[idx].credential = row.credencial;
+                                if (row.telefono) {
+                                    data.guides[idx].phone = row.telefono;
+                                    data.guides[idx].whatsapp = String(row.telefono).replace(/[^0-9]/g, '');
+                                }
+                                if (row.instagram !== undefined) data.guides[idx].instagram = row.instagram;
+                                if (row.facebook !== undefined) data.guides[idx].facebook = row.facebook;
+                                if (row.descripcion) data.guides[idx].desc = row.descripcion;
+                                if (row.foto_url) data.guides[idx].img = row.foto_url;
+                            }
+                        });
+                        saveStoredGuides(data);
+                        alert('¡Importación masiva de guías completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderGuidesPage();
+        });
+
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
