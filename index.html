@@ -20,7 +20,8 @@
             --text-muted: #626d7a;
             --surface-white: #ffffff;
             --border-glass: rgba(184, 107, 67, 0.14);
-            --shadow-warm: 0 12px 32px rgba(184, 107, 67, 0.06);
+            --shadow-warm: 0 16px 40px rgba(184, 107, 67, 0.08);
+            --shadow-hover: 0 24px 55px rgba(184, 107, 67, 0.16);
         }
 
         *, *::before, *::after {
@@ -254,7 +255,7 @@
             background: var(--cantera-terracotta-dark);
         }
 
-        /* --- Showcase de Postales Uniforme --- */
+        /* --- Showcase de Postales Rediseñado (Tarjetas de Alta Gama) --- */
         .teaser-section {
             max-width: 1080px;
             margin: 0 auto 60px auto;
@@ -263,100 +264,139 @@
 
         .teaser-header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 36px;
         }
 
         .teaser-header h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--primary-navy);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .teaser-header p {
             color: var(--text-muted);
-            font-size: 14.5px;
+            font-size: 15px;
         }
 
         .teaser-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 18px;
+            gap: 24px;
         }
 
         .teaser-card {
             position: relative;
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            background: #ede7df;
+            background: #ffffff;
             border: 1px solid var(--border-glass);
             box-shadow: var(--shadow-warm);
             text-decoration: none;
             display: block;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+
+        .teaser-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-ocre));
+            opacity: 0;
+            z-index: 3;
+            transition: opacity 0.3s ease;
         }
 
         .teaser-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 42px rgba(184, 107, 67, 0.15);
-            border-color: rgba(184, 107, 67, 0.3);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(184, 107, 67, 0.4);
         }
 
-        .card-col-7 { grid-column: span 7; height: 300px; }
-        .card-col-5 { grid-column: span 5; height: 300px; }
+        .teaser-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-col-7 { grid-column: span 7; height: 330px; }
+        .card-col-5 { grid-column: span 5; height: 330px; }
 
         .teaser-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-            filter: brightness(0.96);
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+            filter: contrast(1.05) saturate(1.1);
         }
 
         .teaser-card:hover img {
-            transform: scale(1.04);
-            filter: brightness(1.01);
+            transform: scale(1.07);
+            filter: contrast(1.12) saturate(1.2);
         }
 
         .card-backdrop {
             position: absolute;
             inset: 0;
-            background: linear-gradient(0deg, rgba(27, 42, 74, 0.85) 0%, rgba(27, 42, 74, 0.2) 60%, transparent 100%);
+            background: linear-gradient(180deg, rgba(27, 42, 74, 0.05) 30%, rgba(27, 42, 74, 0.7) 65%, rgba(27, 42, 74, 0.92) 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 22px;
+            padding: 26px;
             color: #ffffff;
+            z-index: 2;
+            transition: background 0.3s ease;
+        }
+
+        .teaser-card:hover .card-backdrop {
+            background: linear-gradient(180deg, rgba(27, 42, 74, 0.1) 20%, rgba(27, 42, 74, 0.75) 60%, rgba(27, 42, 74, 0.96) 100%);
         }
 
         .card-tag {
-            font-size: 10.5px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 1.8px;
-            color: var(--cantera-ocre);
+            letter-spacing: 2.2px;
+            color: #f7d2bc;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .card-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+            font-size: 1.45rem;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.25;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
         .card-arrow {
-            font-size: 1.1rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #ffffff;
             transform: translateX(0);
-            transition: transform 0.3s ease;
-            color: var(--cantera-ocre);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .teaser-card:hover .card-arrow {
-            transform: translateX(4px);
+            transform: translateX(6px);
+            background: var(--cantera-terracotta);
+            border-color: var(--cantera-terracotta);
         }
 
         /* --- Cita Turística Emocional --- */
@@ -508,7 +548,7 @@
         @media (max-width: 768px) {
             .card-col-7, .card-col-5 {
                 grid-column: span 12;
-                height: 220px;
+                height: 250px;
             }
             .footer-grid {
                 grid-template-columns: 1fr;
@@ -540,7 +580,7 @@
     <!-- Hero del Index -->
     <section class="index-hero">
         <div class="destination-tag">
-            Guanajuato • Patrimonio de la Humanidad
+            San Miguel de Allende • Patrimonio de la Humanidad
         </div>
 
         <h1 class="hero-heading">
@@ -561,13 +601,13 @@
         </div>
 
         <!-- Buscador Rápido -->
-        <form class="quick-search-box" role="search">
+        <form class="quick-search-box" role="search" onsubmit="event.preventDefault(); window.location.href='https://carloschaires.github.io/vivesanmigueL/menu';">
             <input type="search" placeholder="Busca terrazas, viñedos, hoteles boutique, galerías..." required>
             <button type="submit">Buscar</button>
         </form>
     </section>
 
-    <!-- Teaser Asimétrico de 4 Postales Clave -->
+    <!-- Teaser Asimétrico de 4 Postales Clave (Tarjetas de Alta Gama con Enlace Directo al Menú) -->
     <section class="teaser-section">
         <div class="teaser-header">
             <h2>Lo que te espera al llegar</h2>
@@ -653,7 +693,7 @@
         </div>
     </section>
 
-    <!-- Footer Oficial -->
+    <!-- Footer Oficial (Sin fecha al final) -->
     <footer class="site-footer">
         <div class="footer-grid">
             <div>
@@ -677,7 +717,7 @@
 
         <div class="footer-dock">
             <span>Vive San Miguel — Tu Guía de Confianza</span>
-            <span>© 2026 Todos los derechos reservados</span>
+            <span>Todos los derechos reservados</span>
         </div>
     </footer>
 
