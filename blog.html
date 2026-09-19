@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Eventos y Tradiciones (Día de Muertos y más)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        /* --- Títulos, Buscador y Filtros --- */
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Barra de Búsqueda */
+        .search-bar-wrap {
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+        }
+
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar-wrap input:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .search-bar-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Filtros por Categoría de Evento */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 3.5rem;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Grid de Eventos / Festividades --- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .blog-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
+        }
+
+        /* Carrusel de Fotos */
+        .carousel-container {
+            position: relative;
+            height: 220px;
+            background: #F4EBE6;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
+
+        .date-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(45, 36, 34, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .blog-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .blog-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .blog-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .blog-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action.read {
+            background: rgba(166, 75, 42, 0.08);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+        }
+
+        .btn-action.read:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .btn-action.share {
+            background: var(--text-main);
+            color: #ffffff;
+        }
+
+        .btn-action.share:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
+
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadBlogTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleBlogExcelUpload(event)">
+            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
+
+        <!-- Título de la Sección -->
+        <div class="section-header">
+            <h1>Eventos y Tradiciones</h1>
+            <p>Vive de cerca las grandes festividades, festivales culturales, Día de Muertos y tradiciones de San Miguel de Allende.</p>
+        </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-bar-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Busca festivales, Día de Muertos, fechas..." oninput="handleSearch()">
+        </div>
+
+        <!-- Filtros por Categoría -->
+        <div class="filter-container" id="filterContainer">
+            <button class="filter-btn active" onclick="filterBlog('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterBlog('Día de Muertos')">Día de Muertos</button>
+            <button class="filter-btn" onclick="filterBlog('Festivales')">Festivales</button>
+            <button class="filter-btn" onclick="filterBlog('Tradiciones')">Tradiciones</button>
+            <button class="filter-btn" onclick="filterBlog('Cultura')">Cultura</button>
+        </div>
+
+        <!-- Grid de Artículos y Eventos -->
+        <div class="blog-grid" id="blogGridContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Evento / Tradición</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedBlog(event)">
+                <input type="hidden" id="editBlogKey">
+                <div class="input-group">
+                    <label>Título del Evento</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="input-group">
+                    <label>Categoría</label>
+                    <input type="text" id="editCategory" required placeholder="Ej. Día de Muertos, Festivales...">
+                </div>
+                <div class="input-group">
+                    <label>Fecha o Temporada</label>
+                    <input type="text" id="editDate" required placeholder="Ej. 1 y 2 de Noviembre">
+                </div>
+                <div class="input-group">
+                    <label>Descripción / Detalles</label>
+                    <textarea id="editDesc" rows="3" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Enlace de Más Información (URL)</label>
+                    <input type="text" id="editLink" required placeholder="https://...">
+                </div>
+                <div class="input-group">
+                    <label>Foto 1 (URL del Carrete)</label>
+                    <input type="text" id="editImg1" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 2 (URL del Carrete)</label>
+                    <input type="text" id="editImg2" required>
+                </div>
+                <div class="input-group">
+                    <label>Foto 3 (URL del Carrete)</label>
+                    <input type="text" id="editImg3" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+
+        const defaultBlogData = {
+            articles: [
+                {
+                    key: 'event_1',
+                    title: 'Festival La Calaca y Día de Muertos',
+                    category: 'Día de Muertos',
+                    date: '1 y 2 de Noviembre',
+                    desc: 'Vive una atmósfera mágica entre desfiles de catrinas, altares monumentales en el Jardín Principal y un profundo sentido de tradición.',
+                    link: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1543810141-477d9c6686d1?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'event_2',
+                    title: 'Festival Internacional de Cine (GIFF)',
+                    category: 'Festivales',
+                    date: 'Junio / Julio',
+                    desc: 'San Miguel se convierte en la capital cinematográfica con proyecciones al aire libre, alfombras rojas y cineastas de todo el mundo.',
+                    link: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'event_3',
+                    title: 'Fiestas Patrias y San Miguel Arcángel',
+                    category: 'Tradiciones',
+                    date: 'Septiembre y Octubre',
+                    desc: 'La alborada, pirotecnia monumental, música de banda y el orgullo patrio llenan cada calle empedrada de color y algarabía.',
+                    link: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
+                    ]
+                }
+            ]
+        };
+
+        function getStoredBlog() {
+            const data = localStorage.getItem('sma_events_data');
+            if (!data) {
+                localStorage.setItem('sma_events_data', JSON.stringify(defaultBlogData));
+                return defaultBlogData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredBlog(data, syncCloud = true) {
+            localStorage.setItem('sma_events_data', JSON.stringify(data));
+            renderBlog(currentFilter, document.getElementById('searchInput').value);
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        async function pushDataToGoogleSheets(data) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data.articles)
+                });
+            } catch (err) {
+                console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        let currentFilter = 'todos';
+
+        function filterBlog(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const query = document.getElementById('searchInput').value;
+            renderBlog(category, query);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            renderBlog(currentFilter, query);
+        }
+
+        function renderBlog(filter = 'todos', searchQuery = '') {
+            const data = getStoredBlog();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('blogGridContainer');
+            container.innerHTML = '';
+
+            let filtered = filter === 'todos' ? data.articles : data.articles.filter(a => a.category === filter);
+
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(a => a.title.toLowerCase().includes(q) || a.category.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron eventos con esa búsqueda.</p>`;
+                return;
+            }
+
+            filtered.forEach(a => {
+                let slidesHtml = '';
+                a.images.forEach((img, idx) => {
+                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${a.title} foto ${idx+1}"></div>`;
+                });
+
+                container.innerHTML += `
+                    <div class="blog-card" id="card-${a.key}">
+                        <div class="carousel-container">
+                            <span class="category-badge">${a.category}</span>
+                            <span class="date-badge">${a.date}</span>
+                            <div class="carousel-slides" id="slides-${a.key}">
+                                ${slidesHtml}
+                            </div>
+                            ${a.images.length > 1 ? `
+                                <button class="carousel-btn prev" onclick="moveSlide('${a.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="carousel-btn next" onclick="moveSlide('${a.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                        </div>
+                        <div class="blog-body">
+                            <div>
+                                <h3 class="blog-title">${a.title}</h3>
+                                <p class="blog-desc">${a.desc}</p>
+                            </div>
+                            <div>
+                                <div class="blog-actions">
+                                    <a href="${a.link}" target="_blank" rel="noopener noreferrer" class="btn-action read">
+                                        <i class="fas fa-info-circle"></i> Ver Detalles
+                                    </a>
+                                    <button class="btn-action share" onclick="navigator.clipboard.writeText(window.location.href); alert('¡Enlace copiado al portapapeles!');">
+                                        <i class="fas fa-share-alt"></i> Compartir
+                                    </button>
+                                </div>
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditBlogModal('${a.key}')">✏️ Editar Evento</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Control del carrusel de 3 fotos
+        const slideIndices = {};
+        function moveSlide(key, direction) {
+            if (!slideIndices[key]) slideIndices[key] = 0;
+            const data = getStoredBlog();
+            const a = data.articles.find(el => el.key === key);
+            if (!a) return;
+
+            slideIndices[key] += direction;
+            if (slideIndices[key] >= a.images.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = a.images.length - 1;
+
+            const slider = document.getElementById(`slides-${key}`);
+            if (slider) {
+                slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+            }
+        }
+
+        // Auth & CMS
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderBlog(currentFilter, document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderBlog(currentFilter, document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        let currentEditingKey = null;
+        function openEditBlogModal(key) {
+            const data = getStoredBlog();
+            const a = data.articles.find(el => el.key === key);
+            if (!a) return;
+            currentEditingKey = key;
+            document.getElementById('editBlogKey').value = key;
+            document.getElementById('editTitle').value = a.title;
+            document.getElementById('editCategory').value = a.category;
+            document.getElementById('editDate').value = a.date;
+            document.getElementById('editDesc').value = a.desc;
+            document.getElementById('editLink').value = a.link;
+            document.getElementById('editImg1').value = a.images[0] || '';
+            document.getElementById('editImg2').value = a.images[1] || '';
+            document.getElementById('editImg3').value = a.images[2] || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedBlog(e) {
+            e.preventDefault();
+            const data = getStoredBlog();
+            const index = data.articles.findIndex(el => el.key === currentEditingKey);
+            if (index !== -1) {
+                data.articles[index].title = document.getElementById('editTitle').value;
+                data.articles[index].category = document.getElementById('editCategory').value;
+                data.articles[index].date = document.getElementById('editDate').value;
+                data.articles[index].desc = document.getElementById('editDesc').value;
+                data.articles[index].link = document.getElementById('editLink').value;
+                data.articles[index].images = [
+                    document.getElementById('editImg1').value,
+                    document.getElementById('editImg2').value,
+                    document.getElementById('editImg3').value
+                ];
+                saveStoredBlog(data, true);
+                closeEditModal();
+                alert('¡Evento actualizado con éxito!');
+            }
+        }
+
+        function downloadBlogTemplate() {
+            const data = getStoredBlog();
+            const flatData = data.articles.map(el => ({
+                titulo: el.title,
+                categoria: el.category,
+                fecha: el.date,
+                descripcion: el.desc,
+                enlace: el.link,
+                foto_1: el.images[0] || '',
+                foto_2: el.images[1] || '',
+                foto_3: el.images[2] || ''
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "EventosTradiciones");
+            XLSX.writeFile(workbook, "plantilla_eventos_vivesanmiguel.xlsx");
+        }
+
+        function handleBlogExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredBlog();
+                        json.forEach((row, idx) => {
+                            if (idx < data.articles.length) {
+                                if (row.titulo) data.articles[idx].title = row.titulo;
+                                if (row.categoria) data.articles[idx].category = row.categoria;
+                                if (row.fecha) data.articles[idx].date = row.fecha;
+                                if (row.descripcion) data.articles[idx].desc = row.descripcion;
+                                if (row.enlace) data.articles[idx].link = row.enlace;
+                                
+                                let imgs = [];
+                                if (row.foto_1) imgs.push(row.foto_1);
+                                if (row.foto_2) imgs.push(row.foto_2);
+                                if (row.foto_3) imgs.push(row.foto_3);
+                                if (imgs.length > 0) data.articles[idx].images = imgs;
+                            }
+                        });
+                        saveStoredBlog(data, true);
+                        alert('¡Importación masiva completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderBlog('todos');
+        });
+
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
