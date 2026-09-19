@@ -18,6 +18,8 @@
       --blanco: #ffffff;
       --gris-suave: #f0ebe4;
       --gris-texto: #6b635e;
+      --rojo-alerta: #b33939;
+      --rojo-hover: #8e2b2b;
       --borde: rgba(28, 24, 22, 0.08);
       --sombra-suave: 0 10px 30px -10px rgba(28, 24, 22, 0.06);
       --transicion: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -103,10 +105,36 @@
       text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
+    .admin-card-actions {
+      position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10;
+    }
+    body.admin-logged .admin-card-actions { display: flex; }
+    .btn-card-delete {
+      background: rgba(179, 57, 57, 0.9); color: var(--blanco); border: none;
+      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transicion); box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 0.9rem;
+    }
+    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
+
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
     .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .event-location { font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500; }
-    .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.5rem; flex: 1; }
+    
+    .event-location {
+      font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transicion);
+    }
+    .event-location:hover { color: var(--cantera-hover); text-decoration: underline; }
+
+    .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.2rem; flex: 1; }
+    
+    .event-web-link {
+      display: inline-flex; align-items: center; gap: 0.4rem; background: var(--gris-suave);
+      color: var(--noche); padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem;
+      text-decoration: none; font-weight: 600; margin-bottom: 1.2rem; transition: var(--transicion);
+      width: fit-content;
+    }
+    .event-web-link:hover { background: var(--cantera); color: var(--blanco); }
+
     .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
     .event-price { font-weight: 600; color: var(--terracota); }
 
@@ -177,6 +205,7 @@
         <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Enlace Web / Sitio Oficial (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..." ></div>
         <div class="form-group"><label>Enlace de Imagen (Google Drive o URL)</label><input type="text" id="inputImg" placeholder="https://..." required></div>
         <div class="form-group"><label>Descripción (desc)</label><textarea id="inputDesc" required></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Google Sheets</button>
@@ -191,7 +220,6 @@
 
     let globalEvents = [];
 
-    // Conversor infalible de URLs de Google Drive a formato directo de imagen
     function parseCloudImageUrl(url) {
       if (!url) return '';
       let cleanUrl = String(url).trim();
@@ -256,9 +284,7 @@
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
-        // Mapeo estricto basado en los nombres exactos de las columnas de tu Google Sheet
         globalEvents = data.map((item, index) => {
-          // Buscador robusto que localiza la propiedad correcta sin importar mayúsculas o espacios
           const findKey = (possibleKeys) => {
             const found = Object.keys(item).find(k => {
               const cleanK = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -270,22 +296,28 @@
           const rawDateValue = findKey(['date', 'fecha', 'dia']);
           const rawImgValue = findKey(['img', 'imagen', 'foto']);
           const processedImg = parseCloudImageUrl(rawImgValue);
+          const locationName = findKey(['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende';
+          const webLinkValue = findKey(['link', 'web', 'enlace', 'url']);
+
+          const mapQuery = encodeURIComponent(`${locationName}, San Miguel de Allende, Gto.`);
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
           return {
-            id: 'ev-sheets-' + index,
+            rowIndex: index + 2,
             name: findKey(['name', 'nombre', 'evento']) || 'Evento sin nombre',
             category: findKey(['category', 'categoria']) || 'General',
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
             time: findKey(['time', 'horario', 'hora']) || 'Todo el día',
             price: findKey(['price', 'costo', 'precio']) || 'Acceso Libre',
-            location: findKey(['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende',
+            location: locationName,
+            mapsUrl: mapsUrl,
+            link: webLinkValue,
             img: processedImg || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
           };
         });
 
-        // 1. FILTRADO AUTOMÁTICO DE VIGENCIA (Ocultar eventos pasados)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -307,7 +339,6 @@
           }
         });
 
-        // 2. ORDENAMIENTO CRONOLÓGICO ESTRICTO (Por fecha ascendente: del más próximo al más lejano)
         activeEvents.sort((a, b) => {
           if (!a.rawDate) return 1;
           if (!b.rawDate) return -1;
@@ -337,17 +368,24 @@
       
       let html = '';
       globalEvents.forEach(ev => {
+        // Validación limpia: si no hay enlace web, la variable queda vacía y no se renderiza nada
+        const webButtonHtml = (ev.link && ev.link !== '') ? `<a href="${ev.link}" target="_blank" class="event-web-link">🌐 Sitio Oficial / Boletos ↗</a>` : '';
+        
         html += `
           <div class="event-card">
             <div class="event-img-wrapper">
               <span class="event-category">${ev.category}</span>
               <span class="event-date-badge">📅 ${ev.date}</span>
+              <div class="admin-card-actions">
+                <button class="btn-card-delete" onclick="handleDeleteEvent(${ev.rowIndex}, '${ev.name.replace(/'/g, "\\'")}')" title="Eliminar evento de Google Sheets">🗑️</button>
+              </div>
               <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
             </div>
             <div class="event-body">
               <h3 class="event-name">${ev.name}</h3>
-              <span class="event-location">📍 ${ev.location}</span>
+              <a href="${ev.mapsUrl}" target="_blank" class="event-location" title="Ver ubicación en Google Maps">📍 ${ev.location} ↗</a>
               <p class="event-desc">${ev.desc}</p>
+              ${webButtonHtml}
               <div class="event-meta">
                 <span>🕒 ${ev.time}</span>
                 <span class="event-price">${ev.price}</span>
@@ -398,6 +436,7 @@
         time: document.getElementById('inputTime').value,
         price: document.getElementById('inputPrice').value,
         location: document.getElementById('inputLocation').value,
+        link: document.getElementById('inputWeb').value,
         img: document.getElementById('inputImg').value,
         desc: document.getElementById('inputDesc').value
       };
@@ -423,6 +462,35 @@
       } finally {
         btn.innerText = "Guardar en Google Sheets";
         btn.disabled = false;
+      }
+    }
+
+    async function handleDeleteEvent(rowIndex, eventName) {
+      if (!confirm(`¿Estás seguro de eliminar permanentemente el evento "${eventName}" de Google Sheets?`)) {
+        return;
+      }
+
+      const deletePayload = {
+        action: "delete",
+        rowIndex: rowIndex
+      };
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: JSON.stringify(deletePayload)
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          alert('¡Evento eliminado correctamente de Google Sheets!');
+          fetchGoogleSheetData();
+        } else {
+          alert('Error al eliminar: ' + (result.message || 'No se pudo procesar la solicitud en el servidor.'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Ocurrió un error de conexión al intentar borrar el registro.');
       }
     }
 
