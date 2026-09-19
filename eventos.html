@@ -173,10 +173,10 @@
       <form onsubmit="handleSaveEvent(event)">
         <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
         <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Feria y Tradición" required></div>
-        <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Fecha (date: YYYY-MM-DD o texto)</label><input type="text" id="inputDate" placeholder="2026-10-16 o Viernes 16 de Octubre" required></div>
         <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
-        <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
-        <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="$2,500 MXN" required></div>
+        <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Carretera a dolores hidalgo" required></div>
         <div class="form-group"><label>Imagen URL (img)</label><input type="url" id="inputImg" placeholder="https://..." required></div>
         <div class="form-group"><label>Descripción (desc)</label><textarea id="inputDesc" required></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Google Sheets</button>
@@ -195,6 +195,11 @@
       if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
       if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
+
+      // Si ya viene con formato amigable en texto (ej. desde Google Sheets celdas de texto)
+      if (isNaN(cleanStr) && !/^\d{4}-\d{2}-\d{2}$/.test(cleanStr) && !cleanStr.includes('T')) {
+        return cleanStr.charAt(0).toUpperCase() + cleanStr.slice(1);
+      }
 
       try {
         let date;
