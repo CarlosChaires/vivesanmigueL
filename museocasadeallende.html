@@ -3,36 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museo Casa de Allende - Vive San Miguel de Allende</title>
-    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
+    <title>Vive San Miguel | Museo Casa de Allende</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <style>
         :root {
-            --bg-sanmiguel: #fcfbfa;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --border-subtle: rgba(200, 125, 85, 0.15);
-            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
-            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--primary-navy);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* --- Lienzo de partículas inmersivas de fondo --- */
         #immersive-canvas {
             position: fixed;
             top: 0;
@@ -43,286 +49,255 @@
             z-index: 0;
         }
 
-        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
         #cursor-glow {
             position: fixed;
             top: 0;
             left: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            transition: width 0.4s, height 0.4s;
-            filter: blur(50px);
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
-        .sma-main-wrapper {
+        .container {
             position: relative;
             z-index: 2;
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 50px 20px;
-            box-sizing: border-box;
+            padding: 3rem 2rem;
         }
 
-        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
-        .top-action-bar {
+        /* --- Header --- */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
+            margin-bottom: 3rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
         }
 
-        .btn-home-back {
-            display: inline-flex;
+        .brand {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
+            gap: 14px;
             text-decoration: none;
-            font-size: 12px;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
             font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1.5px solid var(--primary-navy);
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: var(--white);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-        }
-
-        .btn-home-back:hover {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
-        }
-
-        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
-        .social-quick-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--white);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--primary-navy);
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
         }
 
-        .social-btn.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
         }
 
-        .social-btn.tiktok:hover {
-            background: #000000;
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        /* --- Barra de Búsqueda Interna --- */
-        .search-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .site-search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px;
-            border-radius: 50px;
-            border: 1.5px solid var(--border-subtle);
-            background: var(--white);
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--primary-navy);
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .site-search-input:focus {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
-        }
-
-        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
             justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
+            margin-bottom: 2rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
             flex-wrap: wrap;
-            text-align: center;
-        }
-
-        .site-logo-container {
-            width: 95px;
-            height: 95px;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            background: var(--white);
-            border-radius: 50%;
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
-            border: 2px solid var(--cantera-terracotta);
-            overflow: hidden;
-            padding: 10px;
-            animation: float-logo 5s ease-in-out infinite;
-            flex-shrink: 0;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        @keyframes float-logo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
         }
 
-        .site-logo-container img {
+        /* --- Artículo Principal / Detalle del Sitio --- */
+        .site-hero-card {
+            background: var(--surface-card);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 4rem;
+        }
+
+        .site-hero-img-wrap {
+            position: relative;
+            height: 380px;
+            width: 100%;
+            background: #F4EBE6;
+        }
+
+        .site-hero-img-wrap img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
+            object-fit: cover;
         }
 
-        .site-logo-container:hover img {
-            transform: scale(1.08);
+        .site-badge-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(45, 36, 34, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .brand-text-group {
+        .site-content-body {
+            padding: 3rem;
+        }
+
+        .site-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+        }
+
+        .site-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Grid de Info Práctica (Horarios, Costos, Recomendaciones) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .info-box h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box p, .info-box ul {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            list-style: none;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            gap: 6px;
         }
 
-        @media screen and (max-width: 768px) {
-            .brand-text-group { align-items: center; }
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--primary-navy);
-            text-decoration: none;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin: 0;
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--cantera-terracotta);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 6px;
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
-            margin: 40px 0;
-            opacity: 0.3;
-        }
-
-        /* --- Tarjeta de Contenido Principal --- */
-        .content-card {
-            background: var(--white);
-            border-radius: 28px;
-            padding: 45px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-card);
+        .info-box ul li {
             position: relative;
-            overflow: hidden;
+            padding-left: 14px;
         }
 
-        .content-card::before {
-            content: '';
+        .info-box ul li::before {
+            content: "•";
             position: absolute;
-            top: 0;
             left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
+            color: var(--accent-terracotta);
         }
 
-        /* Estilo de Imagen Adaptado */
-        .wp-block-image {
-            margin: 0 0 35px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* --- Sección de Video --- */
+        .video-section {
+            background: var(--surface-card);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 4rem;
+            text-align: center;
         }
 
-        .wp-block-image img {
-            width: 100% !important;
-            max-width: 1024px;
-            height: auto !important;
-            border-radius: 18px !important;
-            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
-            display: block;
+        .video-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
         }
 
-        .wp-block-paragraph p, .wp-block-paragraph {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            text-align: justify;
-        }
-
-        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
-        .media-cta-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        @media screen and (max-width: 768px) {
-            .media-cta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Contenedor de Video Inmersivo Compacto y Elegante */
-        .video-inmersivo-container {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-subtle);
+        .video-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
         }
 
         .video-wrapper {
             position: relative;
+            width: 100%;
             padding-bottom: 56.25%;
             height: 0;
+            border-radius: 16px;
             overflow: hidden;
-            max-width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: #000;
         }
 
         .video-wrapper iframe {
@@ -331,212 +306,517 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: 0;
+            border: none;
         }
 
-        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
-        .explore-more-box {
-            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
-            border: 1.5px dashed var(--cantera-terracotta);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
             justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
         }
 
-        .explore-more-box h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.25rem;
-            line-height: 1.3;
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        .explore-more-box p {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 20px;
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
         }
 
-        .btn-explore-catalogue {
-            display: inline-block;
-            background: var(--primary-navy);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 11px;
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
         }
 
-        .btn-explore-catalogue:hover {
-            background: var(--cantera-terracotta);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
         }
 
-        /* Créditos y Fuentes Oficiales INAH y Videos */
-        .source-credit {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
-            text-align: center;
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
         }
 
-        .source-credit a {
-            color: var(--cantera-terracotta);
-            text-decoration: underline;
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
             font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
         }
 
-        .source-credit a:hover {
-            color: var(--primary-navy);
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
         }
 
-        /* --- Responsive para Móviles --- */
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 15px;
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .info-grid {
+                grid-template-columns: 1fr;
             }
-            .interactive-brand-title {
-                font-size: 2rem;
+            .site-content-body {
+                padding: 2rem 1.5rem;
             }
-            .content-card {
-                padding: 25px 20px;
-            }
-            .top-action-bar {
-                flex-direction: column;
-                align-items: stretch;
+            .video-section {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Lienzo de partículas inmersivas flotantes de fondo -->
     <canvas id="immersive-canvas"></canvas>
-
-    <!-- Animación de fondo interactiva (Sigue el cursor) -->
     <div id="cursor-glow"></div>
 
-    <div class="sma-main-wrapper">
+    <div class="container" id="siteContainer">
 
-        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
-        <div class="top-action-bar">
-            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Inicio
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
             </a>
-            
-            <div class="social-quick-links">
-                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
-            </div>
-        </div>
-
-        <!-- Barra de Búsqueda Interactiva -->
-        <div class="search-container">
-            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
-        </div>
-
-        <!-- Cabecera Institucional Inmersiva SMA -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
-            </div>
-            <div class="brand-text-group">
-                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">MUSEO CASA DE ALLENDE</a>
-                <span class="brand-subtitle">Patrimonio de la Humanidad • Historia y Cultura</span>
-            </div>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
         </header>
 
-        <hr class="wp-block-separator" />
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadSiteTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
+            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="openEditModal()">✏️ Editar Contenido</button>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
 
-        <!-- Tarjeta con Contenido Detallado del Museo Casa de Allende -->
-        <div class="content-card">
-
-            <!-- wp:image {"id":245,"sizeSlug":"large","linkDestination":"none"} -->
-            <figure class="wp-block-image size-large">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-18.png?w=1024" alt="Museo Casa de Allende" class="wp-image-245" />
-            </figure>
-            <!-- /wp:image -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>El Museo Histórico de San Miguel de Allende ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.<br>Domingo Narciso de Allende, padre del prócer, mandó construir esta casa por el año de 1769 como regalo de bodas para su esposa María Ana Unzaga y, probablemente, en 1785 se terminó la construcción. Durante la Guerra de Independencia, la casa fue confiscada por el gobierno virreinal, pero al terminar la contienda fue devuelta a sus propietarios, quienes la vendieron a particulares. En 1976 la adquiere el gobierno del estado de Guanajuato, el cual la cede al INAH en 1984 para convertirla en museo histórico. En 2008 se le hace una restauración arquitectónica y museográfica.</p>
+        <!-- Tarjeta Principal del Museo -->
+        <div class="site-hero-card">
+            <div class="site-hero-img-wrap">
+                <span class="site-badge-category" id="displayCategory">Museo Histórico</span>
+                <img id="displayImg" src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende">
             </div>
-            <!-- /wp:paragraph -->
+            <div class="site-content-body">
+                <h1 class="site-title" id="displayTitle">Museo Casa de Allende</h1>
+                <p class="site-desc" id="displayDesc">
+                    El Museo Histórico de San Miguel de Allende ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.<br><br>
+                    Domingo Narciso de Allende, padre del prócer, mandó construir esta casa por el año de 1769 como regalo de bodas para su esposa María Ana Unzaga y, probablemente, en 1785 se terminó la construcción. Durante la Guerra de Independencia, la casa fue confiscada por el gobierno virreinal, pero al terminar la contienda fue devuelta a sus propietarios, quienes la vendieron a particulares. En 1976 la adquiere el gobierno del estado de Guanajuato, el cual la cede al INAH en 1984 para convertirla en museo histórico. En 2008 se le hace una restauración arquitectónica y museográfica.<br><br>
+                    Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen. El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia. Hay dos salas en homenaje a Ignacio Allende, donde se destaca su papel en el movimiento independentista.<br><br>
+                    La reapertura con colección y museografía nuevas fue el 4 de abril de 2001. El museo cuenta con un nuevo acervo de 1,047 piezas, de las cuales la mayor parte se incorporó con la nueva restauración y consiste en originales y reproducciones de pintura de caballete, documentos, esculturas, enseres domésticos, arte decorativo, platería, textiles, objetos de charrería, productos relacionados con los estancos (los comercios monopolizados por el Estado virreinal), artículos religiosos, banderas, mobiliario, instrumentos musicales, mantelería, juguetes y armas.
+                </p>
 
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia. Hay dos salas en homenaje a Ignacio Allende, donde se destaca su papel en el movimiento independentista.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>La reapertura con colección y museografía nuevas fue el 4 de abril de 2001. El museo cuenta con un nuevo acervo de 1,047 piezas, de las cuales la mayor parte se incorporó con la nueva restauración y consiste en originales y reproducciones de pintura de caballete, documentos, esculturas, enseres domésticos, arte decorativo, platería, textiles, objetos de charrería, productos relacionados con los estancos (los comercios monopolizados por el Estado virreinal), artículos religiosos, banderas, mobiliario, instrumentos musicales, mantelería, juguetes y armas.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
-            <div class="media-cta-grid">
-                <!-- Sección de Video Inmersivo Reproducible -->
-                <div class="video-inmersivo-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/w0oIMTXLuZk" 
-                            title="Video San Miguel de Allende" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
+                <!-- Grid de Info Práctica (Horarios, Costos, Recomendaciones) -->
+                <div class="info-grid">
+                    <div class="info-box">
+                        <h3><i class="far fa-clock"></i> Horarios</h3>
+                        <p id="displayHorarios">
+                            Martes a Domingo<br>
+                            9:00 am – 5:00 pm<br>
+                            Lunes: Cerrado
+                        </p>
+                    </div>
+                    <div class="info-box">
+                        <h3><i class="fas fa-ticket-alt"></i> Costos</h3>
+                        <p id="displayCostos">
+                            Entrada General: $75 MXN<br>
+                            <small>*Entrada libre para menores de 13 años, estudiantes y maestros con credencial vigente (domingos entrada gratuita para nacionales).</small>
+                        </p>
+                    </div>
+                    <div class="info-box">
+                        <h3><i class="fas fa-lightbulb"></i> Recomendaciones</h3>
+                        <ul id="displayRecomendaciones">
+                            <li>Dedica al menos 1 hora y media para recorrerlo con calma.</li>
+                            <li>Usa calzado cómodo para caminar por los patios empedrados.</li>
+                            <li>Combina tu visita con un recorrido por el cercano Jardín Principal.</li>
+                        </ul>
                     </div>
                 </div>
-
-                <!-- Bloque de Invitación a Seguir Leyendo -->
-                <div class="explore-more-box">
-                    <h3>¿Listo para continuar tu recorrido?</h3>
-                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
-                </div>
             </div>
-
-            <div class="source-credit" style="margin-top: 10px;">
-                Video cortesía de: SECTUR de Guanajuato (<a href="https://youtu.be/w0oIMTXLuZk?si=0cnacrdxQ83g5e0e" target="_blank" rel="noopener noreferrer">YouTube</a>)
-            </div>
-
-            <!-- Créditos y Fuentes Oficiales -->
-            <div class="source-credit">
-                Fuente e información oficial obtenida de: <a href="https://lugares.inah.gob.mx/es/node/4519" target="_blank" rel="noopener noreferrer">INAH Lugares - Museo Histórico Casa de Allende</a>.
-            </div>
-
         </div>
+
+        <!-- Sección de Video Embebido -->
+        <section class="video-section">
+            <h2>Recorrido en Video</h2>
+            <p>Sumérgete visualmente en los pasillos y salas de esta joya histórica de San Miguel de Allende.</p>
+            <div class="video-wrapper">
+                <iframe id="displayVideo" src="https://www.youtube.com/embed/w0oIMTXLuZk" title="Video Museo Casa de Allende" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
 
     </div>
 
-    <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content" style="max-width: 550px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-top">
+                <h3>Editar Museo Casa de Allende</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedContent(event)">
+                <div class="input-group">
+                    <label>Nombre del Sitio</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="input-group">
+                    <label>Categoría / Etiqueta</label>
+                    <input type="text" id="editCategory" required>
+                </div>
+                <div class="input-group">
+                    <label>URL de la Imagen Principal</label>
+                    <input type="text" id="editImg" required>
+                </div>
+                <div class="input-group">
+                    <label>Descripción Completa</label>
+                    <textarea id="editDesc" rows="6" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Horarios</label>
+                    <textarea id="editHorarios" rows="2" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Costos</label>
+                    <textarea id="editCostos" rows="2" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Recomendaciones (separadas por línea)</label>
+                    <textarea id="editRecomendaciones" rows="3" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>URL del Video de YouTube (Formato Embed)</label>
+                    <input type="text" id="editVideo" required placeholder="https://www.youtube.com/embed/...">
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios y Sincronizar</button>
+            </form>
+        </div>
+    </div>
+
     <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+
+        const defaultMuseumData = {
+            title: 'Museo Casa de Allende',
+            category: 'Museo Histórico',
+            img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024',
+            desc: `El Museo Histórico de San Miguel de Allende ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.\n\nDomingo Narciso de Allende, padre del prócer, mandó construir esta casa por el año de 1769 como regalo de bodas para su esposa María Ana Unzaga y, probablemente, en 1785 se terminó la construcción. Durante la Guerra de Independencia, la casa fue confiscada por el gobierno virreinal, pero al terminar la contienda fue devuelta a sus propietarios, quienes la vendieron a particulares. En 1976 la adquiere el gobierno del estado de Guanajuato, el cual la cede al INAH en 1984 para convertirla en museo histórico. En 2008 se le hace una restauración arquitectónica y museográfica.\n\nCon un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen. El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia. Hay dos salas en homenaje a Ignacio Allende, donde se destaca su papel en el movimiento independentista.\n\nLa reapertura con colección y museografía nuevas fue el 4 de abril de 2001. El museo cuenta con un nuevo acervo de 1,047 piezas, de las cuales la mayor parte se incorporó con la nueva restauración y consiste en originales y reproducciones de pintura de caballete, documentos, esculturas, enseres domésticos, arte decorativo, platería, textiles, objetos de charrería, productos relacionados con los estancos (los comercios monopolizados por el Estado virreinal), artículos religiosos, banderas, mobiliario, instrumentos musicales, mantelería, juguetes y armas.`,
+            horarios: 'Martes a Domingo\n9:00 am – 5:00 pm\nLunes: Cerrado',
+            costos: 'Entrada General: $75 MXN\n*Entrada libre para menores de 13 años, estudiantes y maestros con credencial vigente (domingos entrada gratuita para nacionales).',
+            recomendaciones: 'Dedica al menos 1 hora y media para recorrerlo con calma.\nUsa calzado cómodo para caminar por los patios empedrados.\nCombina tu visita con un recorrido por el cercano Jardín Principal.',
+            video: 'https://www.youtube.com/embed/w0oIMTXLuZk'
+        };
+
+        function getStoredData() {
+            const data = localStorage.getItem('sma_museo_allende_v2');
+            if (!data) {
+                localStorage.setItem('sma_museo_allende_v2', JSON.stringify(defaultMuseumData));
+                return defaultMuseumData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredData(data, syncCloud = true) {
+            localStorage.setItem('sma_museo_allende_v2', JSON.stringify(data));
+            renderData(data);
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        async function pushDataToGoogleSheets(data) {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado';
+            } catch (err) {
+                statusEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Guardado local';
+            }
+        }
+
+        function renderData(d) {
+            document.getElementById('displayTitle').innerText = d.title;
+            document.getElementById('displayCategory').innerText = d.category;
+            document.getElementById('displayImg').src = d.img;
+            document.getElementById('displayDesc').innerHTML = d.desc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+            
+            document.getElementById('displayHorarios').innerHTML = d.horarios.replace(/\n/g, '<br>');
+            document.getElementById('displayCostos').innerHTML = d.costos.replace(/\n/g, '<br>');
+
+            const recContainer = document.getElementById('displayRecomendaciones');
+            recContainer.innerHTML = '';
+            const recs = d.recomendaciones.split(/\n/);
+            recs.forEach(r => {
+                if(r.trim() !== '') {
+                    const li = document.createElement('li');
+                    li.innerText = r.trim();
+                    recContainer.appendChild(li);
+                }
+            });
+
+            document.getElementById('displayVideo').src = d.video;
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            alert('Sesión cerrada.');
+        }
+
+        function openEditModal() {
+            const d = getStoredData();
+            document.getElementById('editTitle').value = d.title;
+            document.getElementById('editCategory').value = d.category;
+            document.getElementById('editImg').value = d.img;
+            document.getElementById('editDesc').value = d.desc;
+            document.getElementById('editHorarios').value = d.horarios;
+            document.getElementById('editCostos').value = d.costos;
+            document.getElementById('editRecomendaciones').value = d.recomendaciones;
+            document.getElementById('editVideo').value = d.video;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedContent(e) {
+            e.preventDefault();
+            const newData = {
+                title: document.getElementById('editTitle').value,
+                category: document.getElementById('editCategory').value,
+                img: document.getElementById('editImg').value,
+                desc: document.getElementById('editDesc').value,
+                horarios: document.getElementById('editHorarios').value,
+                costos: document.getElementById('editCostos').value,
+                recomendaciones: document.getElementById('editRecomendaciones').value,
+                video: document.getElementById('editVideo').value
+            };
+            saveStoredData(newData, true);
+            closeEditModal();
+            alert('¡Información del museo actualizada con éxito!');
+        }
+
+        function downloadSiteTemplate() {
+            const d = getStoredData();
+            const worksheet = XLSX.utils.json_to_sheet([d]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "MuseoAllende");
+            XLSX.writeFile(workbook, "plantilla_museo_allende.xlsx");
+        }
+
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const row = json[0];
+                        const newData = {
+                            title: row.title || row.titulo || defaultMuseumData.title,
+                            category: row.category || row.categoria || defaultMuseumData.category,
+                            img: row.img || row.imagen_url || defaultMuseumData.img,
+                            desc: row.desc || row.descripcion || defaultMuseumData.desc,
+                            horarios: row.horarios || defaultMuseumData.horarios,
+                            costos: row.costos || defaultMuseumData.costos,
+                            recomendaciones: row.recomendaciones || defaultMuseumData.recomendaciones,
+                            video: row.video || defaultMuseumData.video
+                        };
+                        saveStoredData(newData, true);
+                        alert('¡Datos importados desde Excel exitosamente!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderData(getStoredData());
+        });
+
+        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let glowX = 0, glowY = 0;
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
 
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -544,26 +824,22 @@
         });
 
         function animateGlow() {
-            glowX += (mouseX - glowX) * 0.08;
-            glowY += (mouseY - glowY) * 0.08;
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
 
-        // Canvas de partículas inmersivas fluidas
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
+        let width, height, particles = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-
         window.addEventListener('resize', resize);
         resize();
 
@@ -577,64 +853,45 @@
                 this.density = (Math.random() * 20) + 5;
                 this.vx = Math.random() * 0.4 - 0.2;
                 this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
             }
             update() {
                 let dx = mouseX - this.x;
                 let dy = mouseY - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 140;
-                let force = (maxDistance - distance) / maxDistance;
-
+                let maxDistance = 150;
                 if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
                 } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 20;
-                    }
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
                 }
-
                 this.baseX += this.vx;
                 this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
             }
             draw() {
-                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
                 ctx.fill();
             }
         }
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
         }
-
         initParticles();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
-
         animateParticles();
     </script>
 </body>
