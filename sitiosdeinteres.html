@@ -3,36 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel - Guía Turística de San Miguel de Allende</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <title>Vive San Miguel | Sitios de Interés</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <style>
         :root {
-            --bg-sanmiguel: #fbf9f6;
-            --surface-glass: rgba(255, 255, 255, 0.88);
-            --surface-card: rgba(255, 255, 255, 0.96);
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --primary-navy: #1b2a4a;
-            --text-main: #232b38;
-            --text-muted: #717c89;
-            --border-glass: rgba(200, 125, 85, 0.15);
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
         }
 
         *, *::before, *::after {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-sanmiguel);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         #immersive-canvas {
@@ -49,509 +53,809 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 650px;
-            height: 650px;
-            background: radial-gradient(circle, rgba(212, 131, 132, 0.22) 0%, rgba(200, 125, 85, 0.12) 50%, transparent 80%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            transition: width 0.4s, height 0.4s;
-            filter: blur(60px);
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
-        .sma-main-wrapper {
+        .container {
             position: relative;
             z-index: 2;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 50px 24px;
+            padding: 3rem 2rem;
         }
 
-        .sma-inicio-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sma-inicio-btn {
-            background: var(--surface-card) !important;
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--border-glass) !important;
-            padding: 10px 26px !important;
-            border-radius: 40px !important;
-            font-weight: 600 !important;
-            font-size: 13px !important;
-            text-decoration: none !important;
-            display: inline-block;
-            box-shadow: 0 4px 20px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 0.5px;
+            border-radius: 20px;
         }
 
-        .sma-inicio-btn:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            border-color: var(--cantera-terracotta) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.25);
-        }
-
-        .site-header-custom {
+        .brand {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 28px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        .site-logo-container {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.15) 0%, rgba(255, 255, 255, 0.95) 70%);
-            backdrop-filter: blur(12px);
-            border-radius: 50%;
-            overflow: hidden;
-            border: 1px solid rgba(200, 125, 85, 0.3);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
-            animation: float-logo 5s ease-in-out infinite;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            padding: 12px;
-        }
-
-        .site-logo-container:hover {
-            transform: scale(1.08) rotate(3deg);
-            box-shadow: 0 20px 45px rgba(200, 125, 85, 0.35);
-        }
-
-        @keyframes float-logo {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .site-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .interactive-brand-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif, sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--primary-navy);
+            gap: 14px;
             text-decoration: none;
-            position: relative;
-            cursor: pointer;
-            display: inline-block;
-            transition: color 0.3s ease;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            text-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
         }
 
-        .interactive-brand-title::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            bottom: -6px;
-            left: 0;
-            background-color: var(--cantera-terracotta);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 2px;
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
         }
 
-        .interactive-brand-title:hover {
-            color: var(--cantera-terracotta);
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
         }
 
-        .interactive-brand-title:hover::after {
-            width: 100%;
-        }
-
-        .brand-subtitle-badge {
+        .btn-nav-home {
             font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--cantera-terracotta);
-            margin-top: 8px;
-            font-weight: 750;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
         }
 
-        /* --- Grid Moderno de Tarjetas (Estilo Galería Profesional) --- */
-        .destinations-grid {
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        /* --- Admin Bar --- */
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .admin-bar.active {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        /* --- Títulos y Buscador --- */
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Barra de Búsqueda */
+        .search-bar-wrap {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar-wrap input:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .search-bar-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Grid de Sitios de Interés --- */
+        .sites-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
         }
 
-        .destination-card {
-            background: var(--surface-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
+        .site-card {
+            background: var(--surface-card);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(27, 42, 74, 0.05);
-            border: 1px solid var(--border-glass);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s ease;
         }
 
-        .destination-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(200, 125, 85, 0.18);
-            border-color: rgba(200, 125, 85, 0.4);
-            background: rgba(255, 255, 255, 1);
+        .site-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
         }
 
-        .card-image-wrapper {
-            width: 100%;
-            height: 240px;
-            overflow: hidden;
-            background: #f4eee9;
+        /* Imagen destacada */
+        .card-image-wrap {
             position: relative;
+            height: 220px;
+            background: #F4EBE6;
+            overflow: hidden;
         }
 
-        .card-image-wrapper img {
+        .card-image-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.5s ease;
         }
 
-        .destination-card:hover .card-image-wrapper img {
-            transform: scale(1.06);
+        .site-card:hover .card-image-wrap img {
+            transform: scale(1.05);
         }
 
-        .card-body {
-            padding: 24px;
+        .site-body {
+            padding: 1.8rem;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .site-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+        }
+
+        .site-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-action {
+            width: 100%;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-grow: 1;
-            text-align: center;
+            gap: 6px;
+            padding: 11px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: var(--text-main);
+            color: #ffffff;
         }
 
-        .destination-card .wp-block-button__link {
-            background: var(--surface-card) !important;
-            backdrop-filter: blur(10px);
-            color: var(--primary-navy) !important;
-            border: 1px solid var(--cantera-terracotta) !important;
-            padding: 12px 26px !important;
-            border-radius: 40px !important;
-            font-weight: 700 !important;
-            font-size: 13px !important;
-            text-decoration: none !important;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(200, 125, 85, 0.08);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            letter-spacing: 0.5px;
-            text-align: center;
+        .btn-action:hover {
+            background: var(--accent-terracotta-dark);
+            transform: translateY(-1px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
             width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
         }
 
-        .destination-card .wp-block-button__link:hover {
-            background: var(--cantera-terracotta) !important;
-            color: #ffffff !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(200, 125, 85, 0.25);
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
         }
 
-        .footer-brand-section {
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 50px;
-            border-top: 1px solid var(--border-glass);
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .footer-brand-section p {
+        .modal-top h3 {
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary-navy);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 12px !important;
-            margin: 0;
         }
 
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 16px;
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .sites-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .site-header-custom {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .interactive-brand-wrapper {
-                align-items: center;
-                text-align: center;
-            }
-            .interactive-brand-title {
-                font-size: 2.2rem;
-            }
-            .destinations-grid {
+        }
+
+        @media (max-width: 640px) {
+            .sites-grid {
                 grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
         }
     </style>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Lienzo de partículas inmersivas flotantes de fondo -->
     <canvas id="immersive-canvas"></canvas>
-
-    <!-- Luz orgánica interactiva que sigue el cursor -->
     <div id="cursor-glow"></div>
 
-    <div class="sma-main-wrapper">
+    <div class="container">
 
-        <!-- Botón de Inicio Superior -->
-        <div class="sma-inicio-container">
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="sma-inicio-btn">🏠 Inicio</a>
-        </div>
-
-        <!-- Cabecera con Logotipo y Guía Turística -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" title="Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel">
-            </div>
-            <div class="interactive-brand-wrapper">
-                <a href="https://carloschaires.github.io/vivesanmigueL/" class="interactive-brand-title">VIVE SAN MIGUEL</a>
-                <span class="brand-subtitle-badge">Guía Turística de San Miguel de Allende</span>
-            </div>
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
         </header>
 
-        <!-- Contenedor en Grid Profesional (Elegante y Uniforme) -->
-        <div class="destinations-grid">
-
-            <!-- 1. Museo Casa de Allende -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/">MUSEO CASA DE ALLENDE</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. Casa del Mayorazgo de la Canal -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/">CASA DEL MAYORAZGO DE LA CANAL</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Univerciudad Casa del Nigromante -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835" alt="Univerciudad Casa del Nigromante">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/">UNIVERCIUDAD CASA DEL NIGROMANTE</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Centro Cultural Ignacio Ramírez -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024" alt="Centro Cultural Ignacio Ramírez">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://wordpress.com/post/vivemigueldeallende.wordpress.com/180">CENTRO CULTURAL IGNACIO RAMIREZ</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. Instituto Allende -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024" alt="Instituto Allende">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/">INSTITUTO ALLENDE</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. Fábrica La Aurora -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024" alt="Fábrica La Aurora">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/">FABRICA LA AURORA</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. Mercado Ignacio Ramírez -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/">MERCADO IGNACIO RAMIREZ</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. Parque Juárez -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024" alt="Parque Juárez">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/">PARQUE JUAREZ</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9. Paseo del Chorro -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024" alt="Paseo del Chorro">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/">PASEO DEL CHORRO</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 10. Mirador -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639" alt="Mirador">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/">MIRADOR</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 11. El Charco del Ingenio -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024" alt="El Charco del Ingenio">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/">EL CHARCO DEL INGENIO</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 12. Atotonilco -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Atotonilco">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/">ATOTONILCO</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 13. Balnearios de Aguas Termales -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889" alt="Balnearios de Aguas Termales">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/">BALNEARIOS DE AGUAS TERMALES</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 14. Cañada de la Virgen -->
-            <div class="destination-card">
-                <div class="card-image-wrapper">
-                    <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">
-                        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600" alt="Cañada de la Virgen">
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="wp-block-button" style="width: 100%;">
-                        <a class="wp-block-button__link wp-element-button" href="https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/">CAÑADA DE LA VIRGEN</a>
-                    </div>
-                </div>
-            </div>
-
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadSitesTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleSitesExcelUpload(event)">
+            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
-        <!-- Footer institucional -->
-        <div class="footer-brand-section">
-            <p>vivesanmiguel.com</p>
+        <!-- Título de la Sección -->
+        <div class="section-header">
+            <h1>Sitios de Interés</h1>
+            <p>Conoce los recintos, monumentos y lugares más emblemáticos de San Miguel de Allende.</p>
         </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-bar-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Busca por nombre de sitio..." oninput="handleSearch()">
+        </div>
+
+        <!-- Grid de Sitios de Interés -->
+        <div class="sites-grid" id="sitesGridContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
 
     </div>
 
-    <!-- Script de luz orgánica interactiva y partículas inmersivas de fondo -->
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Sitio</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedSite(event)">
+                <input type="hidden" id="editSiteKey">
+                <div class="input-group">
+                    <label>Nombre del Sitio</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="input-group">
+                    <label>Enlace (URL)</label>
+                    <input type="text" id="editLink" required>
+                </div>
+                <div class="input-group">
+                    <label>Imagen (URL)</label>
+                    <input type="text" id="editImg" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
     <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+
+        const defaultSitesData = {
+            sites: [
+                {
+                    key: 'site_1',
+                    title: 'MUSEO CASA DE ALLENDE',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/museo-ca-de-allende/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024'
+                },
+                {
+                    key: 'site_2',
+                    title: 'CASA DEL MAYORAZGO DE LA CANAL',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/casa-del-mayorazgo-de-la-canal/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024'
+                },
+                {
+                    key: 'site_3',
+                    title: 'UNIVERCIUDAD CASA DEL NIGROMANTE',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/univerciudad-casa-del-ningromante/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835'
+                },
+                {
+                    key: 'site_4',
+                    title: 'CENTRO CULTURAL IGNACIO RAMIREZ',
+                    link: 'https://wordpress.com/post/vivemigueldeallende.wordpress.com/180',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024'
+                },
+                {
+                    key: 'site_5',
+                    title: 'INSTITUTO ALLENDE',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/instituto-allende/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024'
+                },
+                {
+                    key: 'site_6',
+                    title: 'FABRICA LA AURORA',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/fabrica-la-aurora/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024'
+                },
+                {
+                    key: 'site_7',
+                    title: 'MERCADO IGNACIO RAMIREZ',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/mercado-ignacio-ramirez/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024'
+                },
+                {
+                    key: 'site_8',
+                    title: 'PARQUE JUAREZ',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/parque-juarez/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024'
+                },
+                {
+                    key: 'site_9',
+                    title: 'PASEO DEL CHORRO',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/paseo-del-chorro/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024'
+                },
+                {
+                    key: 'site_10',
+                    title: 'MIRADOR',
+                    link: 'https://vivemigueldeallende.wordpress.com/2025/03/15/el-mirador/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639'
+                },
+                {
+                    key: 'site_11',
+                    title: 'EL CHARCO DEL INGENIO',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024'
+                },
+                {
+                    key: 'site_12',
+                    title: 'ATOTONILCO',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/santuario-de-jesus-nazareno-en-atotonilco/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800'
+                },
+                {
+                    key: 'site_13',
+                    title: 'BALNEARIOS DE AGUAS TERMALES',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/balnearios-de-aguas-termales/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889'
+                },
+                {
+                    key: 'site_14',
+                    title: 'CAÑADA DE LA VIRGEN',
+                    link: 'https://vivemigueldeallende.wordpress.com/2024/10/21/zona-arqueologica-canada-de-la-virgen/',
+                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600'
+                }
+            ]
+        };
+
+        function getStoredSites() {
+            const data = localStorage.getItem('sma_sitios_interes_v4');
+            if (!data) {
+                localStorage.setItem('sma_sitios_interes_v4', JSON.stringify(defaultSitesData));
+                return defaultSitesData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveStoredSites(data, syncCloud = true) {
+            localStorage.setItem('sma_sitios_interes_v4', JSON.stringify(data));
+            renderSites(document.getElementById('searchInput').value);
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        async function pushDataToGoogleSheets(data) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data.sites)
+                });
+            } catch (err) {
+                console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
+
+        function handleSearch() {
+            renderSites(document.getElementById('searchInput').value);
+        }
+
+        function renderSites(searchQuery = '') {
+            const data = getStoredSites();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('sitesGridContainer');
+            container.innerHTML = '';
+
+            let filtered = data.sites;
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(s => s.title.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron sitios con esa búsqueda.</p>`;
+                return;
+            }
+
+            filtered.forEach(s => {
+                container.innerHTML += `
+                    <div class="site-card">
+                        <div class="card-image-wrap">
+                            <img src="${s.img}" alt="${s.title}">
+                        </div>
+                        <div class="site-body">
+                            <div>
+                                <h3 class="site-name">${s.title}</h3>
+                            </div>
+                            <div class="site-actions">
+                                <a href="${s.link}" target="_blank" rel="noopener noreferrer" class="btn-action">
+                                    <i class="fas fa-book-open"></i> Ver Artículo / Sitio
+                                </a>
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:8px;" onclick="openEditSiteModal('${s.key}')">✏️ Editar Sitio</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Auth & CMS
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderSites(document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderSites(document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        let currentEditingKey = null;
+        function openEditSiteModal(key) {
+            const data = getStoredSites();
+            const s = data.sites.find(el => el.key === key);
+            if (!s) return;
+            currentEditingKey = key;
+            document.getElementById('editSiteKey').value = key;
+            document.getElementById('editTitle').value = s.title;
+            document.getElementById('editLink').value = s.link;
+            document.getElementById('editImg').value = s.img;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditedSite(e) {
+            e.preventDefault();
+            const data = getStoredSites();
+            const index = data.sites.findIndex(el => el.key === currentEditingKey);
+            if (index !== -1) {
+                data.sites[index].title = document.getElementById('editTitle').value;
+                data.sites[index].link = document.getElementById('editLink').value;
+                data.sites[index].img = document.getElementById('editImg').value;
+                saveStoredSites(data, true);
+                closeEditModal();
+                alert('¡Sitio actualizado con éxito!');
+            }
+        }
+
+        function downloadSitesTemplate() {
+            const data = getStoredSites();
+            const flatData = data.sites.map(el => ({
+                titulo: el.title,
+                enlace: el.link,
+                imagen_url: el.img
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "SitiosInteres");
+            XLSX.writeFile(workbook, "plantilla_sitios_vivesanmiguel.xlsx");
+        }
+
+        function handleSitesExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredSites();
+                        json.forEach((row, idx) => {
+                            if (idx < data.sites.length) {
+                                if (row.titulo) data.sites[idx].title = row.titulo;
+                                if (row.enlace) data.sites[idx].link = row.enlace;
+                                if (row.imagen_url) data.sites[idx].img = row.imagen_url;
+                            }
+                        });
+                        saveStoredSites(data, true);
+                        alert('¡Importación masiva completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            renderSites();
+        });
+
+        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let glowX = 0, glowY = 0;
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
 
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -559,26 +863,22 @@
         });
 
         function animateGlow() {
-            glowX += (mouseX - glowX) * 0.08;
-            glowY += (mouseY - glowY) * 0.08;
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
             requestAnimationFrame(animateGlow);
         }
         animateGlow();
 
-        // Canvas de partículas inmersivas fluidas
         const canvas = document.getElementById('immersive-canvas');
         const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
+        let width, height, particles = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-
         window.addEventListener('resize', resize);
         resize();
 
@@ -586,70 +886,51 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.2 + 0.6;
+                this.size = Math.random() * 2 + 0.5;
                 this.baseX = this.x;
                 this.baseY = this.y;
                 this.density = (Math.random() * 20) + 5;
                 this.vx = Math.random() * 0.4 - 0.2;
                 this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
             }
             update() {
                 let dx = mouseX - this.x;
                 let dy = mouseY - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
                 let maxDistance = 150;
-                let force = (maxDistance - distance) / maxDistance;
-
                 if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.6;
-                    this.y -= forceDirectionY * force * this.density * 0.6;
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
                 } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 20;
-                    }
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
                 }
-
                 this.baseX += this.vx;
                 this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
             }
             draw() {
-                ctx.fillStyle = 'rgba(200, 125, 85, 0.35)';
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
                 ctx.fill();
             }
         }
 
         function initParticles() {
             particles = [];
-            let numberOfParticles = (width * height) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
         }
-
         initParticles();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
-
         animateParticles();
     </script>
 </body>
