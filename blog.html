@@ -718,7 +718,7 @@
                     desc: 'La esperada Alborada, la tradicional entrada de estrellas, desfiles de mojigangas, música de banda y la pirotecnia monumental iluminando la Parroquia.',
                     link: '#',
                     images: [
-                        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+                        'https://images.pexels.com/photos/36264227/pexels-photo-36264227.jpeg',
                         'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
                         'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
                     ]
@@ -731,9 +731,9 @@
                     desc: 'Una celebración mística y colorida con desfiles de catrinas vivientes, altares monumentales, ofrendas florales y exposiciones en todo el centro histórico.',
                     link: '#',
                     images: [
-                        'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1543810141-477d9c6686d1?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
+                        'https://images.pexels.com/photos/29384092/pexels-photo-29384092.jpeg',
+                        'https://images.pexels.com/photos/28832828/pexels-photo-28832828.jpeg',
+                        'https://images.unsplash.com/photo-1543810141-477d9c6686d1?auto=format&fit=crop&w=800&q=80'
                     ]
                 },
                 {
@@ -744,26 +744,26 @@
                     desc: 'Extensión de la gran fiesta del espíritu. Disfruta de puestas en escena teatrales, conciertos musicales y muestras artísticas de nivel mundial.',
                     link: 'https://festivalcervantino.gob.mx/',
                     images: [
+                        'https://festivalcervantino.gob.mx/upload/actividades/crop/1784313677_8810ed3a22ac2a9acd1b.jpg',
                         'https://festivalcervantino.gob.mx/upload/actividades/crop/1784314970_c17a0ca81d8272666cfb.jpg',
-                        'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
                         'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
                     ]
                 }
             ]
         };
 
-        // Llave v3 para actualizar caché con las imágenes específicas
+        // Llave v4 para actualizar caché con las nuevas imágenes seleccionadas
         function getStoredBlog() {
-            const data = localStorage.getItem('sma_events_data_v3');
+            const data = localStorage.getItem('sma_events_data_v4');
             if (!data) {
-                localStorage.setItem('sma_events_data_v3', JSON.stringify(defaultBlogData));
+                localStorage.setItem('sma_events_data_v4', JSON.stringify(defaultBlogData));
                 return defaultBlogData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredBlog(data, syncCloud = true) {
-            localStorage.setItem('sma_events_data_v3', JSON.stringify(data));
+            localStorage.setItem('sma_events_data_v4', JSON.stringify(data));
             renderBlog(currentFilter, document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -867,7 +867,7 @@
             });
         }
 
-        // Control del carrusel de fotos
+        // Control del carrusel de 3 fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
