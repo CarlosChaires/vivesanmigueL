@@ -296,21 +296,21 @@
         .carousel-btn.prev { left: 8px; }
         .carousel-btn.next { right: 8px; }
 
-        .specialty-badge {
+        .specialties-badge {
             position: absolute;
             top: 12px;
             right: 12px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(6px);
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 700;
             color: var(--accent-terracotta);
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             z-index: 5;
-            max-width: 60%;
+            max-width: 65%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -352,7 +352,25 @@
             font-size: 0.9rem;
             font-weight: 400;
             line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Lista de Actividades Múltiples */
+        .activities-list {
             margin-bottom: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .activity-pill {
+            background: rgba(166, 75, 42, 0.08);
+            color: var(--accent-terracotta-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(166, 75, 42, 0.15);
         }
 
         .adventure-meta {
@@ -681,7 +699,7 @@
         <!-- Barra de Búsqueda -->
         <div class="search-bar-wrap">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Busca por nombre, especialidad o categoría..." oninput="handleSearch()">
+            <input type="text" id="searchInput" placeholder="Busca por nombre, actividad o categoría..." oninput="handleSearch()">
         </div>
 
         <!-- Grid de Aventura -->
@@ -734,12 +752,12 @@
                     <input type="text" id="editType" required placeholder="Ej. Expediciones, Cabalgatas, Ecoturismo...">
                 </div>
                 <div class="input-group">
-                    <label>Especialidad</label>
-                    <input type="text" id="editSpecialty" required placeholder="Ej. Cabalgatas y Cañadas">
+                    <label>Especialidades (Separadas por comas)</label>
+                    <input type="text" id="editSpecialties" required placeholder="Ej. Cabalgatas, Rapel, Temazcal">
                 </div>
                 <div class="input-group">
                     <label>Descripción</label>
-                    <textarea id="editDesc" rows="3" required placeholder="Breve descripción de la aventura..."></textarea>
+                    <textarea id="editDesc" rows="3" required placeholder="Breve descripción..."></textarea>
                 </div>
                 <div class="input-group">
                     <label>Teléfono</label>
@@ -793,8 +811,8 @@
                     key: 'adv_coyote',
                     name: 'Coyote Canyon',
                     type: 'Expediciones',
-                    specialty: 'Cabalgatas y Cañadas',
-                    desc: 'Emblemática operadora especializada en cabalgatas, exploración de cañadas, rapel y experiencias culturales únicas en el semidesierto.',
+                    specialties: ['Cabalgatas', 'Cañadas', 'Rapel', 'Temazcal'],
+                    desc: 'Operadora líder en experiencias ecuestres, cañadas profundas y tradiciones culturales inmersivas en el semidesierto.',
                     phone: '+52 415 152 4101',
                     address: 'Sollano 11, Zona Centro, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Coyote+Canyon+Adventures+San+Miguel',
@@ -811,8 +829,8 @@
                     key: 'adv_parque',
                     name: 'Parque de Aventura',
                     type: 'Ecoturismo',
-                    specialty: 'Tirolesas y Puentes Colgantes',
-                    desc: 'Disfruta de impresionantes puentes colgantes, circuitos de tirolesas extremas y caminatas guiadas cruzando cañones espectaculares.',
+                    specialties: ['Tirolesas', 'Puentes Colgantes', 'Senderismo', 'Vistas Panorámicas'],
+                    desc: 'Parque ecológico con circuito extremo de tirolesas, puentes colgantes sobre cañones y rutas de caminata inolvidables.',
                     phone: '+52 415 112 0033',
                     address: 'Camino a Alcocer s/n, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Parque+de+Aventura+San+Miguel',
@@ -829,8 +847,8 @@
                     key: 'adv_atv',
                     name: 'Atv Extreme Tours',
                     type: 'Motor Aventura',
-                    specialty: 'Rutas en Cuatrimotos y UTV',
-                    desc: 'Rutas guiadas todo terreno explorando presas, caminos rurales y campos abiertos llenos de adrenalina.',
+                    specialties: ['Cuatrimotos', 'Vehículos UTV', 'Rutas Off-Road', 'Tours Guiados'],
+                    desc: 'Rutas guiadas todo terreno en cuatrimotos y vehículos UTV explorando presas, caminos rurales y campos abiertos.',
                     phone: '+52 415 111 2233',
                     address: 'Salida a Querétaro Km 4, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
@@ -847,8 +865,8 @@
                     key: 'adv_xotolar',
                     name: 'Xotolar',
                     type: 'Ecoturismo',
-                    specialty: 'Cabalgatas y Montaña',
-                    desc: 'Rancho familiar tradicional que ofrece cabalgatas ecuestres y caminatas de montaña hacia cañones remotos y cascadas estacionales.',
+                    specialties: ['Cabalgatas', 'Cascadas', 'Caminata de Montaña', 'Paisajes'],
+                    desc: 'Rancho familiar tradicional especializado en cabalgatas panorámicas y excursiones a cañones y cascadas escondidas.',
                     phone: '+52 415 120 4455',
                     address: 'Comunidad de Xotolar, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Xotolar+San+Miguel+de+Allende',
@@ -865,8 +883,8 @@
                     key: 'adv_theranch',
                     name: 'The Ranch',
                     type: 'Cabalgatas',
-                    specialty: 'Paseos Panorámicos',
-                    desc: 'Experiencias ecuestres profesionales y paseos panorámicos al atardecer rodeados por la vasta naturaleza de la región.',
+                    specialties: ['Paseos al Atardecer', 'Rutas Ecuestres', 'Naturaleza'],
+                    desc: 'Centro ecuestre dedicado a excursiones a caballo guiadas y recorridos contemplativos por la naturaleza de la región.',
                     phone: '+52 415 152 9900',
                     address: 'Carretera San Miguel - Dolores Km 8',
                     maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
@@ -883,8 +901,8 @@
                     key: 'adv_viaorganica',
                     name: 'Via Organica',
                     type: 'Turismo Sustentable',
-                    specialty: 'Agricultura y Huertos Orgánicos',
-                    desc: 'Rancho ecológico y centro educativo que ofrece talleres de agricultura orgánica, caminatas guiadas por huertos y productos locales.',
+                    specialties: ['Huertos Orgánicos', 'Talleres', 'Senderismo Educativo', 'Catas'],
+                    desc: 'Rancho ecológico y educativo con recorridos por huertos sustentables, talleres de agricultura y tienda de productos orgánicos.',
                     phone: '+52 415 121 0044',
                     address: 'Calzada de la Estación 106, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Via+Organica+San+Miguel+de+Allende',
@@ -901,8 +919,8 @@
                     key: 'adv_zopilote',
                     name: 'Zopilote Adventures',
                     type: 'Expediciones',
-                    specialty: 'Ciclismo de Montaña y Hiking',
-                    desc: 'Tours especializados de ciclismo de montaña y caminatas interpretativas por los rincones más salvajes y escarpados de San Miguel.',
+                    specialties: ['Ciclismo de Montaña', 'Hiking', 'Rutas Extremas'],
+                    desc: 'Especialistas en tours guiados de ciclismo de montaña y caminatas de aventura por zonas agrestes y cañadas.',
                     phone: '+52 415 110 8877',
                     address: 'Salida a Celaya Km 5, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
@@ -919,8 +937,8 @@
                     key: 'adv_tresseñores',
                     name: 'Tres Señores Horses',
                     type: 'Cabalgatas',
-                    specialty: 'Recorridos Familiares',
-                    desc: 'Tradición ecuestre y recorridos familiares guiados por expertos jinetes locales a través de valles y cañadas históricas.',
+                    specialties: ['Cabalgatas Familiares', 'Paseos por Valles'],
+                    desc: 'Tradición ecuestre y recorridos familiares guiados por jinetes locales a través de hermosos valles y caminos rurales.',
                     phone: '+52 415 144 2211',
                     address: 'Comunidad Los Rodríguez, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
@@ -936,18 +954,18 @@
             ]
         };
 
-        // Llave v6 para refrescar caché local con las nuevas imágenes de The Ranch y Tres Señores
+        // Llave v7 para actualizar caché local
         function getStoredAdventures() {
-            const data = localStorage.getItem('sma_adventures_data_v6');
+            const data = localStorage.getItem('sma_adventures_data_v7');
             if (!data) {
-                localStorage.setItem('sma_adventures_data_v6', JSON.stringify(defaultAdventureData));
+                localStorage.setItem('sma_adventures_data_v7', JSON.stringify(defaultAdventureData));
                 return defaultAdventureData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredAdventures(data, syncCloud = true) {
-            localStorage.setItem('sma_adventures_data_v6', JSON.stringify(data));
+            localStorage.setItem('sma_adventures_data_v7', JSON.stringify(data));
             renderAdventures(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -991,7 +1009,12 @@
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(a => a.name.toLowerCase().includes(q) || a.type.toLowerCase().includes(q) || a.specialty.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
+                filtered = filtered.filter(a => 
+                    a.name.toLowerCase().includes(q) || 
+                    a.type.toLowerCase().includes(q) || 
+                    a.desc.toLowerCase().includes(q) ||
+                    (a.specialties && a.specialties.some(s => s.toLowerCase().includes(q)))
+                );
             }
 
             if (filtered.length === 0) {
@@ -1004,6 +1027,15 @@
                 a.images.forEach((img, idx) => {
                     slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${a.name} foto ${idx+1}"></div>`;
                 });
+
+                let specialtiesHtml = '';
+                if (a.specialties && Array.isArray(a.specialties)) {
+                    a.specialties.forEach(spec => {
+                        specialtiesHtml += `<span class="activity-pill">${spec}</span>`;
+                    });
+                }
+
+                const primarySpec = (a.specialties && a.specialties.length > 0) ? a.specialties[0] : a.type;
 
                 const cleanPhone = a.phone.replace(/[^0-9+]/g, '');
                 const cleanWa = cleanPhone.replace('+', '');
@@ -1030,7 +1062,7 @@
                     <div class="adventure-card" id="card-${a.key}">
                         <div class="carousel-container">
                             <span class="type-badge">${a.type}</span>
-                            <span class="specialty-badge">${a.specialty}</span>
+                            <span class="specialties-badge">${primarySpec}</span>
                             <div class="carousel-slides" id="slides-${a.key}">
                                 ${slidesHtml}
                             </div>
@@ -1043,6 +1075,9 @@
                             <div>
                                 <h3 class="adventure-name">${a.name}</h3>
                                 <p class="adventure-desc">${a.desc}</p>
+                                <div class="activities-list">
+                                    ${specialtiesHtml}
+                                </div>
                                 <div class="adventure-meta">
                                     <div class="meta-item">
                                         <i class="fas fa-phone-alt"></i> <span>${a.phone}</span>
@@ -1142,7 +1177,7 @@
             document.getElementById('editAdvKey').value = key;
             document.getElementById('editName').value = a.name;
             document.getElementById('editType').value = a.type;
-            document.getElementById('editSpecialty').value = a.specialty || '';
+            document.getElementById('editSpecialties').value = a.specialties ? a.specialties.join(', ') : '';
             document.getElementById('editDesc').value = a.desc;
             document.getElementById('editPhone').value = a.phone;
             document.getElementById('editAddress').value = a.address;
@@ -1167,7 +1202,7 @@
             if (index !== -1) {
                 data.adventures[index].name = document.getElementById('editName').value;
                 data.adventures[index].type = document.getElementById('editType').value;
-                data.adventures[index].specialty = document.getElementById('editSpecialty').value;
+                data.adventures[index].specialties = document.getElementById('editSpecialties').value.split(',').map(s => s.trim()).filter(s => s);
                 data.adventures[index].desc = document.getElementById('editDesc').value;
                 data.adventures[index].phone = document.getElementById('editPhone').value;
                 data.adventures[index].address = document.getElementById('editAddress').value;
@@ -1191,7 +1226,7 @@
             const flatData = data.adventures.map(el => ({
                 nombre: el.name,
                 categoria: el.type,
-                especialidad: el.specialty || '',
+                especialidades: el.specialties ? el.specialties.join(', ') : '',
                 descripcion: el.desc,
                 telefono: el.phone,
                 direccion: el.address,
@@ -1225,7 +1260,7 @@
                             if (idx < data.adventures.length) {
                                 if (row.nombre) data.adventures[idx].name = row.nombre;
                                 if (row.categoria) data.adventures[idx].type = row.categoria;
-                                if (row.especialidad) data.adventures[idx].specialty = row.especialidad;
+                                if (row.especialidades) data.adventures[idx].specialties = row.especialidades.split(',').map(s => s.trim()).filter(s => s);
                                 if (row.descripcion) data.adventures[idx].desc = row.descripcion;
                                 if (row.telefono) data.adventures[idx].phone = row.telefono;
                                 if (row.direccion) data.adventures[idx].address = row.direccion;
