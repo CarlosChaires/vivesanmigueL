@@ -653,18 +653,18 @@
             ]
         };
 
-        // NOTA: Se cambió la llave a v5 para forzar la actualización del caché en el navegador
+        // Llave actualizada a v6 para descartar cualquier caché local anterior
         function getStoredSites() {
-            const data = localStorage.getItem('sma_sitios_interes_v5');
+            const data = localStorage.getItem('sma_sitios_interes_v6');
             if (!data) {
-                localStorage.setItem('sma_sitios_interes_v5', JSON.stringify(defaultSitesData));
+                localStorage.setItem('sma_sitios_interes_v6', JSON.stringify(defaultSitesData));
                 return defaultSitesData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredSites(data, syncCloud = true) {
-            localStorage.setItem('sma_sitios_interes_v5', JSON.stringify(data));
+            localStorage.setItem('sma_sitios_interes_v6', JSON.stringify(data));
             renderSites(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
