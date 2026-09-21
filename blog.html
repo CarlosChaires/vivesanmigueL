@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Eventos y Tradiciones (Día de Muertos y más)</title>
+    <title>Vive San Miguel | Eventos y Tradiciones (Fiestas Patronales, Día de Muertos y Cervantino)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -169,6 +169,7 @@
         }
 
         .section-header h1 {
+            font-family: 'Playfair Display', serif;
             font-size: clamp(2.2rem, 4vw, 2.8rem);
             font-weight: 700;
             color: var(--text-main);
@@ -244,7 +245,7 @@
             border-color: var(--accent-terracotta);
         }
 
-        /* --- Grid de Eventos / Festividades --- */
+        /* --- Grid de Blog / Eventos --- */
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -475,6 +476,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transform: translateY(15px);
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -605,22 +608,21 @@
         <!-- Título de la Sección -->
         <div class="section-header">
             <h1>Eventos y Tradiciones</h1>
-            <p>Vive de cerca las grandes festividades, festivales culturales, Día de Muertos y tradiciones de San Miguel de Allende.</p>
+            <p>Vive de cerca las grandes festividades, el Festival Cervantino, Día de Muertos y las Fiestas Patronales de San Miguel de Allende.</p>
         </div>
 
         <!-- Barra de Búsqueda -->
         <div class="search-bar-wrap">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Busca festivales, Día de Muertos, fechas..." oninput="handleSearch()">
+            <input type="text" id="searchInput" placeholder="Busca Fiestas Patronales, Día de Muertos, Cervantino..." oninput="handleSearch()">
         </div>
 
         <!-- Filtros por Categoría -->
         <div class="filter-container" id="filterContainer">
             <button class="filter-btn active" onclick="filterBlog('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterBlog('Fiestas Patronales')">Fiestas Patronales</button>
             <button class="filter-btn" onclick="filterBlog('Día de Muertos')">Día de Muertos</button>
-            <button class="filter-btn" onclick="filterBlog('Festivales')">Festivales</button>
-            <button class="filter-btn" onclick="filterBlog('Tradiciones')">Tradiciones</button>
-            <button class="filter-btn" onclick="filterBlog('Cultura')">Cultura</button>
+            <button class="filter-btn" onclick="filterBlog('Cervantino')">Cervantino</button>
         </div>
 
         <!-- Grid de Artículos y Eventos -->
@@ -659,7 +661,7 @@
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-top">
-                <h3 id="editModalTitle">Editar Evento / Tradición</h3>
+                <h3 id="editModalTitle">Editar Tradición o Evento</h3>
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
             <form onsubmit="saveEditedBlog(event)">
@@ -670,11 +672,11 @@
                 </div>
                 <div class="input-group">
                     <label>Categoría</label>
-                    <input type="text" id="editCategory" required placeholder="Ej. Día de Muertos, Festivales...">
+                    <input type="text" id="editCategory" required placeholder="Ej. Fiestas Patronales, Día de Muertos, Cervantino">
                 </div>
                 <div class="input-group">
                     <label>Fecha o Temporada</label>
-                    <input type="text" id="editDate" required placeholder="Ej. 1 y 2 de Noviembre">
+                    <input type="text" id="editDate" required placeholder="Ej. Septiembre y Octubre">
                 </div>
                 <div class="input-group">
                     <label>Descripción / Detalles</label>
@@ -685,15 +687,15 @@
                     <input type="text" id="editLink" required placeholder="https://...">
                 </div>
                 <div class="input-group">
-                    <label>Foto 1 (URL del Carrete)</label>
+                    <label>Foto 1 (URL)</label>
                     <input type="text" id="editImg1" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL del Carrete)</label>
+                    <label>Foto 2 (URL)</label>
                     <input type="text" id="editImg2" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL del Carrete)</label>
+                    <label>Foto 3 (URL)</label>
                     <input type="text" id="editImg3" required>
                 </div>
                 <button type="submit" class="btn-modal-save">Guardar Cambios</button>
@@ -709,11 +711,24 @@
         const defaultBlogData = {
             articles: [
                 {
-                    key: 'event_1',
-                    title: 'Festival La Calaca y Día de Muertos',
+                    key: 'event_patronal',
+                    title: 'Fiestas Patronales de San Miguel Arcángel',
+                    category: 'Fiestas Patronales',
+                    date: 'Septiembre y Octubre',
+                    desc: 'La esperada Alborada, la tradicional entrada de estrellas, desfiles de mojigangas, música de banda y la pirotecnia monumental iluminando la Parroquia.',
+                    link: '#',
+                    images: [
+                        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'event_muertos',
+                    title: 'Día de Muertos y Festival La Calaca',
                     category: 'Día de Muertos',
                     date: '1 y 2 de Noviembre',
-                    desc: 'Vive una atmósfera mágica entre desfiles de catrinas, altares monumentales en el Jardín Principal y un profundo sentido de tradición.',
+                    desc: 'Una celebración mística y colorida con desfiles de catrinas vivientes, altares monumentales, ofrendas florales y exposiciones en todo el centro histórico.',
                     link: '#',
                     images: [
                         'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=800&q=80',
@@ -722,45 +737,33 @@
                     ]
                 },
                 {
-                    key: 'event_2',
-                    title: 'Festival Internacional de Cine (GIFF)',
-                    category: 'Festivales',
-                    date: 'Junio / Julio',
-                    desc: 'San Miguel se convierte en la capital cinematográfica con proyecciones al aire libre, alfombras rojas y cineastas de todo el mundo.',
-                    link: '#',
+                    key: 'event_cervantino',
+                    title: 'Festival Internacional Cervantino en San Miguel',
+                    category: 'Cervantino',
+                    date: 'Octubre (Temporada Oficial)',
+                    desc: 'Extensión de la gran fiesta del espíritu. Disfruta de puestas en escena teatrales, conciertos musicales y muestras artísticas de nivel mundial.',
+                    link: 'https://festivalcervantino.gob.mx/',
                     images: [
-                        'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+                        'https://festivalcervantino.gob.mx/upload/actividades/crop/1784314970_c17a0ca81d8272666cfb.jpg',
                         'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
                         'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
-                    ]
-                },
-                {
-                    key: 'event_3',
-                    title: 'Fiestas Patrias y San Miguel Arcángel',
-                    category: 'Tradiciones',
-                    date: 'Septiembre y Octubre',
-                    desc: 'La alborada, pirotecnia monumental, música de banda y el orgullo patrio llenan cada calle empedrada de color y algarabía.',
-                    link: '#',
-                    images: [
-                        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1512813070417-e435942f7c00?auto=format&fit=crop&w=800&q=80'
                     ]
                 }
             ]
         };
 
+        // Llave v3 para actualizar caché con las imágenes específicas
         function getStoredBlog() {
-            const data = localStorage.getItem('sma_events_data');
+            const data = localStorage.getItem('sma_events_data_v3');
             if (!data) {
-                localStorage.setItem('sma_events_data', JSON.stringify(defaultBlogData));
+                localStorage.setItem('sma_events_data_v3', JSON.stringify(defaultBlogData));
                 return defaultBlogData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredBlog(data, syncCloud = true) {
-            localStorage.setItem('sma_events_data', JSON.stringify(data));
+            localStorage.setItem('sma_events_data_v3', JSON.stringify(data));
             renderBlog(currentFilter, document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -864,7 +867,7 @@
             });
         }
 
-        // Control del carrusel de 3 fotos
+        // Control del carrusel de fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
