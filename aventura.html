@@ -133,7 +133,7 @@
             display: none;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             background: var(--surface-color);
             padding: 12px;
             border-radius: 14px;
@@ -166,7 +166,7 @@
 
         /* --- Títulos y Buscador --- */
         .section-header {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
@@ -296,20 +296,24 @@
         .carousel-btn.prev { left: 8px; }
         .carousel-btn.next { right: 8px; }
 
-        .price-badge {
+        .specialty-badge {
             position: absolute;
             top: 12px;
             right: 12px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(6px);
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: var(--accent-terracotta);
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             z-index: 5;
+            max-width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .type-badge {
@@ -426,6 +430,48 @@
             background: var(--accent-terracotta-dark);
         }
 
+        .social-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .btn-social {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-social.facebook {
+            background: rgba(24, 119, 242, 0.1);
+            color: #1877F2;
+            border: 1px solid rgba(24, 119, 242, 0.2);
+        }
+
+        .btn-social.facebook:hover {
+            background: #1877F2;
+            color: #ffffff;
+        }
+
+        .btn-social.instagram {
+            background: rgba(225, 48, 108, 0.1);
+            color: #E1306C;
+            border: 1px solid rgba(225, 48, 108, 0.2);
+        }
+
+        .btn-social.instagram:hover {
+            background: #E1306C;
+            color: #ffffff;
+        }
+
         .btn-action.whatsapp {
             width: 100%;
             background-color: var(--whatsapp-green);
@@ -497,6 +543,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transform: translateY(15px);
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -627,13 +675,13 @@
         <!-- Título de la Sección -->
         <div class="section-header">
             <h1>Aventura y Experiencias al Aire Libre</h1>
-            <p>Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y expediciones inolvidables en San Miguel de Allende.</p>
+            <p>Descubre cabalgatas, cañadas, cuatrimotos y expediciones inolvidables en San Miguel de Allende.</p>
         </div>
 
         <!-- Barra de Búsqueda -->
         <div class="search-bar-wrap">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Busca actividades de aventura (globo, cuatrimotos, caballos)..." oninput="handleSearch()">
+            <input type="text" id="searchInput" placeholder="Busca por nombre, especialidad o categoría..." oninput="handleSearch()">
         </div>
 
         <!-- Grid de Aventura -->
@@ -683,23 +731,23 @@
                 </div>
                 <div class="input-group">
                     <label>Categoría</label>
-                    <input type="text" id="editType" required placeholder="Ej. Aéreos, Terrestres, Tours...">
+                    <input type="text" id="editType" required placeholder="Ej. Expediciones, Cabalgatas, Ecoturismo...">
+                </div>
+                <div class="input-group">
+                    <label>Especialidad</label>
+                    <input type="text" id="editSpecialty" required placeholder="Ej. Cabalgatas y Cañadas">
                 </div>
                 <div class="input-group">
                     <label>Descripción</label>
                     <textarea id="editDesc" rows="3" required placeholder="Breve descripción de la aventura..."></textarea>
                 </div>
                 <div class="input-group">
-                    <label>Costo Aprox.</label>
-                    <input type="text" id="editPrice" required placeholder="Ej. $2,500 MXN por persona">
-                </div>
-                <div class="input-group">
                     <label>Teléfono</label>
                     <input type="text" id="editPhone" required>
                 </div>
                 <div class="input-group">
-                    <label>Dirección Escrita / Punto de Partida</label>
-                    <input type="text" id="editAddress" required placeholder="Ej. Salida a Querétaro Km 4">
+                    <label>Dirección / Punto de Partida</label>
+                    <input type="text" id="editAddress" required placeholder="Ej. Sollano 11, Zona Centro">
                 </div>
                 <div class="input-group">
                     <label>Enlace Google Maps (URL)</label>
@@ -707,18 +755,26 @@
                 </div>
                 <div class="input-group">
                     <label>Sitio Web (URL)</label>
-                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                    <input type="text" id="editWeb" placeholder="Si no tiene, poner #">
                 </div>
                 <div class="input-group">
-                    <label>Foto 1 (URL del Carrete)</label>
+                    <label>Enlace Facebook (URL)</label>
+                    <input type="text" id="editFacebook" placeholder="Si no tiene, poner #">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Instagram (URL)</label>
+                    <input type="text" id="editInstagram" placeholder="Si no tiene, poner #">
+                </div>
+                <div class="input-group">
+                    <label>Foto 1 (URL)</label>
                     <input type="text" id="editImg1" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL del Carrete)</label>
+                    <label>Foto 2 (URL)</label>
                     <input type="text" id="editImg2" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL del Carrete)</label>
+                    <label>Foto 3 (URL)</label>
                     <input type="text" id="editImg3" required>
                 </div>
                 <button type="submit" class="btn-modal-save">Guardar Cambios</button>
@@ -734,67 +790,164 @@
         const defaultAdventureData = {
             adventures: [
                 {
-                    key: 'adv_1',
-                    name: 'Vuelo en Globo Aerostático',
-                    type: 'Aéreos',
-                    desc: 'Contempla el amanecer sobre las cúpulas coloniales y cañones de San Miguel de Allende desde las alturas en un vuelo inolvidable.',
-                    price: '$2,800 MXN p/p',
-                    phone: '+52 415 122 9988',
-                    address: 'Carretera San Miguel - Dolores Km 12',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
-                    web: '#',
+                    key: 'adv_coyote',
+                    name: 'Coyote Canyon',
+                    type: 'Expediciones',
+                    specialty: 'Cabalgatas y Cañadas',
+                    desc: 'Emblemática operadora especializada en cabalgatas, exploración de cañadas, rapel y experiencias culturales únicas en el semidesierto.',
+                    phone: '+52 415 152 4101',
+                    address: 'Sollano 11, Zona Centro, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=Coyote+Canyon+Adventures+San+Miguel',
+                    web: 'https://coyotecanyonadventures.com',
+                    facebook: 'https://facebook.com/coyotecanyonadventures',
+                    instagram: 'https://instagram.com/coyotecanyonadventures',
                     images: [
-                        'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png',
-                        'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&w=800&q=80',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkzMET8iCtRmMUxfvFcgkwbV-UD3NNyj8UM764Ga_ESTyyabYEit-dU2FnWxmWE0tmkn4iNcaNy1DeZtWoLgk5D63HLhS_dyevE4YsiDZFH9u00n-1ASQPOh24Px6QoLOK9ewdItg=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfJzKftgzrPOpMul6wthENkBtGTnA2Yv2S3Wutc-hrkgHytI3bbWjukcARmP_dqa07KakHWHxUeNjq4g06eAw6LB_VJjJQwXNIiLsDvKY8a-uPOiU39Etzwy3XDsV3tyLB7rkO=s680-w680-h510-rw',
+                        'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'adv_parque',
+                    name: 'Parque de Aventura',
+                    type: 'Ecoturismo',
+                    specialty: 'Tirolesas y Puentes Colgantes',
+                    desc: 'Disfruta de impresionantes puentes colgantes, circuitos de tirolesas extremas y caminatas guiadas cruzando cañones espectaculares.',
+                    phone: '+52 415 112 0033',
+                    address: 'Camino a Alcocer s/n, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=Parque+de+Aventura+San+Miguel',
+                    web: '#',
+                    facebook: '#',
+                    instagram: '#',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmYLTqZicykjf5GqGrG8fAblzzSJf4jJYDLfWJjHtYDEYEjMW7ljrxR-RUq_AtswOZVM0UR8LL8yCH4JC_-Dg-TSRiCOm12l6_JWplqpf2bQR-H1kRlABJ3LJFXLVdgGaSCCcs=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm2p8gYLLh-b7t6H9XRYMzR3pgvXkP9kythjoqvSlTxa1lEw5PB52WR6Zet1M6TP1zqRW1sEiVxyqksfUoZRQjc7ZsJixMvkJbfLfMUSpebuZrSkpFgiBjn1FqpQUrXUDLDVQA=s680-w680-h510-rw',
                         'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80'
                     ]
                 },
                 {
-                    key: 'adv_2',
-                    name: 'Ruta en Cuatrimotos por Presas y Cañones',
-                    type: 'Terrestres',
-                    desc: 'Acelera a fondo por caminos rústicos, visita la Presa del Batán y descubre paisajes naturales ocultos llenos de adrenalina.',
-                    price: '$950 MXN por cuatrimoto',
-                    phone: '+52 415 111 5566',
-                    address: 'Salida a Querétaro Km 3.5, San Miguel de Allende',
+                    key: 'adv_atv',
+                    name: 'Atv Extreme Tours',
+                    type: 'Motor Aventura',
+                    specialty: 'Rutas en Cuatrimotos y UTV',
+                    desc: 'Rutas guiadas todo terreno explorando presas, caminos rurales y campos abiertos llenos de adrenalina.',
+                    phone: '+52 415 111 2233',
+                    address: 'Salida a Querétaro Km 4, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
                     web: '#',
+                    facebook: '#',
+                    instagram: '#',
                     images: [
-                        'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024',
-                        'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=800&q=80'
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWno7130TqipdewJFTiAPqs_pR9WBk33rpmMTHKqW33v-iYi5sX4oMEgNddPBGUGUg3zFBsnMTDIpHLJD1IJv6bMN6Xvm_0q8MmO-mVQbWCJbOJ5isHBqgxDvi1oUPNmDff9RBP8PA=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktpLKxpxElyR9h2TWBf4WrA4GO_zeWeVsKuJb2JFzkK7x4mVNGWzqQrvr82EIyflbl--7XSFCVBT8UXV8vFET_xAVWglGBGbW5WdTJrvUs4DFUWnC0j8m9uvARp2-4zSH7F8jaeYeZUqze=s680-w680-h510-rw',
+                        'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'
                     ]
                 },
                 {
-                    key: 'adv_3',
-                    name: 'Paseos a Caballo Históricos',
+                    key: 'adv_xotolar',
+                    name: 'Xotolar',
                     type: 'Ecoturismo',
-                    desc: 'Recorre senderos tradicionales, ríos y cañadas a lomo de caballo acompañado por guías locales expertos.',
-                    price: '$700 MXN por persona',
-                    phone: '+52 415 133 4455',
-                    address: 'Comunidad de Atotonilco, San Miguel de Allende',
-                    maps: 'https://maps.google.com/?q=Atotonilco+San+Miguel+de+Allende',
+                    specialty: 'Cabalgatas y Montaña',
+                    desc: 'Rancho familiar tradicional que ofrece cabalgatas ecuestres y caminatas de montaña hacia cañones remotos y cascadas estacionales.',
+                    phone: '+52 415 120 4455',
+                    address: 'Comunidad de Xotolar, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=Xotolar+San+Miguel+de+Allende',
                     web: '#',
+                    facebook: '#',
+                    instagram: '#',
                     images: [
-                        'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmbLjrKXT9G-JzcdU94nfKwaadzRGeUs1Cqhj9Z801KWh4fMOkcOg3pSTh3XvlL-zOqecs7evabLKxhE_gWTi267XH0w-hUV9ePLB71j9MDV7OYp9SNn7zMHzL5Ue-wd-UPjgx-=w225-h161-n-k-no-nu',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlfeP5doWxHBPCpN8myENx1FgpkS55xMdGPdWe52np9JgCAgRieCg8nilzA85R7K-9EbWX9Dz-fjB7YtKEIAfIgTyZO0f2JXzgD8z3uGGSKF3XkhyGKwt-wRhfX27dg7GWX_1oUypeCYGSX=w225-h226-n-k-no-nu',
+                        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'adv_theranch',
+                    name: 'The Ranch',
+                    type: 'Cabalgatas',
+                    specialty: 'Paseos Panorámicos',
+                    desc: 'Experiencias ecuestres profesionales y paseos panorámicos al atardecer rodeados por la vasta naturaleza de la región.',
+                    phone: '+52 415 152 9900',
+                    address: 'Carretera San Miguel - Dolores Km 8',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    facebook: '#',
+                    instagram: '#',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm5ngSo-5qzPZJGb4DHgFbEiqPnQqhPIvovRoiOI0dY4tcVm5JoFM2m0umgJBD1Lu9Yjll00gDudvPuuaRFrYswkIw8rYHGZhtprElzuKIIRv18-38Io3IfTBILV_zoEhrO7oobog=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlhP8ji93CRJQRZIa-vhp4hfTadPx8gOq1kKWzDXXnHctC9O9tF8YYw0T1PAT2CPln27AFQIWBmtKoroix1mPaT_mHKFHIL-0yJ5UP9tWkvpm6oeK7OGqbUyNGPSUcyZXhpCBtI=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkUVxj04vOhLYw0qXp8ktZiQkgWa1N5v7-RIwl2GWHN4kwzNIAM4HjtWVyyJvqNXtn3tT27hTjWmGgYbudLBMhI05iBHw0sc-Qtu_MmNh2q9D-_8nz1lfHTYs_lbTNLD-b0uUKujg=s680-w680-h510-rw'
+                    ]
+                },
+                {
+                    key: 'adv_viaorganica',
+                    name: 'Via Organica',
+                    type: 'Turismo Sustentable',
+                    specialty: 'Agricultura y Huertos Orgánicos',
+                    desc: 'Rancho ecológico y centro educativo que ofrece talleres de agricultura orgánica, caminatas guiadas por huertos y productos locales.',
+                    phone: '+52 415 121 0044',
+                    address: 'Calzada de la Estación 106, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=Via+Organica+San+Miguel+de+Allende',
+                    web: 'https://viaorganica.org',
+                    facebook: 'https://facebook.com/viaorganica',
+                    instagram: 'https://instagram.com/viaorganica',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl7jb8l_N0YEf1fN1nnBgTj0IyH5xTdlk_ztHY7xdxl66zFRsrGxl4FPgyCTPn-rSkYiPLHjPc7rgHwkvOqc8w3lVjq5Dyvnht3E7B0rgCivkn8zZ0zcstTbZON6TcEYMwh_v4=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlySN934KFyKuq4Eh70MgejjZBSQDp4s_JjhDCZTnbwr2FUh3-PS3fyAovA6G3JLYCCTWJ3k0lxdpCAGgYnUFvHEcI5Dc10T1fyhPmTkU09m7MpkOwYQ32D98yKKE4rLvIwNTS7Xw=s680-w680-h510-rw',
+                        'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'adv_zopilote',
+                    name: 'Zopilote Adventures',
+                    type: 'Expediciones',
+                    specialty: 'Ciclismo de Montaña y Hiking',
+                    desc: 'Tours especializados de ciclismo de montaña y caminatas interpretativas por los rincones más salvajes y escarpados de San Miguel.',
+                    phone: '+52 415 110 8877',
+                    address: 'Salida a Celaya Km 5, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    facebook: 'https://facebook.com',
+                    instagram: 'https://instagram.com',
+                    images: [
+                        'https://scontent-qro3-1.xx.fbcdn.net/v/t51.82787-15/806466811_18369495157210237_6393528111762238429_n.webp?stp=dst-jpg_tt6&cstp=mx1440x1440&ctp=s1440x1440&_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=IoKvdoH92UcQ7kNvwGZvo3Q&_nc_oc=Adodj9qnzSz6QKgpDjqKTWF9ZRt5KJJgDi_k7Vlek-Qqd1B2NDxgFKnGL3MhjEX3mR4&_nc_zt=23&_nc_ht=scontent-qro3-1.xx&_nc_gid=3Y5iZLal1EduR3BMo8DSBg&_nc_ss=7b289&oh=00_AQLxqzJ62r2JRshqAWMU7dciBO-MF5-URRxtXqdfRcmnjw&oe=6AB72144',
+                        'https://scontent-qro1-1.xx.fbcdn.net/v/t51.82787-15/806299227_18369495181210237_4315038044945150082_n.webp?stp=dst-jpg_tt6&cstp=mx1440x1440&ctp=s1440x1440&_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=NSc4QIoSCWMQ7kNvwEca2o8&_nc_oc=Ado9l61mC0F2Qx3orbPG6J_rxaNNxwfFUnaGvcbxhoF06yJjqbgnQZ1y6coq-sOY8Pg&_nc_zt=23&_nc_ht=scontent-qro1-1.xx&_nc_gid=HS63soqKQA0FnPSlx-bj2A&_nc_ss=7b289&oh=00_AQK8XZtrjFmdSHMl6AkswgWsnjCePZpeTLFciISSS_2new&oe=6AB73978',
+                        'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'adv_tresseñores',
+                    name: 'Tres Señores Horses',
+                    type: 'Cabalgatas',
+                    specialty: 'Recorridos Familiares',
+                    desc: 'Tradición ecuestre y recorridos familiares guiados por expertos jinetes locales a través de valles y cañadas históricas.',
+                    phone: '+52 415 144 2211',
+                    address: 'Comunidad Los Rodríguez, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    web: '#',
+                    facebook: '#',
+                    instagram: '#',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlTI-sxiRp4N1XhqbMw6ZPPs_EwsI2N4ayR1jPrUE1nQ7IAQAZS0QNOtdHNNAALW6OnPvQS_8L02FeIxq3aucvqOdxYvDPT1BVeVLHJgGY9fPTrB-uCswG9V3dTUr2hUtJ8ioa2Fg=s680-w680-h510-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnk_60QC4O0t1ufTY3vbijWgtH3m_NyQawo3Xf2lpB3YedhDZpwDp71UTpUqlATozI9nGiYUbQzHtk11F4aGPLUAh0hk9FOZmcZ0G-hZxDpF70FLLnGTFwtz4g4BpJGa8Vj0EaS=s680-w680-h510-rw',
                         'https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=800&q=80'
                     ]
                 }
             ]
         };
 
+        // Llave v6 para refrescar caché local con las nuevas imágenes de The Ranch y Tres Señores
         function getStoredAdventures() {
-            const data = localStorage.getItem('sma_adventures_data');
+            const data = localStorage.getItem('sma_adventures_data_v6');
             if (!data) {
-                localStorage.setItem('sma_adventures_data', JSON.stringify(defaultAdventureData));
+                localStorage.setItem('sma_adventures_data_v6', JSON.stringify(defaultAdventureData));
                 return defaultAdventureData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredAdventures(data, syncCloud = true) {
-            localStorage.setItem('sma_adventures_data', JSON.stringify(data));
+            localStorage.setItem('sma_adventures_data_v6', JSON.stringify(data));
             renderAdventures(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -838,7 +991,7 @@
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(a => a.name.toLowerCase().includes(q) || a.type.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
+                filtered = filtered.filter(a => a.name.toLowerCase().includes(q) || a.type.toLowerCase().includes(q) || a.specialty.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
             }
 
             if (filtered.length === 0) {
@@ -857,7 +1010,19 @@
 
                 const webButtonHtml = (a.web && a.web !== '#') ? `
                     <a href="${a.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
-                        <i class="fas fa-globe"></i> Sitio Web
+                        <i class="fas fa-globe"></i> Web
+                    </a>
+                ` : '';
+
+                const fbButtonHtml = (a.facebook && a.facebook !== '#') ? `
+                    <a href="${a.facebook}" target="_blank" rel="noopener noreferrer" class="btn-social facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                ` : '';
+
+                const igButtonHtml = (a.instagram && a.instagram !== '#') ? `
+                    <a href="${a.instagram}" target="_blank" rel="noopener noreferrer" class="btn-social instagram">
+                        <i class="fab fa-instagram"></i> Instagram
                     </a>
                 ` : '';
 
@@ -865,7 +1030,7 @@
                     <div class="adventure-card" id="card-${a.key}">
                         <div class="carousel-container">
                             <span class="type-badge">${a.type}</span>
-                            <span class="price-badge">${a.price}</span>
+                            <span class="specialty-badge">${a.specialty}</span>
                             <div class="carousel-slides" id="slides-${a.key}">
                                 ${slidesHtml}
                             </div>
@@ -895,7 +1060,12 @@
                                         </a>
                                         ${webButtonHtml}
                                     </div>
-                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20reservar%20la%20actividad:%20${encodeURIComponent(a.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                                    ${(fbButtonHtml || igButtonHtml) ? `
+                                        <div class="social-row">
+                                            ${fbButtonHtml}${igButtonHtml}
+                                        </div>
+                                    ` : ''}
+                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20reservar%20la%20actividad:%20${encodeURIComponent(a.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp" style="margin-top: 4px;">
                                         <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
                                     </a>
                                 </div>
@@ -907,7 +1077,7 @@
             });
         }
 
-        // Control del carrusel de 3 fotos
+        // Control del carrusel de fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
@@ -972,12 +1142,14 @@
             document.getElementById('editAdvKey').value = key;
             document.getElementById('editName').value = a.name;
             document.getElementById('editType').value = a.type;
+            document.getElementById('editSpecialty').value = a.specialty || '';
             document.getElementById('editDesc').value = a.desc;
-            document.getElementById('editPrice').value = a.price;
             document.getElementById('editPhone').value = a.phone;
             document.getElementById('editAddress').value = a.address;
             document.getElementById('editMaps').value = a.maps;
-            document.getElementById('editWeb').value = a.web;
+            document.getElementById('editWeb').value = a.web || '';
+            document.getElementById('editFacebook').value = a.facebook || '';
+            document.getElementById('editInstagram').value = a.instagram || '';
             document.getElementById('editImg1').value = a.images[0] || '';
             document.getElementById('editImg2').value = a.images[1] || '';
             document.getElementById('editImg3').value = a.images[2] || '';
@@ -995,12 +1167,14 @@
             if (index !== -1) {
                 data.adventures[index].name = document.getElementById('editName').value;
                 data.adventures[index].type = document.getElementById('editType').value;
+                data.adventures[index].specialty = document.getElementById('editSpecialty').value;
                 data.adventures[index].desc = document.getElementById('editDesc').value;
-                data.adventures[index].price = document.getElementById('editPrice').value;
                 data.adventures[index].phone = document.getElementById('editPhone').value;
                 data.adventures[index].address = document.getElementById('editAddress').value;
                 data.adventures[index].maps = document.getElementById('editMaps').value;
                 data.adventures[index].web = document.getElementById('editWeb').value;
+                data.adventures[index].facebook = document.getElementById('editFacebook').value;
+                data.adventures[index].instagram = document.getElementById('editInstagram').value;
                 data.adventures[index].images = [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
@@ -1017,12 +1191,14 @@
             const flatData = data.adventures.map(el => ({
                 nombre: el.name,
                 categoria: el.type,
+                especialidad: el.specialty || '',
                 descripcion: el.desc,
-                precio: el.price,
                 telefono: el.phone,
                 direccion: el.address,
                 direccion_maps: el.maps,
                 sitio_web: el.web,
+                facebook_url: el.facebook || '',
+                instagram_url: el.instagram || '',
                 foto_1: el.images[0] || '',
                 foto_2: el.images[1] || '',
                 foto_3: el.images[2] || ''
@@ -1049,12 +1225,14 @@
                             if (idx < data.adventures.length) {
                                 if (row.nombre) data.adventures[idx].name = row.nombre;
                                 if (row.categoria) data.adventures[idx].type = row.categoria;
+                                if (row.especialidad) data.adventures[idx].specialty = row.especialidad;
                                 if (row.descripcion) data.adventures[idx].desc = row.descripcion;
-                                if (row.precio) data.adventures[idx].price = row.precio;
                                 if (row.telefono) data.adventures[idx].phone = row.telefono;
                                 if (row.direccion) data.adventures[idx].address = row.direccion;
                                 if (row.direccion_maps) data.adventures[idx].maps = row.direccion_maps;
                                 if (row.sitio_web) data.adventures[idx].web = row.sitio_web;
+                                if (row.facebook_url) data.adventures[idx].facebook = row.facebook_url;
+                                if (row.instagram_url) data.adventures[idx].instagram = row.instagram_url;
                                 
                                 let imgs = [];
                                 if (row.foto_1) imgs.push(row.foto_1);
