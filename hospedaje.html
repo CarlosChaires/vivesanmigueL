@@ -133,7 +133,7 @@
             display: none;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             background: var(--surface-color);
             padding: 12px;
             border-radius: 14px;
@@ -166,7 +166,7 @@
 
         /* --- Títulos y Buscador --- */
         .section-header {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
@@ -184,11 +184,18 @@
             font-weight: 400;
         }
 
-        /* Barra de Búsqueda */
-        .search-bar-wrap {
-            max-width: 600px;
+        /* Controles de Búsqueda y Filtros de Precio */
+        .controls-wrapper {
+            max-width: 800px;
             margin: 0 auto 3rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-bar-wrap {
             position: relative;
+            width: 100%;
         }
 
         .search-bar-wrap input {
@@ -216,6 +223,39 @@
             transform: translateY(-50%);
             color: var(--text-muted);
             font-size: 0.95rem;
+        }
+
+        /* Filtros por Rango de Precio */
+        .price-filter-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-terracotta);
+            color: var(--accent-terracotta);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
         }
 
         /* --- Grid de Hospedaje --- */
@@ -630,10 +670,20 @@
             <p>Encuentra estancias excepcionales, haciendas coloniales, hoteles boutique y experiencias únicas de glamping bajo las estrellas.</p>
         </div>
 
-        <!-- Barra de Búsqueda -->
-        <div class="search-bar-wrap">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Busca por nombre, tipo o características..." oninput="handleSearch()">
+        <!-- Controles: Búsqueda y Filtros de Precio -->
+        <div class="controls-wrapper">
+            <div class="search-bar-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Busca por nombre, tipo o características..." oninput="handleSearch()">
+            </div>
+            <div class="price-filter-wrap" id="priceFilters">
+                <button class="filter-btn active" onclick="setPriceFilter('all')">Todos</button>
+                <button class="filter-btn" onclick="setPriceFilter('$')">$ (Económico)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$')">$$ (Moderado)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$')">$$$ (Alto)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$')">$$$$ (Lujo)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$$')">$$$$$ (Exclusivo)</button>
+            </div>
         </div>
 
         <!-- Grid de Hospedaje -->
@@ -825,17 +875,26 @@
             ]
         };
 
+        let currentPriceFilter = 'all';
+
+        function setPriceFilter(price) {
+            currentPriceFilter = price;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderHotels(document.getElementById('searchInput').value);
+        }
+
         function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data');
+            const data = localStorage.getItem('sma_hotels_data_v2');
             if (!data) {
-                localStorage.setItem('sma_hotels_data', JSON.stringify(defaultHotelsData));
+                localStorage.setItem('sma_hotels_data_v2', JSON.stringify(defaultHotelsData));
                 return defaultHotelsData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data', JSON.stringify(data));
+            localStorage.setItem('sma_hotels_data_v2', JSON.stringify(data));
             renderHotels(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -877,13 +936,19 @@
 
             let filtered = data.hotels;
 
+            // Filtro por precio
+            if (currentPriceFilter !== 'all') {
+                filtered = filtered.filter(h => h.price === currentPriceFilter);
+            }
+
+            // Filtro por texto de búsqueda
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
                 filtered = filtered.filter(h => h.name.toLowerCase().includes(q) || h.type.toLowerCase().includes(q) || h.desc.toLowerCase().includes(q));
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con esa búsqueda.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con los filtros aplicados.</p>`;
                 return;
             }
 
@@ -949,7 +1014,7 @@
             });
         }
 
-        // Control del carrusel de 3 fotos
+        // Control del carrusel de fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
