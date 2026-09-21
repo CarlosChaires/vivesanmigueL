@@ -3,25 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Guía Turística Oficial</title>
-    
-    <!-- Tipografías seleccionadas para diseño editorial de lujo -->
+
+    <title>Vive San Miguel | El latido de la cantera rosa</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         :root {
-            --bg-canvas: #FBF6F3;
-            --surface: #FFFFFF;
-            --text-main: #23201D;
-            --text-muted: #736C65;
-            --terracotta: #A64B2A;
-            --terracotta-dark: #87381C;
-            --cantera-ocre: #C49247;
-            --border-soft: rgba(166, 75, 42, 0.12);
-            --shadow-subtle: 0 10px 30px rgba(35, 32, 29, 0.05);
+            --cream: #f8f4ee;
+            --paper: #fbf9f6;
+            --white: #ffffff;
+
+            --ink: #2b2420;
+            --muted: #7c726b;
+
+            /* Tonalidades inspiradas en la cantera rosa y atardeceres coloniales */
+            --terracotta: #b85c41;
+            --terracotta-dark: #8c432d;
+            --cantera-rose: #d69f89;
+            --cantera-light: #f3e6e0;
+
+            --sand: #c7a36b;
+            --line: rgba(43, 36, 32, .12);
+
+            --serif: "Playfair Display", serif;
+            --sans: "DM Sans", sans-serif;
         }
 
         * {
@@ -30,360 +41,477 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-canvas);
-            color: var(--text-main);
-            line-height: 1.6;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--sans);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- HEADER MODERNO Y ELEGANTE --- */
+        /* Halo de luz interactivo que sigue el puntero */
+        .cursor-glow {
+            pointer-events: none;
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(214, 159, 137, 0.15) 0%, rgba(184, 92, 65, 0.03) 50%, transparent 80%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+            z-index: 9999;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
         header {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.8rem 2rem;
+            max-width: 1400px;
+            margin: auto;
+            padding: 28px 5vw;
+
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
-        .brand-link {
+        .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            text-decoration: none;
         }
 
-        .brand-logo {
-            height: 44px;
-            width: auto;
+        .logo img {
+            width: 42px;
+            height: 42px;
             object-fit: contain;
         }
 
-        .brand-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.3px;
+        .logo-name {
+            font-family: var(--serif);
+            font-size: 20px;
+            letter-spacing: -.4px;
         }
 
-        .nav-btn {
-            font-size: 0.85rem;
-            text-transform: uppercase;
+        .menu-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 12px;
             letter-spacing: 1.5px;
-            font-weight: 600;
-            color: var(--terracotta);
-            text-decoration: none;
-            padding: 10px 22px;
-            border: 1px solid var(--border-soft);
-            background: var(--surface);
-            border-radius: 40px;
-            transition: all 0.3s ease;
+            text-transform: uppercase;
+
+            padding: 12px 20px;
+
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            background: var(--white);
+
+            transition: .3s ease;
         }
 
-        .nav-btn:hover {
-            background-color: var(--terracotta);
-            color: #ffffff;
+        .menu-link:hover {
+            background: var(--terracotta);
+            color: white;
             border-color: var(--terracotta);
         }
 
-        /* --- HERO EDITORIAL --- */
+        /* =========================
+           HERO
+        ========================= */
+
         .hero {
-            max-width: 1300px;
-            margin: 1.5rem auto 5rem auto;
-            padding: 0 2rem;
+            max-width: 1400px;
+            margin: 50px auto 150px;
+            padding: 0 5vw;
+
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 4rem;
+            grid-template-columns: .9fr 1.1fr;
+            gap: 8vw;
+
             align-items: center;
         }
 
-        .hero-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 700;
-            color: var(--cantera-ocre);
-            margin-bottom: 1rem;
-            display: block;
-        }
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
 
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+            color: var(--terracotta);
+
+            font-size: 11px;
             font-weight: 600;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+
+            margin-bottom: 25px;
         }
 
-        .hero-title span {
+        .eyebrow::before {
+            content: "";
+            width: 34px;
+            height: 1px;
+            background: var(--terracotta);
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-size: clamp(54px, 7vw, 105px);
+            font-weight: 400;
+            line-height: .98;
+            letter-spacing: -4px;
+        }
+
+        h1 em {
             color: var(--terracotta);
             font-style: italic;
         }
 
-        .hero-desc {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            font-weight: 300;
-            max-width: 520px;
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
+        .hero-description {
+            max-width: 500px;
+            margin: 35px 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
         }
 
-        .btn-enter {
+        .hero-button {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            background-color: var(--terracotta);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 18px 38px;
-            border-radius: 50px;
-            font-size: 0.9rem;
+            gap: 15px;
+
+            padding: 16px 24px;
+
+            background: var(--terracotta);
+            color: white;
+
+            font-size: 12px;
             font-weight: 600;
+
             letter-spacing: 1px;
             text-transform: uppercase;
-            box-shadow: 0 10px 25px rgba(166, 75, 42, 0.25);
-            transition: all 0.3s ease;
+
+            transition: .3s ease;
         }
 
-        .btn-enter:hover {
-            background-color: var(--terracotta-dark);
+        .hero-button:hover {
+            background: var(--terracotta-dark);
             transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(166, 75, 42, 0.35);
         }
 
-        .hero-cover-img {
-            height: 520px;
-            width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 45px rgba(35, 32, 29, 0.08);
+        .hero-image {
+            position: relative;
         }
 
-        .hero-cover-img img {
-            width: 100%;
-            height: 100%;
+        .hero-image::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background: var(--cantera-rose);
+            top: -25px;
+            left: -25px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .hero-image img {
+            height: 650px;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            box-shadow: 0 20px 40px rgba(43, 36, 32, 0.08);
         }
 
-        .hero-cover-img:hover img {
-            transform: scale(1.03);
+        .image-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+
+            padding: 9px 13px;
+            background: rgba(255,255,255,.92);
+
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
-        /* --- CARRETE FOTOGRÁFICO DE INSTAGRAM --- */
-        .insta-feed-section {
-            max-width: 1300px;
-            margin: 0 auto 5.5rem auto;
-            padding: 0 2rem;
+        /* =========================
+           INTRO
+        ========================= */
+
+        .intro {
+            max-width: 1100px;
+            margin: 0 auto 130px;
+            padding: 0 5vw;
+            text-align: center;
         }
 
-        .feed-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 2rem;
+        .intro-number {
+            color: var(--cantera-rose);
+            font-family: var(--serif);
+            font-size: 14px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
-        .feed-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 600;
+        .intro h2 {
+            max-width: 850px;
+            margin: auto;
+            font-family: var(--serif);
+            font-size: clamp(34px, 4vw, 58px);
+            font-weight: 400;
+            line-height: 1.2;
         }
 
-        .feed-header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 4px;
-        }
-
-        .feed-handle {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .intro h2 span {
             color: var(--terracotta);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: opacity 0.3s ease;
+            font-style: italic;
         }
 
-        .feed-handle:hover {
-            opacity: 0.8;
+        /* =========================
+           EXPERIENCES
+        ========================= */
+
+        .experiences {
+            max-width: 1400px;
+            margin: auto;
+            padding: 0 5vw 150px;
         }
 
-        .insta-grid {
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+
+        .section-header h2 {
+            font-family: var(--serif);
+            font-size: 42px;
+            font-weight: 400;
+        }
+
+        .section-header p {
+            max-width: 400px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .experience-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            gap: 16px;
         }
 
-        .insta-card {
+        .experience {
             position: relative;
-            height: 310px;
-            border-radius: 16px;
+            height: 480px;
             overflow: hidden;
-            text-decoration: none;
-            box-shadow: var(--shadow-subtle);
-            display: block;
+            background: #ddd;
         }
 
-        .insta-card img {
-            width: 100%;
+        .experience img {
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform .7s cubic-bezier(.2,.7,.2,1);
         }
 
-        .insta-overlay {
+        .experience::after {
+            content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(20, 18, 16, 0.1) 20%, rgba(20, 18, 16, 0.8) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            opacity: 0.95;
-            transition: opacity 0.3s ease;
+            background: linear-gradient(
+                to top, 
+                rgba(35,22,17,.85), 
+                rgba(184,92,65,.15) 40%, 
+                transparent 70%
+            );
         }
 
-        .insta-card:hover img {
+        .experience:hover img {
             transform: scale(1.06);
         }
 
-        .insta-badge {
-            align-self: flex-end;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            color: #ffffff;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
+        .experience-content {
+            position: absolute;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            color: white;
+            z-index: 2;
         }
 
-        .insta-info {
-            color: #ffffff;
-        }
-
-        .insta-category {
-            font-size: 0.7rem;
+        .experience-category {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #f7d2bc;
-            font-weight: 700;
-            margin-bottom: 2px;
+            color: #f7d4c7;
+            margin-bottom: 7px;
         }
 
-        .insta-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.25rem;
+        .experience-title {
+            font-family: var(--serif);
+            font-size: 25px;
+        }
+
+        .experience-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.6);
+            border-radius: 50%;
+            color: white;
+            background: rgba(43,36,32,0.2);
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+
+        /* =========================
+           QUOTE
+        ========================= */
+
+        .quote {
+            background: var(--cantera-light);
+            padding: 120px 5vw;
+            text-align: center;
+            border-top: 1px solid rgba(184,92,65,0.1);
+            border-bottom: 1px solid rgba(184,92,65,0.1);
+        }
+
+        .quote-mark {
+            color: var(--terracotta);
+            font-family: var(--serif);
+            font-size: 70px;
+            line-height: .5;
+        }
+
+        .quote p {
+            max-width: 800px;
+            margin: 25px auto;
+            font-family: var(--serif);
+            font-size: clamp(28px, 4vw, 48px);
+            line-height: 1.25;
+            color: var(--ink);
+        }
+
+        .quote small {
+            color: var(--terracotta);
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
             font-weight: 600;
         }
 
-        /* --- COMUNIDAD & REDES SOCIALES --- */
-        .social-strip {
-            max-width: 1300px;
-            margin: 0 auto 5rem auto;
-            padding: 0 2rem;
-        }
+        /* =========================
+           SOCIAL
+        ========================= */
 
-        .social-box {
-            background: var(--surface);
-            border: 1px solid var(--border-soft);
-            border-radius: 20px;
-            padding: 3rem;
+        .social {
+            max-width: 1200px;
+            margin: 120px auto;
+            padding: 0 5vw;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow-subtle);
+            justify-content: space-between;
+            gap: 50px;
         }
 
-        .social-text h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 6px;
+        .social h2 {
+            font-family: var(--serif);
+            font-size: 42px;
+            font-weight: 400;
         }
 
-        .social-text p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .social p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 14px;
         }
 
         .social-buttons {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-pill {
+        .social-button {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 26px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 0.85rem;
+            gap: 9px;
+            padding: 13px 18px;
+            border: 1px solid var(--line);
+            background: var(--white);
+            font-size: 11px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: .3s ease;
         }
 
-        .btn-pill.instagram {
-            background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
-            color: #ffffff;
+        .social-button:hover {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
         }
 
-        .btn-pill.tiktok {
-            background-color: #121212;
-            color: #ffffff;
-        }
+        /* =========================
+           FOOTER
+        ========================= */
 
-        .btn-pill:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-
-        /* --- FOOTER REDISEÑADO: LIMPIO, EQUILIBRADO Y SIN TIPOGRAFÍAS PESADAS --- */
         footer {
-            border-top: 1px solid var(--border-soft);
-            background-color: var(--surface);
-            padding: 4.5rem 2rem 2.5rem 2rem;
+            border-top: 1px solid var(--line);
+            padding: 70px 5vw 30px;
+            background: var(--cream);
         }
 
-        .footer-inner {
-            max-width: 1300px;
-            margin: 0 auto;
+        .footer-grid {
+            max-width: 1400px;
+            margin: auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 3.5rem;
-            margin-bottom: 3.5rem;
+            gap: 80px;
         }
 
-        .footer-col-main p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .footer-brand {
+            font-family: var(--serif);
+            font-size: 27px;
+        }
+
+        .footer-description {
+            max-width: 420px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.8;
-            max-width: 440px;
-            margin-top: 1rem;
-            font-weight: 300;
         }
 
-        .footer-heading {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
+        .footer-title {
             color: var(--terracotta);
-            margin-bottom: 1.4rem;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
         }
 
         .footer-list {
@@ -391,18 +519,9 @@
         }
 
         .footer-list li {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-list a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s ease;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .footer-list a:hover {
@@ -410,187 +529,297 @@
         }
 
         .footer-bottom {
-            max-width: 1300px;
-            margin: 0 auto;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            padding-top: 2rem;
+            max-width: 1400px;
+            margin: 70px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: .5px;
         }
 
-        /* --- ADAPTACIÓN RESPONSIVA --- */
-        @media (max-width: 1024px) {
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
             .hero {
                 grid-template-columns: 1fr;
-                gap: 2.5rem;
+                gap: 60px;
+                margin-bottom: 100px;
             }
-            .insta-grid {
+
+            .hero-image img {
+                height: 560px;
+            }
+
+            .experience-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .social-box {
+
+            .social {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1.5rem;
             }
-            .footer-inner {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid > :first-child {
+                grid-column: 1 / -1;
             }
         }
 
         @media (max-width: 600px) {
-            .insta-grid {
+            header {
+                padding: 22px 20px;
+            }
+
+            .logo-name {
+                font-size: 18px;
+            }
+
+            .menu-link {
+                padding: 10px 14px;
+                font-size: 9px;
+            }
+
+            .hero {
+                padding: 0 20px;
+                margin-top: 35px;
+            }
+
+            h1 {
+                font-size: 57px;
+                letter-spacing: -2.5px;
+            }
+
+            .hero-image img {
+                height: 450px;
+            }
+
+            .hero-image::before {
+                width: 70px;
+                height: 70px;
+                top: -15px;
+                left: -15px;
+            }
+
+            .intro {
+                padding: 0 20px;
+            }
+
+            .experiences {
+                padding: 0 20px 100px;
+            }
+
+            .section-header {
+                display: block;
+            }
+
+            .section-header h2 {
+                margin-bottom: 12px;
+            }
+
+            .experience-grid {
                 grid-template-columns: 1fr;
             }
+
+            .experience {
+                height: 430px;
+            }
+
+            .quote {
+                padding: 90px 25px;
+            }
+
+            .social {
+                margin: 90px auto;
+                padding: 0 20px;
+            }
+
+            .social h2 {
+                font-size: 35px;
+            }
+
+            .social-buttons {
+                flex-wrap: wrap;
+            }
+
+            footer {
+                padding: 60px 20px 25px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .footer-grid > :first-child {
+                grid-column: auto;
+            }
+
             .footer-bottom {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
                 text-align: center;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Header Flotante Limpio -->
+    <!-- Halo de luz que sigue el puntero -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- HEADER -->
     <header>
-        <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-link">
-            <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
-            <span class="brand-name">Vive San Miguel</span>
+        <a href="https://carloschaires.github.io/vivesanmigueL/" class="logo">
+            <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Vive San Miguel" onerror="this.style.display='none'">
+            <span class="logo-name">Vive San Miguel</span>
         </a>
-        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="nav-btn">
-            Planear Mi Viaje
+        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="menu-link">
+            Planear mi viaje
+            <i class="fa-solid fa-arrow-right"></i>
         </a>
     </header>
 
-    <!-- Portada Principal -->
-    <section class="hero">
-        <div class="hero-text-zone">
-            <span class="hero-tag">Patrimonio de la Humanidad</span>
-            <h1 class="hero-title">Tu viaje al corazón de <span>San Miguel</span></h1>
-            <p class="hero-desc">
-                Empieza a descubrir la magia: callejones de cantera, atardeceres en viñedos, leyendas coloniales y terrazas inolvidables.
-            </p>
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-enter">
-                <span>Prepara tu Viaje</span>
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-
-        <div class="hero-cover-img">
-            <!-- Imagen actualizada con el archivo que proporcionaste -->
-            <img src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200" alt="San Miguel de Allende">
-        </div>
-    </section>
-
-    <!-- Carrete Fotográfico Estilo Instagram -->
-    <section class="insta-feed-section">
-        <div class="feed-header">
+    <!-- HERO -->
+    <main>
+        <section class="hero">
             <div>
-                <h2>Postales de la Ciudad</h2>
-                <p>Una probadita de las experiencias que puedes planear en nuestra guía</p>
+                <div class="eyebrow">Patrimonio de la Humanidad</div>
+                <h1>
+                    Bajo el cielo de
+                    <em>cantera rosa.</em>
+                </h1>
+                <p class="hero-description">
+                    Donde cada atardecer enciende los muros coloniales y los callejones empedrados guardan secretos de arte y misterio. Ven a vivir el latido más puro de San Miguel de Allende.
+                </p>
+                <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="hero-button">
+                    Comenzar el viaje
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
-            <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="feed-handle">
-                <i class="fab fa-instagram"></i> @sanmiigueldeallende
-            </a>
-        </div>
 
-        <div class="insta-grid">
-            <!-- Viñedos -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
-                <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos y Catas">
-                <div class="insta-overlay">
-                    <span class="insta-badge"><i class="fas fa-wine-glass-alt"></i></span>
-                    <div class="insta-info">
-                        <div class="insta-category">Enoturismo</div>
-                        <div class="insta-title">Viñedos & Catas</div>
-                    </div>
+            <!-- Imagen principal estática -->
+            <div class="hero-image">
+                <img src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200" alt="San Miguel de Allende">
+                <span class="image-caption">San Miguel de Allende · Guanajuato</span>
+            </div>
+        </section>
+
+        <!-- INTRO -->
+        <section class="intro">
+            <div class="intro-number">01 — LA ESENCIA</div>
+            <h2>
+                Un refugio donde el tiempo se detiene
+                <span>entre luces y sombras doradas.</span>
+            </h2>
+        </section>
+
+        <!-- EXPERIENCES -->
+        <section class="experiences">
+            <div class="section-header">
+                <div>
+                    <h2>Experiencias Inmersivas</h2>
                 </div>
-            </a>
+                <p>Una selección íntima para sentir la ciudad a flor de piel, descubriendo sus rincones con todos los sentidos.</p>
+            </div>
 
-            <!-- Vuelo en Globo -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en Globo">
-                <div class="insta-overlay">
-                    <span class="insta-badge"><i class="fas fa-wind"></i></span>
-                    <div class="insta-info">
-                        <div class="insta-category">Aventura</div>
-                        <div class="insta-title">Vuelo en Globo</div>
+            <div class="experience-grid">
+                <!-- VIÑEDOS -->
+                <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="experience">
+                    <img src="https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1200" alt="Viñedos y Catas">
+                    <span class="experience-icon"><i class="fa-solid fa-wine-glass"></i></span>
+                    <div class="experience-content">
+                        <div class="experience-category">Enoturismo</div>
+                        <div class="experience-title">Viñedos & Catas</div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Historia Colonial -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
-                <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Historia Colonial">
-                <div class="insta-overlay">
-                    <span class="insta-badge"><i class="fas fa-landmark"></i></span>
-                    <div class="insta-info">
-                        <div class="insta-category">Arquitectura</div>
-                        <div class="insta-title">Historia Colonial</div>
+                <!-- GLOBO -->
+                <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="experience">
+                    <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/09/vuelo-en-globo-en-san-miguel-de-allende-1.png" alt="Vuelo en Globo">
+                    <span class="experience-icon"><i class="fa-solid fa-wind"></i></span>
+                    <div class="experience-content">
+                        <div class="experience-category">Aventura</div>
+                        <div class="experience-title">Vuelo en Globo</div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Tradiciones Vivas -->
-            <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="insta-card">
-                <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones Vivas">
-                <div class="insta-overlay">
-                    <span class="insta-badge"><i class="fas fa-palette"></i></span>
-                    <div class="insta-info">
-                        <div class="insta-category">Cultura</div>
-                        <div class="insta-title">Tradiciones Vivas</div>
+                <!-- HISTORIA -->
+                <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="experience">
+                    <img src="https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w800" alt="Historia Colonial">
+                    <span class="experience-icon"><i class="fa-solid fa-landmark"></i></span>
+                    <div class="experience-content">
+                        <div class="experience-category">Arquitectura</div>
+                        <div class="experience-title">Historia Colonial</div>
                     </div>
-                </div>
-            </a>
-        </div>
-    </section>
+                </a>
 
-    <!-- Comunidad y Redes Oficiales -->
-    <section class="social-strip">
-        <div class="social-box">
-            <div class="social-text">
-                <h3>Nuestra Comunidad Visual</h3>
-                <p>Inspírate con reels, historias y los rincones más fotografiados de San Miguel.</p>
+                <!-- CULTURA -->
+                <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="experience">
+                    <img src="https://lh3.googleusercontent.com/d/1706INrsU23bLUIrP4JB273CUHyhJbMHX=w800" alt="Tradiciones Vivas">
+                    <span class="experience-icon"><i class="fa-solid fa-palette"></i></span>
+                    <div class="experience-content">
+                        <div class="experience-category">Cultura</div>
+                        <div class="experience-title">Tradiciones Vivas</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FRASE -->
+        <section class="quote">
+            <div class="quote-mark">“</div>
+            <p>Caminar sus calles es habitar un poema tallado en cantera.</p>
+            <small>Vive San Miguel</small>
+        </section>
+
+        <!-- SOCIAL -->
+        <section class="social">
+            <div>
+                <h2>Lleva la magia contigo.</h2>
+                <p>Postales, instantes y detalles para inspirar tus próximos pasos en la ciudad.</p>
             </div>
             <div class="social-buttons">
-                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="btn-pill instagram">
-                    <i class="fab fa-instagram"></i> Instagram Oficial
+                <a href="https://www.instagram.com/sanmiigueldeallende/" target="_blank" rel="noopener noreferrer" class="social-button">
+                    <i class="fa-brands fa-instagram"></i> Instagram Oficial
                 </a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="btn-pill tiktok">
-                    <i class="fab fa-tiktok"></i> TikTok en Vivo
+                <a href="https://www.tiktok.com/@vivesanmiguel.com" target="_blank" rel="noopener noreferrer" class="social-button">
+                    <i class="fa-brands fa-tiktok"></i> TikTok
                 </a>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer Elegante y Limpio -->
+    <!-- FOOTER -->
     <footer>
-        <div class="footer-inner">
-            <div class="footer-col-main">
-                <div class="brand-link">
-                    <span class="brand-name">Vive San Miguel</span>
-                </div>
-                <p>
-                    Somos una organización especializada en el destino. Nuestra finalidad es inspirarte y guiarte para que disfrutes de una experiencia inolvidable en San Miguel de Allende.
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">Vive San Miguel</div>
+                <p class="footer-description">
+                    Narradores apasionados del destino. Nuestra misión es guiarte hacia el lado más auténtico, cálido e inolvidable de San Miguel de Allende.
                 </p>
             </div>
 
             <div>
-                <div class="footer-heading">Contacto</div>
+                <div class="footer-title">Contacto</div>
                 <ul class="footer-list">
-                    <li><i class="far fa-envelope" style="color: var(--terracotta);"></i> vivesma@gmail.com</li>
-                    <li><i class="fas fa-phone-alt" style="color: var(--terracotta);"></i> +52 415 177 36 98</li>
+                    <li><a href="mailto:vivesma@gmail.com">vivesma@gmail.com</a></li>
+                    <li>+52 415 177 36 98</li>
                 </ul>
             </div>
 
             <div>
-                <div class="footer-heading">Ubicación</div>
+                <div class="footer-title">Ubicación</div>
                 <ul class="footer-list">
-                    <li><i class="fas fa-map-marker-alt" style="color: var(--terracotta);"></i> Zona Centro Histórico</li>
+                    <li>Zona Centro Histórico</li>
                     <li>San Miguel de Allende, C.P. 37700</li>
                     <li>Guanajuato, México</li>
                 </ul>
@@ -602,6 +831,27 @@
             <span>Todos los derechos reservados</span>
         </div>
     </footer>
+
+    <!-- Script exclusivo para el halo de luz del cursor -->
+    <script>
+        const glow = document.getElementById('cursorGlow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            glow.style.left = `${glowX}px`;
+            glow.style.top = `${glowY}px`;
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+    </script>
 
 </body>
 </html>
