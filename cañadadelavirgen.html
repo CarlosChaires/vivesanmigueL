@@ -1,766 +1,588 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cañada de la Virgen - Vive San Miguel de Allende</title>
-    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-sanmiguel: #fcfbfa;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --border-subtle: rgba(200, 125, 85, 0.15);
-            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
-            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cañada de la Virgen · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cantera: #8c533e;
+  --cantera-dark: #663b2c;
+  --cantera-light: #f4efe9;
+  --stone: #252422;
+  --stone-muted: #5a5652;
+  --paper: #fcfbfa;
+  --surface: #ffffff;
+  --border: rgba(140, 83, 62, 0.12);
+  --shadow: 0 25px 50px -15px rgba(37, 36, 34, 0.06);
+}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--primary-navy);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-        /* --- Lienzo de partículas inmersivas de fondo --- */
-        #immersive-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-        }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--stone);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            transition: width 0.4s, height 0.4s;
-            filter: blur(50px);
-        }
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 15%, rgba(140, 83, 62, 0.04), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(200, 165, 130, 0.04), transparent);
+}
 
-        .sma-main-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            box-sizing: border-box;
-        }
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 28s ease-in-out infinite;
+}
+.orb-1 { width: 480px; height: 480px; background: rgba(140, 83, 62, 0.08); top: -10%; left: -8%; }
+.orb-2 { width: 400px; height: 400px; background: rgba(189, 153, 118, 0.07); bottom: 0; right: -5%; animation-delay: -10s; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(18px, -14px) scale(1.03); }
+}
 
-        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
-        .top-action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+.wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
 
-        .btn-home-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1.5px solid var(--primary-navy);
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: var(--white);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-        }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 0 44px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--surface);
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+}
+.brand-logo-link:hover {
+  border-color: var(--cantera);
+  transform: translateY(-2px);
+}
+.brand-logo-link img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+.brand-logo-link span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--stone);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-decoration: none;
+  padding: 10px 22px;
+  border: 1px solid var(--stone);
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
+.nav-back svg { width: 14px; height: 14px; }
+.nav-socials { display: flex; gap: 8px; }
+.nav-social {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--stone);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.nav-social:hover { transform: translateY(-3px); border-color: var(--cantera); color: var(--cantera); }
+.nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
+.nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
 
-        .btn-home-back:hover {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
-        }
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 52px;
+  align-items: center;
+  margin-bottom: 64px;
+}
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+}
+.hero-text { order: 1; }
+@media (max-width: 860px) { .hero-text { order: 2; text-align: center; } }
 
-        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
-        .social-quick-links {
-            display: flex;
-            gap: 12px;
-        }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cantera);
+  margin-bottom: 16px;
+}
+.eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--cantera); }
+@media (max-width: 860px) {
+  .eyebrow { justify-content: center; }
+  .eyebrow::before { display: none; }
+}
 
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--white);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s ease;
-        }
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.1rem, 4.5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--stone);
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  font-weight: 300;
+  max-width: 400px;
+  margin-bottom: 28px;
+}
+@media (max-width: 860px) { .hero-sub { margin-left: auto; margin-right: auto; } }
 
-        .social-btn.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 860px) { .hero-meta { justify-content: center; } }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--cantera-dark);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.pill strong { font-weight: 600; }
 
-        .social-btn.tiktok:hover {
-            background: #000000;
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
+.hero-visual { order: 2; position: relative; }
+@media (max-width: 860px) { .hero-visual { order: 1; } }
 
-        /* --- Barra de Búsqueda Interna --- */
-        .search-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
+.hero-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  aspect-ratio: 4/5;
+  max-height: 520px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-frame:hover img { transform: scale(1.04); }
 
-        .site-search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px;
-            border-radius: 50px;
-            border: 1.5px solid var(--border-subtle);
-            background: var(--white);
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--primary-navy);
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
-            outline: none;
-            transition: all 0.3s ease;
-        }
+.hero-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.hero-badge span { font-size: 11px; color: var(--stone-muted); }
+.hero-badge strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--stone);
+  display: block;
+}
 
-        .site-search-input:focus {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
-        }
+.section { margin-bottom: 56px; }
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cantera);
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+.prose {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  max-width: 680px;
+  margin-bottom: 16px;
+}
+.prose strong { color: var(--stone); font-weight: 600; }
 
-        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+@media (max-width: 780px) { .cards { grid-template-columns: 1fr; } }
 
-        .site-logo-container {
-            width: 95px;
-            height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--white);
-            border-radius: 50%;
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
-            border: 2px solid var(--cantera-terracotta);
-            overflow: hidden;
-            padding: 10px;
-            animation: float-logo 5s ease-in-out infinite;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 10px 30px rgba(37, 36, 34, 0.02);
+  transition: all 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--cantera);
+  box-shadow: var(--shadow);
+}
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--cantera-light);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 12px;
+}
+.card ul { list-style: none; }
+.card li {
+  font-size: 0.9rem;
+  color: var(--stone-muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.card li::before { content: '·'; color: var(--cantera); font-weight: 700; flex-shrink: 0; }
+.card p { font-size: 0.92rem; color: var(--stone-muted); }
 
-        @keyframes float-logo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
+.highlight {
+  margin: 56px 0;
+  background: var(--stone);
+  border-radius: 24px;
+  padding: 38px 36px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .highlight { grid-template-columns: 1fr; text-align: center; }
+}
+.highlight h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.highlight p { font-size: 0.95rem; opacity: 0.85; max-width: 420px; }
+@media (max-width: 640px) { .highlight p { margin: 0 auto; } }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: var(--cantera);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: var(--cantera-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(140, 83, 62, 0.25);
+}
 
-        .site-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-        }
+.media-block {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  margin-top: 48px;
+  align-items: stretch;
+}
+@media (max-width: 720px) { .media-block { grid-template-columns: 1fr; } }
+.video-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  background: #111;
+  aspect-ratio: 16/9;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.video-wrap iframe { width: 100%; height: 100%; border: 0; }
+.cta-side {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+}
+@media (max-width: 720px) { .cta-side { align-items: center; text-align: center; } }
+.cta-side p { font-size: 0.95rem; color: var(--stone-muted); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: 1.5px solid var(--stone);
+  color: var(--stone);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.btn-outline:hover { background: var(--stone); color: #fff; }
 
-        .site-logo-container:hover img {
-            transform: scale(1.08);
-        }
+.credits {
+  margin-top: 64px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--stone-muted);
+}
+.credits a { color: var(--cantera); font-weight: 500; text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
 
-        .brand-text-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        @media screen and (max-width: 768px) {
-            .brand-text-group { align-items: center; }
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--primary-navy);
-            text-decoration: none;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin: 0;
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--cantera-terracotta);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 6px;
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
-            margin: 40px 0;
-            opacity: 0.3;
-        }
-
-        /* --- Tarjeta de Contenido Principal --- */
-        .content-card {
-            background: var(--white);
-            border-radius: 28px;
-            padding: 45px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-card);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
-        }
-
-        /* Estilo de Imagen Adaptado */
-        .wp-block-image {
-            margin: 0 0 35px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .wp-block-image img {
-            width: 100% !important;
-            max-width: 1024px;
-            height: auto !important;
-            border-radius: 18px !important;
-            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
-            display: block;
-        }
-
-        .wp-block-paragraph p, .wp-block-paragraph {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            text-align: justify;
-        }
-
-        /* Títulos internos */
-        .content-card h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--cantera-terracotta);
-            font-size: 1.45rem;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .wp-block-list {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            padding-left: 20px;
-        }
-
-        .wp-block-list li {
-            margin-bottom: 12px;
-            text-align: justify;
-        }
-
-        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
-        .media-cta-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        @media screen and (max-width: 768px) {
-            .media-cta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Contenedor de Video Inmersivo Compacto y Elegante */
-        .video-inmersivo-container {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
-        .explore-more-box {
-            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
-            border: 1.5px dashed var(--cantera-terracotta);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .explore-more-box h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.25rem;
-            line-height: 1.3;
-            text-align: center; /* Override left align */
-        }
-
-        .explore-more-box p {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .btn-explore-catalogue {
-            display: inline-block;
-            background: var(--primary-navy);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
-            margin: 0 auto;
-        }
-
-        .btn-explore-catalogue:hover {
-            background: var(--cantera-terracotta);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
-        }
-
-        /* Créditos y Fuentes Oficiales INAH y Videos */
-        .source-credit {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
-            text-align: center;
-        }
-
-        .source-credit a {
-            color: var(--cantera-terracotta);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        .source-credit a:hover {
-            color: var(--primary-navy);
-        }
-
-        /* --- Responsive para Móviles --- */
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 15px;
-            }
-            .interactive-brand-title {
-                font-size: 2rem;
-            }
-            .content-card {
-                padding: 25px 20px;
-            }
-            .top-action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-    <!-- Lienzo de partículas inmersivas de fondo -->
-    <canvas id="immersive-canvas"></canvas>
+<div class="ambient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-    <!-- Animación de fondo interactiva (Sigue el cursor) -->
-    <div id="cursor-glow"></div>
+<div class="wrap">
 
-    <div class="sma-main-wrapper">
-
-        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
-        <div class="top-action-bar">
-            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Inicio
-            </a>
-            
-            <div class="social-quick-links">
-                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
-            </div>
-        </div>
-
-        <!-- Barra de Búsqueda Interactiva -->
-        <div class="search-container">
-            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
-        </div>
-
-        <!-- Cabecera Institucional Inmersiva SMA -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
-            </div>
-            <div class="brand-text-group">
-                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">CAÑADA DE LA VIRGEN</a>
-                <span class="brand-subtitle">Arqueología e Historia • San Miguel de Allende</span>
-            </div>
-        </header>
-
-        <hr class="wp-block-separator" />
-
-        <!-- Tarjeta con Contenido Detallado -->
-        <div class="content-card">
-
-            <!-- wp:image {"id":236,"sizeSlug":"large","linkDestination":"none","align":"center"} -->
-            <figure class="wp-block-image size-large">
-                <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600" alt="Zona Arqueológica Cañada de la Virgen" class="wp-image-236" />
-            </figure>
-            <!-- /wp:image -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Zona Arqueológica Cañada de la Virgen.</strong> Se pensaría que el sitio fue ocupado por grupos náhuatl en épocas prehispánicas por el tipo de construcciones en el lugar, pero gracias a datos arqueo astronómicos se llegó a la conclusión de que fueron pueblos otomíes los que ahí se establecieron.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>La zona está conformada por cinco conjuntos arquitectónicos de los cuales tres cuentan con las condiciones para ser visitados: La Casa de los Trece Cielos o Conjunto A: Es una pirámide de 16 metros de altura con un patio hundido y tres plataformas, correspondientes al equinoccio de primavera, al comercio y al solsticio de invierno, respectivamente. Dicho conjunto era considerado un espacio fundamental para la observación del cielo, de ahí su nombre, ya que el patio en temporada de lluvia se llenaba de agua y, su reflejo daba la sensación del cielo en la tierra.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>La Casa de la Noche más Larga o Conjunto B: Se compone de varias estructuras como el basamento piramidal, un patio hundido más y una serie de plataformas que indican funcionalidad mixta de los espacios. Se considera que está astronómicamente ligado al solsticio de invierno. La llamada Casa del Viento o Complejo D: Es una estructura circular que presenta tres etapas constructivas, en las que se modificó la rampa de acceso al construir cada una de ellas. En la parte superior se halla un templo más con dos entradas, al este y oeste; la forma del templo simula un toril y su interior se encontraba pintado de rojo.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>Acceso: $90 mxn p/p</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>¿Qué encontrarás en Cañada de la Virgen?</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Arquitectura astronómica:</strong> Los edificios principales de la ciudad, como la Casa de los Trece Cielos y la Casa de la Noche más Larga, fueron diseñados para observar el cielo y realizar cálculos astronómicos.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Paisajes impresionantes:</strong> La zona arqueológica se encuentra en un entorno natural espectacular, con vistas panorámicas de la región.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Museos:</strong> El museo del sitio te permitirá conocer más sobre la historia y la cultura de Cañada de la Virgen.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>¿Por qué visitar Cañada de la Virgen?</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Conectar con la naturaleza y la astronomía:</strong> Descubre cómo nuestros antepasados vivían en armonía con el entorno natural y observaban los astros.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Admirar la arquitectura prehispánica:</strong> Los edificios de Cañada de la Virgen son una muestra del ingenio y la habilidad de los antiguos constructores.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Aprender sobre la cultura otomí:</strong> Sumérgete en la historia y las tradiciones de esta fascinante cultura.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>Actividades que puedes realizar:</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Visitas guiadas:</strong> Los guías te explicarán la historia y la importancia de cada edificio.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Observación astronómica:</strong> En algunas ocasiones se organizan eventos especiales para observar el cielo nocturno.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Fotografía:</strong> Captura la belleza de los paisajes y la arquitectura.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>Consejos para tu visita:</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Lleva calzado cómodo:</strong> El recorrido por la zona arqueológica implica caminar por terrenos irregulares.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Protégete del sol:</strong> Utiliza sombrero, gafas de sol y bloqueador solar.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Respeta el sitio arqueológico:</strong> Evita tocar las estructuras y no te salgas de los senderos señalizados.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <h3>Recomendaciones y/u Observaciones:</h3>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <div class="wp-block-paragraph">
-                <p><strong>1.-</strong> Los recorridos salen cada 2 horas iniciando el primero a las 10:00 Hrs y el utimo recorrido sale a las 16:00 Hrs.</p>
-                <p><strong>2.-</strong> Hay que llegar 20 minutos antes de la hora en que se reservo el recorrido.</p>
-                <p><strong>3.-</strong> Recuerda llevar zapatos cómodos, gorra, sombrero, agua. Ya que el recorrido dura 2 Hrs y en general es caminando.</p>
-                <p><strong>4.-</strong> Tu boleto de entrada ya incluye el recorrido guiado en español.</p>
-            </div>
-
-            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
-            <div class="media-cta-grid">
-                <!-- Sección de Video Inmersivo Reproducible -->
-                <div class="video-inmersivo-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/b_cch3qYvhA" 
-                            title="Video Zona Arqueológica Cañada de la Virgen" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- Bloque de Invitación a Seguir Leyendo -->
-                <div class="explore-more-box">
-                    <h3 style="margin-bottom: 10px; font-size: 1.25rem;">¿Listo para continuar tu recorrido?</h3>
-                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
-                </div>
-            </div>
-
-            <div class="source-credit" style="margin-top: 10px;">
-                Video cortesía de: <strong>Centro Cultural Santa Fe</strong> (<a href="https://www.youtube.com/watch?v=b_cch3qYvhA" target="_blank" rel="noopener noreferrer">YouTube</a>)
-            </div>
-
-            <!-- Créditos y Fuentes Oficiales -->
-            <div class="source-credit">
-                Fuente e información obtenida de: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende</a>.
-            </div>
-
-        </div>
-
+  <nav>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <span>Vive San Miguel</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Inicio
+      </a>
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
+      </div>
     </div>
+  </nav>
 
-    <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
-    <script>
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let glowX = 0, glowY = 0;
+  <!-- HERO -->
+  <header class="hero reveal">
+    <div class="hero-text">
+      <div class="eyebrow">INAH · Arqueología y Astronomía</div>
+      <h1>Zona Arqueológica Cañada de la Virgen</h1>
+      <p class="hero-sub">Antiguo asentamiento otomí de gran precisión astronómica. Descubre pirámides, patios hundidos y paisajes imponentes a pocos minutos de San Miguel.</p>
+      <div class="hero-meta">
+        <span class="pill"><strong>$100 MXN p/p</strong></span>
+        <span class="pill">Mar–Dom · 10:00–18:00</span>
+        <span class="pill">~35 min en auto</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlVUWJ8kuceAB5EaRP45DvAGuBE6rXTXP9o_M3J2KJIdKOe97n9L-nhmqxchmOpZkDhX6T_qAgzA7zf9NIRHJ0znX5MUIupM9QSyFq6jhW7MoaX14FIgULPL17nMuUFxmr4n9kB=s680-w680-h510-rw" alt="Zona Arqueológica Cañada de la Virgen">
+        <div class="hero-badge">
+          <div>
+            <span>Recorridos guiados</span>
+            <strong>Cada 2 horas</strong>
+          </div>
+          <div style="text-align:right">
+            <span>Último acceso</span>
+            <strong style="font-size:0.95rem">16:00 hrs</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+  <!-- INTRO -->
+  <section class="section reveal">
+    <div class="section-label">Patrimonio ancestral</div>
+    <h2>Legado de los antiguos otomíes</h2>
+    <p class="prose">Aunque en un principio se pensó que el sitio había sido ocupado por grupos náhuatl, los datos arqueoastronómicos revelaron que fueron <strong>pueblos otomíes</strong> quienes se establecieron y diseñaron este centro ceremonial en armonía con el cielo y la naturaleza.</p>
+    <p class="prose">El complejo destaca por estructuras monumentales como <strong>La Casa de los Trece Cielos</strong> (una pirámide de 16 metros con un patio hundido que se llenaba de agua en temporada de lluvias para reflejar las estrellas), <strong>La Casa de la Noche más Larga</strong> y el complejo circular de <strong>La Casa del Viento</strong>.</p>
+  </section>
 
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.08;
-            glowY += (mouseY - glowY) * 0.08;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
+  <!-- CARDS: Horarios / Recomendaciones / Tip -->
+  <section class="section reveal">
+    <div class="section-label">Planifica tu visita</div>
+    <h2>Consejos y observaciones importantes</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🕐</div>
+        <h3>Horarios & Recorridos</h3>
+        <ul>
+          <li><strong>Martes a domingo:</strong> 10:00 – 18:00 hrs</li>
+          <li><strong>Salidas de tours:</strong> Cada 2 horas (10:00 a 16:00 hrs)</li>
+          <li><strong>Costo:</strong> $100 MXN p/p (incluye guía en español)</li>
+          <li><strong>Llegada:</strong> 20 minutos antes de tu reserva</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎒</div>
+        <h3>Qué llevar</h3>
+        <ul>
+          <li>Calzado cómodo para terracería</li>
+          <li>Gorra o sombrero y protector solar</li>
+          <li>Suficiente agua para hidratarte</li>
+          <li>Cámara para capturar el paisaje</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <h3>Trayecto & Conectividad</h3>
+        <p style="margin-bottom:10px">A <strong>35 minutos en auto</strong> desde el centro de San Miguel de Allende.</p>
+        <p style="font-size:0.88rem; color:var(--cantera);"><strong>Nota importante:</strong> La señal de telefonía celular en el camino y la zona arqueológica no es muy buena.</p>
+      </div>
+    </div>
+  </section>
 
-        // Canvas de partículas inmersivas fluidas
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
+  <!-- HIGHLIGHT -->
+  <div class="highlight reveal">
+    <div>
+      <h3>¿Listo para descubrir más?</h3>
+      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+    </div>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
+      Ver catálogo
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 
-        let width, height;
-        let particles = [];
+  <!-- VIDEO -->
+  <section class="section reveal">
+    <div class="section-label">Experiencia visual</div>
+    <h2>Conoce la zona arqueológica</h2>
+    <div class="media-block">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/b_cch3qYvhA" allowfullscreen title="Video Zona Arqueológica Cañada de la Virgen"></iframe>
+      </div>
+      <div class="cta-side">
+        <p>Video cortesía de <strong>Centro Cultural Santa Fe</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por la historia, los vestigios astronómicos y el entorno natural de Cañada de la Virgen.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+      </div>
+    </div>
+  </section>
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+  <footer class="credits reveal">
+    <p>Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Historia y Arqueología</p>
+  </footer>
 
-        window.addEventListener('resize', resize);
-        resize();
+</div>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 140;
-                let force = (maxDistance - distance) / maxDistance;
-
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 20;
-                    }
-                }
-
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-    </script>
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
