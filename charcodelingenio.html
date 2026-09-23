@@ -1,730 +1,659 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jardín Botánico El Charco del Ingenio - Vive San Miguel de Allende</title>
-    <!-- Fuentes oficiales y elegantes acordes a la identidad colonial de SMA -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-sanmiguel: #fcfbfa;
-            --white: #ffffff;
-            --primary-navy: #1b2a4a;
-            --cantera-terracotta: #c87d55;
-            --cantera-rose: #d48384;
-            --border-subtle: rgba(200, 125, 85, 0.15);
-            --shadow-card: 0 20px 40px rgba(27, 42, 74, 0.06);
-            --shadow-hover: 0 30px 60px rgba(200, 125, 85, 0.18);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jardín Botánico El Charco del Ingenio · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cantera: #8c533e;
+  --cantera-dark: #663b2c;
+  --cantera-light: #f4efe9;
+  --stone: #252422;
+  --stone-muted: #5a5652;
+  --paper: #fcfbfa;
+  --surface: #ffffff;
+  --border: rgba(140, 83, 62, 0.12);
+  --shadow: 0 25px 50px -15px rgba(37, 36, 34, 0.06);
+}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-sanmiguel);
-            color: var(--primary-navy);
-            line-height: 1.7;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-        /* --- Lienzo de partículas inmersivas de fondo --- */
-        #immersive-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-        }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--stone);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-        /* --- Animación de fondo interactiva (Efecto Cantera Viva que sigue el cursor) --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(200, 125, 85, 0.18) 0%, rgba(212, 131, 132, 0.1) 50%, transparent 80%);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            transition: width 0.4s, height 0.4s;
-            filter: blur(50px);
-        }
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 15%, rgba(140, 83, 62, 0.04), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(200, 165, 130, 0.04), transparent);
+}
 
-        .sma-main-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            box-sizing: border-box;
-        }
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 28s ease-in-out infinite;
+}
+.orb-1 { width: 480px; height: 480px; background: rgba(140, 83, 62, 0.08); top: -10%; left: -8%; }
+.orb-2 { width: 400px; height: 400px; background: rgba(189, 153, 118, 0.07); bottom: 0; right: -5%; animation-delay: -10s; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(18px, -14px) scale(1.03); }
+}
 
-        /* --- Barra Superior de Navegación e Iconos Sociales / Inicio --- */
-        .top-action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+.wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
 
-        .btn-home-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1.5px solid var(--primary-navy);
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: var(--white);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-        }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 0 44px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--surface);
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+}
+.brand-logo-link:hover {
+  border-color: var(--cantera);
+  transform: translateY(-2px);
+}
+.brand-logo-link img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+.brand-logo-link span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--stone);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-decoration: none;
+  padding: 10px 22px;
+  border: 1px solid var(--stone);
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
+.nav-back svg { width: 14px; height: 14px; }
+.nav-socials { display: flex; gap: 8px; }
+.nav-social {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--stone);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.nav-social:hover { transform: translateY(-3px); border-color: var(--cantera); color: var(--cantera); }
+.nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
+.nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
 
-        .btn-home-back:hover {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(27, 42, 74, 0.15);
-        }
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 52px;
+  align-items: center;
+  margin-bottom: 64px;
+}
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+}
+.hero-text { order: 1; }
+@media (max-width: 860px) { .hero-text { order: 2; text-align: center; } }
 
-        /* Enlaces rápidos a Redes Sociales (Instagram & TikTok) */
-        .social-quick-links {
-            display: flex;
-            gap: 12px;
-        }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cantera);
+  margin-bottom: 16px;
+}
+.eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--cantera); }
+@media (max-width: 860px) {
+  .eyebrow { justify-content: center; }
+  .eyebrow::before { display: none; }
+}
 
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--white);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--primary-navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(27, 42, 74, 0.04);
-            transition: all 0.3s ease;
-        }
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.1rem, 4.5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--stone);
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  font-weight: 300;
+  max-width: 400px;
+  margin-bottom: 28px;
+}
+@media (max-width: 860px) { .hero-sub { margin-left: auto; margin-right: auto; } }
 
-        .social-btn.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 860px) { .hero-meta { justify-content: center; } }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--cantera-dark);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.pill strong { font-weight: 600; }
 
-        .social-btn.tiktok:hover {
-            background: #000000;
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
+.hero-visual { order: 2; position: relative; }
+@media (max-width: 860px) { .hero-visual { order: 1; } }
 
-        /* --- Barra de Búsqueda Interna --- */
-        .search-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
+.hero-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  aspect-ratio: 4/5;
+  max-height: 520px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-frame:hover img { transform: scale(1.04); }
 
-        .site-search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 14px 24px;
-            border-radius: 50px;
-            border: 1.5px solid var(--border-subtle);
-            background: var(--white);
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--primary-navy);
-            box-shadow: 0 10px 30px rgba(27, 42, 74, 0.03);
-            outline: none;
-            transition: all 0.3s ease;
-        }
+.hero-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.hero-badge span { font-size: 11px; color: var(--stone-muted); }
+.hero-badge strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--stone);
+  display: block;
+}
 
-        .site-search-input:focus {
-            border-color: var(--cantera-terracotta);
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.15);
-        }
+.section { margin-bottom: 56px; }
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cantera);
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+.prose {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  max-width: 680px;
+  margin-bottom: 16px;
+}
+.prose strong { color: var(--stone); font-weight: 600; }
 
-        /* --- Cabecera con Logotipo Oficial e Identidad SMA --- */
-        .site-header-custom {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
+/* Línea del tiempo histórica */
+.timeline {
+  display: grid;
+  gap: 0;
+  margin-top: 28px;
+  border-left: 2px solid var(--border);
+  padding-left: 28px;
+}
+.timeline-item { position: relative; padding-bottom: 28px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -35px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cantera);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--cantera);
+}
+.timeline-item h3 { font-size: 0.98rem; font-weight: 600; color: var(--stone); margin-bottom: 4px; }
+.timeline-item p { font-size: 0.95rem; color: var(--stone-muted); }
 
-        .site-logo-container {
-            width: 95px;
-            height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--white);
-            border-radius: 50%;
-            box-shadow: 0 15px 35px rgba(200, 125, 85, 0.2);
-            border: 2px solid var(--cantera-terracotta);
-            overflow: hidden;
-            padding: 10px;
-            animation: float-logo 5s ease-in-out infinite;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+@media (max-width: 780px) { .cards { grid-template-columns: 1fr; } }
 
-        @keyframes float-logo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 10px 30px rgba(37, 36, 34, 0.02);
+  transition: all 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--cantera);
+  box-shadow: var(--shadow);
+}
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--cantera-light);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 12px;
+}
+.card ul { list-style: none; }
+.card li {
+  font-size: 0.9rem;
+  color: var(--stone-muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.card li::before { content: '·'; color: var(--cantera); font-weight: 700; flex-shrink: 0; }
+.card a { color: var(--cantera); text-decoration: none; font-weight: 500; }
+.card a:hover { text-decoration: underline; }
 
-        .site-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-        }
+.highlight {
+  margin: 56px 0;
+  background: var(--stone);
+  border-radius: 24px;
+  padding: 38px 36px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .highlight { grid-template-columns: 1fr; text-align: center; }
+}
+.highlight h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.highlight p { font-size: 0.95rem; opacity: 0.85; max-width: 420px; }
+@media (max-width: 640px) { .highlight p { margin: 0 auto; } }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: var(--cantera);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: var(--cantera-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(140, 83, 62, 0.25);
+}
 
-        .site-logo-container:hover img {
-            transform: scale(1.08);
-        }
+.media-block {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  margin-top: 48px;
+  align-items: stretch;
+}
+@media (max-width: 720px) { .media-block { grid-template-columns: 1fr; } }
+.video-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  background: #111;
+  aspect-ratio: 16/9;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.video-wrap iframe { width: 100%; height: 100%; border: 0; }
+.cta-side {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+}
+@media (max-width: 720px) { .cta-side { align-items: center; text-align: center; } }
+.cta-side p { font-size: 0.95rem; color: var(--stone-muted); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: 1.5px solid var(--stone);
+  color: var(--stone);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.btn-outline:hover { background: var(--stone); color: #fff; }
 
-        .brand-text-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
+.credits {
+  margin-top: 64px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--stone-muted);
+}
+.credits a { color: var(--cantera); font-weight: 500; text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
 
-        @media screen and (max-width: 768px) {
-            .brand-text-group { align-items: center; }
-        }
-
-        .interactive-brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--primary-navy);
-            text-decoration: none;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin: 0;
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--cantera-terracotta);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 6px;
-        }
-
-        .wp-block-separator {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--cantera-terracotta), transparent);
-            margin: 40px 0;
-            opacity: 0.3;
-        }
-
-        /* --- Tarjeta de Contenido Principal --- */
-        .content-card {
-            background: var(--white);
-            border-radius: 28px;
-            padding: 45px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-card);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--cantera-terracotta), var(--cantera-rose));
-        }
-
-        /* Estilo de Imagen Adaptado */
-        .wp-block-image {
-            margin: 0 0 35px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .wp-block-image img {
-            width: 100% !important;
-            max-width: 1024px;
-            height: auto !important;
-            border-radius: 18px !important;
-            box-shadow: 0 10px 25px rgba(27, 42, 74, 0.08);
-            display: block;
-        }
-
-        .wp-block-paragraph p, .wp-block-paragraph {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            text-align: justify;
-        }
-
-        .wp-block-list {
-            font-size: 1.05rem;
-            color: #333333;
-            margin-bottom: 25px;
-            padding-left: 20px;
-        }
-
-        .wp-block-list li {
-            margin-bottom: 12px;
-            text-align: justify;
-        }
-
-        /* --- Distribución y Estilo del Video y Caja de Lectura (Dos Columnas / Grid Flexible) --- */
-        .media-cta-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        @media screen and (max-width: 768px) {
-            .media-cta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Contenedor de Video Inmersivo Compacto y Elegante */
-        .video-inmersivo-container {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Bloque de invitación a seguir leyendo / explorar más ajustado al lado del video */
-        .explore-more-box {
-            background: linear-gradient(135deg, rgba(200, 125, 85, 0.05), rgba(212, 131, 132, 0.08));
-            border: 1.5px dashed var(--cantera-terracotta);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .explore-more-box h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.25rem;
-            line-height: 1.3;
-        }
-
-        .explore-more-box p {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .btn-explore-catalogue {
-            display: inline-block;
-            background: var(--primary-navy);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(27, 42, 74, 0.2);
-        }
-
-        .btn-explore-catalogue:hover {
-            background: var(--cantera-terracotta);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 125, 85, 0.3);
-        }
-
-        /* Créditos y Fuentes Oficiales INAH y Videos */
-        .source-credit {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--cantera-terracotta);
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
-            text-align: center;
-        }
-
-        .source-credit a {
-            color: var(--cantera-terracotta);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        .source-credit a:hover {
-            color: var(--primary-navy);
-        }
-
-        /* --- Responsive para Móviles --- */
-        @media screen and (max-width: 768px) {
-            .sma-main-wrapper {
-                padding: 30px 15px;
-            }
-            .interactive-brand-title {
-                font-size: 2rem;
-            }
-            .content-card {
-                padding: 25px 20px;
-            }
-            .top-action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-    <!-- Lienzo de partículas inmersivas de fondo -->
-    <canvas id="immersive-canvas"></canvas>
+<div class="ambient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-    <!-- Animación de fondo interactiva (Sigue el cursor) -->
-    <div id="cursor-glow"></div>
+<div class="wrap">
 
-    <div class="sma-main-wrapper">
-
-        <!-- Barra Superior: Botón de Casita/Inicio y Redes Sociales (Instagram & TikTok) -->
-        <div class="top-action-bar">
-            <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-home-back" title="Volver al inicio">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Inicio
-            </a>
-            
-            <div class="social-quick-links">
-                <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="social-btn instagram" title="Síguenos en Instagram">IG</a>
-                <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="social-btn tiktok" title="Síguenos en TikTok">TK</a>
-            </div>
-        </div>
-
-        <!-- Barra de Búsqueda Interactiva -->
-        <div class="search-container">
-            <input type="text" id="siteSearch" class="site-search-input" placeholder="🔍 Buscar más rincones e historia de San Miguel..." />
-        </div>
-
-        <!-- Cabecera Institucional Inmersiva SMA -->
-        <header class="site-header-custom">
-            <div class="site-logo-container" onclick="window.location.href='https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html'" title="Ir al Catálogo - Vive San Miguel">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Oficial Vive San Miguel">
-            </div>
-            <div class="brand-text-group">
-                <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="interactive-brand-title">EL CHARCO DEL INGENIO</a>
-                <span class="brand-subtitle">Naturaleza y Conservación • San Miguel de Allende</span>
-            </div>
-        </header>
-
-        <hr class="wp-block-separator" />
-
-        <!-- Tarjeta con Contenido Detallado -->
-        <div class="content-card">
-
-            <!-- wp:image -->
-            <figure class="wp-block-image size-large">
-                <!-- Enlace de Google Drive adaptado para visualización directa -->
-                <img src="https://lh3.googleusercontent.com/d/1tECsb-OZ2eWRrOYNQDsEuhU6eZj5CH7G" alt="Jardín Botánico El Charco del Ingenio" class="wp-image-000" />
-            </figure>
-            <!-- /wp:image -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>El Jardín Botánico El Charco del Ingenio es un oasis de biodiversidad y tranquilidad ubicado a pocos minutos del centro histórico. Este santuario natural es el lugar perfecto para conectar con la naturaleza, admirar flora endémica y disfrutar de paisajes impresionantes en San Miguel de Allende.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Un poco de historia:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p>Consagrado como una Zona de Paz por el Dalai Lama en 2004, este espacio comprende más de 70 hectáreas de reserva natural. El Charco del Ingenio protege los vestigios de un antiguo acueducto del siglo XX, una presa del siglo XIX y ruinas de una hacienda histórica. Además, es un refugio vital para especies en peligro de extinción y un centro de investigación botánica reconocido a nivel nacional y mundial.</p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>¿Qué encontrarás en El Charco del Ingenio?</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Colección botánica:</strong> Alberga una de las colecciones de suculentas, agaves y cactáceas más importantes y completas de todo México.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Cañadas y manantiales:</strong> Podrás recorrer hermosos senderos que bordean la impresionante cañada y la presa principal.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Observatorio de aves:</strong> Es un punto privilegiado para la observación de fauna local y de paso de hermosas aves migratorias.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Vestigios históricos:</strong> A lo largo del camino verás ruinas de la antigua presa y acueductos que narran la historia industrial de la zona.</li>
-                <!-- /wp:list-item -->
-                
-                <!-- wp:list-item -->
-                <li><strong>Tienda y cafetería:</strong> Un espacio ideal para descansar y adquirir productos orgánicos, libros y artesanías locales inigualables.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>¿Por qué visitar El Charco del Ingenio?</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>Desconexión total:</strong> Sus extensos senderos ofrecen un ambiente de completa paz, ideal para alejarse del bullicio urbano de la ciudad.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Vistas espectaculares:</strong> Cuenta con excelentes miradores que ofrecen vistas panorámicas impresionantes de las barrancas y la naturaleza viva.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Educación ambiental:</strong> Es una gran oportunidad para aprender sobre la importancia de la conservación del ecosistema semiárido y el cuidado ambiental.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Fotografía de paisaje:</strong> Sus amaneceres y atardeceres crean escenarios perfectos para capturar imágenes únicas para el recuerdo.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- wp:paragraph -->
-            <div class="wp-block-paragraph">
-                <p><strong>Consejos para tu visita:</strong></p>
-            </div>
-            <!-- /wp:paragraph -->
-
-            <!-- wp:list -->
-            <ul class="wp-block-list">
-                <!-- wp:list-item -->
-                <li><strong>La mejor hora para visitar:</strong> Llegar temprano por la mañana o al final de la tarde, cuando el clima es fresco y la luz del sol resalta los colores del paisaje.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Vestimenta adecuada:</strong> Es fundamental llevar zapatos muy cómodos para caminar, ropa ligera, sombrero y suficiente protector solar.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Hidratación constante:</strong> No olvides llevar una botella de agua reutilizable para mantenerte hidratado durante todo tu recorrido ecológico.</li>
-                <!-- /wp:list-item -->
-
-                <!-- wp:list-item -->
-                <li><strong>Respeto a la reserva:</strong> Sigue en todo momento las reglas del jardín, mantente en los senderos señalizados y no extraigas ni maltrates ninguna planta del lugar.</li>
-                <!-- /wp:list-item -->
-            </ul>
-            <!-- /wp:list -->
-
-            <!-- Distribución en dos columnas: Video Inmersivo + Caja de Invitación a Seguir Leyendo -->
-            <div class="media-cta-grid">
-                <!-- Sección de Video Inmersivo Reproducible -->
-                <div class="video-inmersivo-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/DSI3Q_wluCE" 
-                            title="Video El Charco del Ingenio" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- Bloque de Invitación a Seguir Leyendo -->
-                <div class="explore-more-box">
-                    <h3>¿Listo para continuar tu recorrido?</h3>
-                    <p>Descubre más rutas temáticas, arquitectura colonial y rincones secretos que forman parte de nuestro patrimonio.</p>
-                    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-explore-catalogue">Explorar el Catálogo</a>
-                </div>
-            </div>
-
-            <div class="source-credit" style="margin-top: 10px;">
-                Video cortesía de: <strong>El Charco del Ingenio-Jardín Botánico</strong> (<a href="https://www.youtube.com/watch?v=DSI3Q_wluCE" target="_blank" rel="noopener noreferrer">YouTube</a>)
-            </div>
-
-            <!-- Créditos y Fuentes Oficiales -->
-            <div class="source-credit">
-                Fuente e información obtenida de: <a href="https://vivemigueldeallende.wordpress.com/2024/10/21/jardin-botanico-el-charco-del-ingenio/" target="_blank" rel="noopener noreferrer">Vive San Miguel de Allende</a>.
-            </div>
-
-        </div>
-
+  <nav>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <span>Vive San Miguel</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Inicio
+      </a>
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
+      </div>
     </div>
+  </nav>
 
-    <!-- Script del cursor interactivo orgánico y partículas inmersivas -->
-    <script>
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let glowX = 0, glowY = 0;
+  <!-- HERO -->
+  <header class="hero reveal">
+    <div class="hero-text">
+      <div class="eyebrow">Reserva Natural · Zona de Paz</div>
+      <h1>Jardín Botánico El Charco del Ingenio</h1>
+      <p class="hero-sub">Un oasis de biodiversidad y tranquilidad a pocos minutos del centro. Cactáceas, cañadas, vestigios históricos y paisajes imponentes.</p>
+      <div class="hero-meta">
+        <span class="pill"><strong>$100 MXN p/p</strong></span>
+        <span class="pill">Diario · 09:00–17:00</span>
+        <span class="pill">Domingos gratis (locales)</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <img src="https://lh3.googleusercontent.com/d/1tECsb-OZ2eWRrOYNQDsEuhU6eZj5CH7G" alt="Jardín Botánico El Charco del Ingenio">
+        <div class="hero-badge">
+          <div>
+            <span>Naturaleza &</span>
+            <strong>Conservación</strong>
+          </div>
+          <div style="text-align:right">
+            <span>Santuario</span>
+            <strong style="font-size:0.95rem">Ecológico</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+  <!-- INTRO -->
+  <section class="section reveal">
+    <div class="section-label">Naturaleza y conservación</div>
+    <h2>Un santuario ecológico y cultural</h2>
+    <p class="prose">El <strong>Jardín Botánico El Charco del Ingenio</strong> es una amplia reserva natural situada en las inmediaciones de San Miguel de Allende, dedicada a la preservación y exhibición de la flora regional y mexicana, especialmente cactáceas y suculentas.</p>
+  </section>
 
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.08;
-            glowY += (mouseY - glowY) * 0.08;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
+  <!-- LÍNEA DEL TIEMPO -->
+  <section class="section reveal">
+    <div class="section-label">Evolución histórica</div>
+    <h2>Hitos en la historia del jardín</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>Siglos XIX y XX — Vestigios industriales</h3>
+        <p>El sitio resguarda restos históricos como una presa del siglo XIX, un antiguo acueducto y ruinas de una hacienda vinculada al desarrollo económico y agrícola de la región.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>1991 — Fundación de la Reserva</h3>
+        <p>Se establece oficialmente el jardín botánico para proteger el territorio de la cañada y rescatar la flora amenazada del semidesierto mexicano.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>2004 — Consagración como Zona de Paz</h3>
+        <p>El líder espiritual tibetano, el Dalai Lama, visita y proclama oficialmente al Charco del Ingenio como una Zona de Paz mundial.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Actualidad — Conservación y Educación</h3>
+        <p>Funciona como un reconocido centro de investigación botánica, educación ambiental y un refugio de biodiversidad abierto a la comunidad.</p>
+      </div>
+    </div>
+  </section>
 
-        // Canvas de partículas inmersivas fluidas
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
+  <!-- POR QUÉ VISITARLO (En tarjetas elegantes) -->
+  <section class="section reveal">
+    <div class="section-label">Experiencia única</div>
+    <h2>¿Por qué visitar El Charco del Ingenio?</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌿</div>
+        <h3>Desconexión total</h3>
+        <p>Sus senderos serpenteantes ofrecen un ambiente de absoluta paz, ideal para alejarse del bullicio urbano de la ciudad.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌄</div>
+        <h3>Vistas espectaculares</h3>
+        <p>Cuenta con excelentes miradores sobre la gran cañada, ideales para la fotografía de paisaje y contemplación.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌵</div>
+        <h3>Riqueza biológica</h3>
+        <p>Alberga una de las colecciones botánicas de cactáceas y suculentas más importantes de todo México.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🦅</div>
+        <h3>Observación de aves</h3>
+        <p>Es un punto privilegiado para admirar especies locales y aves migratorias que habitan en la presa y los manantiales.</p>
+      </div>
+    </div>
+  </section>
 
-        let width, height;
-        let particles = [];
+  <!-- CARDS: Horarios, Contacto y Tips -->
+  <section class="section reveal">
+    <div class="section-label">Planifica tu visita</div>
+    <h2>Información práctica y contacto</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🕐</div>
+        <h3>Horarios & Costos</h3>
+        <ul>
+          <li><strong>Abierto:</strong> Todos los días de 09:00 a 17:00 hrs</li>
+          <li><strong>Cafetería:</strong> De 09:00 a 16:00 hrs</li>
+          <li><strong>Cooperación de ingreso:</strong> $100 MXN por persona</li>
+          <li><strong>Domingos:</strong> Entrada gratuita para locales</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">📞</div>
+        <h3>Contacto & Web</h3>
+        <ul>
+          <li><strong>Teléfono:</strong> <a href="tel:4151544715">415 154 4715</a> / <a href="tel:4151038090">415 103 8090</a></li>
+          <li><strong>Sitio Web Oficial:</strong> <a href="https://elcharco.org.mx" target="_blank">elcharco.org.mx</a></li>
+          <li><strong>Correo:</strong> charcodelingeniocomunicacion@gmail.com</li>
+          <li><strong>Ubicación:</strong> Paloma s/n, Zona Urbana, San Miguel de Allende</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+  <!-- HIGHLIGHT -->
+  <div class="highlight reveal">
+    <div>
+      <h3>¿Listo para descubrir más?</h3>
+      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+    </div>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
+      Ver catálogo
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 
-        window.addEventListener('resize', resize);
-        resize();
+  <!-- VIDEO -->
+  <section class="section reveal">
+    <div class="section-label">Experiencia visual</div>
+    <h2>Conoce El Charco del Ingenio</h2>
+    <div class="media-block">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/DSI3Q_wluCE" allowfullscreen title="Video El Charco del Ingenio"></iframe>
+      </div>
+      <div class="cta-side">
+        <p>Video cortesía de <strong>El Charco del Ingenio - Jardín Botánico</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por la belleza natural y los paisajes de esta reserva ecológica.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+      </div>
+    </div>
+  </section>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = 140;
-                let force = (maxDistance - distance) / maxDistance;
+  <footer class="credits reveal">
+    <p>Fuente e información oficial: <a href="https://elcharco.org.mx/" target="_blank">El Charco del Ingenio A.C. / Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Naturaleza y Conservación</p>
+  </footer>
 
-                if (distance < maxDistance) {
-                    this.x -= forceDirectionX * force * this.density * 0.5;
-                    this.y -= forceDirectionY * force * this.density * 0.5;
-                } else {
-                    if (this.x !== this.baseX) {
-                        this.x -= (this.x - this.baseX) / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        this.y -= (this.y - this.baseY) / 20;
-                    }
-                }
+</div>
 
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-
-                if (this.baseX < 0) this.baseX = width;
-                if (this.baseX > width) this.baseX = 0;
-                if (this.baseY < 0) this.baseY = height;
-                if (this.baseY > height) this.baseY = 0;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(200, 125, 85, 0.25)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (width * height) / 10000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-    </script>
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
