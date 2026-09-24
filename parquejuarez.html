@@ -352,6 +352,53 @@ nav {
 }
 .why-visit-box p:last-child { margin-bottom: 0; }
 
+/* --- Línea del Tiempo --- */
+.timeline-block {
+  margin-top: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 0 10px 30px rgba(37, 36, 34, 0.02);
+}
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 24px auto 0;
+  padding-left: 24px;
+  border-left: 2px solid var(--cantera);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+  padding-left: 16px;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cantera);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 3px rgba(140, 83, 62, 0.15);
+}
+.timeline-year {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cantera);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+}
+.timeline-text {
+  font-size: 0.95rem;
+  color: var(--stone-muted);
+}
+
 .highlight {
   margin: 56px 0;
   background: var(--stone);
@@ -534,7 +581,7 @@ nav {
     </div>
   </section>
 
-  <!-- LO QUE ENCONTRARÁS + CONSEJOS -->
+  <!-- LO QUE ENCONTRARÁS + CONSEJOS + LÍNEA DEL TIEMPO -->
   <section class="section reveal">
     <div class="section-label">Planifica tu visita</div>
     <h2>Todo lo que necesitas saber</h2>
@@ -562,6 +609,30 @@ nav {
         <div class="card-icon">✨</div>
         <h3>Tip de guía</h3>
         <p>Los fines de semana el parque cobra vida con la presencia de pintores y músicos locales. Es un excelente escenario para capturar fotografías con estilo colonial y natural al mismo tiempo.</p>
+      </div>
+    </div>
+
+    <!-- LÍNEA DEL TIEMPO -->
+    <div class="timeline-block">
+      <div class="section-label" style="margin-bottom:8px">Evolución histórica</div>
+      <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--stone); margin-bottom:16px;">Hitos del Parque</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1904</div>
+          <div class="timeline-text">Inicia la construcción del parque por iniciativa del Dr. Ignacio Hernández Macías en terrenos que antes funcionaban como huertas.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1905</div>
+          <div class="timeline-text">Concluye oficialmente la construcción de la primera etapa de este icónico espacio público.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1916 – 1917</div>
+          <div class="timeline-text">El espacio es renombrado formalmente como Parque Juárez en honor al benemérito Benito Juárez.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Actualidad</div>
+          <div class="timeline-text">Se consolida como el principal pulmón verde y punto de reunión cultural y recreativo de la ciudad.</div>
+        </div>
       </div>
     </div>
   </section>
