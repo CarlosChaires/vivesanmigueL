@@ -908,7 +908,7 @@
                     title: 'Sitios de interés',
                     desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png'
+                    img: 'https://images.unsplash.com/photo-1585464231875-d94957e8d5cc?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_guias',
@@ -952,7 +952,7 @@
                     title: 'Aventura',
                     desc: 'Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y experiencias al aire libre.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/aventura',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024'
+                    img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_romance',
@@ -985,16 +985,35 @@
             ]
         };
 
+        // Forzar enlace correcto para Sitios de Interés
+        defaultSiteData.mainItems.forEach(item => {
+            if (item.key === 'item_sitios') {
+                item.link = 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres';
+            }
+        });
+
         function getStoredData() {
             const data = localStorage.getItem('sma_site_data');
             if (!data) {
                 localStorage.setItem('sma_site_data', JSON.stringify(defaultSiteData));
                 return defaultSiteData;
             }
-            return JSON.parse(data);
+            const parsed = JSON.parse(data);
+            // Asegurar enlace de sitios de interés en localStorage existente
+            parsed.mainItems.forEach(item => {
+                if (item.key === 'item_sitios') {
+                    item.link = 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres';
+                }
+            });
+            return parsed;
         }
 
         function saveStoredData(data) {
+            data.mainItems.forEach(item => {
+                if (item.key === 'item_sitios') {
+                    item.link = 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres';
+                }
+            });
             localStorage.setItem('sma_site_data', JSON.stringify(data));
             renderSite();
         }
@@ -1188,6 +1207,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('sma_site_data')) {
                 localStorage.setItem('sma_site_data', JSON.stringify(defaultSiteData));
+            } else {
+                // Forzar corrección si ya existía en localStorage con link viejo de wordpress
+                const data = getStoredData();
+                saveStoredData(data);
             }
             checkSession();
             renderSite();
