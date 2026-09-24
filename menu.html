@@ -1,1294 +1,1326 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Guía Turística Oficial</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
-
-        :root {
-            --cream: #f7f1e8;
-            --paper: #fffdf9;
-            --ink: #211c18;
-            --muted: #756b62;
-            --terracotta: #a74d32;
-            --terracotta-dark: #71301f;
-            --gold: #b9955d;
-            --gold-soft: rgba(185,149,93,.22);
-            --line: rgba(57,40,29,.12);
-            --shadow: 0 24px 70px rgba(48,31,21,.09);
-            --shadow-sm: 0 10px 35px rgba(48,31,21,.07);
-            --radius: 24px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--ink);
-            background:
-                radial-gradient(circle at 10% 10%, rgba(185,149,93,.10), transparent 28%),
-                radial-gradient(circle at 90% 24%, rgba(167,77,50,.07), transparent 25%),
-                var(--cream);
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: .28;
-            z-index: 0;
-            background-image:
-                linear-gradient(rgba(80,55,38,.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(80,55,38,.025) 1px, transparent 1px);
-            background-size: 42px 42px;
-        }
-
-        #immersive-canvas {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            opacity: .65;
-        }
-
-        #cursor-glow {
-            position: fixed;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            filter: blur(35px);
-            background: radial-gradient(circle, rgba(185,149,93,.13), rgba(167,77,50,.035) 48%, transparent 72%);
-        }
-
-        .container {
-            width: min(1240px, calc(100% - 40px));
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Header */
-        header {
-            min-height: 88px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--line);
-            position: relative;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 13px;
-            text-decoration: none;
-            color: var(--ink);
-        }
-
-        .brand-logo {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(70,40,20,.08));
-        }
-
-        .brand-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.55rem;
-            line-height: 1;
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
-
-        .brand-name::after {
-            content: "SAN MIGUEL DE ALLENDE";
-            display: block;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .48rem;
-            letter-spacing: 3px;
-            font-weight: 600;
-            color: var(--gold);
-            margin-top: 5px;
-        }
-
-        .btn-nav-home {
-            text-decoration: none;
-            color: var(--ink);
-            border: 1px solid var(--line);
-            background: rgba(255,253,249,.72);
-            padding: 11px 19px;
-            border-radius: 999px;
-            font-size: .72rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            transition: .3s ease;
-            backdrop-filter: blur(12px);
-        }
-
-        .btn-nav-home:hover {
-            background: var(--terracotta);
-            color: #fff;
-            border-color: var(--terracotta);
-            transform: translateY(-2px);
-        }
-
-        /* Hero */
-        .hero {
-            padding: 88px 0 70px;
-            display: grid;
-            grid-template-columns: 1.05fr .95fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .eyebrow {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: .66rem;
-            color: var(--terracotta);
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .eyebrow::before {
-            content: "";
-            width: 38px;
-            height: 1px;
-            background: var(--gold);
-        }
-
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(4rem, 7vw, 6.8rem);
-            line-height: .82;
-            letter-spacing: -2px;
-            font-weight: 600;
-            max-width: 700px;
-        }
-
-        .hero h1 em {
-            color: var(--terracotta);
-            font-weight: 500;
-        }
-
-        .hero-copy {
-            color: var(--muted);
-            font-size: 1.02rem;
-            max-width: 580px;
-            margin-top: 28px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .hero-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            border-radius: 999px;
-            padding: 13px 20px;
-            font-size: .76rem;
-            font-weight: 700;
-            letter-spacing: .6px;
-            transition: .3s ease;
-        }
-
-        .hero-btn.primary {
-            background: var(--terracotta);
-            color: #fff;
-            box-shadow: 0 12px 28px rgba(167,77,50,.22);
-        }
-
-        .hero-btn.secondary {
-            border: 1px solid var(--line);
-            color: var(--ink);
-            background: rgba(255,253,249,.6);
-        }
-
-        .hero-btn:hover { transform: translateY(-3px); }
-
-        .hero-visual {
-            min-height: 440px;
-            position: relative;
-        }
-
-        .hero-frame {
-            height: 440px;
-            border-radius: 34px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: var(--shadow);
-            border: 8px solid rgba(255,253,249,.82);
-            background: #d9c5ad;
-        }
-
-        .hero-frame::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background:
-                linear-gradient(180deg, transparent 35%, rgba(26,18,12,.65)),
-                linear-gradient(135deg, rgba(167,77,50,.12), transparent 45%);
-        }
-
-        .hero-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.02);
-        }
-
-        .hero-caption {
-            position: absolute;
-            left: 28px;
-            right: 28px;
-            bottom: 25px;
-            z-index: 2;
-            color: #fff;
-        }
-
-        .hero-caption span {
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: .58rem;
-            opacity: .78;
-            margin-bottom: 5px;
-        }
-
-        .hero-caption strong {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-
-        /* Section */
-        .section-header {
-            margin-bottom: 28px;
-        }
-
-        .section-kicker {
-            color: var(--gold);
-            font-size: .64rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .section-header h1, .section-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.8rem, 4vw, 4rem);
-            line-height: .95;
-            font-weight: 600;
-            letter-spacing: -.6px;
-        }
-
-        .section-header p {
-            margin-top: 10px;
-            color: var(--muted);
-            max-width: 680px;
-            font-size: .92rem;
-        }
-
-        /* Cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 78px;
-        }
-
-        .card-item {
-            position: relative;
-            min-height: 410px;
-            overflow: hidden;
-            border-radius: var(--radius);
-            background: #2b211b;
-            border: 1px solid rgba(255,255,255,.45);
-            box-shadow: var(--shadow-sm);
-            transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
-        }
-
-        .card-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 65px rgba(55,34,22,.18);
-        }
-
-        .card-image {
-            position: absolute;
-            inset: 0;
-            height: 100%;
-            background: #d9c5ad;
-        }
-
-        .card-image::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(25,15,10,.02) 20%, rgba(25,15,10,.82) 100%);
-        }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform .8s ease;
-        }
-
-        .card-item:hover .card-image img { transform: scale(1.07); }
-
-        .card-body {
-            position: relative;
-            z-index: 2;
-            min-height: 410px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 28px;
-            color: #fff;
-        }
-
-        .card-body::before {
-            content: "VIVE SAN MIGUEL";
-            position: absolute;
-            top: 24px;
-            left: 28px;
-            font-size: .54rem;
-            letter-spacing: 2.3px;
-            font-weight: 800;
-            opacity: .65;
-        }
-
-        .card-link-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            line-height: 1;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .card-link-title span {
-            flex: 0 0 auto;
-            width: 34px;
-            height: 34px;
-            border: 1px solid rgba(255,255,255,.35);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            transition: .3s ease;
-        }
-
-        .card-item:hover .card-link-title span {
-            background: #fff;
-            color: var(--terracotta);
-            transform: rotate(-12deg);
-        }
-
-        .card-body p {
-            color: rgba(255,255,255,.78);
-            font-size: .8rem;
-            line-height: 1.7;
-            max-width: 95%;
-        }
-
-        .card-body .btn-admin {
-            align-self: flex-start;
-            margin-top: 12px;
-            position: relative;
-            z-index: 4;
-        }
-
-        /* Secondary experience section */
-        .section-wrapper {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 78px;
-            padding: 58px 42px 42px;
-            border-radius: 34px;
-            background:
-                linear-gradient(135deg, rgba(255,253,249,.96), rgba(250,242,231,.9));
-            border: 1px solid var(--line);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .section-wrapper .cards-grid {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Admin */
-        .admin-bar {
-            display: none;
-            gap: 8px;
-            justify-content: center;
-            margin: 20px 0 35px;
-            padding: 10px;
-            border-radius: 16px;
-            background: rgba(255,253,249,.92);
-            border: 1px solid var(--line);
-            box-shadow: var(--shadow-sm);
-            backdrop-filter: blur(14px);
-        }
-
-        .admin-bar.active { display: flex; flex-wrap: wrap; }
-
-        .btn-admin {
-            background: rgba(167,77,50,.06);
-            color: var(--terracotta);
-            border: 1px solid rgba(167,77,50,.15);
-            padding: 7px 13px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: .68rem;
-            cursor: pointer;
-            transition: .25s ease;
-        }
-
-        .btn-admin:hover {
-            background: var(--terracotta);
-            color: #fff;
-        }
-
-        /* Social */
-        .social-box {
-            margin-bottom: 55px;
-            padding: 52px 30px;
-            text-align: center;
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-            position: relative;
-        }
-
-        .social-box::before,
-        .social-box::after {
-            content: "✦";
-            color: var(--gold);
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: .8rem;
-        }
-
-        .social-box::before { left: 4%; }
-        .social-box::after { right: 4%; }
-
-        .social-box h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            font-weight: 600;
-        }
-
-        .social-box p {
-            color: var(--muted);
-            font-size: .82rem;
-            margin: 4px 0 22px;
-        }
-
-        .social-group {
-            display: flex;
-            justify-content: center;
-            gap: 9px;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: .7rem;
-            text-decoration: none;
-            color: #fff;
-            transition: .3s ease;
-        }
-
-        .social-btn:hover { transform: translateY(-3px); }
-
-        .social-btn svg { width: 14px; height: 14px; fill: #fff; }
-
-        .social-btn.instagram {
-            background: linear-gradient(135deg, #bc1888, #dc2743, #f09433);
-        }
-
-        .social-btn.tiktok { background: #161616; }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--line);
-            padding: 26px 0 38px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--muted);
-            font-size: .72rem;
-        }
-
-        .footer-brand {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            color: var(--ink);
-        }
-
-        .admin-trigger {
-            border: 1px solid var(--line);
-            background: rgba(255,253,249,.5);
-            color: var(--muted);
-            padding: 7px 12px;
-            border-radius: 999px;
-            font-size: .65rem;
-            cursor: pointer;
-            transition: .25s ease;
-        }
-
-        .admin-trigger:hover {
-            color: var(--terracotta);
-            border-color: rgba(167,77,50,.25);
-        }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(27,19,14,.52);
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: .3s ease;
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-content {
-            width: 100%;
-            max-width: 440px;
-            background: var(--paper);
-            border: 1px solid var(--line);
-            border-radius: 28px;
-            padding: 34px;
-            box-shadow: 0 35px 90px rgba(0,0,0,.22);
-            transform: translateY(18px) scale(.98);
-            transition: .3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-top h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-
-        .close-btn {
-            width: 34px;
-            height: 34px;
-            border: 1px solid var(--line);
-            border-radius: 50%;
-            background: transparent;
-            color: var(--muted);
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-
-        .input-group { margin-bottom: 16px; }
-
-        .input-group label {
-            display: block;
-            font-size: .62rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.8px;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-
-        .input-group input,
-        .input-group textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            background: #faf6ef;
-            color: var(--ink);
-            outline: none;
-            font: inherit;
-            font-size: .84rem;
-        }
-
-        .input-group input:focus,
-        .input-group textarea:focus {
-            border-color: rgba(167,77,50,.55);
-            box-shadow: 0 0 0 4px rgba(167,77,50,.07);
-            background: #fff;
-        }
-
-        .btn-modal-save {
-            width: 100%;
-            border: 0;
-            border-radius: 999px;
-            padding: 13px;
-            background: var(--terracotta);
-            color: #fff;
-            font-weight: 800;
-            font-size: .75rem;
-            cursor: pointer;
-            transition: .25s ease;
-        }
-
-        .btn-modal-save:hover { background: var(--terracotta-dark); }
-
-        .error-message {
-            color: #a33b2c;
-            font-size: .75rem;
-            margin: 6px 0 10px;
-            display: none;
-        }
-
-        /* Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity .7s ease, transform .7s ease;
-        }
-
-        .reveal.visible { opacity: 1; transform: none; }
-
-        @media (max-width: 980px) {
-            .hero {
-                grid-template-columns: 1fr;
-                padding-top: 65px;
-            }
-            .hero-visual { max-width: 720px; width: 100%; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 640px) {
-            .container { width: min(100% - 24px, 1240px); }
-            header { min-height: 74px; }
-            .brand-name { font-size: 1.25rem; }
-            .brand-logo { width: 40px; height: 40px; }
-            .hero { padding: 55px 0 55px; gap: 35px; }
-            .hero h1 { font-size: 4.2rem; letter-spacing: -1.5px; }
-            .hero-frame { height: 360px; }
-            .cards-grid { grid-template-columns: 1fr; }
-            .card-item, .card-body { min-height: 380px; }
-            .section-wrapper { padding: 40px 18px 20px; border-radius: 25px; }
-            .social-box h3 { font-size: 2.3rem; }
-            .social-box::before, .social-box::after { display: none; }
-            footer { flex-direction: column; gap: 15px; text-align: center; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                scroll-behavior: auto !important;
-                transition-duration: .01ms !important;
-                animation-duration: .01ms !important;
-            }
-            #immersive-canvas, #cursor-glow { display: none; }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Guía Turística Oficial</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        :root {
+            --cream: #f7f1e8;
+            --paper: #fffdf9;
+            --ink: #211c18;
+            --muted: #756b62;
+            --terracotta: #a74d32;
+            --terracotta-dark: #71301f;
+            --gold: #b9955d;
+            --gold-soft: rgba(185,149,93,.22);
+            --line: rgba(57,40,29,.12);
+            --shadow: 0 24px 70px rgba(48,31,21,.09);
+            --shadow-sm: 0 10px 35px rgba(48,31,21,.07);
+            --radius: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(185,149,93,.10), transparent 28%),
+                radial-gradient(circle at 90% 24%, rgba(167,77,50,.07), transparent 25%),
+                var(--cream);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .28;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(80,55,38,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(80,55,38,.025) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+
+        #immersive-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .65;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            background: radial-gradient(circle, rgba(185,149,93,.13), rgba(167,77,50,.035) 48%, transparent 72%);
+        }
+
+        .container {
+            width: min(1240px, calc(100% - 40px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            min-height: 88px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(70,40,20,.08));
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .brand-name::after {
+            content: "SAN MIGUEL DE ALLENDE";
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .48rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-top: 5px;
+        }
+
+        .btn-nav-home {
+            text-decoration: none;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            background: rgba(255,253,249,.72);
+            padding: 11px 19px;
+            border-radius: 999px;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            transition: .3s ease;
+            backdrop-filter: blur(12px);
+        }
+
+        .btn-nav-home:hover {
+            background: var(--terracotta);
+            color: #fff;
+            border-color: var(--terracotta);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 88px 0 70px;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: .66rem;
+            color: var(--terracotta);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 38px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 7vw, 6.8rem);
+            line-height: .82;
+            letter-spacing: -2px;
+            font-weight: 600;
+            max-width: 700px;
+        }
+
+        .hero h1 em {
+            color: var(--terracotta);
+            font-weight: 500;
+        }
+
+        .hero-copy {
+            color: var(--muted);
+            font-size: 1.02rem;
+            max-width: 580px;
+            margin-top: 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            border-radius: 999px;
+            padding: 13px 20px;
+            font-size: .76rem;
+            font-weight: 700;
+            letter-spacing: .6px;
+            transition: .3s ease;
+        }
+
+        .hero-btn.primary {
+            background: var(--terracotta);
+            color: #fff;
+            box-shadow: 0 12px 28px rgba(167,77,50,.22);
+        }
+
+        .hero-btn.secondary {
+            border: 1px solid var(--line);
+            color: var(--ink);
+            background: rgba(255,253,249,.6);
+        }
+
+        .hero-btn:hover { transform: translateY(-3px); }
+
+        .hero-visual {
+            min-height: 440px;
+            position: relative;
+        }
+
+        .hero-frame {
+            height: 440px;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 8px solid rgba(255,253,249,.82);
+            background: #d9c5ad;
+        }
+
+        .hero-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background:
+                linear-gradient(180deg, transparent 35%, rgba(26,18,12,.65)),
+                linear-gradient(135deg, rgba(167,77,50,.12), transparent 45%);
+        }
+
+        .hero-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+        }
+
+        .hero-caption {
+            position: absolute;
+            left: 28px;
+            right: 28px;
+            bottom: 25px;
+            z-index: 2;
+            color: #fff;
+        }
+
+        .hero-caption span {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: .58rem;
+            opacity: .78;
+            margin-bottom: 5px;
+        }
+
+        .hero-caption strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Section */
+        .section-header {
+            margin-bottom: 28px;
+        }
+
+        .section-kicker {
+            color: var(--gold);
+            font-size: .64rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .section-header h1, .section-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 4vw, 4rem);
+            line-height: .95;
+            font-weight: 600;
+            letter-spacing: -.6px;
+        }
+
+        .section-header p {
+            margin-top: 10px;
+            color: var(--muted);
+            max-width: 680px;
+            font-size: .92rem;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 78px;
+        }
+
+        .card-item {
+            position: relative;
+            min-height: 410px;
+            overflow: hidden;
+            border-radius: var(--radius);
+            background: #2b211b;
+            border: 1px solid rgba(255,255,255,.45);
+            box-shadow: var(--shadow-sm);
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
+        }
+
+        .card-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 65px rgba(55,34,22,.18);
+        }
+
+        .card-image {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            background: #d9c5ad;
+        }
+
+        .card-image::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(25,15,10,.02) 20%, rgba(25,15,10,.82) 100%);
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .8s ease;
+        }
+
+        .card-item:hover .card-image img { transform: scale(1.07); }
+
+        .card-body {
+            position: relative;
+            z-index: 2;
+            min-height: 410px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 28px;
+            color: #fff;
+        }
+
+        .card-body::before {
+            content: "VIVE SAN MIGUEL";
+            position: absolute;
+            top: 24px;
+            left: 28px;
+            font-size: .54rem;
+            letter-spacing: 2.3px;
+            font-weight: 800;
+            opacity: .65;
+        }
+
+        .card-link-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-link-title span {
+            flex: 0 0 auto;
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: .3s ease;
+        }
+
+        .card-item:hover .card-link-title span {
+            background: #fff;
+            color: var(--terracotta);
+            transform: rotate(-12deg);
+        }
+
+        .card-body p {
+            color: rgba(255,255,255,.78);
+            font-size: .8rem;
+            line-height: 1.7;
+            max-width: 95%;
+        }
+
+        .card-body .btn-admin {
+            align-self: flex-start;
+            margin-top: 12px;
+            position: relative;
+            z-index: 4;
+        }
+
+        /* Secondary experience section */
+        .section-wrapper {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 78px;
+            padding: 58px 42px 42px;
+            border-radius: 34px;
+            background:
+                linear-gradient(135deg, rgba(255,253,249,.96), rgba(250,242,231,.9));
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-wrapper .cards-grid {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Admin */
+        .admin-bar {
+            display: none;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0 35px;
+            padding: 10px;
+            border-radius: 16px;
+            background: rgba(255,253,249,.92);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(14px);
+        }
+
+        .admin-bar.active { display: flex; flex-wrap: wrap; }
+
+        .btn-admin {
+            background: rgba(167,77,50,.06);
+            color: var(--terracotta);
+            border: 1px solid rgba(167,77,50,.15);
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .68rem;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--terracotta);
+            color: #fff;
+        }
+
+        /* Social */
+        .social-box {
+            margin-bottom: 55px;
+            padding: 52px 30px;
+            text-align: center;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            position: relative;
+        }
+
+        .social-box::before,
+        .social-box::after {
+            content: "✦";
+            color: var(--gold);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .8rem;
+        }
+
+        .social-box::before { left: 4%; }
+        .social-box::after { right: 4%; }
+
+        .social-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+        }
+
+        .social-box p {
+            color: var(--muted);
+            font-size: .82rem;
+            margin: 4px 0 22px;
+        }
+
+        .social-group {
+            display: flex;
+            justify-content: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .7rem;
+            text-decoration: none;
+            color: #fff;
+            transition: .3s ease;
+        }
+
+        .social-btn:hover { transform: translateY(-3px); }
+
+        .social-btn svg { width: 14px; height: 14px; fill: #fff; }
+
+        .social-btn.instagram {
+            background: linear-gradient(135deg, #bc1888, #dc2743, #f09433);
+        }
+
+        .social-btn.tiktok { background: #161616; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 26px 0 38px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--muted);
+            font-size: .72rem;
+        }
+
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--ink);
+        }
+
+        .admin-trigger {
+            border: 1px solid var(--line);
+            background: rgba(255,253,249,.5);
+            color: var(--muted);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: .65rem;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .admin-trigger:hover {
+            color: var(--terracotta);
+            border-color: rgba(167,77,50,.25);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(27,19,14,.52);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: .3s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-content {
+            width: 100%;
+            max-width: 440px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 34px;
+            box-shadow: 0 35px 90px rgba(0,0,0,.22);
+            transform: translateY(18px) scale(.98);
+            transition: .3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-top h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .input-group { margin-bottom: 16px; }
+
+        .input-group label {
+            display: block;
+            font-size: .62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: #faf6ef;
+            color: var(--ink);
+            outline: none;
+            font: inherit;
+            font-size: .84rem;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: rgba(167,77,50,.55);
+            box-shadow: 0 0 0 4px rgba(167,77,50,.07);
+            background: #fff;
+        }
+
+        .btn-modal-save {
+            width: 100%;
+            border: 0;
+            border-radius: 999px;
+            padding: 13px;
+            background: var(--terracotta);
+            color: #fff;
+            font-weight: 800;
+            font-size: .75rem;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .btn-modal-save:hover { background: var(--terracotta-dark); }
+
+        .error-message {
+            color: #a33b2c;
+            font-size: .75rem;
+            margin: 6px 0 10px;
+            display: none;
+        }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .reveal.visible { opacity: 1; transform: none; }
+
+        @media (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 65px;
+            }
+            .hero-visual { max-width: 720px; width: 100%; }
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .container { width: min(100% - 24px, 1240px); }
+            header { min-height: 74px; }
+            .brand-name { font-size: 1.25rem; }
+            .brand-logo { width: 40px; height: 40px; }
+            .hero { padding: 55px 0 55px; gap: 35px; }
+            .hero h1 { font-size: 4.2rem; letter-spacing: -1.5px; }
+            .hero-frame { height: 360px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .card-item, .card-body { min-height: 380px; }
+            .section-wrapper { padding: 40px 18px 20px; border-radius: 25px; }
+            .social-box h3 { font-size: 2.3rem; }
+            .social-box::before, .social-box::after { display: none; }
+            footer { flex-direction: column; gap: 15px; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+            #immersive-canvas, #cursor-glow { display: none; }
+        }
+    </style>
 </head>
 <body>
 
-    <canvas id="immersive-canvas"></canvas>
-    <div id="cursor-glow"></div>
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
 
-    <div class="container">
+    <div class="container">
 
-        <!-- Header -->
-        <header>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
-                <span class="brand-name">Vive San Miguel</span>
-            </a>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
-        </header>
+        <!-- Header -->
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
 
-        <!-- Admin Bar -->
-        <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="downloadTemplate()">📥 Descargar Plantilla Excel</button>
-            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
-            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
-            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
-        </div>
+        <!-- Admin Bar -->
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="downloadTemplate()">📥 Descargar Plantilla Excel</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+        </div>
 
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero-copy-wrap">
-                <div class="eyebrow">Guía curada · San Miguel de Allende</div>
-                <h1>Vive la ciudad.<br><em>Siente su historia.</em></h1>
-                <p class="hero-copy">
-                    Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel
-                    un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.
-                </p>
-                <div class="hero-actions">
-                    <a class="hero-btn primary" href="#explora">Explorar la guía <span>↓</span></a>
-                    <a class="hero-btn secondary" href="https://carloschaires.github.io/vivesanmigueL/mapa" target="_blank" rel="noopener noreferrer">Abrir mapa <span>↗</span></a>
-                </div>
-            </div>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-copy-wrap">
+                <div class="eyebrow">Guía curada · San Miguel de Allende</div>
+                <h1>Vive la ciudad.<br><em>Siente su historia.</em></h1>
+                <p class="hero-copy">
+                    Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel
+                    un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.
+                </p>
+                <div class="hero-actions">
+                    <a class="hero-btn primary" href="#explora">Explorar la guía <span>↓</span></a>
+                    <a class="hero-btn secondary" href="https://carloschaires.github.io/vivesanmigueL/mapa" target="_blank" rel="noopener noreferrer">Abrir mapa <span>↗</span></a>
+                </div>
+            </div>
 
-            <div class="hero-visual">
-                <div class="hero-frame">
-                    <img
-                        src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200"
-                        alt="San Miguel de Allende"
-                    >
-                    <div class="hero-caption">
-                        <span>Patrimonio · Cultura · Experiencias</span>
-                        <strong>San Miguel de Allende</strong>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <div class="hero-visual">
+                <div class="hero-frame">
+                    <img
+                        src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200"
+                        alt="San Miguel de Allende"
+                    >
+                    <div class="hero-caption">
+                        <span>Patrimonio · Cultura · Experiencias</span>
+                        <strong>San Miguel de Allende</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Guía Esencial -->
-        <section id="explora" class="reveal">
-            <div class="section-header">
-                <div class="section-kicker">La ciudad, a tu manera</div>
-                <h1>Explora San Miguel</h1>
-                <p>Selecciona una categoría y encuentra todo lo que necesitas para crear tu propio recorrido.</p>
-            </div>
-            <div class="cards-grid" id="mainGridContainer"></div>
-        </section>
+        <!-- Guía Esencial -->
+        <section id="explora" class="reveal">
+            <div class="section-header">
+                <div class="section-kicker">La ciudad, a tu manera</div>
+                <h1>Explora San Miguel</h1>
+                <p>Selecciona una categoría y encuentra todo lo que necesitas para crear tu propio recorrido.</p>
+            </div>
+            <div class="cards-grid" id="mainGridContainer"></div>
+        </section>
 
-        <!-- Estadía y Sabor -->
-        <section class="section-wrapper reveal">
-            <div class="section-header" style="margin-bottom: 30px;">
-                <div class="section-kicker">Momentos para recordar</div>
-                <h2>Estadía y experiencias</h2>
-                <p>Hospedaje, gastronomía, aventura, romance y escapadas alrededor de San Miguel.</p>
-            </div>
-            <div class="cards-grid" id="secondaryGridContainer" style="margin-bottom: 0;"></div>
-        </section>
+        <!-- Estadía y Sabor -->
+        <section class="section-wrapper reveal">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <div class="section-kicker">Momentos para recordar</div>
+                <h2>Estadía y experiencias</h2>
+                <p>Hospedaje, gastronomía, aventura, romance y escapadas alrededor de San Miguel.</p>
+            </div>
+            <div class="cards-grid" id="secondaryGridContainer" style="margin-bottom: 0;"></div>
+        </section>
 
-        <!-- Redes Sociales -->
-        <section class="social-box reveal">
-            <div class="section-kicker">La comunidad</div>
-            <h3>Comunidad Vive San Miguel</h3>
-            <p>Inspírate, comparte y sigue descubriendo la ciudad.</p>
-            <div class="social-group" id="socialButtonsContainer"></div>
-        </section>
+        <!-- Redes Sociales -->
+        <section class="social-box reveal">
+            <div class="section-kicker">La comunidad</div>
+            <h3>Comunidad Vive San Miguel</h3>
+            <p>Inspírate, comparte y sigue descubriendo la ciudad.</p>
+            <div class="social-group" id="socialButtonsContainer"></div>
+        </section>
 
-        <!-- Footer -->
-        <footer>
-            <span class="footer-brand">Vive San Miguel</span>
-            <span>Guía de confianza · San Miguel de Allende</span>
-            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
-        </footer>
+        <!-- Footer -->
+        <footer>
+            <span class="footer-brand">Vive San Miguel</span>
+            <span>Guía de confianza · San Miguel de Allende</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
 
-    </div>
+    </div>
 
-    <!-- Modales -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-top">
-                <h3>Acceso Restringido</h3>
-                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
-            </div>
-            <form onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label>Usuario</label>
-                    <input type="text" id="usernameInput" required placeholder="Usuario">
-                </div>
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="passwordInput" required placeholder="Contraseña">
-                </div>
-                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
-                <button type="submit" class="btn-modal-save">Ingresar</button>
-            </form>
-        </div>
-    </div>
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
 
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-content">
-            <div class="modal-top">
-                <h3 id="editModalTitle">Editar Apartado</h3>
-                <button class="close-btn" onclick="closeEditModal()">&times;</button>
-            </div>
-            <form onsubmit="saveEditedItem(event)">
-                <input type="hidden" id="editItemKey">
-                <div class="input-group">
-                    <label>Título</label>
-                    <input type="text" id="editTitle" required>
-                </div>
-                <div class="input-group">
-                    <label>Descripción</label>
-                    <textarea id="editDesc" rows="3" required></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Enlace (URL)</label>
-                    <input type="text" id="editLink" required>
-                </div>
-                <div class="input-group">
-                    <label>Imagen (URL)</label>
-                    <input type="text" id="editImg" required>
-                </div>
-                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Apartado</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveEditedItem(event)">
+                <input type="hidden" id="editItemKey">
+                <div class="input-group">
+                    <label>Título</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="editDesc" rows="3" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Enlace (URL)</label>
+                    <input type="text" id="editLink" required>
+                </div>
+                <div class="input-group">
+                    <label>Imagen (URL)</label>
+                    <input type="text" id="editImg" required>
+                </div>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
 
-    <script>
-        const AUTH_USER = "vivesanmiguel";
-        const AUTH_PASS = "c4rl0s1107";
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
 
-        const defaultSiteData = {
-            mainItems: [
-                {
-                    key: 'item_eventos',
-                    title: 'Eventos',
-                    desc: 'Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/eventos',
-                    img: 'https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000'
-                },
-                {
-                    key: 'item_historia',
-                    title: 'Ecos del pasado',
-                    desc: 'Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/historia',
-                    img: 'https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000'
-                },
-                {
-                    key: 'item_sitios',
-                    title: 'Sitios de interés',
-                    desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/image-4-edited.png'
-                },
-                {
-                    key: 'item_guias',
-                    title: 'Guías Turísticos',
-                    desc: 'Conecta con guías certificados y expertos locales para descubrir las mejores historias y rincones ocultos.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/guiasdeturistas',
-                    img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'
-                },
-                {
-                    key: 'item_rutas',
-                    title: 'Rutas temáticas',
-                    desc: 'Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.',
-                    link: 'https://viveturuta.blog/',
-                    img: 'https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000'
-                },
-                {
-                    key: 'item_blog',
-                    title: 'Blog y Programas',
-                    desc: 'Artículos exclusivos, crónicas culturales y especiales multimedia para vivir San Miguel desde una perspectiva íntima.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/blog',
-                    img: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80'
-                }
-            ],
-            secondaryItems: [
-                {
-                    key: 'item_hospedaje',
-                    title: 'Hospedaje',
-                    desc: 'Encuentra hoteles históricos, haciendas y estancias con vistas privilegiadas a la Parroquia.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/hospedaje',
-                    img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
-                },
-                {
-                    key: 'item_gastronomia',
-                    title: 'Gastronomía',
-                    desc: 'Deleita tu paladar en alta cocina internacional, restaurantes de autor y emblemáticas terrazas.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/gastronomia',
-                    img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
-                },
-                {
-                    key: 'item_aventura',
-                    title: 'Aventura',
-                    desc: 'Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y experiencias al aire libre.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/aventura',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/04/aventura.png?w=1024'
-                },
-                {
-                    key: 'item_romance',
-                    title: 'Romance',
-                    desc: 'Callejones iluminados con faroles, cenas privadas y el escenario perfecto para parejas y bodas.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/romance',
-                    img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80'
-                },
-                {
-                    key: 'item_vinedos',
-                    title: 'Viñedos',
-                    desc: 'Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/vi%C3%B1edos',
-                    img: 'https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000'
-                }
-            ],
-            socialItems: [
-                {
-                    name: 'Instagram',
-                    url: 'https://www.instagram.com/sanmiigueldeallende/',
-                    class: 'instagram',
-                    svg: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
-                },
-                {
-                    name: 'TikTok',
-                    url: 'https://www.tiktok.com/@vivesanmiguel.com',
-                    class: 'tiktok',
-                    svg: '<svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>'
-                }
-            ]
-        };
+        const defaultSiteData = {
+            mainItems: [
+                {
+                    key: 'item_eventos',
+                    title: 'Eventos',
+                    desc: 'Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/eventos',
+                    img: 'https://lh3.googleusercontent.com/d/1IrjC7Pjzwt8JRO5ROS92lf_nm9Lp9PNg=w1000'
+                },
+                {
+                    key: 'item_historia',
+                    title: 'Ecos del pasado',
+                    desc: 'Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/historia',
+                    img: 'https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000'
+                },
+                {
+                    key: 'item_sitios',
+                    title: 'Sitios de interés',
+                    desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres',
+                    img: 'https://images.unsplash.com/photo-1585464231875-d94957e8d5cc?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_guias',
+                    title: 'Guías Turísticos',
+                    desc: 'Conecta con guías certificados y expertos locales para descubrir las mejores historias y rincones ocultos.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/guiasdeturistas',
+                    img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_rutas',
+                    title: 'Rutas temáticas',
+                    desc: 'Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.',
+                    link: 'https://viveturuta.blog/',
+                    img: 'https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000'
+                },
+                {
+                    key: 'item_blog',
+                    title: 'Blog y Programas',
+                    desc: 'Artículos exclusivos, crónicas culturales y especiales multimedia para vivir San Miguel desde una perspectiva íntima.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/blog',
+                    img: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80'
+                }
+            ],
+            secondaryItems: [
+                {
+                    key: 'item_hospedaje',
+                    title: 'Hospedaje',
+                    desc: 'Encuentra hoteles históricos, haciendas y estancias con vistas privilegiadas a la Parroquia.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/hospedaje',
+                    img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_gastronomia',
+                    title: 'Gastronomía',
+                    desc: 'Deleita tu paladar en alta cocina internacional, restaurantes de autor y emblemáticas terrazas.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/gastronomia',
+                    img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_aventura',
+                    title: 'Aventura',
+                    desc: 'Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y experiencias al aire libre.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/aventura',
+                    img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_romance',
+                    title: 'Romance',
+                    desc: 'Callejones iluminados con faroles, cenas privadas y el escenario perfecto para parejas y bodas.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/romance',
+                    img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80'
+                },
+                {
+                    key: 'item_vinedos',
+                    title: 'Viñedos',
+                    desc: 'Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/vi%C3%B1edos',
+                    img: 'https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000'
+                }
+            ],
+            socialItems: [
+                {
+                    name: 'Instagram',
+                    url: 'https://www.instagram.com/sanmiigueldeallende/',
+                    class: 'instagram',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
+                },
+                {
+                    name: 'TikTok',
+                    url: 'https://www.tiktok.com/@vivesanmiguel.com',
+                    class: 'tiktok',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>'
+                }
+            ]
+        };
 
-        function getStoredData() {
-            const data = localStorage.getItem('sma_site_data');
-            if (!data) {
-                localStorage.setItem('sma_site_data', JSON.stringify(defaultSiteData));
-                return defaultSiteData;
-            }
-            return JSON.parse(data);
-        }
+        // Forzar enlaces oficiales de GitHub Pages para todos los items principales y secundarios
+        const githubBase = "https://carloschaires.github.io/vivesanmigueL/";
+        const linkMapping = {
+            'item_eventos': githubBase + 'eventos',
+            'item_historia': githubBase + 'historia',
+            'item_sitios': githubBase + 'sitiosdeinteres',
+            'item_guias': githubBase + 'guiasdeturistas',
+            'item_rutas': 'https://viveturuta.blog/',
+            'item_blog': githubBase + 'blog',
+            'item_hospedaje': githubBase + 'hospedaje',
+            'item_gastronomia': githubBase + 'gastronomia',
+            'item_aventura': githubBase + 'aventura',
+            'item_romance': githubBase + 'romance',
+            'item_vinedos': githubBase + 'viñedos'
+        };
 
-        function saveStoredData(data) {
-            localStorage.setItem('sma_site_data', JSON.stringify(data));
-            renderSite();
-        }
+        function applyGithubLinks(data) {
+            data.mainItems.forEach(item => {
+                if (linkMapping[item.key]) {
+                    item.link = linkMapping[item.key];
+                }
+            });
+            data.secondaryItems.forEach(item => {
+                if (linkMapping[item.key]) {
+                    item.link = linkMapping[item.key];
+                }
+            });
+            return data;
+        }
 
-        function checkSession() {
-            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
-            const controls = document.getElementById('adminControls');
-            if (isLogged) {
-                controls.classList.add('active');
-            } else {
-                controls.classList.remove('active');
-            }
-        }
+        function getStoredData() {
+            const data = localStorage.getItem('sma_site_data');
+            if (!data) {
+                const initializedData = applyGithubLinks(defaultSiteData);
+                localStorage.setItem('sma_site_data', JSON.stringify(initializedData));
+                return initializedData;
+            }
+            const parsed = JSON.parse(data);
+            return applyGithubLinks(parsed);
+        }
 
-        function renderSite() {
-            const data = getStoredData();
-            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+        function saveStoredData(data) {
+            const processedData = applyGithubLinks(data);
+            localStorage.setItem('sma_site_data', JSON.stringify(processedData));
+            renderSite();
+        }
 
-            // Main Grid
-            const mainContainer = document.getElementById('mainGridContainer');
-            mainContainer.innerHTML = '';
-            data.mainItems.forEach(item => {
-                mainContainer.innerHTML += `
-                    <div class="card-item">
-                        <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
-                                    ${item.title} <span>→</span>
-                                </a>
-                                <p>${item.desc}</p>
-                            </div>
-                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('mainItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) {
+                controls.classList.add('active');
+            } else {
+                controls.classList.remove('active');
+            }
+        }
 
-            // Secondary Grid
-            const secContainer = document.getElementById('secondaryGridContainer');
-            secContainer.innerHTML = '';
-            data.secondaryItems.forEach(item => {
-                secContainer.innerHTML += `
-                    <div class="card-item">
-                        <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
-                                    ${item.title} <span>→</span>
-                                </a>
-                                <p>${item.desc}</p>
-                            </div>
-                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('secondaryItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
+        function renderSite() {
+            const data = getStoredData();
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
 
-            // Social Buttons
-            const socialContainer = document.getElementById('socialButtonsContainer');
-            socialContainer.innerHTML = '';
-            data.socialItems.forEach(soc => {
-                socialContainer.innerHTML += `
-                    <a href="${soc.url}" target="_blank" rel="noopener noreferrer" class="social-btn ${soc.class}">
-                        ${soc.svg} ${soc.name}
-                    </a>
-                `;
-            });
-        }
+            // Main Grid
+            const mainContainer = document.getElementById('mainGridContainer');
+            mainContainer.innerHTML = '';
+            data.mainItems.forEach(item => {
+                mainContainer.innerHTML += `
+                    <div class="card-item">
+                        <div class="card-image">
+                            <img src="${item.img}" alt="${item.title}">
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
+                                    ${item.title} <span>→</span>
+                                </a>
+                                <p>${item.desc}</p>
+                            </div>
+                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('mainItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
 
-        // CMS & Auth Logic
-        function openLoginModal() {
-            if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
-                    logoutAdmin();
-                }
-                return;
-            }
-            document.getElementById('usernameInput').value = '';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('loginModal').classList.add('active');
-        }
+            // Secondary Grid
+            const secContainer = document.getElementById('secondaryGridContainer');
+            secContainer.innerHTML = '';
+            data.secondaryItems.forEach(item => {
+                secContainer.innerHTML += `
+                    <div class="card-item">
+                        <div class="card-image">
+                            <img src="${item.img}" alt="${item.title}">
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
+                                    ${item.title} <span>→</span>
+                                </a>
+                                <p>${item.desc}</p>
+                            </div>
+                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('secondaryItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+            // Social Buttons
+            const socialContainer = document.getElementById('socialButtonsContainer');
+            socialContainer.innerHTML = '';
+            data.socialItems.forEach(soc => {
+                socialContainer.innerHTML += `
+                    <a href="${soc.url}" target="_blank" rel="noopener noreferrer" class="social-btn ${soc.class}">
+                        ${soc.svg} ${soc.name}
+                    </a>
+                `;
+            });
+        }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
-                localStorage.setItem('sma_admin_logged', 'true');
-                closeLoginModal();
-                checkSession();
-                renderSite();
-                alert('¡Sesión iniciada con éxito!');
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
+        // CMS & Auth Logic
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                    logoutAdmin();
+                }
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
 
-        function logoutAdmin() {
-            localStorage.removeItem('sma_admin_logged');
-            checkSession();
-            renderSite();
-            alert('Sesión cerrada.');
-        }
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
 
-        let currentCat = null, currentKey = null;
-        function openEditModal(category, key) {
-            const data = getStoredData();
-            const item = data[category].find(el => el.key === key);
-            if (!item) return;
-            currentCat = category;
-            currentKey = key;
-            document.getElementById('editModalTitle').innerText = `Editar: ${item.title}`;
-            document.getElementById('editTitle').value = item.title;
-            document.getElementById('editDesc').value = item.desc;
-            document.getElementById('editLink').value = item.link;
-            document.getElementById('editImg').value = item.img;
-            document.getElementById('editModal').classList.add('active');
-        }
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderSite();
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderSite();
+            alert('Sesión cerrada.');
+        }
 
-        function saveEditedItem(e) {
-            e.preventDefault();
-            const data = getStoredData();
-            const list = data[currentCat];
-            const index = list.findIndex(el => el.key === currentKey);
-            if (index !== -1) {
-                list[index].title = document.getElementById('editTitle').value;
-                list[index].desc = document.getElementById('editDesc').value;
-                list[index].link = document.getElementById('editLink').value;
-                list[index].img = document.getElementById('editImg').value;
-                saveStoredData(data);
-                closeEditModal();
-                alert('¡Actualizado con éxito!');
-            }
-        }
+        let currentCat = null, currentKey = null;
+        function openEditModal(category, key) {
+            const data = getStoredData();
+            const item = data[category].find(el => el.key === key);
+            if (!item) return;
+            currentCat = category;
+            currentKey = key;
+            document.getElementById('editModalTitle').innerText = `Editar: ${item.title}`;
+            document.getElementById('editTitle').value = item.title;
+            document.getElementById('editDesc').value = item.desc;
+            document.getElementById('editLink').value = item.link;
+            document.getElementById('editImg').value = item.img;
+            document.getElementById('editModal').classList.add('active');
+        }
 
-        function downloadTemplate() {
-            const data = getStoredData();
-            const flatData = [...data.mainItems, ...data.secondaryItems].map(el => ({
-                titulo: el.title, descripcion: el.desc, enlace: el.link, imagen_url: el.img
-            }));
-            const worksheet = XLSX.utils.json_to_sheet(flatData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "ContenidoWeb");
-            XLSX.writeFile(workbook, "plantilla_menu_vivesanmiguel.xlsx");
-        }
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
 
-        function handleExcelUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const dataArr = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(dataArr, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(sheet);
-                    if (json.length > 0) {
-                        const data = getStoredData();
-                        json.forEach((row, idx) => {
-                            let targetList = idx < data.mainItems.length ? data.mainItems : data.secondaryItems;
-                            let targetIdx = idx < data.mainItems.length ? idx : idx - data.mainItems.length;
-                            if (targetList[targetIdx]) {
-                                if (row.titulo) targetList[targetIdx].title = row.titulo;
-                                if (row.descripcion) targetList[targetIdx].desc = row.descripcion;
-                                if (row.enlace) targetList[targetIdx].link = row.enlace;
-                                if (row.imagen_url) targetList[targetIdx].img = row.imagen_url;
-                            }
-                        });
-                        saveStoredData(data);
-                        alert('¡Importación masiva completada!');
-                    }
-                } catch (err) {
-                    alert('Error al procesar el archivo Excel.');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
+        function saveEditedItem(e) {
+            e.preventDefault();
+            const data = getStoredData();
+            const list = data[currentCat];
+            const index = list.findIndex(el => el.key === currentKey);
+            if (index !== -1) {
+                list[index].title = document.getElementById('editTitle').value;
+                list[index].desc = document.getElementById('editDesc').value;
+                list[index].link = document.getElementById('editLink').value;
+                list[index].img = document.getElementById('editImg').value;
+                saveStoredData(data);
+                closeEditModal();
+                alert('¡Actualizado con éxito!');
+            }
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('sma_site_data')) {
-                localStorage.setItem('sma_site_data', JSON.stringify(defaultSiteData));
-            }
-            checkSession();
-            renderSite();
-        });
+        function downloadTemplate() {
+            const data = getStoredData();
+            const flatData = [...data.mainItems, ...data.secondaryItems].map(el => ({
+                titulo: el.title, descripcion: el.desc, enlace: el.link, imagen_url: el.img
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ContenidoWeb");
+            XLSX.writeFile(workbook, "plantilla_menu_vivesanmiguel.xlsx");
+        }
 
-        // Entrada elegante de secciones
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.08 });
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredData();
+                        json.forEach((row, idx) => {
+                            let targetList = idx < data.mainItems.length ? data.mainItems : data.secondaryItems;
+                            let targetIdx = idx < data.mainItems.length ? idx : idx - data.mainItems.length;
+                            if (targetList[targetIdx]) {
+                                if (row.titulo) targetList[targetIdx].title = row.titulo;
+                                if (row.descripcion) targetList[targetIdx].desc = row.descripcion;
+                                if (row.enlace) targetList[targetIdx].link = row.enlace;
+                                if (row.imagen_url) targetList[targetIdx].img = row.imagen_url;
+                            }
+                        });
+                        saveStoredData(data);
+                        alert('¡Importación masiva completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
-        function initReveal() {
-            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = getStoredData();
+            saveStoredData(data);
+            checkSession();
+            renderSite();
+        });
 
-        document.addEventListener('DOMContentLoaded', initReveal);
+        // Entrada elegante de secciones
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
 
-        // Partículas y cursor
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let glowX = mouseX, glowY = mouseY;
+        function initReveal() {
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        }
 
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+        document.addEventListener('DOMContentLoaded', initReveal);
 
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.1;
-            glowY += (mouseY - glowY) * 0.1;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
 
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-                this.color = 'rgba(166, 75, 42, 0.2)';
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let maxDistance = 150;
-                if (distance < maxDistance) {
-                    let force = (maxDistance - distance) / maxDistance;
-                    this.x -= (dx / distance) * force * this.density * 0.4;
-                    this.y -= (dy / distance) * force * this.density * 0.4;
-                } else {
-                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
-                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
-                }
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
-                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
 
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
-        }
-        initParticles();
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-    </script>
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.2)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
 </body>
-</html>   en sitios d einteres me debe dar si o si este https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres
+</html>
