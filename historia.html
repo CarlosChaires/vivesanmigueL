@@ -1,930 +1,516 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Historia y Libro Digital</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historia · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #c97b7b;
+  --rose-soft: #e8b4b4;
+  --rose-light: #f8ecec;
+  --rose-blush: #fdf6f5;
+  --cantera: #a65d4a;
+  --stone: #2c2422;
+  --stone-muted: #6b5e5a;
+  --paper: #fdf8f7;
+  --surface: #ffffff;
+  --border: rgba(201, 123, 123, 0.14);
+  --shadow: 0 25px 50px -15px rgba(44, 36, 34, 0.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--stone);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 45% at 12% 10%, rgba(201, 123, 123, 0.07), transparent),
+    radial-gradient(ellipse 55% 40% at 88% 90%, rgba(166, 93, 74, 0.05), transparent);
+}
+.orb {
+  position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.2;
+  pointer-events: none; z-index: 0; animation: drift 30s ease-in-out infinite;
+}
+.orb-1 { width: 500px; height: 500px; background: rgba(201, 123, 123, 0.12); top: -12%; left: -10%; }
+.orb-2 { width: 420px; height: 420px; background: rgba(232, 180, 180, 0.1); bottom: -5%; right: -8%; animation-delay: -12s; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -16px) scale(1.04); }
+}
+.wrap { position: relative; z-index: 2; max-width: 980px; margin: 0 auto; padding: 0 28px 90px; }
 
-    <style>
-        :root {
-            --bg-color: #FBF4F1;
-            --surface-color: #FFFFFF;
-            --surface-card: #FFFFFF;
-            --text-main: #2D2422;
-            --text-muted: #7A6B67;
-            --accent-terracotta: #A64B2A;
-            --accent-terracotta-dark: #82381C;
-            --border-color: rgba(166, 75, 42, 0.12);
-            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
-            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
-        }
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 0 40px; gap: 16px; flex-wrap: wrap;
+}
+.brand-logo-link {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  background: var(--surface); padding: 8px 18px 8px 10px; border-radius: 100px;
+  border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.3s ease;
+}
+.brand-logo-link:hover { border-color: var(--rose); transform: translateY(-2px); }
+.brand-logo-link img { height: 36px; width: auto; object-fit: contain; }
+.brand-logo-link span { font-size: 0.85rem; font-weight: 700; color: var(--stone); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone); text-decoration: none;
+  padding: 10px 22px; border: 1px solid var(--stone); border-radius: 100px; transition: all 0.3s ease; background: var(--surface);
+}
+.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
+.nav-back svg { width: 14px; height: 14px; }
+.nav-socials { display: flex; gap: 8px; }
+.nav-social {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface); display: grid; place-items: center; font-size: 11px; font-weight: 700;
+  color: var(--stone); text-decoration: none; transition: all 0.3s ease;
+}
+.nav-social:hover { transform: translateY(-3px); border-color: var(--rose); color: var(--rose); }
+.nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
+.nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* Library CTA */
+.library-cta {
+  background: linear-gradient(135deg, rgba(201, 123, 123, 0.08), rgba(232, 180, 180, 0.12));
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 32px;
+  text-align: center;
+  margin-bottom: 48px;
+  box-shadow: 0 10px 30px rgba(201, 123, 123, 0.06);
+}
+.library-cta h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 10px;
+}
+.library-cta p {
+  font-size: 0.95rem;
+  color: var(--stone-muted);
+  max-width: 520px;
+  margin: 0 auto 22px;
+}
+.btn-library {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--rose); color: #fff; text-decoration: none;
+  padding: 13px 28px; border-radius: 100px; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.3s ease;
+  box-shadow: 0 8px 22px rgba(201, 123, 123, 0.28);
+}
+.btn-library:hover {
+  background: #b56a6a;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(201, 123, 123, 0.35);
+}
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+/* History article */
+.history {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 48px 44px;
+  box-shadow: var(--shadow);
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.history::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--rose), var(--rose-soft), var(--cantera));
+}
+.history-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.history-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 14px;
+}
+.history-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 600;
+  color: var(--stone);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.history-subtitle {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  font-style: italic;
+  font-weight: 300;
+}
+.history-body h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--cantera);
+  margin-top: 36px;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid var(--rose);
+}
+.history-body p {
+  font-size: 1.02rem;
+  color: var(--stone-muted);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.history-body p:last-child { margin-bottom: 0; }
 
-        #immersive-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-        }
+/* Book section */
+.book-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 40px 36px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.book-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 10px;
+}
+.book-section > p {
+  font-size: 0.95rem;
+  color: var(--stone-muted);
+  margin-bottom: 24px;
+}
+.pdf-reader-container {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #2c2422;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pdf-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  background: #1f1a19;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pdf-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pdf-btn {
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pdf-btn:hover { background: #b56a6a; }
+.pdf-btn:disabled { background: #555; opacity: 0.5; cursor: not-allowed; }
+.pdf-page-indicator {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--rose-soft);
+}
+.pdf-canvas-wrap {
+  width: 100%;
+  max-height: 700px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: #3a3230;
+}
+canvas.pdf-canvas {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
 
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            filter: blur(35px);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
+.btn-book-full {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 20px;
+  padding: 11px 22px;
+  background: var(--rose-light);
+  color: var(--rose);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.btn-book-full:hover {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+}
 
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
+.credits {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--stone-muted);
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.credits a { color: var(--rose); font-weight: 500; text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
 
-        /* --- Header --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            padding: 1.2rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-        }
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-        }
-
-        .brand-logo {
-            height: 52px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .brand-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.3px;
-        }
-
-        .btn-nav-home {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 10px 24px;
-            border: 1px solid var(--border-color);
-            background: var(--surface-color);
-            border-radius: 30px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .btn-nav-home:hover {
-            background-color: var(--accent-terracotta);
-            color: #ffffff;
-            border-color: var(--accent-terracotta);
-        }
-
-        /* --- Admin Bar --- */
-        .admin-bar {
-            display: none;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 2rem;
-            background: var(--surface-color);
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .admin-bar.active {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .btn-admin {
-            background: rgba(166, 75, 42, 0.05);
-            color: var(--accent-terracotta);
-            border: 1px solid rgba(166, 75, 42, 0.15);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-admin:hover {
-            background: var(--accent-terracotta);
-            color: #ffffff;
-        }
-
-        /* --- Botón de Biblioteca Virtual --- */
-        .library-cta-box {
-            background: linear-gradient(135deg, rgba(166, 75, 42, 0.08), rgba(212, 131, 132, 0.12));
-            border: 1px solid rgba(166, 75, 42, 0.2);
-            border-radius: 20px;
-            padding: 2.5rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .library-cta-box h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--text-main);
-            margin-bottom: 0.8rem;
-        }
-
-        .library-cta-box p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            max-width: 600px;
-            margin: 0 auto 1.5rem auto;
-        }
-
-        .btn-library-portal {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--accent-terracotta);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 32px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 8px 20px rgba(166, 75, 42, 0.25);
-            transition: all 0.3s ease;
-        }
-
-        .btn-library-portal:hover {
-            background-color: var(--accent-terracotta-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(166, 75, 42, 0.35);
-        }
-
-        /* --- Artículo de Historia / Contenido Editorial --- */
-        .history-card {
-            background: var(--surface-card);
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-soft);
-            padding: 4rem;
-            margin-bottom: 3rem;
-        }
-
-        .history-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 2.5rem;
-        }
-
-        .history-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 700;
-            color: var(--accent-terracotta);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .history-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 1rem;
-        }
-
-        .history-subtitle {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        .history-body h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            color: var(--accent-terracotta-dark);
-            margin-top: 3rem;
-            margin-bottom: 1.2rem;
-            border-left: 4px solid var(--accent-terracotta);
-            padding-left: 14px;
-        }
-
-        .history-body p {
-            font-size: 1.05rem;
-            color: var(--text-muted);
-            line-height: 1.85;
-            margin-bottom: 1.8rem;
-        }
-
-        /* --- Visor de Libro Interactivo (Al Final) --- */
-        .book-viewer-section {
-            background: var(--surface-card);
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            padding: 3rem;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .book-viewer-section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--text-main);
-            margin-bottom: 0.8rem;
-        }
-
-        .book-viewer-section p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-        }
-
-        .book-container {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            background: #ffffff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .book-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .book-external-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 1.5rem;
-            background: rgba(166, 75, 42, 0.08);
-            color: var(--accent-terracotta);
-            border: 1px solid rgba(166, 75, 42, 0.2);
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .book-external-link:hover {
-            background: var(--accent-terracotta);
-            color: #ffffff;
-        }
-
-        /* --- Footer --- */
-        footer {
-            border-top: 1px solid var(--border-color);
-            padding: 2.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .admin-trigger {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            opacity: 0.7;
-        }
-
-        .admin-trigger:hover {
-            opacity: 1;
-            color: var(--accent-terracotta);
-            background: rgba(166, 75, 42, 0.05);
-        }
-
-        /* --- Modales --- */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(45, 36, 34, 0.4);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            width: 100%;
-            max-width: 420px;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            transform: translateY(15px);
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-top h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-            color: var(--text-muted);
-        }
-
-        .input-group input, .input-group textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.9rem;
-            background: var(--bg-color);
-            color: var(--text-main);
-            outline: none;
-        }
-
-        .input-group input:focus, .input-group textarea:focus {
-            border-color: var(--accent-terracotta);
-            background: #ffffff;
-        }
-
-        .btn-modal-save {
-            background: var(--accent-terracotta);
-            color: #ffffff;
-            border: none;
-            width: 100%;
-            padding: 0.9rem;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 0.5rem;
-        }
-
-        .btn-modal-save:hover {
-            background: var(--accent-terracotta-dark);
-        }
-
-        .error-message {
-            color: #c0392b;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .history-card {
-                padding: 2rem 1.5rem;
-            }
-            .book-container {
-                height: 450px;
-            }
-        }
-    </style>
-    <!-- FontAwesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@media (max-width: 720px) {
+  .history { padding: 28px 22px; }
+  .library-cta { padding: 28px 22px; }
+}
+</style>
+<!-- PDF.js desde CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
 </head>
 <body>
+<div class="ambient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-    <canvas id="immersive-canvas"></canvas>
-    <div id="cursor-glow"></div>
+<div class="wrap">
+  <nav>
+    <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-logo-link">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <span>Vive San Miguel</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://carloschaires.github.io/vivesanmigueL/" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Inicio
+      </a>
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
+      </div>
+    </div>
+  </nav>
 
-    <div class="container" id="siteContainer">
+  <!-- Biblioteca CTA -->
+  <div class="library-cta reveal">
+    <h2>Biblioteca Virtual de San Miguel de Allende</h2>
+    <p>Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio[cite: 1].</p>
+    <a href="http://sanmigueldeallende.gob.mx/noticia/librossanmiguel" target="_blank" rel="noopener" class="btn-library">
+      Conocer Biblioteca Virtual
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 
-        <!-- Header -->
-        <header>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
-                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
-                <span class="brand-name">Vive San Miguel</span>
-            </a>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
-        </header>
-
-        <!-- Admin Bar -->
-        <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="downloadHistoryTemplate()">📥 Descargar Plantilla</button>
-            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Excel</button>
-            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
-            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
-            <button class="btn-admin" onclick="openEditModal()">✏️ Editar Contenido</button>
-            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+  <!-- Libro digital interactivo con visor PDF.js -->
+  <section class="book-section reveal">
+    <h2>Libro Digital Interactivo</h2>
+    <p>Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende.</p>
+    
+    <div class="pdf-reader-container">
+      <div class="pdf-toolbar">
+        <div class="pdf-controls">
+          <button class="pdf-btn" id="prevPage">Anterior</button>
+          <span class="pdf-page-indicator" id="pageInfo">Cargando documento...</span>
+          <button class="pdf-btn" id="nextPage">Siguiente</button>
         </div>
-
-        <!-- Botón / Sección de Invitación a la Biblioteca Virtual -->
-        <div class="library-cta-box">
-            <h3>Biblioteca Virtual de San Miguel de Allende</h3>
-            <p>Descubre el acervo bibliográfico oficial, publicaciones históricas y documentos literarios puestos a disposición por el municipio.</p>
-            <a id="displayLibraryUrl" href="http://sanmigueldeallende.gob.mx/noticia/librossanmiguel" target="_blank" rel="noopener noreferrer" class="btn-library-portal">
-                <i class="fas fa-book-reader"></i> Conocer Biblioteca Virtual
-            </a>
+        <div class="pdf-controls">
+          <button class="pdf-btn" id="zoomOut">- Zoom</button>
+          <button class="pdf-btn" id="zoomIn">+ Zoom</button>
         </div>
-
-        <!-- Tarjeta de Contenido Histórico (Primero) -->
-        <div class="history-card">
-            <div class="history-header">
-                <span class="history-tag" id="displayTag">San Miguel de Allende • Joya Colonial</span>
-                <h1 class="history-title" id="displayMainTitle">Historia de San Miguel de Allende</h1>
-                <p class="history-subtitle" id="displaySubtitle">Fragua de la Independencia Nacional y cuna de hombres ilustres</p>
-            </div>
-
-            <div class="history-body" id="displayContentBody">
-                <p>
-                    San Miguel de Allende, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad.
-                </p>
-                <p>
-                    San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial.
-                </p>
-                <p>
-                    El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español.
-                </p>
-                <p>
-                    Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza.
-                </p>
-                <p>
-                    Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias.
-                </p>
-                <p>
-                    También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos.
-                </p>
-
-                <h2>CRONOLOGÍA HISTÓRICA. – EL PRIMER SAN MIGUEL, EL SAN MIGUEL DE LOS CHICHIMECAS</h2>
-                <p>
-                    Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas.
-                </p>
-                <p>
-                    Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos.
-                </p>
-                <p>
-                    Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.
-                </p>
-                <p>
-                    Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.
-                </p>
-                <p>
-                    Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.
-                </p>
-                <p>
-                    Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 su población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.
-                </p>
-
-                <h2>EL SEGUNDO SAN MIGUEL, SAN MIGUEL EL GRANDE</h2>
-                <p>
-                    La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.
-                </p>
-                <p>
-                    El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.
-                </p>
-
-                <h2>EL TERCER SAN MIGUEL, SAN MIGUEL DE ALLENDE</h2>
-                <p>
-                    En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina.
-                </p>
-                <p>
-                    No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel.
-                </p>
-                <p>
-                    A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende.
-                </p>
-                <p>
-                    El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos).
-                </p>
-                <p>
-                    En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial.
-                </p>
-            </div>
-        </div>
-
-        <!-- Visor de Libro Digital Interactivo (Al Final) -->
-        <section class="book-viewer-section">
-            <h2>Libro Digital Interactivo</h2>
-            <p>Explora nuestra edición digital conmemorativa sobre la historia y tradiciones de San Miguel de Allende.</p>
-            <div class="book-container">
-                <iframe id="displayBookUrl" src="https://online.anyflip.com/vynrv/qxxu/index.html" title="Libro Digital San Miguel de Allende" allowfullscreen></iframe>
-            </div>
-            <a id="displayBookLinkBtn" href="https://online.anyflip.com/vynrv/qxxu/index.html" target="_blank" rel="noopener noreferrer" class="book-external-link">
-                <i class="fas fa-external-link-alt"></i> Abrir Libro en Pantalla Completa
-            </a>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <span>Vive San Miguel — Tu Guía de Confianza</span>
-            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
-        </footer>
-
+      </div>
+      <div class="pdf-canvas-wrap" id="canvasContainer">
+        <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+      </div>
     </div>
 
-    <!-- Modales -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-top">
-                <h3>Acceso Restringido</h3>
-                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
-            </div>
-            <form onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label>Usuario</label>
-                    <input type="text" id="usernameInput" required placeholder="Usuario">
-                </div>
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="passwordInput" required placeholder="Contraseña">
-                </div>
-                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
-                <button type="submit" class="btn-modal-save">Ingresar</button>
-            </form>
-        </div>
+    <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book-full">
+      Abrir PDF en pantalla completa
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+    </a>
+  </section>
+
+  <!-- Historia -->
+  <article class="history reveal">
+    <header class="history-header">
+      <span class="history-tag">San Miguel de Allende · Joya Colonial</span>
+      <h1 class="history-title">Historia de San Miguel de Allende</h1>
+      <p class="history-subtitle">Fragua de la Independencia Nacional y cuna de hombres ilustres[cite: 1]</p>
+    </header>
+    <div class="history-body">
+      <p>San Miguel de Allende, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad[cite: 1].</p>
+      <p>San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial[cite: 1].</p>
+      <p>El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español[cite: 1].</p>
+      <p>Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza[cite: 1].</p>
+      <p>Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias[cite: 1].</p>
+      <p>También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos[cite: 1].</p>
+
+      <h2>Cronología histórica — El primer San Miguel, el San Miguel de los Chichimecas</h2>
+      <p>Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas[cite: 1].</p>
+      <p>Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos[cite: 1].</p>
+      <p>Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas[cite: 1].</p>
+      <p>Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros[cite: 1].</p>
+      <p>Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial[cite: 1].</p>
+      <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 su población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra[cite: 1].</p>
+
+      <h2>El segundo San Miguel, San Miguel el Grande</h2>
+      <p>La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama[cite: 1].</p>
+      <p>El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México[cite: 1].</p>
+
+      <h2>El tercer San Miguel, San Miguel de Allende</h2>
+      <p>En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina[cite: 1].</p>
+      <p>No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel[cite: 1].</p>
+      <p>A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende[cite: 1].</p>
+      <p>El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos)[cite: 1].</p>
+      <p>En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial[cite: 1].</p>
     </div>
+  </article>
 
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
-            <div class="modal-top">
-                <h3>Editar Historia y Enlaces</h3>
-                <button class="close-btn" onclick="closeEditModal()">&times;</button>
-            </div>
-            <form onsubmit="saveEditedContent(event)">
-                <div class="input-group">
-                    <label>URL de la Biblioteca Virtual (Municipio)</label>
-                    <input type="text" id="editLibraryUrl" required placeholder="http://sanmigueldeallende.gob.mx/...">
-                </div>
-                <div class="input-group">
-                    <label>Enlace del Libro Interactivo (URL Embed)</label>
-                    <input type="text" id="editBookUrl" required placeholder="https://online.anyflip.com/...">
-                </div>
-                <div class="input-group">
-                    <label>Etiqueta Superior</label>
-                    <input type="text" id="editTag" required>
-                </div>
-                <div class="input-group">
-                    <label>Título Principal</label>
-                    <input type="text" id="editMainTitle" required>
-                </div>
-                <div class="input-group">
-                    <label>Subtítulo</label>
-                    <input type="text" id="editSubtitle" required>
-                </div>
-                <div class="input-group">
-                    <label>Contenido del Artículo (HTML)</label>
-                    <textarea id="editBody" rows="10" required></textarea>
-                </div>
-                <button type="submit" class="btn-modal-save">Guardar Cambios y Sincronizar</button>
-            </form>
-        </div>
-    </div>
+  <footer class="credits reveal">
+    <p>Vive San Miguel · Historia y patrimonio</p>
+  </footer>
+</div>
 
-    <script>
-        const AUTH_USER = "vivesanmiguel";
-        const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+<script>
+// Animación de entrada al hacer scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 70);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => observer.observe(el));
 
-        const defaultHistoryData = {
-            libraryUrl: 'http://sanmigueldeallende.gob.mx/noticia/librossanmiguel',
-            bookUrl: 'https://online.anyflip.com/vynrv/qxxu/index.html',
-            tag: 'San Miguel de Allende • Joya Colonial',
-            mainTitle: 'Historia de San Miguel de Allende',
-            subtitle: 'Fragua de la Independencia Nacional y cuna de hombres ilustres',
-            body: document.getElementById('displayContentBody').innerHTML.trim()
-        };
+// Lógica de PDF.js para lectura interactiva de páginas
+const url = 'https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf';
 
-        function getStoredData() {
-            const data = localStorage.getItem('sma_historia_page_v5');
-            if (!data) {
-                localStorage.setItem('sma_historia_page_v5', JSON.stringify(defaultHistoryData));
-                return defaultHistoryData;
-            }
-            return JSON.parse(data);
-        }
+let pdfDoc = null,
+    pageNum = 1,
+    pageRendering = false,
+    pageNumPending = null,
+    scale = 1.25,
+    canvas = document.getElementById('pdfCanvas'),
+    ctx = canvas.getContext('2d');
 
-        function saveStoredData(data, syncCloud = true) {
-            localStorage.setItem('sma_historia_page_v5', JSON.stringify(data));
-            renderData(data);
-            if (syncCloud) {
-                pushDataToGoogleSheets(data);
-            }
-        }
+function renderPage(num) {
+  pageRendering = true;
+  pdfDoc.getPage(num).then(function(page) {
+    let viewport = page.getViewport({scale: scale});
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
 
-        async function pushDataToGoogleSheets(data) {
-            const statusEl = document.getElementById('syncStatus');
-            try {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado';
-            } catch (err) {
-                statusEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Guardado local';
-            }
-        }
+    let renderContext = {
+      canvasContext: ctx,
+      viewport: viewport
+    };
+    let renderTask = page.render(renderContext);
 
-        function renderData(d) {
-            document.getElementById('displayLibraryUrl').href = d.libraryUrl || 'http://sanmigueldeallende.gob.mx/noticia/librossanmiguel';
-            document.getElementById('displayBookUrl').src = d.bookUrl;
-            document.getElementById('displayBookLinkBtn').href = d.bookUrl;
-            document.getElementById('displayTag').innerText = d.tag;
-            document.getElementById('displayMainTitle').innerText = d.mainTitle;
-            document.getElementById('displaySubtitle').innerText = d.subtitle;
-            document.getElementById('displayContentBody').innerHTML = d.body;
-        }
+    renderTask.promise.then(function() {
+      pageRendering = false;
+      if (pageNumPending !== null) {
+        renderPage(pageNumPending);
+        pageNumPending = null;
+      }
+    });
+  });
 
-        function checkSession() {
-            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
-            const controls = document.getElementById('adminControls');
-            if (isLogged) {
-                controls.classList.add('active');
-            } else {
-                controls.classList.remove('active');
-            }
-        }
+  document.getElementById('pageInfo').textContent = `Página ${num} de ${pdfDoc.numPages}`;
+  document.getElementById('prevPage').disabled = (num <= 1);
+  document.getElementById('nextPage').disabled = (num >= pdfDoc.numPages);
+}
 
-        function openLoginModal() {
-            if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
-                    logoutAdmin();
-                }
-                return;
-            }
-            document.getElementById('usernameInput').value = '';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('loginModal').classList.add('active');
-        }
+function queueRenderPage(num) {
+  if (pageRendering) {
+    pageNumPending = num;
+  } else {
+    renderPage(num);
+  }
+}
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+function onPrevPage() {
+  if (pageNum <= 1) return;
+  pageNum--;
+  queueRenderPage(pageNum);
+}
+document.getElementById('prevPage').addEventListener('click', onPrevPage);
 
-        function handleLogin(e) {
-            e.preventDefault();
-            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
-                localStorage.setItem('sma_admin_logged', 'true');
-                closeLoginModal();
-                checkSession();
-                alert('¡Sesión iniciada con éxito!');
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
+function onNextPage() {
+  if (pageNum >= pdfDoc.numPages) return;
+  pageNum++;
+  queueRenderPage(pageNum);
+}
+document.getElementById('nextPage').addEventListener('click', onNextPage);
 
-        function logoutAdmin() {
-            localStorage.removeItem('sma_admin_logged');
-            checkSession();
-            alert('Sesión cerrada.');
-        }
+document.getElementById('zoomIn').addEventListener('click', () => {
+  if (scale < 2.0) {
+    scale += 0.25;
+    queueRenderPage(pageNum);
+  }
+});
 
-        function openEditModal() {
-            const d = getStoredData();
-            document.getElementById('editLibraryUrl').value = d.libraryUrl || 'http://sanmigueldeallende.gob.mx/noticia/librossanmiguel';
-            document.getElementById('editBookUrl').value = d.bookUrl;
-            document.getElementById('editTag').value = d.tag;
-            document.getElementById('editMainTitle').value = d.mainTitle;
-            document.getElementById('editSubtitle').value = d.subtitle;
-            document.getElementById('editBody').value = d.body;
-            document.getElementById('editModal').classList.add('active');
-        }
+document.getElementById('zoomOut').addEventListener('click', () => {
+  if (scale > 0.75) {
+    scale -= 0.25;
+    queueRenderPage(pageNum);
+  }
+});
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
-
-        function saveEditedContent(e) {
-            e.preventDefault();
-            const newData = {
-                libraryUrl: document.getElementById('editLibraryUrl').value,
-                bookUrl: document.getElementById('editBookUrl').value,
-                tag: document.getElementById('editTag').value,
-                mainTitle: document.getElementById('editMainTitle').value,
-                subtitle: document.getElementById('editSubtitle').value,
-                body: document.getElementById('editBody').value
-            };
-            saveStoredData(newData, true);
-            closeEditModal();
-            alert('¡Contenido actualizado con éxito!');
-        }
-
-        function downloadHistoryTemplate() {
-            const d = getStoredData();
-            const worksheet = XLSX.utils.json_to_sheet([d]);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "HistoriaSMA");
-            XLSX.writeFile(workbook, "plantilla_historia_vivesanmiguel.xlsx");
-        }
-
-        function handleExcelUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const dataArr = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(dataArr, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(sheet);
-                    if (json.length > 0) {
-                        const row = json[0];
-                        const newData = {
-                            libraryUrl: row.libraryUrl || row.biblioteca_url || defaultHistoryData.libraryUrl,
-                            bookUrl: row.bookUrl || row.libro_url || defaultHistoryData.bookUrl,
-                            tag: row.tag || row.etiqueta || defaultHistoryData.tag,
-                            mainTitle: row.mainTitle || row.titulo || defaultHistoryData.mainTitle,
-                            subtitle: row.subtitle || row.subtitulo || defaultHistoryData.subtitle,
-                            body: row.body || row.contenido || defaultHistoryData.body
-                        };
-                        saveStoredData(newData, true);
-                        alert('¡Datos importados desde Excel exitosamente!');
-                    }
-                } catch (err) {
-                    alert('Error al procesar el archivo Excel.');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            checkSession();
-            renderData(getStoredData());
-        });
-
-        // Partículas y cursor
-        const cursorGlow = document.getElementById('cursor-glow');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let glowX = mouseX, glowY = mouseY;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.1;
-            glowY += (mouseY - glowY) * 0.1;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
-
-        const canvas = document.getElementById('immersive-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 5;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-                this.color = 'rgba(166, 75, 42, 0.18)';
-            }
-            update() {
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let maxDistance = 150;
-                if (distance < maxDistance) {
-                    let force = (maxDistance - distance) / maxDistance;
-                    this.x -= (dx / distance) * force * this.density * 0.4;
-                    this.y -= (dy / distance) * force * this.density * 0.4;
-                } else {
-                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
-                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
-                }
-                this.baseX += this.vx;
-                this.baseY += this.vy;
-                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
-                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
-        }
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-    </script>
+// Cargar el documento PDF configurando CORS (vía proxy si es necesario o directo)
+pdfjsLib.getDocument({
+  url: url,
+  cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+  cMapPacked: true
+}).promise.then(function(pdfDoc_) {
+  pdfDoc = pdfDoc_;
+  renderPage(pageNum);
+}).catch(function(error) {
+  console.error('Error al cargar el PDF:', error);
+  document.getElementById('pageInfo').textContent = 'Error al cargar el documento.';
+});
+</script>
 </body>
 </html>
