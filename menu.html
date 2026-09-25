@@ -908,7 +908,7 @@
                     title: 'Sitios de interés',
                     desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres',
-                    img: 'https://images.unsplash.com/photo-1585464231875-d94957e8d5cc?auto=format&fit=crop&w=1000&q=80'
+                    img: 'https://lh3.googleusercontent.com/d/1OWagt27i8P-TQGeMBOaNQwID1OZ3_IaQ=w1000'
                 },
                 {
                     key: 'item_guias',
@@ -985,7 +985,6 @@
             ]
         };
 
-        // Forzar enlaces oficiales de GitHub Pages para todos los items principales y secundarios
         const githubBase = "https://carloschaires.github.io/vivesanmigueL/";
         const linkMapping = {
             'item_eventos': githubBase + 'eventos',
@@ -1046,7 +1045,6 @@
             const data = getStoredData();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
 
-            // Main Grid
             const mainContainer = document.getElementById('mainGridContainer');
             mainContainer.innerHTML = '';
             data.mainItems.forEach(item => {
@@ -1068,7 +1066,6 @@
                 `;
             });
 
-            // Secondary Grid
             const secContainer = document.getElementById('secondaryGridContainer');
             secContainer.innerHTML = '';
             data.secondaryItems.forEach(item => {
@@ -1090,7 +1087,6 @@
                 `;
             });
 
-            // Social Buttons
             const socialContainer = document.getElementById('socialButtonsContainer');
             socialContainer.innerHTML = '';
             data.socialItems.forEach(soc => {
@@ -1102,7 +1098,6 @@
             });
         }
 
-        // CMS & Auth Logic
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
                 if (confirm("¿Desea cerrar la sesión de administración?")) {
@@ -1225,7 +1220,6 @@
             renderSite();
         });
 
-        // Entrada elegante de secciones
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1241,7 +1235,6 @@
 
         document.addEventListener('DOMContentLoaded', initReveal);
 
-        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
