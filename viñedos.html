@@ -1,1036 +1,683 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vive San Miguel | Viñedos y Experiencias Enológicas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      /* Paleta Cantera Rosa & Entorno Colonial Minimalista */
-      --c-cantera: #D97864;
-      --c-cantera-rosa: #C87970;
-      --c-rosa-suave: #E6B5A9;
-      --c-terracota: #B85338;
-      --c-ocre: #D9A05B;
-      --c-vino: #592B30;
-      --c-fondo: #F5EBE6;
-      --c-fondo-card: #FAF4F0;
-      --c-noche: #2C2220;
-      --c-card: #FFFFFF;
-      --c-texto-suave: #6E615D;
-      --transicion: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--c-fondo);
-      color: var(--c-noche);
-      line-height: 1.6;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 20%, rgba(201, 121, 112, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(184, 83, 56, 0.08) 0%, transparent 45%),
-        linear-gradient(135deg, #F7EDE8 0%, #EEDFD7 100%);
-      background-attachment: fixed;
-    }
-
-    h1, h2, h3, .serif-font {
-      font-family: 'Playfair Display', serif;
-    }
-
-    /* BARRA DE NAVEGACIÓN SUPERIOR (HOME Y BÚSQUEDA) */
-    .top-navbar {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 2rem 2rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      text-decoration: none;
-      font-family: 'Playfair Display', serif;
-    }
-
-    /* CONTENEDOR PARA EL NUEVO LOGOTIPO PERSONALIZADO */
-    .brand-icon-img {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      object-fit: cover;
-      box-shadow: 0 6px 15px rgba(184, 83, 56, 0.3);
-      background: var(--c-cantera);
-    }
-
-    .brand-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--c-noche);
-      line-height: 1.1;
-    }
-
-    .brand-title span {
-      color: var(--c-terracota);
-    }
-
-    .nav-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-home {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(201, 121, 112, 0.3);
-      color: var(--c-noche);
-      padding: 0.6rem 1.25rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transicion);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      box-shadow: 0 4px 15px rgba(89, 43, 48, 0.05);
-    }
-
-    .btn-home:hover {
-      background: var(--c-cantera);
-      color: #fff;
-      border-color: var(--c-cantera);
-    }
-
-    .search-bar-wrapper {
-      position: relative;
-      min-width: 280px;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 0.65rem 1.25rem 0.65rem 2.75rem;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(201, 121, 112, 0.3);
-      border-radius: 50px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--c-noche);
-      transition: var(--transicion);
-      box-shadow: 0 4px 15px rgba(89, 43, 48, 0.05);
-    }
-
-    .search-input:focus {
-      outline: none;
-      background: #fff;
-      border-color: var(--c-cantera);
-      box-shadow: 0 0 0 3px rgba(217, 120, 100, 0.15);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--c-texto-suave);
-      pointer-events: none;
-    }
-
-    /* CONTENEDOR PRINCIPAL */
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 3rem 2rem;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto 3rem;
-      position: relative;
-    }
-
-    .section-subtitle {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.3em;
-      color: var(--c-terracota);
-      margin-bottom: 0.75rem;
-      font-weight: 600;
-      display: block;
-    }
-
-    .section-header h2 {
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      font-weight: 500;
-      color: var(--c-noche);
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
-
-    .section-header p {
-      color: var(--c-texto-suave);
-      font-size: 1.1rem;
-      font-weight: 300;
-      margin-bottom: 1.5rem;
-    }
-
-    /* CONTROLES ADMINISTRATIVOS INTEGRADOS EN EL ENCABEZADO */
-    .admin-controls-inline {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .admin-trigger-btn {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid var(--c-cantera);
-      color: var(--c-noche);
-      padding: 0.6rem 1.25rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transicion);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 4px 15px rgba(89, 43, 48, 0.05);
-    }
-
-    .admin-trigger-btn:hover {
-      background: var(--c-cantera);
-      color: #fff;
-    }
-
-    /* CANDADO ULTRA DISCRETO */
-    .btn-icon-discreet {
-      background: transparent;
-      border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transicion);
-      color: var(--c-texto-suave);
-      opacity: 0.35;
-      padding: 0;
-    }
-
-    .btn-icon-discreet:hover {
-      opacity: 1;
-      color: var(--c-terracota);
-      background: rgba(201, 121, 112, 0.1);
-    }
-
-    /* GRID DE VIÑEDOS */
-    .vineyards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 2.5rem;
-    }
-
-    .vineyard-card {
-      background: var(--c-card);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 15px 40px rgba(89, 43, 48, 0.06);
-      border: 1px solid rgba(201, 121, 112, 0.15);
-      transition: var(--transicion);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    .vineyard-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 55px rgba(89, 43, 48, 0.12);
-      border-color: rgba(201, 121, 112, 0.35);
-    }
-
-    .card-img-wrapper {
-      position: relative;
-      height: 280px;
-      overflow: hidden;
-    }
-
-    .card-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .vineyard-card:hover .card-img-wrapper img {
-      transform: scale(1.06);
-    }
-
-    .card-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: rgba(44, 34, 32, 0.8);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      padding: 0.4rem 0.9rem;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border-radius: 30px;
-      font-weight: 500;
-    }
-
-    .card-content {
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-location {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--c-terracota);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-content h3 {
-      font-size: 1.6rem;
-      font-weight: 500;
-      margin-bottom: 0.75rem;
-      color: var(--c-noche);
-    }
-
-    .card-description {
-      font-size: 0.95rem;
-      color: var(--c-texto-suave);
-      margin-bottom: 1.75rem;
-      flex-grow: 1;
-      line-height: 1.7;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 1.25rem;
-      border-top: 1px solid rgba(201, 121, 112, 0.12);
-    }
-
-    .btn-web {
-      background: var(--c-cantera);
-      color: #fff;
-      text-decoration: none;
-      padding: 0.7rem 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border-radius: 50px;
-      transition: var(--transicion);
-      box-shadow: 0 4px 15px rgba(217, 120, 100, 0.25);
-    }
-
-    .btn-web:hover {
-      background: var(--c-terracota);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(217, 120, 100, 0.35);
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 0.5rem;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transicion);
-    }
-
-    body.admin-authenticated .card-actions {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .btn-card-action {
-      background: var(--c-fondo);
-      border: 1px solid rgba(201, 121, 112, 0.2);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transicion);
-      color: var(--c-noche);
-    }
-
-    .btn-card-action:hover {
-      background: var(--c-cantera);
-      color: #fff;
-      border-color: var(--c-cantera);
-    }
-
-    /* ESTADO SIN RESULTADOS DE BÚSQUEDA */
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--c-texto-suave);
-      font-size: 1.1rem;
-    }
-
-    /* MODALES (AUTENTICACIÓN Y GESTIÓN CMS) */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(44, 34, 32, 0.65);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transicion);
-      padding: 1rem;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-container {
-      background: var(--c-card);
-      width: 100%;
-      max-width: 500px;
-      border-radius: 20px;
-      box-shadow: 0 25px 60px rgba(89, 43, 48, 0.25);
-      overflow: hidden;
-      transform: translateY(20px);
-      transition: var(--transicion);
-      display: flex;
-      flex-direction: column;
-      border: 1px solid rgba(201, 121, 112, 0.2);
-    }
-
-    .modal-container.large {
-      max-width: 650px;
-      max-height: 90vh;
-    }
-
-    .modal-overlay.active .modal-container {
-      transform: translateY(0);
-    }
-
-    .modal-header {
-      padding: 1.5rem 2rem;
-      background: var(--c-noche);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-header h3 {
-      font-size: 1.3rem;
-      font-weight: 500;
-    }
-
-    .close-modal {
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: var(--transicion);
-    }
-
-    .close-modal:hover {
-      color: var(--c-ocre);
-    }
-
-    .modal-body {
-      padding: 2rem;
-      overflow-y: auto;
-      flex-grow: 1;
-      background: var(--c-fondo-card);
-    }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-      color: var(--c-noche);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      background: #fff;
-      border: 1px solid rgba(201, 121, 112, 0.25);
-      border-radius: 8px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.95rem;
-      color: var(--c-noche);
-      transition: var(--transicion);
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--c-cantera);
-      box-shadow: 0 0 0 3px rgba(217, 120, 100, 0.15);
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .modal-footer {
-      padding: 1.25rem 2rem;
-      background: var(--c-card);
-      border-top: 1px solid rgba(201, 121, 112, 0.15);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .admin-actions-bar {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid rgba(201, 121, 112, 0.3);
-      color: var(--c-noche);
-      padding: 0.65rem 1.15rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: var(--transicion);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(217, 120, 100, 0.1);
-    }
-
-    .btn-primary {
-      background: var(--c-cantera);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.75rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: var(--transicion);
-      box-shadow: 0 4px 15px rgba(217, 120, 100, 0.3);
-    }
-
-    .btn-primary:hover {
-      background: var(--c-terracota);
-      transform: translateY(-1px);
-    }
-
-    .error-msg {
-      color: var(--c-terracota);
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    /* ESTADO ACTIVO DE EDICIÓN GLOBAL */
-    #adminCreateBtn {
-      display: none;
-    }
-    body.admin-authenticated #adminCreateBtn {
-      display: flex;
-    }
-
-    /* PIE DE PÁGINA DISCRETO CON EL CANDADO INTEGRADO */
-    footer {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 2rem 2rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(201, 121, 112, 0.15);
-      font-size: 0.85rem;
-      color: var(--c-texto-suave);
-    }
-
-    .footer-brand {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      color: var(--c-noche);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .top-navbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .nav-controls {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .search-bar-wrapper {
-        width: 100%;
-      }
-      .vineyards-grid {
-        grid-template-columns: 1fr;
-      }
-      .modal-footer {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .admin-actions-bar {
-        justify-content: space-between;
-      }
-      footer {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viñedos de San Miguel de Allende · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cantera: #8c533e;
+  --cantera-dark: #663b2c;
+  --cantera-light: #f4efe9;
+  --stone: #252422;
+  --stone-muted: #5a5652;
+  --paper: #fcfbfa;
+  --surface: #ffffff;
+  --border: rgba(140, 83, 62, 0.12);
+  --shadow: 0 25px 50px -15px rgba(37, 36, 34, 0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--stone);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 15%, rgba(140, 83, 62, 0.04), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(200, 165, 130, 0.04), transparent);
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 28s ease-in-out infinite;
+}
+.orb-1 { width: 480px; height: 480px; background: rgba(140, 83, 62, 0.08); top: -10%; left: -8%; }
+.orb-2 { width: 400px; height: 400px; background: rgba(189, 153, 118, 0.07); bottom: 0; right: -5%; animation-delay: -10s; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(18px, -14px) scale(1.03); }
+}
+
+.wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 0 44px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--surface);
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+}
+.brand-logo-link:hover {
+  border-color: var(--cantera);
+  transform: translateY(-2px);
+}
+.brand-logo-link img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+.brand-logo-link span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--stone);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-decoration: none;
+  padding: 10px 22px;
+  border: 1px solid var(--stone);
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
+.nav-back svg { width: 14px; height: 14px; }
+.nav-socials { display: flex; gap: 8px; }
+.nav-social {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--stone);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.nav-social:hover { transform: translateY(-3px); border-color: var(--cantera); color: var(--cantera); }
+.nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
+.nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
+
+/* Page intro */
+.page-intro {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.page-intro .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cantera);
+  margin-bottom: 16px;
+}
+.page-intro .eyebrow::before,
+.page-intro .eyebrow::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--cantera);
+}
+.page-intro h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--stone);
+  margin-bottom: 16px;
+}
+.page-intro p {
+  font-size: 1.05rem;
+  color: var(--stone-muted);
+  font-weight: 300;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* Vineyard cards */
+.vineyards {
+  display: grid;
+  gap: 32px;
+}
+
+.vineyard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(37, 36, 34, 0.03);
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  transition: all 0.4s ease;
+}
+.vineyard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--cantera);
+}
+@media (max-width: 780px) {
+  .vineyard { grid-template-columns: 1fr; }
+}
+
+.vineyard-img {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+.vineyard-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vineyard:hover .vineyard-img img { transform: scale(1.05); }
+.vineyard-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(37, 36, 34, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+
+.vineyard-body {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+}
+.vineyard-body h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--stone);
+  line-height: 1.2;
+}
+.vineyard-location {
+  font-size: 0.85rem;
+  color: var(--cantera);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.vineyard-desc {
+  font-size: 0.95rem;
+  color: var(--stone-muted);
+  line-height: 1.7;
+}
+
+.vineyard-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--cantera-light);
+  color: var(--cantera-dark);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+}
+.contact-pill:hover {
+  background: var(--cantera);
+  color: #fff;
+  border-color: var(--cantera);
+}
+.contact-pill svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.vineyard-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+.btn-web {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  background: var(--cantera);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+}
+.btn-web:hover {
+  background: var(--cantera-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(140, 83, 62, 0.25);
+}
+.btn-ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 18px;
+  border: 1.5px solid var(--stone);
+  color: var(--stone);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+.btn-ig:hover {
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Highlight CTA */
+.highlight {
+  margin: 64px 0 0;
+  background: var(--stone);
+  border-radius: 24px;
+  padding: 38px 36px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .highlight { grid-template-columns: 1fr; text-align: center; }
+}
+.highlight h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.highlight p { font-size: 0.95rem; opacity: 0.85; max-width: 420px; }
+@media (max-width: 640px) { .highlight p { margin: 0 auto; } }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: var(--cantera);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: var(--cantera-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(140, 83, 62, 0.25);
+}
+
+.credits {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--stone-muted);
+}
+.credits a { color: var(--cantera); font-weight: 500; text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR CON NUEVO LOGOTIPO E IMAGEN -->
-  <nav class="top-navbar">
-    <a href="#" class="brand-logo" onclick="resetSearch(event)">
-      <!-- Reemplazado con la imagen del isotipo personalizado que solicitaste -->
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-icon-img" crossorigin="anonymous">
-      <div class="brand-title">Vive <span>San Miguel</span></div>
-    </a>
+<div class="ambient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-    <div class="nav-controls">
-      <a href="#" class="btn-home" onclick="resetSearch(event)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        Home
+<div class="wrap">
+
+  <nav>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <span>Vive San Miguel</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Inicio
       </a>
-      <div class="search-bar-wrapper">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="searchInput" class="search-input" placeholder="Buscar viñedo o experiencia..." oninput="filterVineyards()">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/sanmiigueldeallende/?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
       </div>
     </div>
   </nav>
 
-  <!-- SECCIÓN PRINCIPAL DE VIÑEDOS -->
-  <main class="container">
-    <div class="section-header">
-      <span class="section-subtitle">Ruta Enológica</span>
-      <h2>Viñedos de San Miguel</h2>
-      <p>Degusta los sabores y disfruta los paisajes de los viñedos más emblemáticos de San Miguel de Allende.</p>
-      
-      <!-- CONTROLES ADMINISTRATIVOS INTEGRADOS EN EL ENCABEZADO -->
-      <div class="admin-controls-inline">
-        <button id="adminCreateBtn" class="admin-trigger-btn" onclick="openCreateModal()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          Nuevo Viñedo
-        </button>
+  <!-- INTRO -->
+  <div class="page-intro reveal">
+    <div class="eyebrow">Ruta Enológica Oficial</div>
+    <h1>Viñedos de San Miguel de Allende</h1>
+    <p>Descubre el catálogo completo de vinícolas oficiales de la región, cada una con su propia propuesta arquitectónica, gastronómica y enoturística de clase mundial.</p>
+  </div>
+
+  <!-- VINEYARDS -->
+  <div class="vineyards">
+
+    <!-- 1. VIÑEDOS SAN LUCAS -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Vinícola, Hotel & Lavanda</span>
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-lucas-san-miguel-de-allende-59.jpg?w=960" alt="Viñedos San Lucas">
       </div>
-    </div>
+      <div class="vineyard-body">
+        <h2>Viñedos San Lucas</h2>
+        <p class="vineyard-location">Carretera Querétaro – San Miguel de Allende, Km 26</p>
+        <p class="vineyard-desc">Exclusiva vinícola rodeada de campos de lavanda, olivos y vides. Combina alta cocina, hotel boutique, spa y experiencias enológicas inolvidables en un entorno campestre y sofisticado.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151546481" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            415 154 6481
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://www.vinedossanlucas.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedossanlucas/" target="_blank" rel="noopener" class="btn-ig">@vinedossanlucas</a>
+        </div>
+      </div>
+    </article>
 
-    <!-- GRID DINÁMICO DE VIÑEDOS -->
-    <div id="vineyardsGrid" class="vineyards-grid">
-      <!-- Se inyecta mediante JavaScript -->
-    </div>
-  </main>
+    <!-- 2. VIÑEDO SAN MIGUEL -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">El más grande del estado</span>
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-miguel-3.jpg?w=1024" alt="Viñedo San Miguel">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedo San Miguel</h2>
+        <p class="vineyard-location">Carretera San Miguel de Allende a Dolores Hidalgo, Km 73</p>
+        <p class="vineyard-desc">Ubicado a pocos minutos de la ciudad, es el viñedo más extenso de Guanajuato. Ofrece recorridos guiados por expertos, catas magistrales y el reconocido restaurante Trasiego.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524772891368" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            477 289 1368
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://vinedosanmiguel.com.mx/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedosanmiguel/" target="_blank" rel="noopener" class="btn-ig">@vinedosanmiguel</a>
+        </div>
+      </div>
+    </article>
 
-  <!-- PIE DE PÁGINA DISCRETO CON CANDADO ULTRA OCULTO -->
-  <footer>
-    <div class="footer-brand">Vive San Miguel &copy; 2026</div>
-    <div>Ruta Enológica de Allende</div>
-    <!-- CANDADO ULTRA DISCRETO AL PIE DE PÁGINA -->
-    <button id="lockTriggerBtn" class="btn-icon-discreet" onclick="handleLockAction()" title="Administración">
-      <svg id="lockIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-    </button>
+    <!-- 3. VINÍCOLA TOYÁN -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Orgánico & Cavas Subterráneas</span>
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80" alt="Vinícola Toyan">
+      </div>
+      <div class="vineyard-body">
+        <h2>Vinícola Toyan</h2>
+        <p class="vineyard-location">Carretera San Miguel – Querétaro, Km 8.5</p>
+        <p class="vineyard-desc">Proyecto 100% orgánico y sustentable fundado en 1995. Famoso por su mística cava subterránea a 14 metros de profundidad resguardada por esculturas y barricas de roble.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151527400" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            415 152 7400
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://www.vinicolatoyan.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedotoyan/" target="_blank" rel="noopener" class="btn-ig">@vinedotoyan</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. DOS BÚHOS -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Boutique & Orgánico</span>
+        <img src="https://dosbuhos.com/wp-content/uploads/2023/07/dos-buhos-vinedo.jpg" alt="Viñedo Dos Búhos" onerror="this.src='https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80'">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedo Dos Búhos</h2>
+        <p class="vineyard-location">Carretera SMA – Celaya, Km 2.5</p>
+        <p class="vineyard-desc">Viñedo boutique artesanal y 100% orgánico. Destaca por sus producciones limitadas, catas íntimas al aire libre, salón de arte y un profundo respeto por la naturaleza.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151526084" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Contacto directo
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://dosbuhos.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/dosbuhos/" target="_blank" rel="noopener" class="btn-ig">@dosbuhos</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. HACIENDA SAN JOSÉ LAVISTA -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Vistas a Presa Allende</span>
+        <img src="https://sanjoselavista.com/wp-content/uploads/2021/05/hacienda-san-jose-lavista-vinedo.jpg" alt="San José Lavista" onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedos San José Lavista</h2>
+        <p class="vineyard-location">Camino a Alcocer, Km 5.5</p>
+        <p class="vineyard-desc">Imponente arquitectura colonial mexicana con vistas panorámicas privilegiadas hacia la Presa Allende. Cuenta con vinos de autor galardonados y un restaurante de cocina internacional.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151525000" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Reservaciones
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://sanjoselavista.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/sanjoselavista/" target="_blank" rel="noopener" class="btn-ig">@sanjoselavista</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6. LA SANTÍSIMA TRINIDAD (IMAGEN CORREGIDA) -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Vino, Olivo & Lavanda</span>
+        <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkUQuNU_QadpC_uvJsLIGh2psAgE6TYmo_LdMQUtCLo9pzHvwKakPpsOFw6ZTxvi-HtoKQ3Onf4cVUP57Y6TtdfEUtqnapVZCvXr_xukyJCY3SWKn8l2uDKhbH_Oi9HCNdrJ5QQGw=s680-w680-h510-rw" alt="La Santísima Trinidad">
+      </div>
+      <div class="vineyard-body">
+        <h2>La Santísima Trinidad</h2>
+        <p class="vineyard-location">Carretera San Miguel – Dolores Hidalgo, Km 10.5</p>
+        <p class="vineyard-desc">Desarrollo enológico que integra tres pasiones: vino, aceite de oliva y campos de lavanda. Ofrece hotel boutique, canchas de polo, restaurante de campo y talleres vivenciales.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151526000" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Información
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://lasantisimatrinidad.com.mx/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/lasantisimatrinidadsma/" target="_blank" rel="noopener" class="btn-ig">@lasantisimatrinidadsma</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7. TRES RAÍCES -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Vanguardia & Premiado</span>
+        <img src="https://vinedotresraices.com/wp-content/uploads/2023/05/tres-raices-vinedo.jpg" alt="Tres Raíces" onerror="this.src='https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80'">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedo Tres Raíces</h2>
+        <p class="vineyard-location">Carretera Dolores Hidalgo – San Diego de la Unión, Km 13</p>
+        <p class="vineyard-desc">Una de las vinícolas más premiadas de Guanajuato en concursos internacionales. Cuenta con diseño arquitectónico moderno de vanguardia, lago central, hotel boutique y restaurante de autor.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524156903000" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Reservaciones
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://vinedotresraices.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedotresraices/" target="_blank" rel="noopener" class="btn-ig">@vinedotresraices</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8. VIÑEDOS SAN FRANCISCO -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Equestre & Olivos</span>
+        <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1000&q=80" alt="Viñedos San Francisco">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedos San Francisco</h2>
+        <p class="vineyard-location">Carretera San Miguel – Dolores Hidalgo, Km 24</p>
+        <p class="vineyard-desc">Desarrollo hermano de San Lucas enfocado en un estilo de vida campestre con pista de salto ecuestre, olivos, granero y un viñedo excepcional con catas personalizadas.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151527000" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Atención
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://www.vinedossanfrancisco.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedossanfrancisco/" target="_blank" rel="noopener" class="btn-ig">@vinedossanfrancisco</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9. VIÑEDO LOS ARCÁNGELES -->
+    <article class="vineyard reveal">
+      <div class="vineyard-img">
+        <span class="vineyard-badge">Boutique & Sustentable</span>
+        <img src="https://vinedoslosar-cangeles.com/wp-content/uploads/2023/04/los-arcangeles-vinedo.jpg" alt="Viñedo Los Arcángeles" onerror="this.src='https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?auto=format&fit=crop&w=1000&q=80'">
+      </div>
+      <div class="vineyard-body">
+        <h2>Viñedo Los Arcángeles</h2>
+        <p class="vineyard-location">Dolores Hidalgo / Ruta del Vino SMA</p>
+        <p class="vineyard-desc">Proyecto familiar boutique libre de pesticidas sintéticos. Ofrece experiencias únicas como picnics junto a espejo de agua, asados campiranos, cine al aire libre y catas personalizadas.</p>
+        <div class="vineyard-contacts">
+          <a href="tel:+524151120000" class="contact-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Reservaciones
+          </a>
+        </div>
+        <div class="vineyard-links">
+          <a href="https://vinedoslosarcangeles.com/" target="_blank" rel="noopener" class="btn-web">Sitio web oficial</a>
+          <a href="https://www.instagram.com/vinedoslosarcangeles/" target="_blank" rel="noopener" class="btn-ig">@vinedoslosarcangeles</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="highlight reveal">
+    <div>
+      <h3>¿Listo para descubrir más?</h3>
+      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.</p>
+    </div>
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
+      Ver catálogo
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <footer class="credits reveal">
+    <p>Información de sitios oficiales · <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Ruta Enológica</p>
   </footer>
 
-  <!-- MODAL DE AUTENTICACIÓN (CONTRASEÑA) -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal-container">
-      <div class="modal-header">
-        <h3>Acceso Restringido</h3>
-        <button class="close-modal" onclick="closeAuthModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="authForm" onsubmit="verifyPassword(event)">
-          <div class="form-group">
-            <label for="adminPassword">Contraseña de Administrador</label>
-            <input type="password" id="adminPassword" class="form-control" placeholder="Introduce la contraseña..." required autocomplete="current-password">
-            <div id="authError" class="error-msg">Contraseña incorrecta. Intenta de nuevo.</div>
-          </div>
-          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem;">Desbloquear Edición</button>
-        </form>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <!-- MODAL DE GESTIÓN Y EDICIÓN (CRUD) -->
-  <div id="vineyardModal" class="modal-overlay">
-    <div class="modal-container large">
-      <div class="modal-header">
-        <h3 id="modalTitle">Registrar Nuevo Viñedo</h3>
-        <button class="close-modal" onclick="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="vineyardForm" onsubmit="saveVineyard(event)">
-          <input type="hidden" id="vineyardIndex" value="">
-          <div class="form-group">
-            <label for="vName">Nombre del Viñedo</label>
-            <input type="text" id="vName" class="form-control" placeholder="Ej. Viñedo San Lucas" required>
-          </div>
-          <div class="form-group">
-            <label for="vLocation">Ubicación / Referencia</label>
-            <input type="text" id="vLocation" class="form-control" placeholder="Ej. Carretera San Miguel - Dolores" required>
-          </div>
-          <div class="form-group">
-            <label for="vTag">Distintivo / Categoría</label>
-            <input type="text" id="vTag" class="form-control" placeholder="Ej. Vino & Alta Cocina" required>
-          </div>
-          <div class="form-group">
-            <label for="vUrl">Sitio Web Oficial (URL)</label>
-            <input type="url" id="vUrl" class="form-control" placeholder="https://www.vinedossanlucas.com/" required>
-          </div>
-          <div class="form-group">
-            <label for="vImage">URL de la Imagen</label>
-            <input type="url" id="vImage" class="form-control" placeholder="https://.../imagen.jpg" required>
-          </div>
-          <div class="form-group">
-            <label for="vDesc">Descripción Breve</label>
-            <textarea id="vDesc" class="form-control" placeholder="Describe la experiencia y atractivos del viñedo..." required></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <div class="admin-actions-bar">
-          <button type="button" class="btn-secondary" onclick="exportData()">Exportar JSON</button>
-          <button type="button" class="btn-secondary" onclick="document.getElementById('importFile').click()">Importar JSON</button>
-          <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
-        </div>
-        <button type="submit" form="vineyardForm" class="btn-primary">Guardar Cambios</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCRIPT DE CONTROL Y PERSISTENCIA (VANILLA JS + LOCALSTORAGE) -->
-  <script>
-    let isAuthenticated = sessionStorage.getItem('sm_admin_auth') === 'true';
-
-    function updateAuthUI() {
-      if (isAuthenticated) {
-        document.body.classList.add('admin-authenticated');
-        document.getElementById('lockIcon').innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V4a5 5 0 0 1 9.9-1"></path>';
-        document.getElementById('lockTriggerBtn').title = "Sesión Administrador Activa (Click para cerrar)";
-        document.getElementById('lockTriggerBtn').style.opacity = '0.9';
-      } else {
-        document.body.classList.remove('admin-authenticated');
-        document.getElementById('lockIcon').innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
-        document.getElementById('lockTriggerBtn').title = "Administración";
-        document.getElementById('lockTriggerBtn').style.opacity = '0.35';
-      }
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
     }
-
-    function handleLockAction() {
-      if (isAuthenticated) {
-        if (confirm('¿Deseas cerrar la sesión de administración?')) {
-          isAuthenticated = false;
-          sessionStorage.removeItem('sm_admin_auth');
-          updateAuthUI();
-          renderVineyards();
-        }
-      } else {
-        openAuthModal();
-      }
-    }
-
-    function openAuthModal() {
-      document.getElementById('adminPassword').value = '';
-      document.getElementById('authError').style.display = 'none';
-      document.getElementById('authModal').classList.add('active');
-      setTimeout(() => document.getElementById('adminPassword').focus(), 100);
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.remove('active');
-    }
-
-    function verifyPassword(event) {
-      event.preventDefault();
-      const pass = document.getElementById('adminPassword').value;
-      if (pass === 'c4rl0s1107') {
-        isAuthenticated = true;
-        sessionStorage.setItem('sm_admin_auth', 'true');
-        closeAuthModal();
-        updateAuthUI();
-        renderVineyards();
-      } else {
-        document.getElementById('authError').style.display = 'block';
-      }
-    }
-
-    const defaultVineyards = [
-      {
-        name: "San Lucas",
-        location: "Viñedos San Lucas",
-        tag: "Vinícola & Lavanda",
-        url: "https://www.vinedossanlucas.com/",
-        image: "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-lucas-san-miguel-de-allende-59.jpg?w=960",
-        desc: "Exclusiva vinícola rodeada de campos de lavanda y olivos, que combina la alta cocina con la tradición vitivinícola en un entorno arquitectónico incomparable."
-      },
-      {
-        name: "San Miguel",
-        location: "Viñedos San Miguel",
-        tag: "Tradición Enológica",
-        url: "https://vinedosanmiguel.com.mx/",
-        image: "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-miguel-3.jpg?w=1024",
-        desc: "Un espacio dedicado al cultivo de vides excepcionales, ofreciendo recorridos guiados, catas memorables y vistas impresionantes del atardecer guanajuatense."
-      },
-      {
-        name: "Viñedo Toyan",
-        location: "Vinícola Toyan",
-        tag: "Orgánico & Arte",
-        url: "https://www.vinicolatoyan.com/",
-        image: "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/julia-eats.jpg?w=720",
-        desc: "Viñedo orgánico y sustentable que resguarda cavas subterráneas místicas, esculturas y una propuesta única de enoturismo consciente."
-      }
-    ];
-
-    function getVineyards() {
-      const data = localStorage.getItem('sm_vinedos_seccion');
-      if (!data) {
-        localStorage.setItem('sm_vinedos_seccion', JSON.stringify(defaultVineyards));
-        return defaultVineyards;
-      }
-      return JSON.parse(data);
-    }
-
-    function saveVineyardsData(data) {
-      localStorage.setItem('sm_vinedos_seccion', JSON.stringify(data));
-      filterVineyards();
-    }
-
-    function renderVineyards(filteredData = null) {
-      const vineyards = filteredData || getVineyards();
-      const grid = document.getElementById('vineyardsGrid');
-      grid.innerHTML = '';
-
-      if (vineyards.length === 0) {
-        grid.innerHTML = `<div class="no-results">No se encontraron viñedos o experiencias que coincidan con tu búsqueda.</div>`;
-        return;
-      }
-
-      vineyards.forEach((v) => {
-        const allVineyards = getVineyards();
-        const realIndex = allVineyards.findIndex(item => item.name === v.name && item.location === v.location);
-
-        const card = document.createElement('div');
-        card.className = 'vineyard-card';
-        card.innerHTML = `
-          <div class="card-img-wrapper">
-            <span class="card-badge">${v.tag}</span>
-            <img src="${v.image}" alt="${v.name}" loading="lazy">
-          </div>
-          <div class="card-content">
-            <span class="card-location">${v.location}</span>
-            <h3>${v.name}</h3>
-            <p class="card-description">${v.desc}</p>
-            <div class="card-footer">
-              <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="btn-web">${v.name.toUpperCase()}</a>
-              <div class="card-actions">
-                <button class="btn-card-action" onclick="openEditModal(${realIndex})" title="Editar Viñedo">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                </button>
-                <button class="btn-card-action" onclick="deleteVineyard(${realIndex})" title="Eliminar Viñedo">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function filterVineyards() {
-      const query = document.getElementById('searchInput').value.toLowerCase().trim();
-      const vineyards = getVineyards();
-      
-      if (!query) {
-        renderVineyards(vineyards);
-        return;
-      }
-
-      const filtered = vineyards.filter(v => 
-        v.name.toLowerCase().includes(query) ||
-        v.location.toLowerCase().includes(query) ||
-        v.tag.toLowerCase().includes(query) ||
-        v.desc.toLowerCase().includes(query)
-      );
-
-      renderVineyards(filtered);
-    }
-
-    function resetSearch(event) {
-      if (event) event.preventDefault();
-      document.getElementById('searchInput').value = '';
-      renderVineyards();
-    }
-
-    const modal = document.getElementById('vineyardModal');
-
-    function openCreateModal() {
-      if (!isAuthenticated) {
-        openAuthModal();
-        return;
-      }
-      document.getElementById('modalTitle').innerText = 'Registrar Nuevo Viñedo';
-      document.getElementById('vineyardForm').reset();
-      document.getElementById('vineyardIndex').value = '';
-      modal.classList.add('active');
-    }
-
-    function openEditModal(index) {
-      if (!isAuthenticated) {
-        openAuthModal();
-        return;
-      }
-      const vineyards = getVineyards();
-      const v = vineyards[index];
-      
-      document.getElementById('modalTitle').innerText = 'Modificar Viñedo';
-      document.getElementById('vineyardIndex').value = index;
-      document.getElementById('vName').value = v.name;
-      document.getElementById('vLocation').value = v.location;
-      document.getElementById('vTag').value = v.tag;
-      document.getElementById('vUrl').value = v.url;
-      document.getElementById('vImage').value = v.image;
-      document.getElementById('vDesc').value = v.desc;
-      
-      modal.classList.add('active');
-    }
-
-    function closeModal() {
-      modal.classList.remove('active');
-    }
-
-    function saveVineyard(event) {
-      event.preventDefault();
-      if (!isAuthenticated) return;
-
-      const index = document.getElementById('vineyardIndex').value;
-      const vineyards = getVineyards();
-
-      const newItem = {
-        name: document.getElementById('vName').value,
-        location: document.getElementById('vLocation').value,
-        tag: document.getElementById('vTag').value,
-        url: document.getElementById('vUrl').value,
-        image: document.getElementById('vImage').value,
-        desc: document.getElementById('vDesc').value
-      };
-
-      if (index === "") {
-        vineyards.push(newItem);
-      } else {
-        vineyards[index] = newItem;
-      }
-
-      saveVineyardsData(vineyards);
-      closeModal();
-    }
-
-    function deleteVineyard(index) {
-      if (!isAuthenticated) return;
-      if (confirm('¿Estás seguro de eliminar este viñedo de la sección?')) {
-        const vineyards = getVineyards();
-        vineyards.splice(index, 1);
-        saveVineyardsData(vineyards);
-      }
-    }
-
-    function exportData() {
-      if (!isAuthenticated) return;
-      const data = localStorage.getItem('sm_vinedos_seccion');
-      const blob = new Blob([data], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'vinedos_san_miguel_seccion.json';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importData(event) {
-      if (!isAuthenticated) return;
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (Array.isArray(parsed)) {
-            saveVineyardsData(parsed);
-            alert('Catálogo importado correctamente.');
-            closeModal();
-          } else {
-            alert('Formato de archivo inválido.');
-          }
-        } catch (err) {
-          alert('Error al leer el archivo JSON.');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      updateAuthUI();
-      renderVineyards();
-    });
-  </script>
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
