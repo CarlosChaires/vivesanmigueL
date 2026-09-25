@@ -772,12 +772,12 @@
                 <div class="eyebrow">Guía curada · San Miguel de Allende</div>
                 <h1>Vive la ciudad.<br><em>Siente su historia.</em></h1>
                 <p class="hero-copy">
-                    Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel
+                    Una selección de lugares, experiencias, culture y rincones que hacen de San Miguel
                     un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.
                 </p>
                 <div class="hero-actions">
                     <a class="hero-btn primary" href="#explora">Explorar la guía <span>↓</span></a>
-                    <a class="hero-btn secondary" href="https://carloschaires.github.io/vivesanmigueL/mapa" target="_blank" rel="noopener noreferrer">Abrir mapa <span>↗</span></a>
+                    <a class="hero-btn secondary" href="https://carloschaires.github.io/vivesanmigueL/mapa">Abrir mapa <span>↗</span></a>
                 </div>
             </div>
 
@@ -1055,7 +1055,7 @@
                         </div>
                         <div class="card-body">
                             <div>
-                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
+                                <a href="${item.link}" class="card-link-title">
                                     ${item.title} <span>→</span>
                                 </a>
                                 <p>${item.desc}</p>
@@ -1076,7 +1076,7 @@
                         </div>
                         <div class="card-body">
                             <div>
-                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="card-link-title">
+                                <a href="${item.link}" class="card-link-title">
                                     ${item.title} <span>→</span>
                                 </a>
                                 <p>${item.desc}</p>
@@ -1091,7 +1091,7 @@
             socialContainer.innerHTML = '';
             data.socialItems.forEach(soc => {
                 socialContainer.innerHTML += `
-                    <a href="${soc.url}" target="_blank" rel="noopener noreferrer" class="social-btn ${soc.class}">
+                    <a href="${soc.url}" class="social-btn ${soc.class}">
                         ${soc.svg} ${soc.name}
                     </a>
                 `;
