@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festividad de San Miguel Arcángel · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #c97b7b;
+  --rose-soft: #e8b4b4;
+  --rose-light: #f8ecec;
+  --rose-blush: #fdf6f5;
+  --cantera: #a65d4a;
+  --stone: #2c2422;
+  --stone-muted: #6b5e5a;
+  --paper: #fdf8f7;
+  --surface: #ffffff;
+  --border: rgba(201, 123, 123, 0.14);
+  --shadow: 0 25px 50px -15px rgba(44, 36, 34, 0.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--stone);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 45% at 12% 10%, rgba(201, 123, 123, 0.07), transparent),
+    radial-gradient(ellipse 55% 40% at 88% 90%, rgba(166, 93, 74, 0.05), transparent);
+}
+.orb {
+  position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.2;
+  pointer-events: none; z-index: 0; animation: drift 30s ease-in-out infinite;
+}
+.orb-1 { width: 500px; height: 500px; background: rgba(201, 123, 123, 0.12); top: -12%; left: -10%; }
+.orb-2 { width: 420px; height: 420px; background: rgba(232, 180, 180, 0.1); bottom: -5%; right: -8%; animation-delay: -12s; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -16px) scale(1.04); }
+}
+.wrap { position: relative; z-index: 2; max-width: 980px; margin: 0 auto; padding: 0 28px 90px; }
+
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 0 40px; gap: 16px; flex-wrap: wrap;
+}
+.brand-logo-link {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  background: var(--surface); padding: 8px 18px 8px 10px; border-radius: 100px;
+  border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.3s ease;
+}
+.brand-logo-link:hover { border-color: var(--rose); transform: translateY(-2px); }
+.brand-logo-link img { height: 36px; width: auto; object-fit: contain; }
+.brand-logo-link span { font-size: 0.85rem; font-weight: 700; color: var(--stone); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone); text-decoration: none;
+  padding: 10px 22px; border: 1px solid var(--stone); border-radius: 100px; transition: all 0.3s ease; background: var(--surface);
+}
+.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
+.nav-back svg { width: 14px; height: 14px; }
+.nav-socials { display: flex; gap: 8px; }
+.nav-social {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface); display: grid; place-items: center; font-size: 11px; font-weight: 700;
+  color: var(--stone); text-decoration: none; transition: all 0.3s ease;
+}
+.nav-social:hover { transform: translateY(-3px); border-color: var(--rose); color: var(--rose); }
+.nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
+.nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 20px 0 10px;
+}
+.hero .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 16px;
+}
+.hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--rose); }
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.3rem, 5vw, 3.4rem);
+  font-weight: 600; line-height: 1.12; letter-spacing: -0.02em;
+  color: var(--stone); margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 1.08rem; color: var(--stone-muted); font-weight: 300;
+  max-width: 560px; margin: 0 auto 24px;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 500;
+  background: var(--surface); color: var(--cantera); border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.pill strong { font-weight: 600; }
+
+/* Feature Image Container */
+.feature-image-container {
+  margin: 32px 0 48px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+}
+.feature-image-container img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+.image-credit {
+  padding: 12px 20px;
+  font-size: 0.82rem;
+  color: var(--stone-muted);
+  text-align: right;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.image-credit a {
+  color: var(--cantera);
+  text-decoration: none;
+  font-weight: 600;
+}
+.image-credit a:hover {
+  text-decoration: underline;
+}
+
+/* Sections */
+.section { margin-bottom: 48px; }
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 12px;
+}
+.section h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 600; color: var(--stone); margin-bottom: 18px; line-height: 1.2;
+}
+.prose {
+  font-size: 1.02rem; color: var(--stone-muted); max-width: 680px; margin-bottom: 14px; line-height: 1.8;
+}
+.prose strong { color: var(--stone); font-weight: 600; }
+
+/* Timeline design */
+.timeline {
+  position: relative;
+  margin: 30px 0;
+  padding-left: 30px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--rose-soft);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-dot {
+  position: absolute;
+  left: -30px;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--rose);
+}
+.timeline-content h4 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+.timeline-content p {
+  font-size: 0.9rem;
+  color: var(--stone-muted);
+  line-height: 1.6;
+}
+
+/* Feature list */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+@media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 20px;
+  transition: all 0.3s ease;
+}
+.feature:hover { border-color: var(--rose); transform: translateY(-3px); box-shadow: var(--shadow); }
+.feature h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 600; color: var(--stone); margin-bottom: 8px;
+}
+.feature p { font-size: 0.9rem; color: var(--stone-muted); line-height: 1.6; }
+
+/* Info cards */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+@media (max-width: 720px) { .info-grid { grid-template-columns: 1fr; } }
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 20px;
+}
+.info-card h3 {
+  font-size: 0.95rem; font-weight: 600; color: var(--rose); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.info-card p, .info-card ul {
+  font-size: 0.9rem; color: var(--stone-muted); list-style: none;
+}
+.info-card li { padding: 3px 0; }
+
+/* Events timeline */
+.events-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.events-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--rose), var(--rose-soft), var(--cantera));
+}
+.day-group { margin-bottom: 32px; }
+.day-group:last-child { margin-bottom: 0; }
+.day-header {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+.day-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--stone);
+}
+.day-theme {
+  font-size: 0.85rem; color: var(--rose); font-weight: 600; letter-spacing: 0.03em;
+}
+.event-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(201, 123, 123, 0.15);
+}
+.event-item:last-child { border-bottom: none; }
+@media (max-width: 520px) {
+  .event-item { grid-template-columns: 1fr; gap: 4px; }
+}
+.event-time {
+  font-size: 0.85rem; font-weight: 600; color: var(--cantera);
+  white-space: nowrap;
+}
+.event-detail h4 {
+  font-size: 0.98rem; font-weight: 600; color: var(--stone); margin-bottom: 4px;
+}
+.event-detail p {
+  font-size: 0.88rem; color: var(--stone-muted); line-height: 1.55;
+}
+
+/* Highlight */
+.highlight {
+  margin: 48px 0 0;
+  background: var(--stone);
+  border-radius: 24px;
+  padding: 36px 32px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .highlight { grid-template-columns: 1fr; text-align: center; }
+}
+.highlight h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 500; margin-bottom: 6px; color: #fff;
+}
+.highlight p { font-size: 0.92rem; opacity: 0.85; max-width: 400px; }
+@media (max-width: 640px) { .highlight p { margin: 0 auto; } }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 24px; background: var(--rose); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; border-radius: 100px; transition: all 0.3s ease; white-space: nowrap;
+}
+.btn-primary:hover {
+  background: #b56a6a; transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(201, 123, 123, 0.3);
+}
+
+.credits {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
+  text-align: center; font-size: 0.85rem; color: var(--stone-muted);
+}
+.credits a { color: var(--rose); font-weight: 500; text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
+
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="wrap">
+  <nav>
+    <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-logo-link">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <span>Vive San Miguel</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://carloschaires.github.io/vivesanmigueL/" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Inicio
+      </a>
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero reveal">
+    <div class="eyebrow">Fiesta Patronal · Septiembre – Octubre</div>
+    <h1>Festividad de San Miguel Arcángel</h1>
+    <p class="hero-sub">Tradición, fervor e identidad. La celebración patronal más importante y esperada de San Miguel de Allende.</p>
+    <div class="hero-meta">
+      <span class="pill"><strong>29 de Septiembre</strong></span>
+      <span class="pill">Parroquia & Centro Histórico</span>
+      <span class="pill">Alborada · Xúchiles · Tradición</span>
+    </div>
+  </header>
+
+  <!-- FEATURE IMAGE -->
+  <div class="feature-image-container reveal">
+    <img src="https://www.mexicodesconocido.com.mx/sites/default/files/nodes/inline/alborada_san_miguel_allende_530_2.jpg" alt="La Alborada en San Miguel de Allende">
+    <div class="image-credit">
+      Imagen cortesía de <a href="https://www.mexicodesconocido.com.mx" target="_blank" rel="noopener">México Desconocido</a>
+    </div>
+  </div>
+
+  <!-- QUÉ ES -->
+  <section class="section reveal">
+    <div class="section-label">La celebración</div>
+    <h2>¿De qué trata la festividad?</h2>
+    <p class="prose">La Festividad de San Miguel Arcángel es la celebración patronal más emblemática de la ciudad. A las 11:00 horas se realiza la entrada de la cabalgata procedente de la estación rumbo a la Parroquia para escuchar misa, seguida al mediodía por la tradicional quema de judas recolectados por comerciantes y establecimientos.</p>
+    <p class="prose">A las 17:00 horas se lleva a cabo la impresionante <strong>Entrada de los Xúchiles</strong>, recorriendo la Calzada de la Estación, Canal, Portal Allende, Plaza Principal, Correo, Murillo, San Francisco, Juárez, Mesones, Pepellanos e Insurgentes con más de 70 danzas, carros alegóricos y mojigangas.</p>
+    <div class="features">
+      <div class="feature">
+        <h3>Estructura de los Xúchiles</h3>
+        <p>Hechos de dos troncos de 5 a 7 metros unidos por carrizos e hilos entretejidos, decorados con flores de cempasúchil, fruta, pan y cruces de cucharilla o la imagen del santo patrono.</p>
+      </div>
+      <div class="feature">
+        <h3>Significado Histórico</h3>
+        <p>Representan las camillas usadas para cargar a los caídos en el campo de batalla. La cucharilla blanca evoca las calaveras y el cempasúchil la flor ofrecida a los guerreros.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRONOLOGÍA HISTÓRICA Y LÍNEA DEL TIEMPO -->
+  <section class="section reveal">
+    <div class="section-label">Evolución Histórica</div>
+    <h2>Cronología y tradiciones ancestrales</h2>
+    <p class="prose">Conoce los antecedentes históricos y la evolución de esta gran celebración según los registros tradicionales:</p>
+    
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>Radio de Acción y El Encuentro Regional</h4>
+          <p>La festividad abarcaba peregrinaciones del norte (San Luis de la Paz, Santa Catarina, Xichú, Victoria, Tierra Blanca), oriente (Querétaro), poniente (Guanajuato, San Francisco del Rincón, León, Purísima) y sur (Comonfort, Villagrán, Irapuato, Cortázar, Juventino Rosas). Se hospedaban en la capilla del Señor San Miguel en el barrio de las Cachinches y los danzantes locales salían a darles la bienvenida hacia la salida a Celaya.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>Indumentaria Tradicional de Concheros</h4>
+          <p>El traje antiguo consistía en una nagüilla larga de tela ligera pintada con indígenas bailando, concha, cruz y pajaritos, capa con la Santa Cruz y lentejuela, camisa blanca y penacho con espejitos y plumas de gallina. Hoy en día la mayoría utiliza trajes aztecas.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>Recorrido de las Comunidades y Bueyes</h4>
+          <p>La comunidad de La Cieneguita realizaba una velación en el Puerto de Calderón, pasando por Las Cuevitas, Tirado, Guerrero y San Miguel Viejo, antes de regresar a La Cieneguita para presenciar el sacrificio de los bueyes previo a la gran entrada.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>La Entrada y Limpias en el Puente</h4>
+          <p>Las comunidades se unían en la Cruz del Cuarto para sahumarse y pedir perdón. Las cruces se adelantaban al puente de Guanajuato para hacer limpias, nombrar capitanes de marcha e iniciar el ingreso ordenado a la ciudad con banderas, estandartes y tres cruces principales.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>Corridas de Toros y el Cuarto Centenario</h4>
+          <p>Antes de la construcción del Jardín Principal, la plaza mayor albergaba corridas de toros con un palco especial para la imagen de San Miguel; al agotarse la madera para los andamios de las torres, se sustituyeron por castillos de cohetes. Hasta el Cuarto Centenario las fiestas eran costeadas por las comunidades, pasando después al patronato y apoyo de la presidencia.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h4>Renovación Moderna (1985)</h4>
+          <p>A partir de 1985 se recuperó la tradición de sacar en procesión al patrono visitando los templos de Las Monjas, Santa Ana, el Oratorio y San Francisco, permitiendo que los fieles pasen bajo su capa y concluyan dando gracias en el panteón de San Juan de Dios.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FECHAS / SEDES -->
+  <section class="section reveal">
+    <div class="section-label">Planifica tu visita</div>
+    <h2>Fechas, horarios y sedes</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>📅 Fecha principal</h3>
+        <p>Se celebra el <strong>29 de septiembre</strong> (o el fin de semana más cercano si cae entre semana).</p>
+      </div>
+      <div class="info-card">
+        <h3>🕐 Alborada</h3>
+        <p>Inicia en la madrugada (3:00 a.m. - 4:00 a.m.) congregando a los barrios rumbo al Jardín Principal.</p>
+      </div>
+      <div class="info-card">
+        <h3>📍 Sedes</h3>
+        <p>Atrio y explanada de la <strong>Parroquia de San Miguel Arcángel</strong>, Jardín Principal y calles del Centro Histórico.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMA DE EVENTOS -->
+  <section class="section reveal">
+    <div class="section-label">Programa de la Festividad</div>
+    <h2>Agenda de eventos tradicionales</h2>
+    <div class="events-block">
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Viernes 25 de septiembre</span>
+          <span class="day-theme">25 aniversario de La Alborada</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">5:00 p. m.</div>
+          <div class="event-detail">
+            <h4>Reseña de La Alborada en su 25 aniversario</h4>
+            <p>Con la participación especial de los barrios tradicionales: Valle del Maíz, Estación y Colonia Aurora.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Domingo 27 de septiembre</span>
+          <span class="day-theme">Cultura y Tradición</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">7:00 p. m.</div>
+          <div class="event-detail">
+            <h4>Presentación Artística del Ballet Folclórico Mazatl</h4>
+            <p>En la Explanada del Jardín Principal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Lunes 28 de septiembre</span>
+          <span class="day-theme">Mañanitas al Patrón</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">12:00 a. m.</div>
+          <div class="event-detail">
+            <h4>Tradicionales Mañanitas al Señor San Miguel Arcángel</h4>
+            <p>Por parte de los grupos charros.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Miércoles 30 de septiembre</span>
+          <span class="day-theme">Noche de Mariachi</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">7:00 p. m.</div>
+          <div class="event-detail">
+            <h4>Noche de Mariachi</h4>
+            <p>Espectacular presentación con <strong>100 mariachis</strong> en escena en la Explanada del Jardín Principal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Jueves 1 de octubre</span>
+          <span class="day-theme">Concierto</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">7:30 p. m.</div>
+          <div class="event-detail">
+            <h4>Concierto Anual de los Hermanos Aguascalientes</h4>
+            <p>Tradicional concierto en la Explanada del Jardín Principal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Viernes 2 de octubre</span>
+          <span class="day-theme">Corrida de las Luces y Verbenas de La Alborada</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">7:30 p. m.</div>
+          <div class="event-detail">
+            <h4>Corrida de Toros de las Luces</h4>
+            <p>En homenaje al Arcángel Señor San Miguel, con solemne procesión desde el Jardín Principal.</p>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">10:00 p. m.</div>
+          <div class="event-detail">
+            <h4>Verbenas Populares para esperar La Alborada</h4>
+            <p>En los barrios Valle del Maíz, Estación y Colonia Aurora.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <div class="day-header">
+          <span class="day-date">Sábado 3 de octubre</span>
+          <span class="day-theme">Día Cumbre: La Alborada, Xúchiles y Danzas</span>
+        </div>
+        <div class="event-item">
+          <div class="event-time">3:00 am - 4:00 am</div>
+          <div class="event-detail">
+            <h4>La Alborada (Evento Cumbre)</h4>
+            <p>Los contingentes de los barrios tradicionales salen desde las 3:00 am y se reúnen a las 4:00 am en el Jardín Principal, frente a la Parroquia de San Miguel Arcángel. Una madrugada llena de música de banda, mojigangas, estrellas de papel iluminadas y un espectáculo masivo de pirotecnia.</p>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">11:00 a. m.</div>
+          <div class="event-detail">
+            <h4>Entrada de la Cabalgata</h4>
+            <p>La cabalgata sale de la estación rumbo a la Parroquia de San Miguel Arcángel para escuchar misa.</p>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">12:00 p. m.</div>
+          <div class="event-detail">
+            <h4>Quema de los Judas</h4>
+            <p>Tradicional quema frente a la Parroquia de San Miguel Arcángel, recolectados por comerciantes del mercado y establecimientos locales.</p>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">17:00 horas</div>
+          <div class="event-detail">
+            <h4>Entrada de Xúchiles y Danzas Tradicionales</h4>
+            <p>Procesión que parte de la Calzada de la Estación por Canal, Portal Allende, Plaza Principal, Correo, Murillo, San Francisco, Juárez, Mesones, Pepellanos e Insurgentes. Participan más de 70 danzas, mojigangas, carros alegóricos y xúchiles monumentales. Al terminar, a las 21:00 horas, se realiza la quema de un castillo y fuegos artificiales.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="highlight reveal">
+    <div>
+      <h3>¿Buscas más eventos y actividades?</h3>
+      <p>Consulta la cartelera general de la ciudad en nuestra sección oficial de eventos.</p>
+    </div>
+    <a href="https://carloschaires.github.io/vivesanmigueL/eventos" class="btn-primary">
+      Ver más eventos
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <footer class="credits reveal">
+    <p>Vive San Miguel · Festividad de San Miguel Arcángel</p>
+    <p style="margin-top:6px; opacity:0.7">Tradición, fervor e identidad</p>
+  </footer>
+</div>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 70);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
