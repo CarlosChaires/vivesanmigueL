@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Eventos y Tradiciones (Fiestas Patronales, Día de Muertos y Cervantino)</title>
+    <title>Festividad de San Miguel Arcángel · Vive San Miguel</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -716,7 +716,7 @@
                     category: 'Fiestas Patronales',
                     date: 'Septiembre y Octubre',
                     desc: 'La esperada Alborada, la tradicional entrada de estrellas, desfiles de mojigangas, música de banda y la pirotecnia monumental iluminando la Parroquia.',
-                    link: '#',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/San%20Miguel%20Arcangel',
                     images: [
                         'https://images.pexels.com/photos/36264227/pexels-photo-36264227.jpeg',
                         'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
@@ -752,7 +752,6 @@
             ]
         };
 
-        // Llave v4 para actualizar caché con las nuevas imágenes seleccionadas
         function getStoredBlog() {
             const data = localStorage.getItem('sma_events_data_v4');
             if (!data) {
@@ -867,7 +866,6 @@
             });
         }
 
-        // Control del carrusel de 3 fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
@@ -885,7 +883,6 @@
             }
         }
 
-        // Auth & CMS
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
                 if (confirm("¿Desea cerrar la sesión de administración?")) {
@@ -1026,7 +1023,6 @@
             renderBlog('todos');
         });
 
-        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
