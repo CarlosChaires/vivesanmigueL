@@ -684,6 +684,14 @@
                     <input type="text" id="editFacebook" placeholder="https://facebook.com/usuario">
                 </div>
                 <div class="input-group">
+                    <label>Dirección / Ubicación</label>
+                    <input type="text" id="editAddress" placeholder="Ej. Plaza San Miguel L. 19, Centro">
+                </div>
+                <div class="input-group">
+                    <label>Correo Electrónico</label>
+                    <input type="text" id="editEmail" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="input-group">
                     <label>Descripción / Especialidad</label>
                     <textarea id="editDesc" rows="3" required></textarea>
                 </div>
@@ -699,41 +707,269 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
+        const defaultGuideImage = "https://images.pexels.com/photos/17518300/pexels-photo-17518300.jpeg";
 
         const defaultGuidesData = {
             guides: [
                 {
                     key: 'guide_1',
-                    name: 'Alejandro Ramírez',
-                    credential: 'SECTUR Cred. #48291',
-                    phone: '+52 415 123 4567',
-                    whatsapp: '524151234567',
-                    instagram: 'https://instagram.com',
-                    facebook: 'https://facebook.com',
-                    desc: 'Especialista en historia colonial, arquitectura barroca y leyendas nocturnas de San Miguel de Allende.',
-                    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80'
+                    name: 'Abelarda Hernández Cervantes',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 170 45 57',
+                    whatsapp: '524151704557',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'abeh09@hotmail.com',
+                    desc: 'Especialista en historia colonial, arquitectura y recorridos culturales por San Miguel de Allende.',
+                    img: defaultGuideImage
                 },
                 {
                     key: 'guide_2',
-                    name: 'Sofía Valdés',
-                    credential: 'Credencial Guía Local #3092',
-                    phone: '+52 415 987 6543',
-                    whatsapp: '524159876543',
-                    instagram: 'https://instagram.com',
-                    facebook: 'https://facebook.com',
-                    desc: 'Apasionada del arte contemporáneo, galerías independientes y rutas gastronómicas por el centro histórico.',
-                    img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'
+                    name: 'Alicia Mora Hernández',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 121 2207',
+                    whatsapp: '524151212207',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'dejameguiarte_3@hotmail.com',
+                    desc: 'Apasionada por mostrar la magia de los callejones históricos y tradiciones locales.',
+                    img: defaultGuideImage
                 },
                 {
                     key: 'guide_3',
-                    name: 'Mateo Cienfuegos',
-                    credential: 'Guía Certificado #7710',
-                    phone: '+52 415 555 8901',
-                    whatsapp: '524155558901',
-                    instagram: 'https://instagram.com',
-                    facebook: 'https://facebook.com',
-                    desc: 'Tours fotográficos en azoteas panorámicas, experiencias en viñedos y recorridos personalizados en atardeceres.',
-                    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80'
+                    name: 'Alfredo Licea Santoyo',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 111 65 75',
+                    whatsapp: '524151116575',
+                    instagram: '',
+                    facebook: '',
+                    address: 'Plaza San Miguel L. 19, Centro',
+                    email: '',
+                    desc: 'Recorridos guiados profesionales con amplio conocimiento del patrimonio cultural y arquitectónico.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_4',
+                    name: 'Carlos Martin Sánchez Sánchez',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 105 96 52',
+                    whatsapp: '524151059652',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'travelsma@yahoo.com.mx',
+                    desc: 'Tours especializados y experiencias memorables por los puntos más emblemáticos de la ciudad.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_5',
+                    name: 'Dalila Alejandra Chávez',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 215 93 03',
+                    whatsapp: '524152159303',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'dalila.chavez.2022@gmail.com',
+                    desc: 'Atención personalizada para descubrir la riqueza histórica, artística y cultural.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_6',
+                    name: 'Dalí Amaro Sandoval',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 113 95 30',
+                    whatsapp: '524151139530',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'aldhali@hotmail.com',
+                    desc: 'Expertise en recorridos turísticos dinámicos y adaptados a todo tipo de visitantes.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_7',
+                    name: 'Erick Alan Sánchez',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 188 03 78',
+                    whatsapp: '524151880378',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'estour7@hotmail.com',
+                    desc: 'Tours memorables con un enfoque cercano, seguro y lleno de anécdotas locales.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_8',
+                    name: 'Emma Guadalupe Salazar Gómez',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 119 44 02',
+                    whatsapp: '524151194402',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'info@fmtours.mx',
+                    desc: 'Recorridos turísticos de alta calidad y profesionalismo en cada destino del centro.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_9',
+                    name: 'Felipe de Jesús Aceves Delgado',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 106 25 86',
+                    whatsapp: '524151062586',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'acevesfelipe80@gmail.com',
+                    desc: 'Conocedor profundo de la historia virreinal y rincones icónicos de San Miguel.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_10',
+                    name: 'Gregorio Hernández García',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 100 49 95',
+                    whatsapp: '524151004995',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'elbrody@gmail.com',
+                    desc: 'Tours amenos, informativos y guiados por expertos apasionados por la ciudad.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_11',
+                    name: 'Horacio Miquel Rendón',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 107 41 98',
+                    whatsapp: '524151074198',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'h_miquel@yahoo.com.mx',
+                    desc: 'Trayectoria y experiencia guiando a viajeros nacionales e internacionales.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_12',
+                    name: 'Hugo Arturo Olalde',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 144 25 16',
+                    whatsapp: '524151442516',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'olaldeehugo@gmail.com',
+                    desc: 'Especialista en recorridos históricos y culturales con un trato cálido y profesional.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_13',
+                    name: 'Israel (Tenshi) Arteaga',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 102 54 90',
+                    whatsapp: '524151025490',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'mitotetourssma@gmail.com',
+                    desc: 'Experiencias de recorrido únicas, divertidas y llenas de historia local (Mitote Tours).',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_14',
+                    name: 'Jeany Ángeles Rebollo',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 113 96 04',
+                    whatsapp: '524151139604',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'oyuky_tours@hotmail.com',
+                    desc: 'Recorridos guiados diseñados para conectar profundamente con la esencia de San Miguel.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_15',
+                    name: 'Jesús Rodriguez Morales',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 114 03 76',
+                    whatsapp: '524151140376',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'romotour@yahoo.com',
+                    desc: 'Romo Tour: Trayectoria turística especializada en la historia y atractivos de la región.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_16',
+                    name: 'Joel Ulises Luna Guerrero',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 151 78 45',
+                    whatsapp: '524151517845',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'joeluig.s.m.a@gmail.com',
+                    desc: 'Tours a pie guiados con rigor histórico y hospitalidad guanajuatense.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_17',
+                    name: 'José Luis Chavez',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 107 72 92',
+                    whatsapp: '524151077292',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'jseluisch@hotmail.com',
+                    desc: 'Guía profesional con gran experiencia en la difusión del patrimonio cultural.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_18',
+                    name: 'Juana Elena Beltrán Sánchez',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 111 66 58',
+                    whatsapp: '524151116658',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'elenabeltran1@hotmail.com',
+                    desc: 'Recorridos entrañables enfocados en la belleza arquitectónica y el arte virreinal.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_19',
+                    name: 'Julián Cartas Centurión',
+                    credential: 'Guía Certificado SECTUR',
+                    phone: '415 101 60 24',
+                    whatsapp: '524151016024',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'j_cartas@yahoo.com',
+                    desc: 'Conocimiento experto y explicaciones detalladas sobre la historia y monumentos.',
+                    img: defaultGuideImage
+                },
+                {
+                    key: 'guide_20',
+                    name: 'Juana María González Reséndiz',
+                    credential: 'Guía Certificada SECTUR',
+                    phone: '415 100 84 36',
+                    whatsapp: '524151008436',
+                    instagram: '',
+                    facebook: '',
+                    address: '',
+                    email: 'gonzalezr9017@gmail.com',
+                    desc: 'Atención cálida y profesional para descubrir cada rincón mágico de San Miguel.',
+                    img: defaultGuideImage
                 }
             ],
             socialItems: [
@@ -758,7 +994,14 @@
                 localStorage.setItem('sma_guides_data', JSON.stringify(defaultGuidesData));
                 return defaultGuidesData;
             }
-            return JSON.parse(data);
+            const parsed = JSON.parse(data);
+            // Asegurar que todas las imágenes predeterminadas o existentes apunten a la nueva URL solicitada
+            parsed.guides.forEach(g => {
+                if (!g.img || g.img.includes('unsplash.com')) {
+                    g.img = defaultGuideImage;
+                }
+            });
+            return parsed;
         }
 
         function saveStoredGuides(data) {
@@ -791,10 +1034,13 @@
 
                 const fbLink = g.facebook ? `<a href="${g.facebook}" target="_blank" rel="noopener noreferrer" class="guide-social-btn facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg> Facebook</a>` : '';
 
+                const addressHtml = g.address ? `<div class="guide-meta-item"><i class="fas fa-map-marker-alt"></i> ${g.address}</div>` : '';
+                const emailHtml = g.email ? `<div class="guide-meta-item"><i class="fas fa-envelope"></i> ${g.email}</div>` : '';
+
                 container.innerHTML += `
                     <div class="guide-card">
                         <div class="guide-header-img">
-                            <img src="${g.img}" alt="${g.name}">
+                            <img src="${g.img || defaultGuideImage}" alt="${g.name}">
                             <div class="credential-badge">${g.credential}</div>
                         </div>
                         <div class="guide-body">
@@ -805,6 +1051,8 @@
                                     <div class="guide-meta-item">
                                         <i class="fas fa-phone-alt"></i> ${g.phone}
                                     </div>
+                                    ${addressHtml}
+                                    ${emailHtml}
                                 </div>
                                 <div class="guide-socials-group">
                                     ${instaLink}
@@ -885,8 +1133,10 @@
             document.getElementById('editPhone').value = g.phone;
             document.getElementById('editInstagram').value = g.instagram || '';
             document.getElementById('editFacebook').value = g.facebook || '';
+            document.getElementById('editAddress').value = g.address || '';
+            document.getElementById('editEmail').value = g.email || '';
             document.getElementById('editDesc').value = g.desc;
-            document.getElementById('editImg').value = g.img;
+            document.getElementById('editImg').value = g.img || defaultGuideImage;
             document.getElementById('editModal').classList.add('active');
         }
 
@@ -905,8 +1155,10 @@
                 data.guides[index].whatsapp = document.getElementById('editPhone').value.replace(/[^0-9]/g, '');
                 data.guides[index].instagram = document.getElementById('editInstagram').value;
                 data.guides[index].facebook = document.getElementById('editFacebook').value;
+                data.guides[index].address = document.getElementById('editAddress').value;
+                data.guides[index].email = document.getElementById('editEmail').value;
                 data.guides[index].desc = document.getElementById('editDesc').value;
-                data.guides[index].img = document.getElementById('editImg').value;
+                data.guides[index].img = document.getElementById('editImg').value || defaultGuideImage;
                 saveStoredGuides(data);
                 closeEditModal();
                 alert('¡Guía actualizado con éxito!');
@@ -921,8 +1173,10 @@
                 telefono: el.phone,
                 instagram: el.instagram || '',
                 facebook: el.facebook || '',
+                direccion: el.address || '',
+                correo: el.email || '',
                 descripcion: el.desc,
-                foto_url: el.img
+                foto_url: el.img || defaultGuideImage
             }));
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
@@ -952,6 +1206,8 @@
                                 }
                                 if (row.instagram !== undefined) data.guides[idx].instagram = row.instagram;
                                 if (row.facebook !== undefined) data.guides[idx].facebook = row.facebook;
+                                if (row.direccion !== undefined) data.guides[idx].address = row.direccion;
+                                if (row.correo !== undefined) data.guides[idx].email = row.correo;
                                 if (row.descripcion) data.guides[idx].desc = row.descripcion;
                                 if (row.foto_url) data.guides[idx].img = row.foto_url;
                             }
