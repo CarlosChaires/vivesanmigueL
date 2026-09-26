@@ -781,21 +781,20 @@
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
 
-        // URL de Google Apps Script configurada para sincronizar automáticamente con tu Google Sheets
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
 
         const defaultRestaurantsData = {
             restaurants: [
                 {
                     key: 'rest_1',
-                    name: 'La Posadita',
-                    type: 'Mexicana',
-                    desc: 'Famosa terraza con una vista privilegiada a la Parroquia, ofreciendo auténticos platillos mexicanos con toque de autor.',
-                    price: '$$$ ($500 - $900 MXN)',
-                    phone: '+52 415 152 1467',
-                    address: 'Cuna de Allende 13, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=La+Posadita+San+Miguel+de+Allende',
-                    web: '#',
+                    name: '1826 Cocina de Autor',
+                    type: 'Internacional',
+                    desc: 'Exquisita cocina de autor y alta gastronomía en el prestigioso Hotel Rosewood San Miguel de Allende.',
+                    price: '$$$$ ($900 - $1,800 MXN)',
+                    phone: '+52 415 152 9700',
+                    address: 'Nemesio Diez 11, Zona Centro (Hotel Rosewood)',
+                    maps: 'https://maps.google.com/?q=Rosewood+San+Miguel+de+Allende',
+                    web: 'https://www.rosewoodhotels.com',
                     opentable: 'https://www.opentable.com',
                     images: [
                         'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
@@ -805,14 +804,14 @@
                 },
                 {
                     key: 'rest_2',
-                    name: 'Bovine Prime Diner',
+                    name: 'Moxi',
                     type: 'Internacional',
-                    desc: 'Un steakhouse contemporáneo de diseño sofisticado que fusiona cortes de carne de alta calidad y un ambiente inigualable.',
+                    desc: 'Cocina de autor icónica que reinventa sabores tradicionales mexicanos e internacionales en un ambiente sofisticado.',
                     price: '$$$$ ($800 - $1,500 MXN)',
-                    phone: '+52 415 154 4444',
-                    address: 'Calle de Leona Vicario 30, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=Bovine+San+Miguel+de+Allende',
-                    web: '#',
+                    phone: '+52 415 152 1015',
+                    address: 'Aldama 53, Centro',
+                    maps: 'https://maps.google.com/?q=Moxi+San+Miguel+de+Allende',
+                    web: 'https://moxi.com.mx',
                     opentable: 'https://www.opentable.com',
                     images: [
                         'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
@@ -822,13 +821,115 @@
                 },
                 {
                     key: 'rest_3',
-                    name: 'Trattoria Terrazza',
+                    name: 'Bovine',
+                    type: 'Internacional',
+                    desc: 'Steakhouse contemporáneo que combina carnes de primera calidad y diseño de vanguardia.',
+                    price: '$$$$ ($800 - $1,500 MXN)',
+                    phone: '+52 415 121 6787',
+                    address: 'Canal 16, Zona Centro',
+                    maps: 'https://maps.google.com/?q=Bovine+San+Miguel+de+Allende',
+                    web: 'https://bovinerestaurant.com.mx',
+                    opentable: 'https://www.opentable.com',
+                    images: [
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_4',
+                    name: 'Cumpanio',
+                    type: 'Cafetería / Brunch',
+                    desc: 'Panadería artesanal europea, bistronomía y café de especialidad en el corazón de San Miguel.',
+                    price: '$$ ($300 - $650 MXN)',
+                    phone: '+52 415 152 2327',
+                    address: 'Correo 29, esquina Recreo, Zona Centro',
+                    maps: 'https://maps.google.com/?q=Cumpanio+San+Miguel+de+Allende',
+                    web: 'https://cumpanio.com',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_5',
+                    name: 'The Restaurant',
+                    type: 'Internacional',
+                    desc: 'Gastronomía internacional innovadora en un hermoso patio interior de una casona histórica.',
+                    price: '$$$ ($500 - $1,100 MXN)',
+                    phone: '+52 415 152 4623',
+                    address: 'Sol 30, Zona Centro',
+                    maps: 'https://maps.google.com/?q=The+Restaurant+San+Miguel+de+Allende',
+                    web: 'https://therestaurantsanmiguel.com',
+                    opentable: 'https://www.opentable.com',
+                    images: [
+                        'https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_6',
+                    name: 'San Lucas',
+                    type: 'Mexicana',
+                    desc: 'Restaurante gourmet de viñedo que ofrece experiencias culinarias con ingredientes locales y vinos de la casa.',
+                    price: '$$$ ($600 - $1,200 MXN)',
+                    phone: '+52 475 229 0210',
+                    address: 'Carretera San Miguel - Dolores Hidalgo Km. 26',
+                    maps: 'https://maps.google.com/?q=Vinedos+San+Lucas+San+Miguel+de+Allende',
+                    web: 'https://vinedosasanfrancisco.com',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_7',
+                    name: 'San Francisco (Viñedos/Hacienda)',
+                    type: 'Mexicana',
+                    desc: 'Cocina de campo y viñedo con vistas panorámicas excepcionales hacia los campos de lavanda y vides.',
+                    price: '$$$ ($600 - $1,200 MXN)',
+                    phone: '+52 475 229 0262',
+                    address: 'Buenavista Km. 26 (Camino a Gto.)',
+                    maps: 'https://maps.google.com/?q=Vinedos+San+Francisco+San+Miguel+de+Allende',
+                    web: 'https://vinedosasanfrancisco.com',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_8',
+                    name: 'La Garufa',
+                    type: 'Internacional',
+                    desc: 'Tradicional restaurante de cortes finos estilo argentino y parrillada con excelente ambiente.',
+                    price: '$$$ ($500 - $1,000 MXN)',
+                    phone: '+52 415 154 9545',
+                    address: 'Canal 28, Zona Centro',
+                    maps: 'https://maps.google.com/?q=La+Garufa+San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_9',
+                    name: 'Mama Mia',
                     type: 'Italiana',
-                    desc: 'Pastas artesanales hechas en casa y pizzas a la leña en un ambiente romántico con vista a los tejados históricos.',
-                    price: '$$ ($350 - $700 MXN)',
-                    phone: '+52 415 122 3344',
-                    address: 'Mesones 45, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    desc: 'Restaurante bar icónico con pizzas a la leña, pasta fresca y música en vivo todas las noches.',
+                    price: '$$ ($300 - $700 MXN)',
+                    phone: '+52 415 152 2061',
+                    address: 'Mesones 30, Zona Centro',
+                    maps: 'https://maps.google.com/?q=Mama+Mia+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
                     images: [
@@ -838,20 +939,54 @@
                     ]
                 },
                 {
-                    key: 'rest_4',
-                    name: 'Aroma Café & Brunch',
-                    type: 'Cafetería / Brunch',
-                    desc: 'Café de especialidad, panadería recién horneada y desayunos reconfortantes en un patio colonial lleno de tranquilidad.',
-                    price: '$ ($150 - $350 MXN)',
-                    phone: '+52 415 111 2233',
-                    address: 'Dr. Ignacio Hernandez Macias 72, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
+                    key: 'rest_10',
+                    name: 'Rama Mia Campestre',
+                    type: 'Internacional',
+                    desc: 'Experiencia culinaria campestre e internacional rodeada de naturaleza y tranquilidad.',
+                    price: '$$$ ($450 - $900 MXN)',
+                    phone: '+52 415 121 2868',
+                    address: 'Carretera a Dolores Hidalgo Km. 2.5',
+                    maps: 'https://maps.google.com/?q=Rama+Mia+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
                     images: [
-                        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80'
+                        'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_11',
+                    name: 'La Gruta Restaurante',
+                    type: 'Internacional',
+                    desc: 'Cocina internacional junto a las famosas aguas termales y grutas de San Miguel.',
+                    price: '$$ ($350 - $700 MXN)',
+                    phone: '+52 415 152 1826',
+                    address: 'San Miguel - Dolores Km. 10',
+                    maps: 'https://maps.google.com/?q=La+Gruta+San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'
+                    ]
+                },
+                {
+                    key: 'rest_12',
+                    name: 'Los Milagros',
+                    type: 'Mexicana',
+                    desc: 'Auténtica comida típica mexicana con ambiente festivo y mariachi ocasional.',
+                    price: '$$ ($250 - $600 MXN)',
+                    phone: '+52 415 152 0031',
+                    address: 'Molino 32, Zona Centro',
+                    maps: 'https://maps.google.com/?q=Los+Milagros+San+Miguel+de+Allende',
+                    web: '#',
+                    opentable: '',
+                    images: [
+                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
                     ]
                 }
             ]
@@ -879,7 +1014,6 @@
             const statusEl = document.getElementById('syncStatus');
             statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...';
             try {
-                // Envío en segundo plano mediante fetch a Google Apps Script
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
