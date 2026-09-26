@@ -21,6 +21,9 @@
             --accent-terracotta-dark: #82381C;
             --opentable-red: #DA3743;
             --opentable-red-dark: #B82A34;
+            --whatsapp-green: #25D366;
+            --whatsapp-green-dark: #1EBE5D;
+            --instagram-pink: #E1306C;
             --google-sheets-green: #0F9D58;
             --border-color: rgba(166, 75, 42, 0.12);
             --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
@@ -335,22 +338,6 @@
         .carousel-btn.prev { left: 8px; }
         .carousel-btn.next { right: 8px; }
 
-        .price-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(6px);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent-terracotta);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            z-index: 5;
-        }
-
         .type-badge {
             position: absolute;
             top: 12px;
@@ -477,6 +464,28 @@
             transform: translateY(-1px);
         }
 
+        .btn-action.whatsapp {
+            background-color: var(--whatsapp-green);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-action.whatsapp:hover {
+            background-color: var(--whatsapp-green-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-action.instagram {
+            background-color: var(--instagram-pink);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(225, 48, 108, 0.2);
+        }
+
+        .btn-action.instagram:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
         /* --- Footer --- */
         footer {
             border-top: 1px solid var(--border-color);
@@ -536,6 +545,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transform: translateY(15px);
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -680,7 +691,6 @@
             <button class="filter-btn" onclick="filterRestaurants('Mexicana')">Mexicana</button>
             <button class="filter-btn" onclick="filterRestaurants('Italiana')">Italiana</button>
             <button class="filter-btn" onclick="filterRestaurants('Internacional')">Internacional</button>
-            <button class="filter-btn" onclick="filterRestaurants('Cafetería / Brunch')">Cafetería / Brunch</button>
             <button class="filter-btn" onclick="filterRestaurants('Pizza')">Pizza</button>
             <button class="filter-btn" onclick="filterRestaurants('Terraza Bar')">Terraza Bar</button>
         </div>
@@ -739,16 +749,12 @@
                     <textarea id="editDesc" rows="3" required placeholder="Breve descripción del lugar..."></textarea>
                 </div>
                 <div class="input-group">
-                    <label>Rango de Precio</label>
-                    <input type="text" id="editPrice" required placeholder="Ej. $$ ($300 - $600 MXN)">
-                </div>
-                <div class="input-group">
                     <label>Teléfono</label>
                     <input type="text" id="editPhone" required>
                 </div>
                 <div class="input-group">
                     <label>Dirección Escrita</label>
-                    <input type="text" id="editAddress" required placeholder="Ej. Cuna de Allende 15, Zona Centro">
+                    <input type="text" id="editAddress" required placeholder="Ej. Nemesio Díez #11, Centro">
                 </div>
                 <div class="input-group">
                     <label>Enlace Google Maps (URL)</label>
@@ -756,22 +762,30 @@
                 </div>
                 <div class="input-group">
                     <label>Sitio Web (URL)</label>
-                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                    <input type="text" id="editWeb" required placeholder="Poner # si no tiene">
                 </div>
                 <div class="input-group">
-                    <label>Enlace OpenTable / Reservas (Opcional - URL)</label>
+                    <label>Enlace OpenTable / Reservas (URL)</label>
                     <input type="text" id="editOpenTable" placeholder="Dejar en blanco si no tiene">
                 </div>
                 <div class="input-group">
-                    <label>Foto 1 (URL del Carrete)</label>
+                    <label>WhatsApp (URL de enlace)</label>
+                    <input type="text" id="editWhatsapp" placeholder="Ej. https://api.whatsapp.com/...">
+                </div>
+                <div class="input-group">
+                    <label>Instagram (URL)</label>
+                    <input type="text" id="editInstagram" placeholder="Ej. https://www.instagram.com/...">
+                </div>
+                <div class="input-group">
+                    <label>Foto 1 (URL)</label>
                     <input type="text" id="editImg1" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL del Carrete)</label>
+                    <label>Foto 2 (URL)</label>
                     <input type="text" id="editImg2" required>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL del Carrete)</label>
+                    <label>Foto 3 (URL)</label>
                     <input type="text" id="editImg3" required>
                 </div>
                 <button type="submit" class="btn-modal-save">Guardar y Sincronizar Google Sheets</button>
@@ -792,12 +806,13 @@
                     name: '1826 - Cocina de Autor',
                     type: 'Internacional',
                     desc: 'Exquisita alta cocina de autor en el prestigioso Hotel Rosewood San Miguel de Allende.',
-                    price: '$$$$ ($900 - $1,800 MXN)',
-                    phone: '+52 415 152 9700',
+                    phone: '415 152 97 00',
                     address: 'Nemesio Díez #11, Centro',
                     maps: 'https://maps.google.com/?q=Nemesio+Diez+11+San+Miguel+de+Allende',
                     web: 'https://rosewoodsanmiguel.com',
                     opentable: 'https://www.opentable.com.mx/r/restaurante-1826-rosewood-san-miguel-de-allende?ref=16420',
+                    whatsapp: '',
+                    instagram: '',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQW319oEp8Zi0bLz56cyeKr96Ds7j-7PKyf_LBa1sXFc3o7BKBgz3d6WaLN_pmeynhWLu4S4hMGQ9xMh359bxD4iKrkO-h-UPvUmHHL9Il37d6uDBfRKFvVVuRqDJLfw2sxFw=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWljFynaSaII5ehcs3dN1J8apqywcBxpNhjkSBnvubEl_WahgBfjWceGo6DDU749l0H3-pHw0aRZzWzyDibH3zZ_K7U4rq7FvO4a3DPdPQHvXZu4b_odCAdfwBG3zxDW5sTSnW4lYKQjaBpA=s1360-w1360-h1020-rw',
@@ -809,12 +824,13 @@
                     name: 'Aperi',
                     type: 'Internacional',
                     desc: 'Cocina de autor excepcional galardonada, ubicada en el corazón de la ciudad.',
-                    price: '$$$$ ($800 - $1,600 MXN)',
-                    phone: '+52 415 152 0941',
+                    phone: '415 152 09 41',
                     address: 'Quebrada #101, Centro',
                     maps: 'https://maps.google.com/?q=Quebrada+101+San+Miguel+de+Allende',
                     web: 'https://www.aperi.mx',
                     opentable: 'https://www.opentable.com.mx/booking/restref/availability?restRef=1049872',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/aperimx/?hl=es',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwKhQiqGdJX50hSQZZoOL8vYus97yynYDkJxSafgPYG66T1MDWLTgM7uZr4GtH5G6Vzp45HxASPUPO-w5Dqkoe-QY8Tj4-byTKJ_N9BRsW0KtJsGwuYojCqaJVoZUz0fyqjNKuYA=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkyYeHT5NjehaRtkjqSEoLJpq-4fv9sPhbmDccU7391MslsW3L-MmruOvscsF50Ur6diIEJP1YAw1i1Bxg78Ebxo5u3nmk-eGnLThbWNzIhzmGVjJxW8KwrBM6BFtmDORMJOLI8uA=s1360-w1360-h1020-rw',
@@ -826,12 +842,13 @@
                     name: 'Bennu',
                     type: 'Pizza',
                     desc: 'Pizzas artesanales y ambiente acogedor en una de las calles emblemáticas del centro.',
-                    price: '$$ ($250 - $550 MXN)',
-                    phone: '+52 415 688 7018',
+                    phone: '415 688 70 18',
                     address: 'Jesús #20, Centro',
                     maps: 'https://maps.google.com/?q=Jesus+20+San+Miguel+de+Allende',
                     web: 'https://bennu.mx',
                     opentable: 'https://bennu.mx/hola',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/bennu.mx/?hl=es',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz_utgB8ks9AfWBu0ZhYs7JEejSljUJ2mjpC95wz5mWcW_17QsEf--DOsOsQ1SsT7_pTD1j9EL-iQwe1uVPVWIPL9XLQ1l9XUFu1t4NoSam95mHa67-tpQFdOVABJe87aFOkM3MU8PrqMD=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz_utgB8ks9AfWBu0ZhYs7JEejSljUJ2mjpC95wz5mWcW_17QsEf--DOsOsQ1SsT7_pTD1j9EL-iQwe1uVPVWIPL9XLQ1l9XUFu1t4NoSam95mHa67-tpQFdOVABJe87aFOkM3MU8PrqMD=s1360-w1360-h1020-rw',
@@ -843,12 +860,13 @@
                     name: 'Botanero 21 - Terraza Bar',
                     type: 'Terraza Bar',
                     desc: 'Excelente ambiente de terraza bar con mixología y antojitos mexicanos en el centro histórico.',
-                    price: '$$ ($300 - $700 MXN)',
-                    phone: '+52 415 188 2350',
+                    phone: '415 188 23 50',
                     address: 'Hernández Macías #71, Centro',
                     maps: 'https://maps.google.com/?q=Hernandez+Macias+71+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/botaneroveintiuno_sma/?hl=es',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpfFnD8TVWP1TCtDJOKwlKcONYz6lnRrzNV9WkGHeG0kDt4KVejoG_PqXp7XKFoaPDaoilysxnpu_Fc8iL0-b2gSTq9RMqobh6DRbeA00os-zMUZn5DX2lcCA0fdVfnmzdd7ie=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkEUSZjH8kOlZhwZIaSlBUoQBDEuhfy8dQ5UQ5J8-VL6KBRPDC4lG9L5J8AyudOTyJbad3_mMkzCEEVuI1Le1pacYsCddAZrlzrGu0Xg33k8VMu8dftwrzCCN8mdsnCfbhnzPlT=s1360-w1360-h1020-rw',
@@ -860,12 +878,13 @@
                     name: 'Bovine',
                     type: 'Internacional',
                     desc: 'Brasserie contemporánea y cortes de carne prémium con diseño interior sofisticado.',
-                    price: '$$$$ ($700 - $1,500 MXN)',
-                    phone: '+52 415 121 6787',
+                    phone: '415 121 67 87',
                     address: 'Canal #6, Centro',
                     maps: 'https://maps.google.com/?q=Canal+6+San+Miguel+de+Allende',
                     web: 'https://www.bovinerestaurant.com.mx',
                     opentable: 'https://www.opentable.com.mx/r/bovine-reservations-san-miguel-de-allende/?restref=1046887',
+                    whatsapp: 'https://api.whatsapp.com/message/7GKWHTN3PJCGA1?autoload=1&app_absent=0',
+                    instagram: 'https://www.instagram.com/bovinebrasserie/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_f6ea9_6QXOOyizub6dDwli4WWz7-P-MkQWuENEtnw4NiByIHXoaXhmlylQ14km_PNCNUl1tNBVsK-jL_VzkSACiEkeiJpCJmdcqYxnrC9zwWzO0fB3xr84Zt_-MUcla-4SFG=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnI0zFA1Ht2Hg8MrwF_EzRMhrchOZMELDt0QgqR3dv4mG5Lilot5VEYhQEzAS-u2R_oGXPqMjK8kWYkKMfzJd_cPPpDRFYytxRx64Q0TW5dwJAALz60x1k526n0AVIVU8Ovhyc=s1360-w1360-h1020-rw',
@@ -877,12 +896,13 @@
                     name: 'Buffet El Taco Real',
                     type: 'Mexicana',
                     desc: 'Auténtico bufete mexicano tradicional con una gran variedad de guisados típicos.',
-                    price: '$ ($150 - $350 MXN)',
-                    phone: '+52 415 152 6677',
+                    phone: '415 152 66 77',
                     address: 'Relox #15, Centro',
                     maps: 'https://maps.google.com/?q=Relox+15+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/taco_real_oficial/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn37RMCKJjU-Sr6299tQ4-kvlerTvyUlqFhwBARfGUaUOFQv6JjlJ5SKrWGVkY7woHeZdNJVdKERuqIFCGl9PxcuJN8GBRQZAE0gjUWILf0r2RrBFiDCNzDSpOq1yoe0pL6NjkUIA=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkmGETDBy1c2pQCniaK0vnRKdj1l_Ut157S40l7p2kM7_fAVisEnZDIQP4SO7jZ2nw0slHGQLDffUd3GCxIi4goRogolM1i_nmWRmCFcEu3ax16lHwUMDTHtLi02Q2iHLfd16QMWg=s1360-w1360-h1020-rw',
@@ -894,12 +914,13 @@
                     name: 'Fátima 7 y Café Casa Blanca',
                     type: 'Internacional',
                     desc: 'Cocina mediterránea con vistas panorámicas desde la terraza del Hotel Casa Blanca 7.',
-                    price: '$$$ ($500 - $1,100 MXN)',
-                    phone: '+52 415 688 1438',
+                    phone: '415 688 14 38',
                     address: 'Juárez #7, Centro',
                     maps: 'https://maps.google.com/?q=Juarez+7+San+Miguel+de+Allende',
                     web: 'https://www.casablanca7.com',
                     opentable: 'https://www.opentable.com.mx/booking/restref/availability?restRef=1233379',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/hotelcasablanca7/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmUvZVwWBI9spYTLp-3dGuEM4Jlso5WqTBI8NaDahOKVnvkY_5Zxjjmi8kWizto99uYI9HGtgPvTg-gfPx2US9RfSLfBGNFPSbnUqFhtoQx8EbTMQB_mly8Fufb40T9HnkoYl-HDwGpPISl=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnjv4vsvopBUVbdqs0FZdrdBy26FE2uhjbJ6SlbUb_ft4RFmL-M8t90fJBNAex4Z56mKIbcSSGs5eqdfMunGNzqm5ez04PuXJdujo3urKOvjlElDQX2iocSQE3eyhXFa46LiWUgOpcGu5lw=s1360-w1360-h1020-rw',
@@ -911,12 +932,13 @@
                     name: 'Fonda San Miguel',
                     type: 'Mexicana',
                     desc: 'Antojitos y platillos de la cocina tradicional mexicana en una casona colonial.',
-                    price: '$$ ($250 - $550 MXN)',
-                    phone: '+52 415 154 8398',
+                    phone: '415 154 83 98',
                     address: 'Hidalgo #3, Centro',
                     maps: 'https://maps.google.com/?q=Hidalgo+3+San+Miguel+de+Allende',
                     web: 'https://restaurantefondasanmiguel.com',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/fondasma/?hl=es-la',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnhebeHPUlPSuJoG-N_KacOrFUVOIgm0P_F0wnZBNd-EGmfYzSKlbt758hhtQ66ZBLPUxnkNoYrmGqX_TPrLOPX5Qu-4FxUnymgWs6He9lhR8IG2w31YKNI9i1klfwx3zdZwEk=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl7ATrDjomjHmHKsFRJEkTOzAH0wax1cppFVKMNZNGLUr9w5_2uqbwplI9yVdtuevHeeWlIp6HPyjtVgNg1GhwJr_wJNt9sjLF7n8o7vEcXtt_55YS7QIDS913m1QpqUjF9s_ULiQ=s1360-w1360-h1020-rw',
@@ -928,12 +950,13 @@
                     name: "Hank's",
                     type: 'Internacional',
                     desc: 'Especialidades de cocina cajún, criolla y excelentes cortes al estilo americano.',
-                    price: '$$$ ($450 - $950 MXN)',
-                    phone: '+52 415 152 2645',
+                    phone: '415 152 26 45',
                     address: 'Hidalgo #12, Centro',
                     maps: 'https://maps.google.com/?q=Hidalgo+12+San+Miguel+de+Allende',
                     web: 'https://www.hanksmexico.com',
                     opentable: 'https://www.hanksmexico.com/',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/hankssanmiguel?igshid=MzRlODBiNWFlZA%3D%3D',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgZP7PeHX1rPfqqLuseJAGnBy300YP75yQsjx_IULz44q_LxRzkrIT1YXzpKJPjzVCoLSIm9hxmP4bIAdsMSJSomiVjJ7j1iH2xq6PjxmWUfhmMBjo3_MfLCUNlIEnguH6OoE=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWne00poOItlBouhk0e6s4oXI_QqdPHcGu33Sg5-2yYKImHqQKP-kiQnpecGkZEVKG3OKBvhj4zixGAMnHrIfb5hHAF0SvVSdif1uJxLYjw1IzGbhhkC5z-FQcpNBG4ABj_GvxaZvg=s1360-w1360-h1020-rw',
@@ -945,12 +968,13 @@
                     name: 'Los Milagritos Terraza',
                     type: 'Mexicana',
                     desc: 'Cocina mexicana contemporánea con una terraza encantadora en la Salida Real a Querétaro.',
-                    price: '$$ ($300 - $700 MXN)',
-                    phone: '+52 415 150 1035',
+                    phone: '415 150 10 35',
                     address: 'Salida Real a Qro. #91, Centro',
                     maps: 'https://maps.google.com/?q=Salida+Real+a+Qro+91+San+Miguel+de+Allende',
                     web: 'https://www.restaurantlosmilagros.com.mx',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/losmilagrosrest/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmT1eMQqrjAeviM9ZcrTFpC7PQmkdjKMLgUKKaxNe6MAAktXasRXhNAl9WdXBf4W2JbO7dnpFKwyyOYDE3n2LlxrKd6TGxM1QbEMnXGxK1SD5By7VQrXoeinBiM8SBZnx7Uw_FPnwOuYdvF=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnIRrMaWY_GtqkoRp9Ew9RnnYYLEcc5xjuTHimtsxzd6FhCO_7qDokGay9eXAooc9-7SmNVveXHW9nCnwfZOQ_aHkP9E0XQi0u75o0_S50HpV7APu6nXwckZHrZPrlSP__gwDMs4g=s1360-w1360-h1020-rw',
@@ -962,12 +986,13 @@
                     name: 'Luna - Rooftop Bar',
                     type: 'Terraza Bar',
                     desc: 'El bar en la azotea más icónico con vistas impresionantes a la Parroquia y mixología de autor.',
-                    price: '$$$$ ($500 - $1,200 MXN)',
-                    phone: '+52 415 152 9700',
+                    phone: '415 152 97 00',
                     address: 'Nemesio Díez #11, Centro (Rosewood)',
                     maps: 'https://maps.google.com/?q=Nemesio+Diez+11+San+Miguel+de+Allende',
                     web: 'https://www.rosewoodsanmiguel.com',
                     opentable: 'https://www.sevenrooms.com/explore/rwsmalunarooftop/reservations/create/search',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/p/DQPj_gsD48l/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfbq3IyvxRXFJ7CUMYk5zYbs11JDh6FGeRhUKy79Z3JytBWXITiOCjZ2CYoGhD-UoT2690eVHAoD8O4HnEMN2Num2jOhsw4GPe-YcdYzhwyLwUPt3rbKPeVSMivkQjbOdM65BlC879suXw=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl6rkqMbuYk0JoRkyJ-vCznFrv1Ub60rB8jX8alsw7VtNVLX3bbIIzB9jgsTSqhzNVY8JeUl6hE3S2BIJ_Qs1VzNEFtQDCxWHLvABQHWksnY8nfpI3nE0Nwcu2K_Fddu8FcSdvbZZytGvWR=s1360-w1360-h1020-rw',
@@ -979,12 +1004,13 @@
                     name: 'Lukrezia',
                     type: 'Internacional',
                     desc: 'Gastropub y cocina con excelente ambiente y coctelería en el centro.',
-                    price: '$$ ($300 - $700 MXN)',
-                    phone: '+52 415 107 2834',
+                    phone: '415 107 28 34',
                     address: 'Hernández Macías #59, Centro',
                     maps: 'https://maps.google.com/?q=Hernandez+Macias+59+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/lukrezia.sma/?hl=es',
                     images: [
                         'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
                         'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
@@ -996,12 +1022,13 @@
                     name: 'Mamá Mía Campestre',
                     type: 'Internacional',
                     desc: 'Experiencia gastronómica internacional en un entorno campestre rodeado de naturaleza.',
-                    price: '$$$ ($400 - $900 MXN)',
-                    phone: '+52 415 688 2331',
+                    phone: '415 688 23 31',
                     address: 'Carretera al Santuario de Atotonilco Km 2.18',
                     maps: 'https://maps.google.com/?q=Carretera+al+Santuario+de+Atotonilco+Km+2.18',
                     web: 'https://mamamia.com.mx',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: '',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm4uL9xNrz_I8fyLTacTIL69IZkCoXIvTTdxALW94Ibx0YpGmFdpJ7e3Mj5NWF9CCCZ_CmYZHjIElAP4wLwS2V4OBIFNsJcQ-bidfqSRn9F6U3aAiM68TvJ0vrNaSjww8YMx1CcEw=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtjTge9SyA-OTOfCQB0nludsQWdJFTY0M3nsLHTvFpr9pLOuXNRMCGCaVjMkh19SyHDTPhNWuiTBfBpJwmag14GIAkr4qJ2Fd4oMbIMPE-BKIfBfc5j1jRC61Zaag28v3Crdn71HYcper4=s1360-w1360-h1020-rw',
@@ -1013,12 +1040,13 @@
                     name: 'Mamá Mía Centro',
                     type: 'Italiana',
                     desc: 'Restaurante icónico de pizzas, pastas y música en vivo todas las noches en el centro.',
-                    price: '$$ ($300 - $700 MXN)',
-                    phone: '+52 415 152 2063',
+                    phone: '415 152 20 63',
                     address: 'Hernández Macías #91, Centro',
                     maps: 'https://maps.google.com/?q=Hernandez+Macias+91+San+Miguel+de+Allende',
                     web: 'https://www.mamamia.com.mx',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/mamamiasanmiguel/?hl=es',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhNCuDv7t2r8XS0PHbrV-hv-u2lNYES1XrRdAcMeVVW1ObYTxSaFNQSwEr2flhc8foJm_3CiLevSeN8s8zrvYI9SpfjsFXvRzLSnpmmPZuNbKdIbPY2MbHMoC18WOV6A1pG3mObA=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnk7IVrFmy6k7wgMqryXR-NTfDQgC41_44k902RLWO0lvDnBUv02rg_xhGHW5rHOm9fivhtp-up14bNzwv3YftrWduCopU3nQbFxh5MuyBOKVA1eJan7_gfmxTUg_ySNBSXhgpzCTxruF2C=s1360-w1360-h1020-rw',
@@ -1030,12 +1058,13 @@
                     name: 'Moxi',
                     type: 'Mexicana',
                     desc: 'Alta cocina mexicana contemporánea en el prestigioso Hotel Matilda.',
-                    price: '$$$$ ($800 - $1,600 MXN)',
-                    phone: '+52 415 152 1015',
+                    phone: '415 152 10 15',
                     address: 'Aldama #53, Centro',
                     maps: 'https://maps.google.com/?q=Aldama+53+San+Miguel+de+Allende',
                     web: 'https://www.hotelmatilda.com',
                     opentable: 'https://hotelmatilda.com/moxi-restaurant-san-miguel-de-allende/',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151142699&text&type=phone_number&app_absent=0',
+                    instagram: 'https://www.instagram.com/hotelmatilda',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlqkfQ2rSZUI9B_UhlVAky77cp4gNekriyt7ASCEKjq8spSfUyszhk6muXi_ZUuYQOWfmFUNk0iEmdQJt3kw46_1ibsBRVuBr0csDY0R2_Hah_fNbTz5whyTCJDOLgtqQvpfH4f=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmKvVpyKpGglHYxlNF4XNsQObXKA6uZs0UA4yXI2IFp7dhZpHTX1F1Ugp5ek-EhWosXezVIT1uWIZ0UYFqr3wda3HyPq1dWodTMNuxverdCLV2YY7BrdOAkRfaoaQMaV0qoioeF2g=s1360-w1360-h1020-rw',
@@ -1047,12 +1076,13 @@
                     name: 'Nirvana - Restaurante Fusión',
                     type: 'Internacional',
                     desc: 'Cocina de fusión excepcional en un entorno natural único junto al río en Atotonilco.',
-                    price: '$$$ ($500 - $1,100 MXN)',
-                    phone: '+52 415 185 2194',
+                    phone: '415 185 21 94',
                     address: 'Camino Antiguo del FFCC #11, Atotonilco',
                     maps: 'https://maps.google.com/?q=Camino+Antiguo+del+FFCC+11+Atotonilco',
                     web: 'https://www.hotelnirvana.mx',
                     opentable: '',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151056641&text=Necesito%20m%C3%A1s%20informaci%C3%B3n',
+                    instagram: 'https://www.instagram.com/hotelnirvana',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnXXGC0zxVvPF6KCtSYFRalq1VdfSreUVNeNc9Utv9O0Dqt41eg_mIY9oP3Yp1qOzzBbb_E7f83sIt48dAfBh1OnqrGKkVv9cGTzMOiILw3w6pn3EoOyYE4EVv5T-SjtF7QxkS2=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLg-nOiXUsqdBRdALh3SvQQmmap7-CHoi0mU59YNAVHJcvJtrkgt3YnfRz3vXZgkvnILbMygIW9zK-Vwtho1JAYmf2ks7I-488Fg1Y7dV3laz4FektGKTzhJUXUXdDmxDdzF4=s1360-w1360-h1020-rw',
@@ -1064,12 +1094,13 @@
                     name: 'San Francisco Steak House',
                     type: 'Internacional',
                     desc: 'Cortes finos y excelente gastronomía internacional a unos pasos del Jardín Principal.',
-                    price: '$$$ ($500 - $1,200 MXN)',
-                    phone: '+52 415 688 3001',
+                    phone: '415 688 30 01',
                     address: 'San Francisco #11, Centro',
                     maps: 'https://maps.google.com/?q=San+Francisco+11+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/sanfranciscosteakhouse11/?hl=es-la',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBcbDXkFZsbbp8jnsxzmRoR5N5QW8pgbOOTzy7AC-b4VeMPCInktrQ2x_JvKafZ00wCncoQaIM4gGlDc-IgTvswdAP12GeVJn6urY2fjxnuK_aaZc9uW5wpRzkepVOkjzmqaNC=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnzvbpNrk5ET9Qa2r9w3PO7iIhJx__hE9K9PnV2jy_TOzVE31A86K6thil8fEE15tI9WMTY2PQ4953ff4pxLgG_apH27IaEIKlZkbw3SuHpqWdp247l4Uw89q2Y4UwPIa6DSJfE=s1360-w1360-h1020-rw',
@@ -1081,12 +1112,13 @@
                     name: 'San Telmo',
                     type: 'Internacional',
                     desc: 'Gastropub contemporáneo con un toque argentino y excelente selección de vinos y cervezas artesanales.',
-                    price: '$$ ($350 - $800 MXN)',
-                    phone: '+52 415 114 2777',
+                    phone: '415 114 27 77',
                     address: 'Umarán #17, Centro',
                     maps: 'https://maps.google.com/?q=Umaran+17+San+Miguel+de+Allende',
                     web: '#',
                     opentable: '',
+                    whatsapp: '',
+                    instagram: 'https://www.instagram.com/santelmogastropub/',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWllkQX9Ww8AVVa-xvSHo4PeeWwlN2NVd1nulu7MHM-NmogAVszF59xOkNh2X8c3fFRQNNJe5_HnEkfIyzbP79ySSDVxsbVirdEpr9BEUYEy8v4ge-2_Xr4ehfdZ20B6kXCQKzfhVw=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkjABEWSwBqS5cFV2DLu7Cbb2hYcSundBwuLDOHIF9RrkwhTOUBj5XUP0kT8cNlySKBy0JR-FuWLggMpaUjJK0XlGAuTyaUp88WTvHuCbIthpf6JveLC-fpKCekAbiWO2TxKJf-=s1360-w1360-h1020-rw',
@@ -1213,11 +1245,22 @@
                     </a>
                 ` : '';
 
+                const whatsappButtonHtml = (r.whatsapp && r.whatsapp.trim() !== '') ? `
+                    <a href="${r.whatsapp}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                ` : '';
+
+                const instagramButtonHtml = (r.instagram && r.instagram.trim() !== '') ? `
+                    <a href="${r.instagram}" target="_blank" rel="noopener noreferrer" class="btn-action instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                ` : '';
+
                 container.innerHTML += `
                     <div class="restaurant-card" id="card-${r.key}">
                         <div class="carousel-container">
                             <span class="type-badge">${r.type}</span>
-                            <span class="price-badge">${r.price}</span>
                             <div class="carousel-slides" id="slides-${r.key}">
                                 ${slidesHtml}
                             </div>
@@ -1248,6 +1291,10 @@
                                         ${webButtonHtml}
                                     </div>
                                     ${opentableButtonHtml}
+                                    <div class="action-row">
+                                        ${whatsappButtonHtml}
+                                        ${instagramButtonHtml}
+                                    </div>
                                 </div>
                                 ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditRestaurantModal('${r.key}')">✏️ Editar Restaurante</button>` : ''}
                             </div>
@@ -1323,12 +1370,13 @@
             document.getElementById('editName').value = r.name;
             document.getElementById('editType').value = r.type;
             document.getElementById('editDesc').value = r.desc;
-            document.getElementById('editPrice').value = r.price;
             document.getElementById('editPhone').value = r.phone;
             document.getElementById('editAddress').value = r.address;
             document.getElementById('editMaps').value = r.maps;
             document.getElementById('editWeb').value = r.web;
             document.getElementById('editOpenTable').value = r.opentable || '';
+            document.getElementById('editWhatsapp').value = r.whatsapp || '';
+            document.getElementById('editInstagram').value = r.instagram || '';
             document.getElementById('editImg1').value = r.images[0] || '';
             document.getElementById('editImg2').value = r.images[1] || '';
             document.getElementById('editImg3').value = r.images[2] || '';
@@ -1347,12 +1395,13 @@
                 data.restaurants[index].name = document.getElementById('editName').value;
                 data.restaurants[index].type = document.getElementById('editType').value;
                 data.restaurants[index].desc = document.getElementById('editDesc').value;
-                data.restaurants[index].price = document.getElementById('editPrice').value;
                 data.restaurants[index].phone = document.getElementById('editPhone').value;
                 data.restaurants[index].address = document.getElementById('editAddress').value;
                 data.restaurants[index].maps = document.getElementById('editMaps').value;
                 data.restaurants[index].web = document.getElementById('editWeb').value;
                 data.restaurants[index].opentable = document.getElementById('editOpenTable').value;
+                data.restaurants[index].whatsapp = document.getElementById('editWhatsapp').value;
+                data.restaurants[index].instagram = document.getElementById('editInstagram').value;
                 data.restaurants[index].images = [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
@@ -1370,12 +1419,13 @@
                 nombre: el.name,
                 tipo_comida: el.type,
                 descripcion: el.desc,
-                rango_precio: el.price,
                 telefono: el.phone,
                 direccion_escrita: el.address,
                 direccion_maps: el.maps,
                 sitio_web: el.web,
                 opentable_url: el.opentable || '',
+                whatsapp_url: el.whatsapp || '',
+                instagram_url: el.instagram || '',
                 foto_1: el.images[0] || '',
                 foto_2: el.images[1] || '',
                 foto_3: el.images[2] || ''
