@@ -184,7 +184,6 @@
             font-weight: 400;
         }
 
-        /* Controles de Búsqueda y Filtros de Precio */
         .controls-wrapper {
             max-width: 800px;
             margin: 0 auto 3rem auto;
@@ -225,7 +224,6 @@
             font-size: 0.95rem;
         }
 
-        /* Filtros por Rango de Precio */
         .price-filter-wrap {
             display: flex;
             justify-content: center;
@@ -475,6 +473,17 @@
 
         .btn-action.booking:hover {
             background-color: var(--booking-blue-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-action.whatsapp {
+            background-color: #25D366;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-action.whatsapp:hover {
+            background-color: #1ebe57;
             transform: translateY(-1px);
         }
 
@@ -764,6 +773,10 @@
                     <input type="text" id="editBooking" placeholder="Dejar en blanco si no tiene">
                 </div>
                 <div class="input-group">
+                    <label>Enlace WhatsApp (Opcional - URL)</label>
+                    <input type="text" id="editWhatsapp" placeholder="Dejar en blanco si no tiene">
+                </div>
+                <div class="input-group">
                     <label>Foto 1 (URL del Carrete)</label>
                     <input type="text" id="editImg1" required>
                 </div>
@@ -788,88 +801,363 @@
         const defaultHotelsData = {
             hotels: [
                 {
-                    key: 'hotel_glamping',
-                    name: 'Maka Haui Glamping',
-                    type: 'Glamping',
-                    desc: 'Una experiencia única de hospedaje de lujo en plena naturaleza de San Miguel de Allende, con tiendas estilo domo equipadas, fogatas y vistas increíbles bajo las estrellas.',
-                    price: '$$$',
-                    phone: '+52 415 112 3344',
-                    address: 'Comunidad Cieneguita, San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Maka+Haui+Glamping+San+Miguel+de+Allende',
-                    web: '#',
-                    booking: 'https://www.booking.com',
-                    images: [
-                        'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=800&q=80'
-                    ]
-                },
-                {
-                    key: 'hotel_1',
-                    name: 'Rosewood San Miguel de Allende',
+                    key: 'hotel_rosewood',
+                    name: 'Rosewood San Miguel',
                     type: 'Lujo',
                     desc: 'Resort de lujo que refleja la arquitectura colonial de la ciudad, con jardines tranquilos, spa de clase mundial y vistas panorámicas.',
                     price: '$$$$$',
-                    phone: '+52 415 152 8989',
-                    address: 'Calle Nemesio Diez 11, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=Rosewood+San+Miguel+de+Allende',
-                    web: 'https://www.rosewoodhotels.com/san-miguel-de-allende',
-                    booking: 'https://www.booking.com',
+                    phone: '415 152 9700',
+                    address: 'Nemesio Diez 11, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Nemesio+Diez+11+San+Miguel+de+Allende',
+                    web: 'https://www.rosewoodhotels.com/en/san-miguel-de-allende',
+                    booking: 'https://www.rosewoodhotels.com/en/san-miguel-de-allende',
+                    whatsapp: '',
                     images: [
-                        'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80'
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnDm6Nst4DHFVKLbM-G_u3wXFabE1zoA_t5d2GpEw5gx8brar7iYy_wfbJcaaD0jhWHW8KHai-RFIqAkF4ToGtK-WDKA_FSsmzNPueOjkS9DGF7tWZGBE4M8fZlLX3d3l5iKa1nnHySVOc1=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaUVSSAt6xMXTuJOWLKZgHK3Jiw95oX44fi5Y_-DuXltyAUIdBk8raCnypzs1DA8h8sSe7oPhTt4AVcy_VRZFpg9wEJz8HPUYKpxExz2pdpRIL7XY5n7bWLtHRXj-3mRR5ssGP=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0ak8DtFd70_cJU3yeD4I8iXlqMdkPvr1AznzwCB3cYHhDLK3BifhyTFjKyPhY2hKG4uVtr8CQmFI7HMf_US1f2PyLGHPY7n_RmJYuicWh1Tc96l1uEn33qclpghfmJu707KQmNA=s1360-w1360-h1020-rw'
                     ]
                 },
                 {
-                    key: 'hotel_2',
+                    key: 'hotel_trazo1810',
+                    name: 'Trazo 1810',
+                    type: 'Lujo',
+                    desc: 'Hotel boutique y restaurante de alta cocina con vistas incomparables a la Parroquia, diseño vanguardista y elegancia colonial.',
+                    price: '$$$$$',
+                    phone: '415 121 3506',
+                    address: 'Hidalgo 8, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Hidalgo+8+San+Miguel+de+Allende',
+                    web: 'https://casa1810.com/centro/trazo/',
+                    booking: 'https://hotels.cloudbeds.com/es/reservation/oqBpi9',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=5214151000508&text=Hola%2C+quisiera+recibir+informaci%C3%B3n+sobre+Trazo+1810.&type=phone_number&app_absent=0',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLo4D6St6gJOTZ8XWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBAOHC4mT9rXV7n3XLGKqsiPi0fd2fLCetfOclFxVI5IZWTIHPjzvP4xMcfEp_wHHOPKKatb9Ryh0cy3pOuBI-EimtJ4HCqOu1p1Le-muLSIocLkVUufI0rMFO6wmclXVg1v5U=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLo4D6St6gJOTZ8XWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_live_aqua',
+                    name: 'Live Aqua San Miguel de Allende',
+                    type: 'Lujo',
+                    desc: 'Un espacio sensorial sofisticado que combina arte, arquitectura moderna y toques tradicionales en la Calzada de la Presa.',
+                    price: '$$$$$',
+                    phone: '443 310 8137',
+                    address: 'Calz. De La Presa 85, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Calz+De+La+Presa+85+San+Miguel+de+Allende',
+                    web: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende',
+                    booking: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende/book/dates-of-stay',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=5214431378728&text=Hola,%C2%BFMe%20pueden%20ayudar?',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyVxsXibuKD2y3er5V_BuBQMS_OVOFP7TfnUnHQc0dZlxOJGmblTGCfnoMURVN3zWUsWfAyzkFMdXI7A9A8n3OGpQiAZnvY1V08XuswrEiQy0mNO2Gn9hoN5-XmEn4MoQ5IJ1-=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlZ-z3baYAUDvIMi26bPNmKVWvAPp1T4FQezlvMME47tIGABdiLH2GipC1rH4215bulwe6Bcn9hoLN6HsTZ-8r3O4GfnEeABnAbj9mMqisUuZiLghMaM8fXgEk5RZcFJaGy8Ntv=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmzw2tyAi9VALivM00YAezIz7JV-YXJmPAOMndOWGA-PKfQ8gVDeicllRQHenNSg3PeEpaPQ6wLobRmhoDIJE7ggLEUefoLECD26PfFV2QOhJw-ElBVKwIcsWjwYPx6q62Hxxf_rw=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_numu',
+                    name: 'Numu Boutique Hotel',
+                    type: 'Hotel Boutique',
+                    desc: 'Parte de The Unbound Collection by Hyatt, ubicado en Nemesio Diez, ofreciendo exclusividad y refinamiento.',
+                    price: '$$$$',
+                    phone: '415 148 1234',
+                    address: 'Nemesio Diez 20, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Nemesio+Diez+20+San+Miguel+de+Allende',
+                    web: 'https://www.hyatt.com/unbound-collection/en-US/bjxub-numu',
+                    booking: 'https://www.hyatt.com/shop/rooms/bjxub',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlN0DqX-xz-PNAjI1N_ESsZQybF0rdszq8Yzv-LOegTe-NW_5Wbi5M9WyvWl3lhzvZI76aDA_PWHiZlHm-xCAxKyq8ZvSqLVvyPt1BVCut7t3TDJKT3HAPfdzw6rZOVhl4Y_Mg=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmW0jhKkQFtmDTY4Xpb5Xr4sIJ4G0WUO0VbsW0b7fHWYBz2-hXvWv_q0RPFTmNg2cUdp6wOGQ9WUWEA2GYKT2CNQAI8G0KCfDT6oYGccmm1sby901-CyK5w6YBjz6cCnddY0HG6=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmN0sbSk4ZGq1zPGCWQrAkEhqG1vRNCWMPq0fIUQ_k6TJPBSrGAIZy8sn1NGDkyQ2klpnSEqtjgEgMtA2eV7PdPeIY-2BCezSMUmu_PcmxPfSmkLEDFN8oy5IXx00jW7A-arvvJ=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_matilda',
                     name: 'Hotel Matilda',
                     type: 'Hotel Boutique',
                     desc: 'Un santuario de diseño vanguardista y arte contemporáneo ubicado en el corazón histórico, famoso por su ambiente chic y su exclusivo spa.',
                     price: '$$$$',
-                    phone: '+52 415 152 1015',
-                    address: 'Aldama 53, Zona Centro, C.P. 37700',
+                    phone: '415 152 1015',
+                    address: 'Aldama 53, Zona Centro, 37700 San Miguel de Allende, Gto.',
                     maps: 'https://maps.google.com/?q=Hotel+Matilda+San+Miguel+de+Allende',
-                    web: 'https://hotelmatilda.com',
-                    booking: 'https://www.booking.com',
+                    web: 'https://hotelmatilda.com/',
+                    booking: 'https://hotelmatilda.com/?namastay=true',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151142699&text&type=phone_number&app_absent=0',
                     images: [
-                        'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80'
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAKTA1UHjYA2GNv807f-BHkSV7jcgct0jJXdH4fBR284ejxlvnZJ3QPaheKx9u05jmFH5xHZSxrIjPnXqyRfPoYpyX0hJRcuOLoB9vmERmYfq-ecHHIkhjrQTbpA5HscGYRZazdg=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmt2d-aPv60PmhUUJdknYagUfe4sSBB3PTR5Hsimv3_amb0phv4CK5ce2G9DZ6i5pAIlX6QFEX01nRR6wrZk4-TY3B3g6mo6K-F9p1WAPLXWDfDYz-sXMQBL4DYKoN6ZiRB4Yyz=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmt2d-aPv60PmhUUJdknYagUfe4sSBB3PTR5Hsimv3_amb0phv4CK5ce2G9DZ6i5pAIlX6QFEX01nRR6wrZk4-TY3B3g6mo6K-F9p1WAPLXWDfDYz-sXMQBL4DYKoN6ZiRB4Yyz=s1360-w1360-h1020-rw'
                     ]
                 },
                 {
-                    key: 'hotel_3',
-                    name: 'Belmond Casa de Sierra Nevada',
-                    type: 'Hacienda',
-                    desc: 'Conjunto de casonas históricas del siglo XVI decoradas con antigüedades mexicanas, patios floridos y una atmósfera sumamente romántica.',
+                    key: 'hotel_aguasanta',
+                    name: 'Agua Santa Hotel Boutique',
+                    type: 'Hotel Boutique',
+                    desc: 'Encantador hotel boutique en la histórica calle El Cardo, ideal para disfrutar de la tranquilidad y la cercanía al centro.',
                     price: '$$$$',
-                    phone: '+52 415 152 7040',
-                    address: 'Hospicio 35, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=Casa+de+Sierra+Nevada+San+Miguel',
-                    web: 'https://www.belmond.com',
-                    booking: '',
+                    phone: '415 690 2946',
+                    address: 'El Cardo 10, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=El+Cardo+10+San+Miguel+de+Allende',
+                    web: 'https://aguasantahotel.com/',
+                    booking: 'https://aguasantahotel.com/reservaciones/',
+                    whatsapp: '',
                     images: [
-                        'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk0s40XYMX7l0tQzPAPe1iFreoFSkjoMwoy9btILBt4SmYh2kqkBiJyRX5TR6t8jK52RaW0VCLAcEoo9oV-UeqRpPEjKsYgcd6BsUyV9IS9f8L92Ki-PJZ9MbBIe1la0Xu9HLpg=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmR3mf3mrCQWyyJRiaDcxd62QXkKJRRJuof4apuhqtgAn8jDi1iKOUJYwdIZbGtYUtaLeiIliHZuGwC7RgtHzmnFD9Ep-bbWd6Loeqm8j7PAf4VQF-zZnuWJmzFo2xamx-jF1G0=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWny4oPApxk_lDkgtdQJeFkAcSX0zRwZR_OdFcpWiaTN_jV8ZC2TXvbLNWJLCjbPBlXF9-CkLTGSmmTFiVEfhvGmfgwJdivyFOwtl3ndEOBjs_PniSnExXPc329bgy2QgK9W7OG4=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_amatte',
+                    name: 'Hotel Amatte San Miguel de Allende',
+                    type: 'Lujo',
+                    desc: 'Diseño arquitectónico contemporáneo rodeado de vegetación con vistas panorámicas desde su increíble terraza y restaurante.',
+                    price: '$$$$$',
+                    phone: '415 980 0223',
+                    address: 'Salida Real a Querétaro 168, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Salida+Real+a+Queretaro+168+San+Miguel+de+Allende',
+                    web: 'https://www.amatte.com.mx/es',
+                    booking: 'https://www.amatte.com.mx/bookingstep1',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151400418&text&type=phone_number&app_absent=0',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlnlhI9rjMd5-E0nMusx36AmEwBJbhKNsn24fCrYDi0cRLnybhQa85ywrsQ66ZIWllXFNBJhEX2zzenQ0jVgOx6mabtbxNKxpa2a3-CUFLM-BJw8gl5hW0TnEI0dnCFNPXqAbEJ=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkeuZ4KHPbFg2D2GBl4ZRi1vU7nof1D3FJzex-FzP9iSnKNiZxZlT9H6g4_acbrYq21CcqAHc8Ctvd2kqxWGEQOohoQvAloM7Bfq21KMOFZSgcvpT1iAbEsimV7aTl25GdB_iwXgS9nRxaW=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZHHlzBydGhRereOnJh8ya3hXiFiXLqiT4bXRnwkNoy6PxYR7s1SXz66x1q2BFLyH1-m59m34DfYxORChHhSE9XoHqEVxobPgDuN2Gu7ROHFjerf0PJzTFM5FwzC5utyliYI0e=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_casanare',
+                    name: 'Hotel Casa Naré - Adults Only',
+                    type: 'Hotel Boutique',
+                    desc: 'Exclusivo hotel para adultos con un ambiente íntimo y sofisticado, ubicado en el corazón del centro histórico.',
+                    price: '$$$$',
+                    phone: '415 126 2477',
+                    address: 'Calle del Dr Ignacio Hernandez Macias 18, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Calle+del+Dr+Ignacio+Hernandez+Macias+18+San+Miguel+de+Allende',
+                    web: 'https://www.casanare.com.mx/es/index.html',
+                    booking: 'https://direct-book.com/properties/hotelcasanaredirect',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnOG2JMah_UiWpKMlb_DXX6jniW4FdFRZZEEu7uA8bnYroCcZ-Vg8F9LWAIGFqrlmZdZC69nmTEsWsycoENLjmCrySsropnBY5MTv5wZErwjbqzVyUxvafU_srSqs8kLwfMY9rA=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfISkkdJ5j1z1uE92tgNXZsQELcxXHLfOfkkbhz5BPzrsFvhiKUG9x9X9z1hZZtGB5RurZRSfNEkyIWl0fM0rJAQNEB-NZreITgNMxHp22AlstFvgUqurqYaLk7HiSUn8GfQfR=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnagJEKYWMnuZkyRkiuvFJi6Vl-jWmiaiXwC8sM424L17gIftiqxffecobk1jMRcoZjEp8JqTicf4q3b7t1RjSfMVDhGIog6FbeVxr4kPUJ5pupQGZp7bnaKIsKwgz-YPYYIFsOHg=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_lamorada',
+                    name: 'Hotel La Morada',
+                    type: 'Hotel Boutique',
+                    desc: 'A pocos pasos del Jardín Principal, ofrece una estancia cómoda, limpia y con un auténtico toque colonial tradicional.',
+                    price: '$$$',
+                    phone: '415 152 1647',
+                    address: 'Correo 10, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Correo+10+San+Miguel+de+Allende',
+                    web: 'https://www.lamoradahotel.com.mx/',
+                    booking: '',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=5214151567374&text=%C2%A1Hola!%20Quiero%20informaci%C3%B3n%20sobre%20La%20Morada.',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9wFXd5CzRDenMC6fnHHJuTDw8ZUAXNI_q1_occrNN9Ie89igOt_gXpLbWECtm_mFpkk-cEWEeAWjyrOQUKDjf0-p90d3UYkdfCK7U9JZRm4RAX0ABipj_cN1jOb9DFhgz7pw1JA=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkTOyJw2_VH_nvdb8KwtXjns0NpxF3vMYndta81b8GjEJJVH5tH7_HmEm3iwD6lesTKrsr2Ah_p1HOxltNVaRuJouY3ze4d57qX5AFEwKxuj7Y2jaZLHQuibz64t26O3WDp59Y4iQ=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9F_YAvndqDaUU_w2di0keAFc2KYvv_fGi7vqYLo89j0YE-FVhhutDPAJq1HzuSHlZJ_XVB84NC10ZGG40AKKVQ8Dv1FE7CW8fCX7foVWic5RFg06SdWxmCEIDTyFI8p3Vk3t8Jw=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_nena',
+                    name: 'Hotel Boutique Nena',
+                    type: 'Hotel Boutique',
+                    desc: 'Elegancia y confort en la calle San Francisco, con una terraza espectacular y atención personalizada.',
+                    price: '$$$$',
+                    phone: '415 188 1890',
+                    address: 'San Francisco 32, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=San+Francisco+32+San+Miguel+de+Allende',
+                    web: 'https://www.hotelnenasanmigueldeallende.mx/',
+                    booking: '',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkPtQ4Xd58AtOb_6RjGrrw4vhmk_AJJnz_TYtFdLD_X7guqNlsA3NVL1zEpXJGtgF0E0uKOunzXuayPltsBQXJqPjnTdHNz_nNb42ITz8d1fy5a33SM9qOgal__SNTCjuirf_c=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmIUQue0dHi_E-DO5DM9m6qOJ7FvRAVS3yQTh-i9LddNH26-z6v55CDU97ykQfDKjRifWDjDfJl__mOO7t0OBxGThm9-Knd1orMZ9yeHbdiF-QVINXXSFYawA2_eOgrecCvcTO65eY3OD4=w141-h101-n-k-no-nu',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1lgyA15PteNZd4_mlxD9kiqwMsQjXC5TDIUUtr9sUmzGx7vGD4ouCA3jDfDH7O86rXCRDW8Vebm_1_2E0xRSI7OISbqY4tpkcluZnaKeij2EjZjvrutRhZPf70SuoGPXgXk8S=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_mision',
+                    name: 'Hotel Misión San Miguel de Allende',
+                    type: 'Moderado',
+                    desc: 'Estilo hacienda tradicional con amplios espacios, jardines y alberca, ubicado sobre la Salida Real a Querétaro.',
+                    price: '$$',
+                    phone: '55 9160 1680',
+                    address: 'Salida Real a Querétaro 1, Zona Centro, 37774 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Salida+Real+a+Queretaro+1+San+Miguel+de+Allende',
+                    web: 'https://www.hotelesmision.com.mx/destinos/guanajuato/hotel-mision-san-miguel-de-allende',
+                    booking: 'https://hotelesmision.revenatium.com/4/rooms',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMIABG-PIFUCxHudOw22bbs7QzMLq07KzT8IrjyylA9fHbTlZDU4UJENRqsracLl0a7gXaVXK2ejFmjlV3Bw6oSbmVt68_ha5GD8fnGJ92HZrk01Ax-R2X2J_5-9uFjSZjY0mb=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk1JY9QwVeu1BBdIovqwlVYsmkJ4YvPueRF0ZGVbQIO9U295lxJj73fuYMYL59PdoGweFsrKUeK4hcvnVMy2mMQvm6WP_GQxhhm7_2jNcwpzuaXC-5XGJCPxkdjG7xOE1MJOrcF2w=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlV6X_0StprskYZnqQlHxnumwwqC6pVpMgYD7WjtjrIP--tr0lkyy8-F_48mV1QFqPIa-M3fv-7lLJDn5ATuknv5Pc5IZlB7mbS_upcC4L6RfqTluSm4TlKx7LFC1cTA0zFtqyn=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_crisol',
+                    name: 'Hotel Crisol',
+                    type: 'Moderado',
+                    desc: 'Ubicación privilegiada justo frente al Portal Allende, ofreciendo una experiencia acogedora y auténtica en el centro.',
+                    price: '$$',
+                    phone: '415 151 4883',
+                    address: 'Portal Allende 8, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Portal+Allende+8+San+Miguel+de+Allende',
+                    web: 'https://www.hotelcrisol.com/',
+                    booking: 'https://www.hotelcrisol.com/bookingstep1/',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151514883',
+                    images: [
                         'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+                        'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80',
                         'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80'
                     ]
                 },
                 {
-                    key: 'hotel_4',
-                    name: 'Hotel La Morada',
-                    type: 'Económico',
-                    desc: 'A pocos pasos del Jardín Principal, ofrece una estancia cómoda, limpia y con un auténtico toque colonial tradicional accesible.',
+                    key: 'hotel_monteverde',
+                    name: 'Hotel Hacienda Monteverde',
+                    type: 'Moderado',
+                    desc: 'Un remanso de paz con arquitectura tradicional mexicana, patios coloniales y habitaciones confortables.',
                     price: '$$',
-                    phone: '+52 415 152 0355',
-                    address: 'San Francisco 7, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
-                    web: '#',
-                    booking: '',
+                    phone: '415 152 1814',
+                    address: 'De Volanteros 2, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=De+Volanteros+2+San+Miguel+de+Allende',
+                    web: 'https://haciendamonteverde.com/',
+                    booking: 'https://haciendamonteverde.com/reserva/',
+                    whatsapp: 'http://api.whatsapp.com/send/?phone=5214151090801&text&type=phone_number&app_absent=0',
                     images: [
-                        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnbZDFJaWnoIWJ5dpazX3INwwlA4nidjR1iMrwpq1An_TnoXOGN58qhvwAgGhdoDEg0NBAuqDAR1DiT7OX2DYt_YgCAl-nPEh7_3BRIeHUq_UZcuFp-N07U0mcmLuCRv0e4Bq0d=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmZe-4YyQOHmkDx85nxNd6pGgcPwoN0ulLjOSWGkHvvZfqQ1dkk9CKXS1XZQKnVZ-llJv-z6Dox8mUaWCksG6YxQDKflN6uUdJQdyBxH25jk-1kxPD10KctEdceYRnG62-IVpZpXXiX-ts=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlO0YDGeZIDOEo9rrGJrkWintXQRtTE561xTgjn3bEmL8G2fGZNweRdz_teBg5q7hQ3_6afxg6s5_Zy8YChN5KWZE91k36zMoVbxCoEWgycTSMz5glTkL2VTgk_Gvuv7GDPWLa3Rw=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_mx',
+                    name: 'Hotel MX San Miguel de Allende',
+                    type: 'Moderado',
+                    desc: 'Estancia moderna, práctica y funcional cerca de la zona comercial La Luciérnaga, perfecta para viajeros dinámicos.',
+                    price: '$$',
+                    phone: '415 688 5518',
+                    address: 'Cam. a Alcocer 18, La Luciérnaga, 37745 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Cam+a+Alcocer+18+San+Miguel+de+Allende',
+                    web: 'https://www.hotelesmx.com/mx-mas-san-miguel-de-allende',
+                    booking: 'https://hotels.cloudbeds.com/es/reservation/iroPVx',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=525621702676&text&type=phone_number&app_absent=0',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWma8OxoOQGFGge3wUMA91dilo3W55udaNI60OXNr9Uko0Vv7kIICKefTJWJfIoY_H5bq33jKs5PctNUfdudRD_NK-mqO94vjHjtd3PTD8NdP60jTJQPr8nl4q-MsuFsS6N4V1HS=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnZaw_8-A9pUMZyXiNq00rJDWSeIVvwYTzGxf7rQPxqubckcv5UdHN-FP3DrzCPsWbtztIFQrQnuSvpVYy2T3yZHhM0LRghOx63H5fLoSKMEmMxbHzpRNL9g9NaDQSOtVfCk-EtA=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCs8kvj1_b7GOcuIXE7uki9Z2ar45ZkMfWUiebYxxjHIqclCyFzkatjaDjvDWNtWXteYKFm2BPmZAxX6om5qy91iGCOfb-FMEhTwuI-zLjl1P9uCv9JWCI-sYyybIvqUjG4Mn4=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_posada_gloria',
+                    name: 'Hotel Posada La Gloria',
+                    type: 'Económico',
+                    desc: 'Acogedor y tradicional callejón de Loreto, brindando una experiencia rústica, económica y muy cerca de los atractivos principales.',
+                    price: '$',
+                    phone: '415 152 3170',
+                    address: 'Cjon. de Loreto 68, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Cjon+de+Loreto+68+San+Miguel+de+Allende',
+                    web: 'https://www.travelbymexico.com/guan/posadalagloria/',
+                    booking: '',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl9mnnogYwIfZMApokgzOm1Oo4-sPkNdqkzJHxaCWIUEuD8c1OSZawAjEGkqfdh6gE93TYM3oc9O0RvKgsY5CEWjEe81HAahR6kvoDnfmudP0RNNnct8pq9ZXCwI1Qi6lZvAMUh74oUdlzH=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZAJQSxzjC4vK7mFQajILpdSggNlLfQjchyiPXUOC-aCc57fhm6ZUt73q5KpsyH4Cf4SeHj4AKagQupG1HtdWFkF_5D9ro0BsIQL8OlReLWNune-Xp9P87Dd9yseL4Gj1jXfmE=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZAJQSxzjC4vK7mFQajILpdSggNlLfQjchyiPXUOC-aCc57fhm6ZUt73q5KpsyH4Cf4SeHj4AKagQupG1HtdWFkF_5D9ro0BsIQL8OlReLWNune-Xp9P87Dd9yseL4Gj1jXfmE=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_eden',
+                    name: 'Hotel Edén de Los Ángeles',
+                    type: 'Económico',
+                    desc: 'Hospedaje accesible y confortable sobre la calle Jesús, perfecto para recorrer el centro a pie.',
+                    price: '$',
+                    phone: '415 150 0020',
+                    address: 'Jesús 28, Zona Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Jesus+28+San+Miguel+de+Allende',
+                    web: 'https://www.hoteledendelosangeles.com/',
+                    booking: 'https://www.hoteledendelosangeles.com/book-a-room',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlobQpbZxn9f28QpXWQEaA4MY42vmYSHwJ8aMQmsAkeFihZ4tJbX6elCPpTypA0XB1WWSz2XPRMt64fBWpaChnSjxprboDPUaQX6kpmCvpTEZ4E12Lcp6iXJX0PFffeOTZXNFN=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLgyOaq9VTDI-JWwlxQHbQDGy-ZV3DxV75AgYmAZG66daEB0T3dcIh5Aoi9V25-lpMkqWfY-rl9sVqnZSwpam3UjEctlvxQw-4zuchi1BDoGeHk9kT_XNFMh16u-rJttbf11-F=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrPZrI-MTP23R1HFxk0eDWuTzhWe3v-yvIZmFGSYnuQYFctzCRf87ZQSgDEEnah3r_hHR0wyEncqU5lAin_z8SmjUqqoAyWdq-96tqoq2V_soU8pbIfZcJTABGp-ok4eQD471XEg=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'hotel_santuario',
+                    name: 'Hotel y Hostal Santuario',
+                    type: 'Económico',
+                    desc: 'Opción versátil y económica combinando privacidad de hotel y la vibra social de hostal en la calle Ánimas.',
+                    price: '$',
+                    phone: '415 690 4282',
+                    address: 'Animas 16, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Animas+16+San+Miguel+de+Allende',
+                    web: '#',
+                    booking: 'https://www.booking.com/hotel/mx/amp-hostal-santuario-san-miguel-de-allende.es.html',
+                    whatsapp: '',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWV_AETm10zjXyV8-9KHbzkDBsbPaVrg4mVZ8ol57o8zvkb2HSIks6-wNS7Q4iiYSR1NlzE_oHjAbKyRW-lCkzATnMVGKtF5Aoc1oujl61T_GclI2WAh31fkP9gS6XMq_wUSzi2w=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWldpu1Ep1Wiy6EZ4_OBFZTu2kJmUDYV3g1HakITj4Ti1-41ICrPTyx5bhERcfK7daaZFdFKp3GxQccPbpuWtxhMcTeSta2Ci5nPyCS2ptGqEcFIkx-vexVFiXCUJdzyBW5384Ne=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWZBswPz41Gs_YG3Kgb4p4LX8JaiktIbBGecLIZWozSZZmPaxcuWrpUNAlTnuXe79TqU1XxU3kQPLW0_b_qtES7v9XhxR-8BVPdW1opp1Q8IIiNylbzHJzugl4ho0ROQyIKsw=s1360-w1360-h1020-rw'
+                    ]
+                },
+                {
+                    key: 'glamping_coyote',
+                    name: 'Coyote Park & Hotel',
+                    type: 'Glamping',
+                    desc: 'Exclusiva experiencia de naturaleza, aventura y glamping en la carretera a Querétaro con comodidades de primer nivel.',
+                    price: '$$$',
+                    phone: '415 114 3834',
+                    address: 'Carretera a Querétaro, San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Coyote+Park+San+Miguel+de+Allende',
+                    web: 'https://coyotehotel.mx/',
+                    booking: 'https://hotels.cloudbeds.com/en/reservation/CL7zB1',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=%2B524151143834&text&type=phone_number&app_absent=0',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmMzAgbHXxgiE7ziciufAGpQ13SdefwIiGRWeDsRiK35z2EV4URmTSsE_MBmK31VSAXcW_--fiFx4q7oURrQjgIRNfDiJLxYq3qWFd6NtAAfl_YWD2-hTG-xBQvXCVJKexE91WPkw=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmxQZzMhg3hUDotN1KOiptTBqr5rACxs3H-Aa40hUxVzMLaBlOpE2clhxQQUz4Zq3TOtuS2UTN55uKY2GrOgtVyo9QjHsOQuVCJzmjZe_fwDa_sfL67_TVPzmn9NPqSAuXE0tCqGAGPznDL=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn3_emwnmpV8GBlb8qwbvuBf08b4iHX5iCb1oiaI1gPd2DQgbFPoQ2MZyi8j13ECxdDiZfR6yiCE1e2VvRuSHjoSqPwQKla4XDx2E4BUtpcSuK3gvtKtF4ocT8hMCoCEEG0iicWmh0QxC0-=w141-h141-n-k-no-nu'
+                    ]
+                },
+                {
+                    key: 'glamping_chichijamaica',
+                    name: 'Glamping ChichiJamaica',
+                    type: 'Glamping',
+                    desc: 'Campamento de lujo rodeado de paisajes naturales en El Batán, ideal para desconectarse y disfrutar bajo las estrellas.',
+                    price: '$$$',
+                    phone: '461 106 8864',
+                    address: 'R5H4+CFW, 37898 El Batán, Gto.',
+                    maps: 'https://maps.google.com/?q=Glamping+ChichiJamaica+El+Batan',
+                    web: 'https://glampingchichijamaica.com/',
+                    booking: 'https://www.booking.com/hotel/mx/chichi-jamaica.es.html',
+                    whatsapp: 'https://api.whatsapp.com/resolve/?deeplink=%2F52461106%25208864&not_found=1',
+                    images: [
+                        'https://glampingchichijamaica.com/assets/images/carrucel-7-506x675.webp',
+                        'https://glampingchichijamaica.com/assets/images/galera-3-506x675.webp',
+                        'https://glampingchichijamaica.com/assets/images/galera-1-1108x1662.webp'
+                    ]
+                },
+                {
+                    key: 'glamping_nomada',
+                    name: 'Nomada Glamping',
+                    type: 'Glamping',
+                    desc: 'Estancias inmersivas en Atotonilco con diseño sofisticado, fogatas y un entorno natural inigualable.',
+                    price: '$$$',
+                    phone: '247 100 3537',
+                    address: 'Insurgentes 333, Atotonilco, 37893 San Miguel de Allende, Gto.',
+                    maps: 'https://maps.google.com/?q=Nomada+Glamping+Atotonilco',
+                    web: 'https://www.nomadaglampingsma.com/',
+                    booking: 'https://www.nomadaglampingsma.com/reservas',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=522471003537&text=Vi+su+p%C3%A1gina+web+y+quisiera+m%C3%A1s+informaci%C3%B3n+sobre+Nomada+Glamping&type=phone_number&app_absent=0',
+                    images: [
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl9Yvyc-5Bjt86404oVJzPJbzqh33k5SxKq5j1cP2U8NBk4iNQeaNGMZoTZfQHmkitDHeR6eJJLYOYJjvC9J9YBQIFA5Yq07m0JxK6vM5QCLEKw35cVDDvwECx2qe-wGfnGEXlD=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnx-z09DWRXQgWSFrUsNfFrA_suysUBBoLRn4N-Yzw-9MhLHGuhXp3Ra_y1ggF-A8cXWMABNHy1Ur9gPbNwrJ07AxKO0pCbqT_oow6f8VpCx-a0vSUFlN1ondEDjHHPErqoUrbnBQ=s1360-w1360-h1020-rw',
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWknnHr1hJdhZyww-YrmlQ-qBKdYLwiuTXNuQWRtYShdStDGOLP6fc5Yg0G8rPiE6ydq3X-GcC_8UX7k_hwl-Mhkfh5ZE5FSTkPQjjcfXYqIsVTyKyU6jnWbS5Zpug55X9c5vMGK=s1360-w1360-h1020-rw'
                     ]
                 }
             ]
@@ -885,16 +1173,16 @@
         }
 
         function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data_v2');
+            const data = localStorage.getItem('sma_hotels_data_v3');
             if (!data) {
-                localStorage.setItem('sma_hotels_data_v2', JSON.stringify(defaultHotelsData));
+                localStorage.setItem('sma_hotels_data_v3', JSON.stringify(defaultHotelsData));
                 return defaultHotelsData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data_v2', JSON.stringify(data));
+            localStorage.setItem('sma_hotels_data_v3', JSON.stringify(data));
             renderHotels(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -936,12 +1224,10 @@
 
             let filtered = data.hotels;
 
-            // Filtro por precio
             if (currentPriceFilter !== 'all') {
                 filtered = filtered.filter(h => h.price === currentPriceFilter);
             }
 
-            // Filtro por texto de búsqueda
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
                 filtered = filtered.filter(h => h.name.toLowerCase().includes(q) || h.type.toLowerCase().includes(q) || h.desc.toLowerCase().includes(q));
@@ -966,7 +1252,13 @@
 
                 const bookingButtonHtml = (h.booking && h.booking.trim() !== '') ? `
                     <a href="${h.booking}" target="_blank" rel="noopener noreferrer" class="btn-action booking">
-                        <i class="fas fa-bed"></i> Reservar en Booking.com
+                        <i class="fas fa-bed"></i> Reservar
+                    </a>
+                ` : '';
+
+                const whatsappButtonHtml = (h.whatsapp && h.whatsapp.trim() !== '') ? `
+                    <a href="${h.whatsapp}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 ` : '';
 
@@ -1004,7 +1296,10 @@
                                         </a>
                                         ${webButtonHtml}
                                     </div>
-                                    ${bookingButtonHtml}
+                                    <div class="action-row">
+                                        ${bookingButtonHtml}
+                                        ${whatsappButtonHtml}
+                                    </div>
                                 </div>
                                 ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditHotelModal('${h.key}')">✏️ Editar Hospedaje</button>` : ''}
                             </div>
@@ -1014,7 +1309,6 @@
             });
         }
 
-        // Control del carrusel de fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
@@ -1032,7 +1326,6 @@
             }
         }
 
-        // Auth & CMS
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
                 if (confirm("¿Desea cerrar la sesión de administración?")) {
@@ -1086,6 +1379,7 @@
             document.getElementById('editMaps').value = h.maps;
             document.getElementById('editWeb').value = h.web;
             document.getElementById('editBooking').value = h.booking || '';
+            document.getElementById('editWhatsapp').value = h.whatsapp || '';
             document.getElementById('editImg1').value = h.images[0] || '';
             document.getElementById('editImg2').value = h.images[1] || '';
             document.getElementById('editImg3').value = h.images[2] || '';
@@ -1110,6 +1404,7 @@
                 data.hotels[index].maps = document.getElementById('editMaps').value;
                 data.hotels[index].web = document.getElementById('editWeb').value;
                 data.hotels[index].booking = document.getElementById('editBooking').value;
+                data.hotels[index].whatsapp = document.getElementById('editWhatsapp').value;
                 data.hotels[index].images = [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
@@ -1133,6 +1428,7 @@
                 direccion_maps: el.maps,
                 sitio_web: el.web,
                 booking_url: el.booking || '',
+                whatsapp_url: el.whatsapp || '',
                 foto_1: el.images[0] || '',
                 foto_2: el.images[1] || '',
                 foto_3: el.images[2] || ''
@@ -1148,7 +1444,6 @@
             renderHotels();
         });
 
-        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
