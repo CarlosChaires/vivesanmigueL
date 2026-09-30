@@ -9,17 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --void: #0c0a09;
-  --ink: #161210;
-  --panel: #1c1714;
-  --panel-2: #231e1a;
-  --gold: #d4a054;
-  --gold-soft: #e8c078;
-  --marigold: #e07a2f;
-  --text: #f2ebe3;
-  --text-dim: #a89888;
-  --line: rgba(212, 160, 84, 0.18);
-  --line-soft: rgba(255,255,255,0.06);
+  --void: #f5f0eb;
+  --ink: #2b221e;
+  --panel: #ffffff;
+  --panel-2: #faf6f0;
+  --gold: #b27a32;
+  --gold-soft: #c48e42;
+  --marigold: #d96b27;
+  --text: #2b221e;
+  --text-dim: #6c5c53;
+  --line: rgba(178, 122, 50, 0.22);
+  --line-soft: rgba(43, 34, 30, 0.08);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -35,9 +35,9 @@ body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(224,122,47,0.12), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(212,160,84,0.06), transparent 45%),
-    radial-gradient(ellipse 50% 30% at 0% 80%, rgba(122,46,31,0.15), transparent 40%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(217,107,39,0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(178,122,50,0.07), transparent 45%),
+    radial-gradient(ellipse 50% 30% at 0% 80%, rgba(140,53,38,0.06), transparent 40%);
 }
 
 .site {
@@ -53,14 +53,15 @@ body::before {
 .logo {
   display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text);
 }
-.logo img { height: 32px; width: auto; filter: brightness(1.1); }
+.logo img { height: 32px; width: auto; filter: contrast(1.1); }
 .logo span { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; }
 .back {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--text-dim); text-decoration: none; border: 1px solid var(--line-soft);
+  color: var(--text-dim); text-decoration: none; border: 1px solid var(--line);
   padding: 10px 18px; border-radius: 2px; transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.5);
 }
-.back:hover { color: var(--gold); border-color: var(--gold); }
+.back:hover { color: var(--marigold); border-color: var(--marigold); background: #fff; }
 
 /* Hero editorial */
 .hero {
@@ -70,16 +71,16 @@ body::before {
 }
 .hero-kicker {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 20px;
+  color: var(--marigold); margin-bottom: 20px;
 }
 .hero h1 {
   font-family: 'Instrument Serif', Georgia, serif;
   font-size: clamp(3.2rem, 9vw, 6.5rem);
   font-weight: 400; line-height: 0.92; letter-spacing: -0.02em;
-  color: var(--text); margin-bottom: 24px;
+  color: var(--ink); margin-bottom: 24px;
 }
 .hero h1 em {
-  font-style: italic; color: var(--gold-soft);
+  font-style: italic; color: var(--marigold);
 }
 .hero-lead {
   max-width: 540px;
@@ -109,15 +110,15 @@ body::before {
 }
 .intro-label {
   font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); padding-top: 4px;
+  color: var(--marigold); padding-top: 4px;
 }
 .intro p {
   font-size: 1.02rem; color: var(--text-dim); line-height: 1.8; font-weight: 300;
 }
 .intro p + p { margin-top: 12px; }
-.intro strong { color: var(--text); font-weight: 500; }
+.intro strong { color: var(--ink); font-weight: 500; }
 
-/* Month switcher — Minimal y moderno con sutil parpadeo cálido (vela) */
+/* Month switcher */
 .months {
   display: flex; gap: 32px; margin: 40px 0 48px; padding-bottom: 4px;
   border-bottom: 1px solid var(--line-soft);
@@ -130,23 +131,23 @@ body::before {
 }
 .month-tab::after {
   content: ''; position: absolute; left: 0; bottom: -1px; height: 2px; width: 0;
-  background: var(--gold); transition: width 0.3s ease;
+  background: var(--marigold); transition: width 0.3s ease;
 }
-.month-tab:hover { color: var(--gold-soft); }
+.month-tab:hover { color: var(--marigold); }
 
 @keyframes softCandleGlow {
   0%, 100% {
-    color: var(--gold-soft);
-    text-shadow: 0 0 8px rgba(232, 192, 120, 0.25);
+    color: var(--marigold);
+    text-shadow: 0 0 8px rgba(217, 107, 39, 0.18);
   }
   50% {
-    color: #fff1c1;
-    text-shadow: 0 0 14px rgba(255, 241, 193, 0.45);
+    color: #b54911;
+    text-shadow: 0 0 14px rgba(217, 107, 39, 0.35);
   }
 }
 
 .month-tab.active { 
-  color: var(--gold-soft);
+  color: var(--marigold);
   animation: softCandleGlow 3.5s infinite ease-in-out;
 }
 .month-tab.active::after { width: 100%; }
@@ -171,19 +172,21 @@ body::before {
   gap: 0;
   background: var(--panel);
   border: 1px solid var(--line-soft);
+  box-shadow: 0 10px 30px -10px rgba(43, 34, 30, 0.06);
   margin-bottom: 20px;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .event:hover {
   border-color: var(--line);
   transform: translateY(-2px);
+  box-shadow: 0 16px 36px -10px rgba(43, 34, 30, 0.1);
 }
 @media (max-width: 720px) {
   .event { grid-template-columns: 1fr; }
 }
 .event-media {
-  position: relative; min-height: 320px; background: #000;
+  position: relative; min-height: 320px; background: #e8e1da;
   aspect-ratio: 3/4;
 }
 @media (max-width: 720px) {
@@ -194,16 +197,8 @@ body::before {
   width: 100%; height: 100%; object-fit: cover; border: 0; display: block;
   position: absolute; inset: 0;
 }
-.event-media::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent 60%, var(--panel) 100%);
-  pointer-events: none;
-}
-@media (max-width: 720px) {
-  .event-media::after {
-    background: linear-gradient(180deg, transparent 50%, var(--panel) 100%);
-  }
-}
+.event-media::after { display: none; }
+
 .event-content {
   padding: 32px 36px 32px 28px;
   display: flex; flex-direction: column; justify-content: center;
@@ -213,17 +208,17 @@ body::before {
 }
 .event-date {
   font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 10px;
+  color: var(--marigold); margin-bottom: 10px;
 }
 .event-title {
   font-family: 'Instrument Serif', serif;
   font-size: clamp(1.55rem, 3vw, 2.1rem); font-weight: 400; line-height: 1.15;
-  color: var(--text); margin-bottom: 8px;
+  color: var(--ink); margin-bottom: 8px;
 }
 .event-place {
   font-size: 0.82rem; color: var(--text-dim); margin-bottom: 14px;
 }
-.event-place strong { color: var(--gold-soft); font-weight: 500; }
+.event-place strong { color: var(--gold); font-weight: 500; }
 .event-desc {
   font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; font-weight: 300;
   margin-bottom: 16px; max-width: 480px;
@@ -233,15 +228,16 @@ body::before {
 }
 .chip {
   font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
-  color: var(--gold-soft); border: 1px solid var(--line);
+  color: var(--gold); border: 1px solid var(--line);
+  background: rgba(178, 122, 50, 0.04);
   padding: 5px 12px; border-radius: 2px;
 }
 .extras {
-  background: var(--panel-2); border-left: 2px solid var(--gold);
+  background: var(--panel-2); border-left: 2px solid var(--marigold);
   padding: 14px 16px; margin-bottom: 18px; font-size: 0.82rem; color: var(--text-dim);
 }
 .extras h4 {
-  font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--text);
+  font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--ink);
   font-weight: 400; margin-bottom: 8px;
 }
 .extras ul { list-style: none; }
@@ -254,13 +250,64 @@ body::before {
   transition: all 0.25s ease; border-radius: 2px;
 }
 .btn-gold {
-  background: var(--gold); color: var(--void);
+  background: var(--marigold); color: #ffffff;
 }
-.btn-gold:hover { background: var(--gold-soft); }
+.btn-gold:hover { background: #b54911; }
 .btn-ghost {
-  border: 1px solid var(--line); color: var(--text-dim);
+  border: 1px solid var(--line); color: var(--text-dim); background: #ffffff;
 }
-.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-ghost:hover { border-color: var(--marigold); color: var(--marigold); }
+
+/* TikTok Section Estilizada y Visible */
+.social-section {
+  margin-top: 64px;
+  background: var(--panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  align-items: center;
+  box-shadow: 0 10px 30px -10px rgba(43, 34, 30, 0.06);
+}
+@media (max-width: 768px) {
+  .social-section { grid-template-columns: 1fr; padding: 28px 20px; text-align: center; }
+}
+.social-content h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+.social-content p {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+@media (max-width: 768px) {
+  .social-content p { margin-left: auto; margin-right: auto; max-width: 400px; }
+}
+.social-player-wrapper {
+  width: 100%;
+  max-width: 320px;
+  height: 480px;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+  margin: 0 auto;
+}
+.social-player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 
 .footer {
   margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line-soft);
@@ -297,7 +344,7 @@ body::before {
     </div>
   </div>
 
-  <!-- MESES CON DISEÑO MINIMALISTA Y SUTIL RESPLANDOR DE VELA -->
+  <!-- MESES -->
   <div class="months" role="tablist">
     <button type="button" class="month-tab active" data-panel="octubre" role="tab">Octubre</button>
     <button type="button" class="month-tab" data-panel="noviembre" role="tab">Noviembre</button>
@@ -559,7 +606,7 @@ body::before {
 
     <article class="event">
       <div class="event-media">
-        <iframe src="https://drive.google.com/file/d/1s1o8l8ThnYGDrhOxBBSwBVLjTIzxHolh/preview" allow="autoplay" title="Camino al Mictlán"></iframe>
+        <img src="https://lh3.googleusercontent.com/d/1-pcy3t9ck0gk5tw_byl10hJcUrfIq2rv" alt="Camino al Mictlán">
       </div>
       <div class="event-content">
         <div class="event-date">01 noviembre</div>
@@ -616,6 +663,20 @@ body::before {
       </div>
     </article>
   </div>
+
+  <!-- SECCIÓN DE TIKTOK DESTACADA Y FUNCIONAL -->
+  <section class="social-section">
+    <div class="social-content">
+      <h3>Vive San Miguel en TikTok</h3>
+      <p>Descubre cada rincón, historia y tradición de nuestra ciudad a través de nuestros videos. Síguenos para no perderte las mejores recomendaciones y eventos.</p>
+      <div class="btns">
+        <a href="https://www.tiktok.com/@vivesanmiguel.com/video/7568346856741195016" class="btn btn-gold" target="_blank" rel="noopener">Ver en TikTok</a>
+      </div>
+    </div>
+    <div class="social-player-wrapper">
+      <iframe src="https://www.tiktok.com/embed/v2/7568346856741195016" allow="encrypted-media" title="Vive San Miguel TikTok"></iframe>
+    </div>
+  </section>
 
   <footer class="footer">
     Día de Muertos · San Miguel de Allende · Vive San Miguel
