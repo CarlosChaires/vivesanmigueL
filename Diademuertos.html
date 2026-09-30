@@ -219,6 +219,21 @@ body::before {
   font-size: 0.82rem; color: var(--text-dim); margin-bottom: 14px;
 }
 .event-place strong { color: var(--gold); font-weight: 500; }
+
+/* Estilo para los enlaces de ubicación / mapas */
+.map-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.map-link:hover {
+  color: var(--marigold);
+  text-decoration: underline;
+}
+
 .event-desc {
   font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; font-weight: 300;
   margin-bottom: 16px; max-width: 480px;
@@ -361,7 +376,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">03 octubre · 16:00 h</div>
         <h2 class="event-title">Taller de Cartonería</h2>
-        <p class="event-place"><strong>Mojiganga de Frida</strong> · Hacienda El Santuario, Aldama 41</p>
+        <p class="event-place"><strong>Mojiganga de Frida</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+Aldama+41+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario, Aldama 41 📍</a></p>
         <p class="event-desc">Dentro del IV Festival «Muerte en Vida». Cartonería inspirada en Frida, ofrenda monumental y menú de temporada durante todo el mes.</p>
         <div class="chips"><span class="chip">Festival cultural</span><span class="chip">Hacienda El Santuario</span></div>
         <div class="btns">
@@ -378,7 +393,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">04 · 11 · 18 · 25 octubre · 09:00–13:00 h</div>
         <h2 class="event-title">Brunch Dominical</h2>
-        <p class="event-place"><strong>Cocinera tradicional</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Cocinera tradicional</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Mañanas de cocina tradicional dentro de la temporada de Día de Muertos.</p>
         <div class="chips"><span class="chip">Gastronomía</span><span class="chip">Domingos</span></div>
         <div class="btns">
@@ -395,7 +410,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">07 octubre · 16:00–19:00 h</div>
         <h2 class="event-title">Memoria de Maíz</h2>
-        <p class="event-place"><strong>Taller de tamales</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Taller de tamales</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Encuentro con la cocina tradicional y la memoria del maíz.</p>
         <div class="chips"><span class="chip">Taller</span></div>
         <div class="btns">
@@ -412,7 +427,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">10 octubre · 16:00–18:00 h</div>
         <h2 class="event-title">El Pincel de Frida</h2>
-        <p class="event-place"><strong>Pintura en lienzo</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Pintura en lienzo</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Taller creativo inspirado en el universo visual de Frida Kahlo.</p>
         <div class="chips"><span class="chip">Arte</span></div>
         <div class="btns">
@@ -429,7 +444,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">10 · 17 · 24 · 31 octubre · 18:00–22:00 h</div>
         <h2 class="event-title">Antojitos de Coyoacán</h2>
-        <p class="event-place"><strong>Música en vivo</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Música en vivo</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Sabores y música para acompañar la temporada.</p>
         <div class="chips"><span class="chip">Música</span><span class="chip">Sábados</span></div>
         <div class="btns">
@@ -446,7 +461,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">14 octubre · 12:00–14:00 h</div>
         <h2 class="event-title">Café del Difunto</h2>
-        <p class="event-place"><strong>Preparación otomí</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Preparación otomí</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Sabores y memoria de la cocina otomí en una preparación tradicional.</p>
         <div class="chips"><span class="chip">Tradición</span></div>
         <div class="btns">
@@ -463,7 +478,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">16 · 23 octubre · 19:00–21:00 h</div>
         <h2 class="event-title">Música Viva</h2>
-        <p class="event-place"><strong>Guitarra en vivo y menú especial</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Guitarra en vivo y menú especial</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Noche de música y gastronomía de temporada.</p>
         <div class="chips"><span class="chip">Música</span></div>
         <div class="btns">
@@ -480,7 +495,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">17 octubre · 16:00–18:00 h</div>
         <h2 class="event-title">El Jardín de Frida</h2>
-        <p class="event-place"><strong>Taller corona de cempasúchil</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Taller corona de cempasúchil</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Crea una pieza floral con la flor emblemática de la temporada.</p>
         <div class="chips"><span class="chip">Flores</span></div>
         <div class="btns">
@@ -497,7 +512,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">21 octubre · 16:00 h</div>
         <h2 class="event-title">Amasando Pan de Muertos</h2>
-        <p class="event-place"><strong>Colaboración Panio</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Colaboración Panio</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Taller dedicado a uno de los sabores más representativos de la temporada.</p>
         <div class="chips"><span class="chip">Panadería</span></div>
         <div class="btns">
@@ -514,7 +529,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">24 octubre · 16:00–18:00 h</div>
         <h2 class="event-title">Alfeñiques</h2>
-        <p class="event-place"><strong>Figuras de azúcar</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Figuras de azúcar</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">La tradición de crear figuras de azúcar para honrar a quienes ya no están.</p>
         <div class="chips"><span class="chip">Artesanía</span></div>
         <div class="btns">
@@ -531,7 +546,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">27 octubre · 18:00 h</div>
         <h2 class="event-title">Brindis por los Muertos</h2>
-        <p class="event-place"><strong>Cata con tequila</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Cata con tequila</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Brindis especial para celebrar la memoria y los sabores de México.</p>
         <div class="chips"><span class="chip">Cata</span></div>
         <div class="btns">
@@ -548,7 +563,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">29 octubre · 18:00–20:00 h</div>
         <h2 class="event-title">Bendición de Ofrenda &amp; Cena</h2>
-        <p class="event-place"><strong>Colaboración Restaurante Raíces</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Colaboración Restaurante Raíces</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Noche especial alrededor de la ofrenda y la gastronomía de temporada.</p>
         <div class="chips"><span class="chip">Cena</span></div>
         <div class="btns">
@@ -565,7 +580,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">30 octubre · 20:30–01:30 h</div>
         <h2 class="event-title">Entre Vinos y Muertos</h2>
-        <p class="event-place"><strong>6.ª edición</strong> · Viñedo Tres Raíces</p>
+        <p class="event-place"><strong>6.ª edición</strong> · <a href="https://maps.google.com/?q=Vinedo+Tres+Raices+Guanajuato" target="_blank" rel="noopener" class="map-link">Viñedo Tres Raíces 📍</a></p>
         <p class="event-desc">Cena especial para celebrar las tradiciones del Día de Muertos maridada con vinos finos.</p>
         <div class="chips"><span class="chip">$1,850 MXN p/p</span><span class="chip">Cena maridaje</span></div>
         <div class="btns">
@@ -587,7 +602,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">01 noviembre</div>
         <h2 class="event-title">Cena Negra · Edición XV</h2>
-        <p class="event-place"><strong>Restaurante Moxi · Hotel Matilda</strong> · Aldama 53</p>
+        <p class="event-place"><strong>Restaurante Moxi · Hotel Matilda</strong> · <a href="https://maps.google.com/?q=Hotel+Matilda+Aldama+53+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Aldama 53 📍</a></p>
         <p class="event-desc">Interpretación conceptual de la ausencia, la memoria y la transformación de la tradición a través de la alta cocina e intervención artística.</p>
         <div class="extras">
           <h4>Invitados especiales</h4>
@@ -611,7 +626,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">01 noviembre</div>
         <h2 class="event-title">Camino al Mictlán</h2>
-        <p class="event-place"><strong>El Resplandor de Pátzcuaro</strong> · Live Aqua San Miguel de Allende</p>
+        <p class="event-place"><strong>El Resplandor de Pátzcuaro</strong> · <a href="https://maps.google.com/?q=Live+Aqua+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Live Aqua San Miguel de Allende 📍</a></p>
         <p class="event-desc">Velada mística que rinde homenaje a la tradición lacustre de Pátzcuaro a través de la gastronomía y rituales ancestrales.</p>
         <div class="chips"><span class="chip">$3,900 MXN</span><span class="chip">Preventa al 18 oct</span><span class="chip">+18</span></div>
         <div class="extras">
@@ -636,7 +651,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">01 noviembre · 09:00–13:00 h</div>
         <h2 class="event-title">Brunch Dominical</h2>
-        <p class="event-place"><strong>Cocinera invitada</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Cocinera invitada</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">Experiencia gastronómica el primer día de noviembre.</p>
         <div class="chips"><span class="chip">Gastronomía</span></div>
         <div class="btns">
@@ -653,7 +668,7 @@ body::before {
       <div class="event-content">
         <div class="event-date">01–02 noviembre · 18:00–22:00 h</div>
         <h2 class="event-title">Antojitos de Coyoacán</h2>
-        <p class="event-place"><strong>Sabores y música</strong> · Hacienda El Santuario</p>
+        <p class="event-place"><strong>Sabores y música</strong> · <a href="https://maps.google.com/?q=Hacienda+El+Santuario+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Hacienda El Santuario 📍</a></p>
         <p class="event-desc">La celebración continúa con sabores tradicionales en los días principales.</p>
         <div class="chips"><span class="chip">Sabores</span></div>
         <div class="btns">
