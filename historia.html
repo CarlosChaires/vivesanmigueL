@@ -215,24 +215,6 @@ nav {
   display: block;
   background: #2c2422;
 }
-.pdf-fallback {
-  display: none;
-  position: absolute;
-  inset: 0;
-  background: #2c2422;
-  color: #fff;
-  padding: 40px 24px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.pdf-fallback.show { display: flex; }
-.pdf-fallback a {
-  color: var(--rose-soft);
-  font-weight: 600;
-  text-decoration: underline;
-}
 
 .book-actions {
   display: flex;
@@ -332,14 +314,10 @@ nav {
       <iframe
         id="pdfFrame"
         title="Libro San Miguel de Allende"
-        src="https://docs.google.com/gview?url=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf&embedded=true"
+        src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf"
         allowfullscreen
         loading="lazy"
       ></iframe>
-      <div class="pdf-fallback" id="pdfFallback">
-        <p style="margin-bottom:14px; font-size: 1.05rem;">El visor requiere una acción directa debido a políticas del servidor externo:</p>
-        <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" style="font-size: 1.1rem; padding: 10px 20px; background: var(--rose); color: #fff; border-radius: 100px; text-decoration: none;">Abrir / Descargar Libro en PDF</a>
-      </div>
     </div>
 
     <div class="book-actions">
@@ -369,7 +347,7 @@ nav {
       <p>Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.</p>
       <p>Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.</p>
       <p>Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.</p>
-      <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 sus población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.</p>
+      <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 su población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.</p>
       <h2>El segundo San Miguel, San Miguel el Grande</h2>
       <p>La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.</p>
       <p>El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.</p>
@@ -397,19 +375,6 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 reveals.forEach(el => observer.observe(el));
-
-// Mecanismo de seguridad automático para mostrar el botón de respaldo si el navegador bloquea el iframe externo
-const frame = document.getElementById('pdfFrame');
-const fallback = document.getElementById('pdfFallback');
-let isLoaded = false;
-
-frame.addEventListener('load', () => { isLoaded = true; });
-
-setTimeout(() => {
-  if (!isLoaded) {
-    fallback.classList.add('show');
-  }
-}, 5000);
 </script>
 </body>
 </html>
