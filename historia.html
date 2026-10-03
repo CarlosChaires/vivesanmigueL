@@ -48,7 +48,6 @@ body {
   50% { transform: translate(20px, -16px) scale(1.04); }
 }
 .wrap { position: relative; z-index: 2; max-width: 980px; margin: 0 auto; padding: 0 28px 90px; }
-
 nav {
   display: flex; justify-content: space-between; align-items: center;
   padding: 28px 0 40px; gap: 16px; flex-wrap: wrap;
@@ -79,7 +78,6 @@ nav {
 .nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
 .nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
 
-/* Library CTA */
 .library-cta {
   background: linear-gradient(135deg, rgba(201, 123, 123, 0.08), rgba(232, 180, 180, 0.12));
   border: 1.5px solid var(--border);
@@ -115,7 +113,6 @@ nav {
   box-shadow: 0 12px 28px rgba(201, 123, 123, 0.35);
 }
 
-/* History article */
 .history {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -178,7 +175,6 @@ nav {
 }
 .history-body p:last-child { margin-bottom: 0; }
 
-/* Book section */
 .book-section {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -200,83 +196,68 @@ nav {
   color: var(--stone-muted);
   margin-bottom: 24px;
 }
-.pdf-reader-container {
+
+.pdf-viewer {
   position: relative;
   width: 100%;
+  height: min(78vh, 820px);
+  min-height: 520px;
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--border);
-  background: #2c2422;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.pdf-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 12px 20px;
   background: #1f1a19;
-  color: #fff;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  gap: 12px;
-  flex-wrap: wrap;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
 }
-.pdf-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.pdf-btn {
-  background: var(--rose);
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.pdf-btn:hover { background: #b56a6a; }
-.pdf-btn:disabled { background: #555; opacity: 0.5; cursor: not-allowed; }
-.pdf-page-indicator {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--rose-soft);
-}
-.pdf-canvas-wrap {
+.pdf-viewer iframe {
   width: 100%;
-  max-height: 700px;
-  overflow: auto;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  background: #3a3230;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #2c2422;
 }
-canvas.pdf-canvas {
-  max-width: 100%;
-  height: auto;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  border-radius: 4px;
+.pdf-fallback {
+  display: none;
+  padding: 40px 24px;
+  color: #fff;
+  text-align: center;
+}
+.pdf-fallback.show { display: block; }
+.pdf-fallback a {
+  color: var(--rose-soft);
+  font-weight: 600;
 }
 
-.btn-book-full {
-  display: inline-flex; align-items: center; gap: 8px;
+.book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
   margin-top: 20px;
+}
+.btn-book {
+  display: inline-flex; align-items: center; gap: 8px;
   padding: 11px 22px;
-  background: var(--rose-light);
-  color: var(--rose);
-  border: 1px solid var(--border);
   border-radius: 100px;
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
 }
+.btn-book-full {
+  background: var(--rose);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(201, 123, 123, 0.28);
+}
 .btn-book-full:hover {
+  background: #b56a6a;
+  transform: translateY(-2px);
+}
+.btn-book-alt {
+  background: var(--rose-light);
+  color: var(--rose);
+  border: 1px solid var(--border);
+}
+.btn-book-alt:hover {
   background: var(--rose);
   color: #fff;
   border-color: var(--rose);
@@ -291,30 +272,24 @@ canvas.pdf-canvas {
 }
 .credits a { color: var(--rose); font-weight: 500; text-decoration: none; }
 .credits a:hover { text-decoration: underline; }
-
 .reveal {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-
 @media (max-width: 720px) {
   .history { padding: 28px 22px; }
   .library-cta { padding: 28px 22px; }
+  .book-section { padding: 28px 18px; }
+  .pdf-viewer { min-height: 420px; height: 70vh; }
 }
 </style>
-<!-- PDF.js desde CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-</script>
 </head>
 <body>
 <div class="ambient"></div>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
-
 <div class="wrap">
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-logo-link">
@@ -333,45 +308,44 @@ canvas.pdf-canvas {
     </div>
   </nav>
 
-  <!-- Biblioteca CTA -->
   <div class="library-cta reveal">
     <h2>Biblioteca Virtual de San Miguel de Allende</h2>
-    <p>Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio[cite: 1].</p>
+    <p>Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio.</p>
     <a href="http://sanmigueldeallende.gob.mx/noticia/librossanmiguel" target="_blank" rel="noopener" class="btn-library">
       Conocer Biblioteca Virtual
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
-  <!-- Libro digital interactivo con visor PDF.js -->
   <section class="book-section reveal">
     <h2>Libro Digital Interactivo</h2>
-    <p>Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende.</p>
-    
-    <div class="pdf-reader-container">
-      <div class="pdf-toolbar">
-        <div class="pdf-controls">
-          <button class="pdf-btn" id="prevPage">Anterior</button>
-          <span class="pdf-page-indicator" id="pageInfo">Cargando documento...</span>
-          <button class="pdf-btn" id="nextPage">Siguiente</button>
-        </div>
-        <div class="pdf-controls">
-          <button class="pdf-btn" id="zoomOut">- Zoom</button>
-          <button class="pdf-btn" id="zoomIn">+ Zoom</button>
-        </div>
-      </div>
-      <div class="pdf-canvas-wrap" id="canvasContainer">
-        <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+    <p>Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende[cite: 1].</p>
+
+    <div class="pdf-viewer" id="pdfViewer">
+      <iframe
+        id="pdfFrame"
+        title="Libro San Miguel de Allende"
+        src="https://docs.google.com/gview?url=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf&embedded=true"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+      <div class="pdf-fallback" id="pdfFallback">
+        <p style="margin-bottom:14px;">Si el visor no carga, abre el libro directamente:</p>
+        <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener">Descargar / abrir PDF</a>
       </div>
     </div>
 
-    <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book-full">
-      Abrir PDF en pantalla completa
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-    </a>
+    <div class="book-actions">
+      <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book btn-book-full">
+        Abrir PDF completo
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+      <a href="https://mozilla.github.io/pdf.js/web/viewer.html?file=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book btn-book-alt">
+        Visor PDF.js
+      </a>
+    </div>
   </section>
 
-  <!-- Historia -->
   <article class="history reveal">
     <header class="history-header">
       <span class="history-tag">San Miguel de Allende · Joya Colonial</span>
@@ -385,7 +359,6 @@ canvas.pdf-canvas {
       <p>Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza[cite: 1].</p>
       <p>Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias[cite: 1].</p>
       <p>También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos[cite: 1].</p>
-
       <h2>Cronología histórica — El primer San Miguel, el San Miguel de los Chichimecas</h2>
       <p>Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas[cite: 1].</p>
       <p>Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos[cite: 1].</p>
@@ -393,11 +366,9 @@ canvas.pdf-canvas {
       <p>Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros[cite: 1].</p>
       <p>Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial[cite: 1].</p>
       <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 su población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra[cite: 1].</p>
-
       <h2>El segundo San Miguel, San Miguel el Grande</h2>
       <p>La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama[cite: 1].</p>
       <p>El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México[cite: 1].</p>
-
       <h2>El tercer San Miguel, San Miguel de Allende</h2>
       <p>En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina[cite: 1].</p>
       <p>No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel[cite: 1].</p>
@@ -408,109 +379,30 @@ canvas.pdf-canvas {
   </article>
 
   <footer class="credits reveal">
-    <p>Vive San Miguel · Historia y patrimonio</p>
+    <p>Vive San Miguel · Historia y patrimonio[cite: 1]</p>
   </footer>
 </div>
-
 <script>
-// Animación de entrada al hacer scroll
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 70);
+      setTimeout(() => entry.target.classList.et('visible'), i * 70);
       observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 reveals.forEach(el => observer.observe(el));
 
-// Lógica de PDF.js para lectura interactiva de páginas
-const url = 'https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf';
-
-let pdfDoc = null,
-    pageNum = 1,
-    pageRendering = false,
-    pageNumPending = null,
-    scale = 1.25,
-    canvas = document.getElementById('pdfCanvas'),
-    ctx = canvas.getContext('2d');
-
-function renderPage(num) {
-  pageRendering = true;
-  pdfDoc.getPage(num).then(function(page) {
-    let viewport = page.getViewport({scale: scale});
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    let renderContext = {
-      canvasContext: ctx,
-      viewport: viewport
-    };
-    let renderTask = page.render(renderContext);
-
-    renderTask.promise.then(function() {
-      pageRendering = false;
-      if (pageNumPending !== null) {
-        renderPage(pageNumPending);
-        pageNumPending = null;
-      }
-    });
-  });
-
-  document.getElementById('pageInfo').textContent = `Página ${num} de ${pdfDoc.numPages}`;
-  document.getElementById('prevPage').disabled = (num <= 1);
-  document.getElementById('nextPage').disabled = (num >= pdfDoc.numPages);
-}
-
-function queueRenderPage(num) {
-  if (pageRendering) {
-    pageNumPending = num;
-  } else {
-    renderPage(num);
+const frame = document.getElementById('pdfFrame');
+const fallback = document.getElementById('pdfFallback');
+let loaded = false;
+frame.addEventListener('load', () => { loaded = true; });
+setTimeout(() => {
+  if (!loaded) {
+    fallback.classList.add('show');
   }
-}
-
-function onPrevPage() {
-  if (pageNum <= 1) return;
-  pageNum--;
-  queueRenderPage(pageNum);
-}
-document.getElementById('prevPage').addEventListener('click', onPrevPage);
-
-function onNextPage() {
-  if (pageNum >= pdfDoc.numPages) return;
-  pageNum++;
-  queueRenderPage(pageNum);
-}
-document.getElementById('nextPage').addEventListener('click', onNextPage);
-
-document.getElementById('zoomIn').addEventListener('click', () => {
-  if (scale < 2.0) {
-    scale += 0.25;
-    queueRenderPage(pageNum);
-  }
-});
-
-document.getElementById('zoomOut').addEventListener('click', () => {
-  if (scale > 0.75) {
-    scale -= 0.25;
-    queueRenderPage(pageNum);
-  }
-});
-
-// Cargar el documento PDF configurando CORS (vía proxy si es necesario o directo)
-pdfjsLib.getDocument({
-  url: url,
-  cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-  cMapPacked: true
-}).promise.then(function(pdfDoc_) {
-  pdfDoc = pdfDoc_;
-  renderPage(pageNum);
-}).catch(function(error) {
-  console.error('Error al cargar el PDF:', error);
-  document.getElementById('pageInfo').textContent = 'Error al cargar el documento.';
-});
+}, 8000);
 </script>
 </body>
 </html>
