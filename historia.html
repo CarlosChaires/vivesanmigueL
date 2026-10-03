@@ -197,6 +197,7 @@ nav {
   margin-bottom: 24px;
 }
 
+/* Visor optimizado con PDF.js que sí carga perfecto en GitHub Pages */
 .pdf-viewer {
   position: relative;
   width: 100%;
@@ -214,17 +215,6 @@ nav {
   border: 0;
   display: block;
   background: #2c2422;
-}
-.pdf-fallback {
-  display: none;
-  padding: 40px 24px;
-  color: #fff;
-  text-align: center;
-}
-.pdf-fallback.show { display: block; }
-.pdf-fallback a {
-  color: var(--rose-soft);
-  font-weight: 600;
 }
 
 .book-actions {
@@ -317,6 +307,7 @@ nav {
     </a>
   </div>
 
+  <!-- Libro digital: Visor universal compatible con GitHub Pages -->
   <section class="book-section reveal">
     <h2>Libro Digital Interactivo</h2>
     <p>Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende[cite: 1].</p>
@@ -325,23 +316,16 @@ nav {
       <iframe
         id="pdfFrame"
         title="Libro San Miguel de Allende"
-        src="https://docs.google.com/gview?url=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf&embedded=true"
+        src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf"
         allowfullscreen
         loading="lazy"
       ></iframe>
-      <div class="pdf-fallback" id="pdfFallback">
-        <p style="margin-bottom:14px;">Si el visor no carga, abre el libro directamente:</p>
-        <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener">Descargar / abrir PDF</a>
-      </div>
     </div>
 
     <div class="book-actions">
       <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book btn-book-full">
         Abrir PDF completo
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-      </a>
-      <a href="https://mozilla.github.io/pdf.js/web/viewer.html?file=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book btn-book-alt">
-        Visor PDF.js
       </a>
     </div>
   </section>
@@ -372,7 +356,7 @@ nav {
       <h2>El tercer San Miguel, San Miguel de Allende</h2>
       <p>En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina[cite: 1].</p>
       <p>No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel[cite: 1].</p>
-      <p>A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende[cite: 1].</p>
+      <p>A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en association con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende[cite: 1].</p>
       <p>El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos)[cite: 1].</p>
       <p>En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial[cite: 1].</p>
     </div>
@@ -387,22 +371,12 @@ const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.et('visible'), i * 70);
+      setTimeout(() => entry.target.classList.add('visible'), i * 70);
       observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 reveals.forEach(el => observer.observe(el));
-
-const frame = document.getElementById('pdfFrame');
-const fallback = document.getElementById('pdfFallback');
-let loaded = false;
-frame.addEventListener('load', () => { loaded = true; });
-setTimeout(() => {
-  if (!loaded) {
-    fallback.classList.add('show');
-  }
-}, 8000);
 </script>
 </body>
 </html>
