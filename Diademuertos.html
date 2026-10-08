@@ -186,7 +186,6 @@ body::before {
   box-shadow: 0 16px 36px -10px rgba(43, 34, 30, 0.1);
 }
 
-/* Corrección estricta para móviles: se apilan en columna y la imagen fluye responsiva */
 @media (max-width: 768px) {
   .event { 
     grid-template-columns: 1fr; 
@@ -197,7 +196,7 @@ body::before {
   position: relative; 
   background: #e8e1da;
   width: 100%;
-  height: 240px; /* Altura controlada para móvil */
+  height: 240px;
 }
 @media (min-width: 769px) {
   .event-media {
@@ -237,7 +236,6 @@ body::before {
 }
 .event-place strong { color: var(--gold); font-weight: 500; }
 
-/* Enlaces de mapas */
 .map-link {
   color: inherit;
   text-decoration: none;
@@ -291,7 +289,7 @@ body::before {
 }
 .btn-ghost:hover { border-color: var(--marigold); color: var(--marigold); }
 
-/* TikTok Section Estilizada y Visible */
+/* TikTok Section */
 .social-section {
   margin-top: 64px;
   background: var(--panel);
@@ -603,6 +601,62 @@ body::before {
       </div>
     </article>
 
+    <!-- GALA DE CATRINAS (Viñedo San Miguel) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/189kS8AKtxAFw_Q5RREUyVlfNFZeGCLx_" alt="Gala de Catrinas">
+      </div>
+      <div class="event-content">
+        <div class="event-date">25 octubre · 16:00 h</div>
+        <h2 class="event-title">Gala de Catrinas</h2>
+        <p class="event-place"><strong>Gala Internacional · Musas Runway International</strong> · <a href="https://maps.google.com/?q=Vinedo+San+Miguel+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Viñedo San Miguel 📍</a></p>
+        <p class="event-desc">Celebración internacional de moda, arte y Día de Muertos. Incluye recepción de gala, alfombra roja, pasarela de Catrinas y experiencia gastronómica de 3 tiempos con música en vivo.</p>
+        <div class="chips"><span class="chip">Black Tie / Etiqueta</span></div>
+        <div class="extras">
+          <h4>Programa del Evento</h4>
+          <ul>
+            <li>Maestro de Ceremonia: Barbara Cardenas y Maximiliano Musas</li>
+            <li>4:00 PM: Recepción de Gala (Alfombra Roja · Cóctel de Bienvenida)</li>
+            <li>5:00 PM: Pasarela de Catrinas (Sindashi MX, Jesus Hernandez, Alberto Rega)</li>
+            <li>6:00 PM: Experiencia Gastronómica (Cena de tres tiempos con música en vivo)</li>
+            <li>7:00 PM: Cierre de la Gala</li>
+          </ul>
+        </div>
+        <div class="btns">
+          <a href="https://vinedosansmiguel.com.mx" class="btn btn-ghost" target="_blank" rel="noopener">Sitio web oficial</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CENA SANTA CATRINA (Viñedos San Lucas) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/1DMn7NBQ4OqmmUeMEp7WSjNGwDVbx6G-W" alt="Cena Santa Catrina">
+      </div>
+      <div class="event-content">
+        <div class="event-date">30 octubre</div>
+        <h2 class="event-title">Cena Santa Catrina</h2>
+        <p class="event-place"><strong>Restaurante Vinícola</strong> · <a href="https://maps.google.com/?q=Vinedos+San+Lucas+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Viñedos San Lucas 📍</a></p>
+        <p class="event-desc">Noche de gala inolvidable con cena gourmet de 4 tiempos y barra libre en bebidas seleccionadas. Rigurosa etiqueta de Catrina o Catrín. Mesas compartidas.</p>
+        <div class="chips"><span class="chip">Desde $2,500 MXN p/p</span><span class="chip">Duración: 3 hrs aprox.</span></div>
+        <div class="extras">
+          <h4>Menú de 4 Tiempos y Bebidas</h4>
+          <ul>
+            <li>Entrada: Grissinis y crotones con pasta de ajo horneado, tapenade y cremoso de cabra.</li>
+            <li>Primer Tiempo: Crema de papa y poro con tocino crujiente y parmesano.</li>
+            <li>Segundo Tiempo: Salmón con risotto al azafrán.</li>
+            <li>Tercer Tiempo: Manhattan steak con salsa de mostaza antigua y puré de papa.</li>
+            <li>Cuarto Tiempo: Tarta de calabaza con semillas caramelizadas.</li>
+            <li>Bebidas: Vino blanco y tinto de la casa, cerveza, Tequila Enemigo.</li>
+          </ul>
+        </div>
+        <div class="btns">
+          <a href="https://vinedossanlucas.rezdy.com/595956/cena-santa-catrina-2024" class="btn btn-gold" target="_blank" rel="noopener">Reservar en Línea</a>
+          <a href="tel:4151559141" class="btn btn-ghost">Tel: (415) 155 9141</a>
+        </div>
+      </div>
+    </article>
+
     <article class="event">
       <div class="event-media">
         <img src="https://lh3.googleusercontent.com/d/14injYyT7c6vtBqV0h3EVWIOrN9iU-yyH" alt="Entre Vinos y Muertos">
@@ -616,6 +670,41 @@ body::before {
         <div class="btns">
           <a href="https://api.whatsapp.com/send?phone=524151135250" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
           <a href="https://vinedotresraices.com/" class="btn btn-ghost" target="_blank" rel="noopener">Sitio web</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CELEBRACIÓN DÍA DE MUERTOS (Los Remedios) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/1gFu22LH4f-vE2cQXywVSnn5mA2f2Iivc" alt="Celebración Día de Muertos - Los Remedios">
+      </div>
+      <div class="event-content">
+        <div class="event-date">31 octubre · 17:00 h</div>
+        <h2 class="event-title">Celebración Día de Muertos</h2>
+        <p class="event-place"><strong>Cena Maridaje 4 Tiempos</strong> · <a href="https://maps.google.com/?q=Los+Remedios+Hacienda+y+Vinedo+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Los Remedios Hacienda y Viñedo 📍</a></p>
+        <p class="event-desc">Celebración especial que incluye una exquisita cena maridaje de 4 tiempos acompañada de vino de la casa en un entorno inigualable.</p>
+        <div class="chips"><span class="chip">$2,500 MXN p/p</span><span class="chip">Incluye vino</span></div>
+        <div class="btns">
+          <a href="https://api.whatsapp.com/send?phone=524151400607" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
+          <a href="tel:4151400607" class="btn btn-ghost">Tel: 415 140 0607</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- A CIEGAS CON LAS ALMAS (Bruma / Noia) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/12rTLT8cONxJJ-7PggM79ut6wMaFYopc9" alt="A Ciegas con las Almas">
+      </div>
+      <div class="event-content">
+        <div class="event-date">31 oct — 01 nov</div>
+        <h2 class="event-title">A Ciegas con las Almas</h2>
+        <p class="event-place"><strong>Noia (Sazón con Alma)</strong> · <a href="https://maps.google.com/?q=Bruma+Wine+Resort+Valle+de+Guadalupe" target="_blank" rel="noopener" class="map-link">Bruma Wine Resort, Valle de Guadalupe 📍</a></p>
+        <p class="event-desc">Experiencia sensorial y cena exclusiva de Día de Muertos con 4 tiempos y maridaje de vinos Bruma.</p>
+        <div class="chips"><span class="chip">$2,200 MXN p/p</span><span class="chip">Cena Sensorial</span></div>
+        <div class="btns">
+          <a href="https://api.whatsapp.com/send?phone=524151772569" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
         </div>
       </div>
     </article>
@@ -674,6 +763,42 @@ body::before {
       </div>
     </article>
 
+    <!-- LA OFRENDA VIVA (Clevia / Ayoli) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/1h5VCI9BiqUjYO5Ur-B74zVS9gexJapNN" alt="La Ofrenda Viva">
+      </div>
+      <div class="event-content">
+        <div class="event-date">01 noviembre · 09:00 — 15:00 h</div>
+        <h2 class="event-title">La Ofrenda Viva</h2>
+        <p class="event-place"><strong>Brunch Gastronómico</strong> · <a href="https://maps.google.com/?q=Clevia+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Clevia Autograph Collection / Ayoli 📍</a></p>
+        <p class="event-desc">Brunch excepcional para celebrar lo que permanece, con vistas inigualables y un ambiente tradicional contemporáneo.</p>
+        <div class="chips"><span class="chip">$990 MXN adulto</span><span class="chip">$490 MXN niño (4-11 años)</span></div>
+        <div class="btns">
+          <a href="https://api.whatsapp.com/send?phone=524151968769" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
+          <a href="tel:4151968769" class="btn btn-ghost">Tel: 415 196 8769</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- FIESTA CATRINA (La Única) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/1UJAbxvwe_JO3JcCi2x70-LWA9CEmvOLN" alt="Fiesta Catrina">
+      </div>
+      <div class="event-content">
+        <div class="event-date">01 noviembre · 20:00 h</div>
+        <h2 class="event-title">Fiesta Catrina</h2>
+        <p class="event-place"><strong>La Única (Ú SMA)</strong> · <a href="https://maps.google.com/?q=Diez+de+Sollano+y+Davalos+14+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Diez de Sollano y Dávalos 14, Centro 📍</a></p>
+        <p class="event-desc">"Tradición que se vive en La Única". Gran celebración nocturna de Día de Muertos con alimentos, bebidas y servicio de primera categoría incluidos.</p>
+        <div class="chips"><span class="chip">$3,500 MXN p/p</span><span class="chip">Todo incluido</span></div>
+        <div class="btns">
+          <a href="https://api.whatsapp.com/send?phone=524156881393" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
+          <a href="https://www.opentable.com.mx" class="btn btn-ghost" target="_blank" rel="noopener">OpenTable</a>
+        </div>
+      </div>
+    </article>
+
     <article class="event">
       <div class="event-media">
         <img src="https://lh3.googleusercontent.com/d/1toM0Xo_76z-pCcxX2VqBS87dtpv0jFNf" alt="Brunch">
@@ -704,6 +829,41 @@ body::before {
         <div class="btns">
           <a href="https://api.whatsapp.com/send?phone=524151041602" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
           <a href="https://haciendaelsantuario.com/es" class="btn btn-ghost" target="_blank" rel="noopener">Sitio web</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- BUFFET DE DESAYUNO (Hotel Real de Minas) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/166CtzhQTKAqZk5mLESwy5AcdAxdbHXv_" alt="Buffet de Desayuno - Hotel Real de Minas">
+      </div>
+      <div class="event-content">
+        <div class="event-date">02 noviembre · 07:00 — 12:00 h</div>
+        <h2 class="event-title">Buffet de Desayuno Día de Muertos</h2>
+        <p class="event-place"><strong>Restaurante Zeferino</strong> · <a href="https://maps.google.com/?q=Hotel+Real+de+Minas+de+San+Miguel+Allende" target="_blank" rel="noopener" class="map-link">Hotel Real de Minas 📍</a></p>
+        <p class="event-desc">Buffet especial con platillos alusivos a la temporada. Visita y vota por tu altar favorito. ¡Incluye bebidas alcohólicas y cerveza! <em>¡Niños disfrazados o pintados comen gratis (aplican restricciones)!</em></p>
+        <div class="chips"><span class="chip">Adultos: $999 MXN</span><span class="chip">Niños: $359 MXN</span></div>
+        <div class="btns">
+          <a href="https://api.whatsapp.com/send?phone=524151561005" class="btn btn-gold" target="_blank" rel="noopener">Reservar WhatsApp</a>
+          <a href="https://www.realdeminas.com" class="btn btn-ghost" target="_blank" rel="noopener">Sitio web oficial</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ALTUS HAT BAR (Lil Quince) -->
+    <article class="event">
+      <div class="event-media">
+        <img src="https://lh3.googleusercontent.com/d/1sTKg3yCAOcq7ytE5W7uE3NtfWnd50iTg" alt="Altus Hat Bar - Lil Quince">
+      </div>
+      <div class="event-content">
+        <div class="event-date">01 — 02 noviembre</div>
+        <h2 class="event-title">Altus Hat Bar en Lil Quince</h2>
+        <p class="event-place"><strong>Experiencia Exclusiva</strong> · <a href="https://maps.google.com/?q=Lil+Quince+San+Miguel+de+Allende" target="_blank" rel="noopener" class="map-link">Lil Quince 📍</a></p>
+        <p class="event-desc">Experiencia sofisticada de sombreros personalizados y alta coctelería con vistas panorámicas privilegiadas durante los días principales.</p>
+        <div class="chips"><span class="chip">Coctelería</span><span class="chip">Vistas panorámicas</span></div>
+        <div class="btns">
+          <a href="https://www.quincesma.com/sma/" class="btn btn-ghost" target="_blank" rel="noopener">Sitio web oficial</a>
         </div>
       </div>
     </article>
