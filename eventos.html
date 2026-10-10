@@ -24,9 +24,7 @@
       --sombra-suave: 0 10px 30px -10px rgba(28, 24, 22, 0.06);
       --transicion: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--fondo);
@@ -38,9 +36,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-
     .container { max-width: 1200px; margin: 0 auto; width: 100%; }
-
     header {
       display: flex;
       justify-content: space-between;
@@ -51,71 +47,65 @@
       gap: 1.5rem;
       flex-wrap: wrap;
     }
-
     .brand-container { display: flex; align-items: center; gap: 1.2rem; }
     .brand-logo { height: 65px; width: auto; object-fit: contain; }
-
     .header-title span {
       font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em;
       color: var(--terracota); font-weight: 600; display: block; margin-bottom: 0.3rem;
     }
-
     .header-title h1 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 500; color: var(--noche);
     }
-
     .admin-actions-group { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
-
     .admin-trigger, .btn-home, .btn-admin-action {
       background: transparent; border: 1px solid var(--borde); color: var(--gris-texto);
       padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer;
       transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
     }
-
     .admin-trigger, .admin-panel-btn { display: none; }
     body.admin-logged .admin-panel-btn { display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
     
     .admin-trigger:hover, .btn-home:hover, .btn-admin-action:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
     body.admin-logged .admin-panel-btn:hover { background: var(--cantera-hover); color: var(--blanco); }
-
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
-
     .event-card {
       background: var(--blanco); border-radius: 16px; overflow: hidden;
       border: 1px solid var(--borde); box-shadow: var(--sombra-suave);
       transition: var(--transicion); display: flex; flex-direction: column; position: relative;
     }
     .event-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(28, 24, 22, 0.1); }
-
     .event-img-wrapper { width: 100%; height: 200px; position: relative; background: var(--gris-suave); overflow: hidden; }
     .event-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
     .event-card:hover .event-img-wrapper img { transform: scale(1.03); }
-
     .event-category {
       position: absolute; top: 1rem; left: 1rem; background: rgba(28, 24, 22, 0.75);
       backdrop-filter: blur(4px); color: var(--blanco); padding: 0.3rem 0.8rem;
       border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; font-weight: 500; z-index: 2;
     }
-
     .event-date-badge {
       position: absolute; bottom: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(4px); color: var(--noche); padding: 0.3rem 0.8rem;
       border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 2;
       text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-
     .admin-card-actions {
       position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10;
     }
     body.admin-logged .admin-card-actions { display: flex; }
-    .btn-card-delete {
-      background: rgba(179, 57, 57, 0.9); color: var(--blanco); border: none;
+    .btn-card-edit, .btn-card-delete {
+      border: none;
       width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: var(--transicion); box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 0.9rem;
     }
+    .btn-card-edit {
+      background: rgba(217, 155, 38, 0.95); color: var(--blanco);
+    }
+    .btn-card-edit:hover { background: #c48a1f; transform: scale(1.1); }
+    .btn-card-delete {
+      background: rgba(179, 57, 57, 0.9); color: var(--blanco);
+    }
     .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
-
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
     .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
     
@@ -124,7 +114,6 @@
       text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transicion);
     }
     .event-location:hover { color: var(--cantera-hover); text-decoration: underline; }
-
     .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.2rem; flex: 1; }
     
     .event-web-link {
@@ -134,29 +123,27 @@
       width: fit-content;
     }
     .event-web-link:hover { background: var(--cantera); color: var(--blanco); }
-
     .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
     .event-price { font-weight: 600; color: var(--terracota); }
-
     footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
     .footer-actions { display: flex; gap: 1rem; align-items: center; }
     .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
     .footer-lock:hover { color: var(--cantera); }
-
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--blanco); width: 100%; max-width: 450px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 480px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box h3 { font-family: 'Playfair Display', serif; margin-bottom: 1.2rem; }
     .form-group { margin-bottom: 1.1rem; }
     label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
     input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
     textarea { resize: vertical; height: 80px; }
     .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); }
     .btn-primary:hover { background: var(--cantera-hover); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
     .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
   </style>
 </head>
 <body id="pageBody">
-
   <div class="container">
     <header>
       <div class="brand-container">
@@ -171,12 +158,10 @@
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
     </header>
-
     <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
   </div>
-
   <footer>
-    <div>Vive San Miguel de Allende &copy; 2026</div>
+    <div>Vive San Miguel de Allende &copy; 2026[cite: 1]</div>
     <div class="footer-actions">
       <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
     </div>
@@ -185,7 +170,7 @@
   <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3 style="font-family:'Playfair Display',serif; margin-bottom: 1.2rem;">Acceso Restringido</h3>
+      <h3>Acceso Restringido</h3>
       <form onsubmit="handleLogin(event)">
         <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
@@ -194,11 +179,12 @@
     </div>
   </div>
 
-  <!-- Modal Agregar Evento a Sheets -->
+  <!-- Modal Agregar / Editar Evento -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box">
-      <h3 style="font-family:'Playfair Display',serif; margin-bottom: 1.2rem;">Nuevo Evento en Google Sheet</h3>
-      <form onsubmit="handleSaveEvent(event)">
+      <h3 id="eventModalTitle">Nuevo Evento en Google Sheet</h3>
+      <form onsubmit="handleSaveEvent(event)" id="eventForm">
+        <input type="hidden" id="editRowIndex" value="">
         <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
         <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
         <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
@@ -217,8 +203,8 @@
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxYxrq4uYKDjd0Z_kMaIswzPHS9pymsrKtOSk7eKa5DegGXYvFpCboYuvXbK1B4QhMo/exec";
-
     let globalEvents = [];
+    let isEditMode = false;
 
     function parseCloudImageUrl(url) {
       if (!url) return '';
@@ -247,11 +233,9 @@
       if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
       if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
-
       if (isNaN(cleanStr) && !/^\d{4}-\d{2}-\d{2}$/.test(cleanStr) && !cleanStr.includes('T')) {
         return cleanStr.charAt(0).toUpperCase() + cleanStr.slice(1);
       }
-
       try {
         let date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
@@ -264,14 +248,35 @@
         } else {
           date = new Date(cleanStr);
         }
-
         if (isNaN(date.getTime())) return cleanStr;
-
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
         let formatted = date.toLocaleDateString('es-ES', options);
         return formatted.charAt(0).toUpperCase() + formatted.slice(1);
       } catch (e) {
         return cleanStr;
+      }
+    }
+
+    function toDateInputValue(rawDate) {
+      if (!rawDate) return '';
+      const cleanStr = String(rawDate).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) return cleanStr;
+      try {
+        let date;
+        if (cleanStr.includes('T')) {
+          date = new Date(cleanStr);
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
+        } else {
+          date = new Date(cleanStr);
+        }
+        if (isNaN(date.getTime())) return '';
+        const y = date.getUTCFullYear();
+        const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(date.getUTCDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      } catch (e) {
+        return '';
       }
     }
 
@@ -283,7 +288,6 @@
         
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
-
         globalEvents = data.map((item, index) => {
           const findKey = (possibleKeys) => {
             const found = Object.keys(item).find(k => {
@@ -292,16 +296,13 @@
             });
             return found ? String(item[found] || '').trim() : '';
           };
-
           const rawDateValue = findKey(['date', 'fecha', 'dia']);
           const rawImgValue = findKey(['img', 'imagen', 'foto']);
           const processedImg = parseCloudImageUrl(rawImgValue);
           const locationName = findKey(['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende';
           const webLinkValue = findKey(['link', 'web', 'enlace', 'url']);
-
           const mapQuery = encodeURIComponent(`${locationName}, San Miguel de Allende, Gto.`);
           const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-
           return {
             rowIndex: index + 2,
             name: findKey(['name', 'nombre', 'evento']) || 'Evento sin nombre',
@@ -314,13 +315,12 @@
             mapsUrl: mapsUrl,
             link: webLinkValue,
             img: processedImg || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            rawImg: rawImgValue,
             desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
           };
         });
-
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
         let activeEvents = globalEvents.filter(ev => {
           if (!ev.rawDate) return true;
           try {
@@ -338,13 +338,11 @@
             return true;
           }
         });
-
         activeEvents.sort((a, b) => {
           if (!a.rawDate) return 1;
           if (!b.rawDate) return -1;
           return new Date(a.rawDate) - new Date(b.rawDate);
         });
-
         globalEvents = activeEvents;
         renderEvents();
       } catch (error) {
@@ -376,6 +374,7 @@
               <span class="event-category">${ev.category}</span>
               <span class="event-date-badge">📅 ${ev.date}</span>
               <div class="admin-card-actions">
+                <button class="btn-card-edit" onclick="openEditModal(${ev.rowIndex})" title="Editar evento">✏️</button>
                 <button class="btn-card-delete" onclick="handleDeleteEvent(${ev.rowIndex}, '${ev.name.replace(/'/g, "\\'")}')" title="Eliminar evento de Google Sheets">🗑️</button>
               </div>
               <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
@@ -406,6 +405,33 @@
     }
 
     function openEventModal() {
+      isEditMode = false;
+      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento en Google Sheet';
+      document.getElementById('submitEventBtn').textContent = 'Guardar en Google Sheets';
+      document.getElementById('editRowIndex').value = '';
+      document.getElementById('eventForm').reset();
+      document.getElementById('eventModal').classList.add('active');
+    }
+
+    function openEditModal(rowIndex) {
+      const event = globalEvents.find(ev => ev.rowIndex === rowIndex);
+      if (!event) {
+        alert('No se encontró el evento para editar.');
+        return;
+      }
+      isEditMode = true;
+      document.getElementById('eventModalTitle').textContent = 'Editar Evento';
+      document.getElementById('submitEventBtn').textContent = 'Actualizar en Google Sheets';
+      document.getElementById('editRowIndex').value = rowIndex;
+      document.getElementById('inputName').value = event.name || '';
+      document.getElementById('inputCategory').value = event.category || '';
+      document.getElementById('inputDate').value = toDateInputValue(event.rawDate);
+      document.getElementById('inputTime').value = event.time || '';
+      document.getElementById('inputPrice').value = event.price || '';
+      document.getElementById('inputLocation').value = event.location || '';
+      document.getElementById('inputWeb').value = event.link || '';
+      document.getElementById('inputImg').value = event.rawImg || event.img || '';
+      document.getElementById('inputDesc').value = event.desc || '';
       document.getElementById('eventModal').classList.add('active');
     }
     
@@ -424,11 +450,12 @@
     async function handleSaveEvent(e) {
       e.preventDefault();
       const btn = document.getElementById('submitEventBtn');
-      btn.innerText = "Guardando en Google Sheets...";
+      const originalText = btn.innerText;
+      btn.innerText = isEditMode ? "Actualizando en Google Sheets..." : "Guardando en Google Sheets...";
       btn.disabled = true;
 
-      const newRecord = {
-        action: "add",
+      const payload = {
+        action: isEditMode ? "update" : "add",
         name: document.getElementById('inputName').value,
         category: document.getElementById('inputCategory').value,
         date: document.getElementById('inputDate').value,
@@ -440,26 +467,33 @@
         desc: document.getElementById('inputDesc').value
       };
 
+      if (isEditMode) {
+        payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
+      }
+
       try {
         const response = await fetch(WEB_APP_URL, {
           method: 'POST',
-          body: JSON.stringify(newRecord)
+          body: JSON.stringify(payload)
         });
         const result = await response.json();
         
         if(result.status === 'success') {
-          alert('¡Evento agregado y guardado en Google Sheets con éxito!');
+          alert(isEditMode 
+            ? '¡Evento actualizado correctamente en Google Sheets!' 
+            : '¡Evento agregado y guardado en Google Sheets con éxito!');
           document.getElementById('eventModal').classList.remove('active');
           e.target.reset();
+          isEditMode = false;
           fetchGoogleSheetData(); 
         } else {
-          alert('Error al guardar: ' + result.message);
+          alert('Error al ' + (isEditMode ? 'actualizar' : 'guardar') + ': ' + (result.message || 'Respuesta inesperada del servidor'));
         }
       } catch(err) {
         console.error(err);
         alert('Ocurrió un error de conexión con Apps Script.');
       } finally {
-        btn.innerText = "Guardar en Google Sheets";
+        btn.innerText = originalText;
         btn.disabled = false;
       }
     }
@@ -468,19 +502,16 @@
       if (!confirm(`¿Estás seguro de eliminar permanentemente el evento "${eventName}" de Google Sheets?`)) {
         return;
       }
-
       const deletePayload = {
         action: "delete",
         rowIndex: rowIndex
       };
-
       try {
         const response = await fetch(WEB_APP_URL, {
           method: 'POST',
           body: JSON.stringify(deletePayload)
         });
         const result = await response.json();
-
         if (result.status === 'success') {
           alert('¡Evento eliminado correctamente de Google Sheets!');
           fetchGoogleSheetData();
