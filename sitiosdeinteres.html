@@ -5,13 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel | Sitios de Interés</title>
     
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#b76f72">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
         :root {
+            --cream: #f7f1e8;
+            --paper: #fffdf9;
+            --ink: #211c18;
+            --muted: #756b62;
+            --terracotta: #a74d32;
+            --terracotta-dark: #71301f;
+            --gold: #b9955d;
+            --gold-soft: rgba(185,149,93,.22);
+            --line: rgba(57,40,29,.12);
+            --shadow: 0 24px 70px rgba(48,31,21,.09);
+            --shadow-sm: 0 10px 35px rgba(48,31,21,.07);
+            --radius: 24px;
             --bg-color: #f6f4f1;
             --surface-color: rgba(255,255,255,.78);
             --surface-card: #ffffff;
@@ -1209,6 +1227,15 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
+
+        // Registro del Service Worker para funcionamiento sin conexión (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+            });
+        }
     </script>
 </body>
 </html>
