@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Turismo | San Miguel de Allende</title>
+
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d48384">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -302,7 +307,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 San Miguel de Allende &bull; Dirección de Turismo y Fomento Económico</p>
+        <p>&copy; 2026 San Miguel de Allende &bull; Dirección de Turismo y Fomento Económico[cite: 1]</p>
     </footer>
 
     <script>
@@ -330,6 +335,15 @@
         }
 
         animate();
+
+        // Registro del Service Worker para funcionamiento sin conexión (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+            });
+        }
     </script>
 </body>
 </html>
