@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel | Hospedaje, Hoteles y Glamping</title>
     
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A64B2A">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -847,7 +851,7 @@
                     maps: 'https://maps.google.com/?q=Calz+De+La+Presa+85+San+Miguel+de+Allende',
                     web: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende',
                     booking: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende/book/dates-of-stay',
-                    whatsapp: 'https://api.whatsapp.com/send?phone=5214431378728&text=Hola,%C2%BFMe%20pueden%20ayudar?',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=5214431378728&text=Hola,%20%C2%BFMe%20pueden%20ayudar?',
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyVxsXibuKD2y3er5V_BuBQMS_OVOFP7TfnUnHQc0dZlxOJGmblTGCfnoMURVN3zWUsWfAyzkFMdXI7A9A8n3OGpQiAZnvY1V08XuswrEiQy0mNO2Gn9hoN5-XmEn4MoQ5IJ1-=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlZ-z3baYAUDvIMi26bPNmKVWvAPp1T4FQezlvMME47tIGABdiLH2GipC1rH4215bulwe6Bcn9hoLN6HsTZ-8r3O4GfnEeABnAbj9mMqisUuZiLghMaM8fXgEk5RZcFJaGy8Ntv=s1360-w1360-h1020-rw',
@@ -1439,11 +1443,54 @@
             XLSX.writeFile(workbook, "plantilla_hospedaje_vivesanmiguel.xlsx");
         }
 
+        function handleHotelsExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        const data = getStoredHotels();
+                        json.forEach((row, idx) => {
+                            if (idx < data.hotels.length) {
+                                if (row.nombre) data.hotels[idx].name = row.nombre;
+                                if (row.tipo_hospedaje) data.hotels[idx].type = row.tipo_hospedaje;
+                                if (row.descripcion) data.hotels[idx].desc = row.descripcion;
+                                if (row.rango_precio) data.hotels[idx].price = row.rango_precio;
+                                if (row.telefono) data.hotels[idx].phone = row.telefono;
+                                if (row.direccion_escrita) data.hotels[idx].address = row.direccion_escrita;
+                                if (row.direccion_maps) data.hotels[idx].maps = row.direccion_maps;
+                                if (row.sitio_web) data.hotels[idx].web = row.sitio_web;
+                                if (row.booking_url !== undefined) data.hotels[idx].booking = row.booking_url;
+                                if (row.whatsapp_url !== undefined) data.hotels[idx].whatsapp = row.whatsapp_url;
+                                
+                                let imgs = [];
+                                if (row.foto_1) imgs.push(row.foto_1);
+                                if (row.foto_2) imgs.push(row.foto_2);
+                                if (row.foto_3) imgs.push(row.foto_3);
+                                if (imgs.length > 0) data.hotels[idx].images = imgs;
+                            }
+                        });
+                        saveStoredHotels(data, true);
+                        alert('¡Importación masiva completada!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
             renderHotels();
         });
 
+        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
@@ -1523,6 +1570,15 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
+
+        // Registro del Service Worker para funcionamiento sin conexión (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+            });
+        }
     </script>
 </body>
 </html>
