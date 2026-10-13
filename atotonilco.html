@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Santuario de Atotonilco · Vive San Miguel</title>
+
+<!-- PWA Manifest & Theme -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8c533e">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -629,46 +634,4 @@ nav {
       <h3>¿Listo para descubrir más?</h3>
       <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
     </div>
-    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </div>
-
-  <!-- VIDEO -->
-  <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce el santuario</h2>
-    <div class="media-block">
-      <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/iwV8_J7W3_c" allowfullscreen title="Video Santuario de Atotonilco"></iframe>
-      </div>
-      <div class="cta-side">
-        <p>Video cortesía de <strong>Gobierno de la Gente</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por la arquitectura, los murales y el legado espiritual de este templo barroco.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="credits reveal">
-    <p>Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a> · UNESCO</p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Patrimonio de la Humanidad</p>
-  </footer>
-
-</div>
-
-<script>
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => observer.observe(el));
-</script>
-</body>
-</html>
+    <a
