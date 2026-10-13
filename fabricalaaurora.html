@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fábrica La Aurora · Vive San Miguel</title>
+
+<!-- PWA Manifest & Theme -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8c533e">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,11 +18,11 @@
   --cantera-dark: #663b2c;
   --cantera-light: #f4efe9;
   --stone: #252422;
-  --stone-muted: #6b6762;
+  --stone-muted: #5a5652;
   --paper: #fcfbfa;
   --surface: #ffffff;
   --border: rgba(140, 83, 62, 0.12);
-  --shadow: 0 25px 50px -15px rgba(37, 36, 34, 0.05);
+  --shadow: 0 25px 50px -15px rgba(37, 36, 34, 0.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,24 +43,24 @@ body {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 40% at 15% 15%, rgba(140, 83, 62, 0.03), transparent),
-    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(200, 165, 130, 0.035), transparent);
+    radial-gradient(ellipse 70% 40% at 15% 15%, rgba(140, 83, 62, 0.04), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(200, 165, 130, 0.04), transparent);
 }
 
 .orb {
   position: fixed;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.15;
+  opacity: 0.18;
   pointer-events: none;
   z-index: 0;
   animation: drift 28s ease-in-out infinite;
 }
-.orb-1 { width: 500px; height: 500px; background: rgba(140, 83, 62, 0.06); top: -10%; left: -10%; }
-.orb-2 { width: 420px; height: 420px; background: rgba(189, 153, 118, 0.06); bottom: 0; right: -5%; animation-delay: -10s; }
+.orb-1 { width: 480px; height: 480px; background: rgba(140, 83, 62, 0.08); top: -10%; left: -8%; }
+.orb-2 { width: 400px; height: 400px; background: rgba(189, 153, 118, 0.07); bottom: 0; right: -5%; animation-delay: -10s; }
 @keyframes drift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(15px, -15px) scale(1.02); }
+  50% { transform: translate(18px, -14px) scale(1.03); }
 }
 
 .wrap {
@@ -66,7 +71,6 @@ body {
   padding: 0 28px 100px;
 }
 
-/* Nav con Logotipo */
 nav {
   display: flex;
   justify-content: space-between;
@@ -75,7 +79,6 @@ nav {
   gap: 16px;
   flex-wrap: wrap;
 }
-
 .brand-logo-link {
   display: flex;
   align-items: center;
@@ -103,13 +106,11 @@ nav {
   letter-spacing: -0.01em;
   color: var(--stone);
 }
-
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
 .nav-back {
   display: inline-flex;
   align-items: center;
@@ -128,7 +129,6 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
-
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px;
@@ -148,7 +148,6 @@ nav {
 .nav-social.ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; border-color: transparent; }
 .nav-social.tk:hover { background: #111; color: #fff; border-color: transparent; }
 
-/* Hero */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -260,7 +259,6 @@ nav {
   display: block;
 }
 
-/* Sections */
 .section { margin-bottom: 56px; }
 .section-label {
   font-size: 11px;
@@ -568,7 +566,7 @@ nav {
   <section class="section reveal">
     <div class="section-label">Experiencia única</div>
     <h2>¿Por qué visitar la Fábrica La Aurora?</h2>
-    <div class="cards">
+    <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
       <div class="card">
         <div class="card-icon">🏛️</div>
         <h3>Un viaje en el tiempo</h3>
@@ -591,7 +589,7 @@ nav {
   <section class="section reveal">
     <div class="section-label">Planifica tu visita</div>
     <h2>Información práctica y recomendaciones</h2>
-    <div class="cards">
+    <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
       <div class="card">
         <div class="card-icon">🕐</div>
         <h3>Horarios & Acceso</h3>
@@ -668,6 +666,15 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(el => observer.observe(el));
+
+// Registro del Service Worker para funcionamiento sin conexión (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+      .catch(err => console.log('Error al registrar el Service Worker:', err));
+  });
+}
 </script>
 </body>
 </html>
