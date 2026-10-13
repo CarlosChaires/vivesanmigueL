@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instituto Allende · Vive San Miguel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Allende · Vive San Miguel</title>
+
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#a65d4a">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
 :root {
   --cantera: #8c533e;
   --cantera-dark: #663b2c;
@@ -363,6 +368,8 @@ nav {
 }
 .card li::before { content: '·'; color: var(--cantera); font-weight: 700; flex-shrink: 0; }
 .card p { font-size: 0.92rem; color: var(--stone-muted); }
+.card a { color: var(--cantera); text-decoration: none; font-weight: 500; }
+.card a:hover { text-decoration: underline; }
 
 .highlight {
   margin: 56px 0;
@@ -474,7 +481,7 @@ nav {
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-</style>
+    </style>
 </head>
 <body>
 
@@ -640,6 +647,15 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(el => observer.observe(el));
+
+// Registro del Service Worker para funcionamiento sin conexión (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+      .catch(err => console.log('Error al registrar el Service Worker:', err));
+  });
+}
 </script>
 </body>
 </html>
