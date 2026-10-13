@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel | Guía Turística Oficial</title>
     
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#a74d32">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -772,7 +776,7 @@
                 <div class="eyebrow">Guía curada · San Miguel de Allende</div>
                 <h1>Vive la ciudad.<br><em>Siente su historia.</em></h1>
                 <p class="hero-copy">
-                    Una selección de lugares, experiencias, culture y rincones que hacen de San Miguel
+                    Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel
                     un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.
                 </p>
                 <div class="hero-actions">
@@ -965,7 +969,7 @@
                     key: 'item_vinedos',
                     title: 'Viñedos',
                     desc: 'Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/vi%C3%B1edos',
+                    link: 'https://carloschaires.github.io/vivesanmigueL/viñedos',
                     img: 'https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000'
                 }
             ],
@@ -1314,6 +1318,15 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
+
+        // Registro del Service Worker para funcionamiento sin conexión (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+            });
+        }
     </script>
 </body>
 </html>
