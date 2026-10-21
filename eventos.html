@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cartelera de Eventos | Vive San Miguel</title>
 
-  <!-- PWA Manifest & Theme -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#d97864">
 
@@ -63,15 +62,15 @@
       font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 500; color: var(--noche);
     }
     .admin-actions-group { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
-    .admin-trigger, .btn-home, .btn-admin-action {
+    .admin-trigger, .btn-home {
       background: transparent; border: 1px solid var(--borde); color: var(--gris-texto);
       padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer;
       transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
     }
-    .admin-trigger, .admin-panel-btn { display: none; }
+    .admin-trigger { display: none; }
     body.admin-logged .admin-panel-btn { display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
     
-    .admin-trigger:hover, .btn-home:hover, .btn-admin-action:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
+    .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
     body.admin-logged .admin-panel-btn:hover { background: var(--cantera-hover); color: var(--blanco); }
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
     .event-card {
@@ -94,33 +93,25 @@
       border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 2;
       text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    .admin-card-actions {
-      position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10;
-    }
+    .admin-card-actions { position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10; }
     body.admin-logged .admin-card-actions { display: flex; }
     .btn-card-edit, .btn-card-delete {
-      border: none;
-      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: var(--transicion); box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 0.9rem;
     }
-    .btn-card-edit {
-      background: rgba(217, 155, 38, 0.95); color: var(--blanco);
-    }
+    .btn-card-edit { background: rgba(217, 155, 38, 0.95); color: var(--blanco); }
     .btn-card-edit:hover { background: #c48a1f; transform: scale(1.1); }
-    .btn-card-delete {
-      background: rgba(179, 57, 57, 0.9); color: var(--blanco);
-    }
+    .btn-card-delete { background: rgba(179, 57, 57, 0.9); color: var(--blanco); }
     .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
+    
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
     .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
-    
     .event-location {
       font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500;
       text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transicion);
     }
     .event-location:hover { color: var(--cantera-hover); text-decoration: underline; }
     .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.2rem; flex: 1; }
-    
     .event-web-link {
       display: inline-flex; align-items: center; gap: 0.4rem; background: var(--gris-suave);
       color: var(--noche); padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem;
@@ -134,17 +125,27 @@
     .footer-actions { display: flex; gap: 1rem; align-items: center; }
     .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
     .footer-lock:hover { color: var(--cantera); }
+    
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--blanco); width: 100%; max-width: 480px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box::-webkit-scrollbar { width: 6px; }
+    .modal-box::-webkit-scrollbar-thumb { background: #dcdcdc; border-radius: 4px; }
     .modal-box h3 { font-family: 'Playfair Display', serif; margin-bottom: 1.2rem; }
     .form-group { margin-bottom: 1.1rem; }
     label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
     input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
     textarea { resize: vertical; height: 80px; }
-    .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); }
+    .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); font-size: 1rem; }
     .btn-primary:hover { background: var(--cantera-hover); }
     .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+    
+    /* Componente de Subida de Archivos */
+    .file-upload-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
+    .btn-upload { background: var(--gris-suave); color: var(--noche); border: 1px solid var(--borde); padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transicion); font-size: 0.85rem; }
+    .btn-upload:hover { background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
+    .divider-text { text-align: center; font-size: 0.75rem; color: var(--gris-texto); margin: 8px 0; text-transform: uppercase; letter-spacing: 0.1em; }
+    
     .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
   </style>
 </head>
@@ -166,7 +167,7 @@
     <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
   </div>
   <footer>
-    <div>Vive San Miguel de Allende &copy; 2026[cite: 1]</div>
+    <div>Vive San Miguel de Allende &copy; 2026</div>
     <div class="footer-actions">
       <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
     </div>
@@ -187,19 +188,31 @@
   <!-- Modal Agregar / Editar Evento -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box">
-      <h3 id="eventModalTitle">Nuevo Evento en Google Sheet</h3>
+      <h3 id="eventModalTitle">Nuevo Evento</h3>
       <form onsubmit="handleSaveEvent(event)" id="eventForm">
         <input type="hidden" id="editRowIndex" value="">
-        <div class="form-group"><label>Nombre del Evento (name)</label><input type="text" id="inputName" required></div>
-        <div class="form-group"><label>Categoría (category)</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
-        <div class="form-group"><label>Fecha (date: YYYY-MM-DD)</label><input type="date" id="inputDate" required></div>
-        <div class="form-group"><label>Horario (time)</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
-        <div class="form-group"><label>Costo / Precio (price)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
-        <div class="form-group"><label>Ubicación (location)</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Enlace Web / Sitio Oficial (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..." ></div>
-        <div class="form-group"><label>Enlace de Imagen (Google Drive o URL)</label><input type="text" id="inputImg" placeholder="https://..." required></div>
-        <div class="form-group"><label>Descripción (desc)</label><textarea id="inputDesc" required></textarea></div>
-        <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Google Sheets</button>
+        <div class="form-group"><label>Nombre del Evento</label><input type="text" id="inputName" required></div>
+        <div class="form-group"><label>Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
+        <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
+        <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..." ></div>
+        
+        <div class="form-group">
+          <label>Imagen del Evento</label>
+          <div class="file-upload-wrapper">
+            <button type="button" class="btn-upload" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
+            <input type="file" id="inputFile" accept="image/*" style="display: none;" onchange="processImageUpload(event)">
+            <span id="fileNameDisplay" style="font-size: 0.8rem; color: var(--gris-texto);">Sin archivo</span>
+          </div>
+          <div class="divider-text">— o ingresa la url —</div>
+          <input type="text" id="inputImg" placeholder="https://..." required>
+          <img id="imgPreview" style="display:none; width:100%; margin-top:12px; border-radius:8px; max-height: 220px; object-fit: cover;">
+        </div>
+
+        <div class="form-group"><label>Descripción</label><textarea id="inputDesc" required></textarea></div>
+        <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
       </form>
     </div>
   </div>
@@ -207,29 +220,69 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxYxrq4uYKDjd0Z_kMaIswzPHS9pymsrKtOSk7eKa5DegGXYvFpCboYuvXbK1B4QhMo/exec";
+    // AQUÍ ESTÁ TU NUEVA URL INTEGRADA
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxwo-5RmT3hZHSMfufzA2VEMs44LSizwq9pSnpf0w8mNET8uRtbUo95B_ffoZU14p6k/exec";
     let globalEvents = [];
     let isEditMode = false;
+
+    // Procesa el archivo de imagen local, lo comprime a Base64 en un Canvas para envío
+    function processImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      document.getElementById('fileNameDisplay').textContent = file.name;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 1000; const MAX_HEIGHT = 1000;
+          let width = img.width; let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+          } else {
+            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+          }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Convertimos a base64 (JPEG al 80% de calidad)
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          
+          document.getElementById('inputImg').value = dataUrl;
+          const preview = document.getElementById('imgPreview');
+          preview.src = dataUrl;
+          preview.style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Escucha el input manual para previsualizar URLs
+    document.getElementById('inputImg').addEventListener('input', function(e) {
+       const preview = document.getElementById('imgPreview');
+       if(e.target.value && !e.target.value.startsWith('data:image')) {
+         preview.src = parseCloudImageUrl(e.target.value);
+         preview.style.display = 'block';
+       } else if (!e.target.value) {
+         preview.style.display = 'none';
+       }
+    });
 
     function parseCloudImageUrl(url) {
       if (!url) return '';
       let cleanUrl = String(url).trim();
-      
       if (cleanUrl.includes('drive.google.com')) {
         let fileId = '';
         if (cleanUrl.includes('/file/d/')) {
-          const parts = cleanUrl.split('/file/d/');
-          if (parts[1]) {
-            fileId = parts[1].split('/')[0];
-          }
+          fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
         } else if (cleanUrl.includes('id=')) {
-          const urlParams = new URLSearchParams(cleanUrl.split('?')[1]);
-          fileId = urlParams.get('id');
+          fileId = new URLSearchParams(cleanUrl.split('?')[1]).get('id');
         }
-        
-        if (fileId) {
-          return `https://lh3.googleusercontent.com/d/${fileId}=s800`;
-        }
+        if (fileId) return `https://lh3.googleusercontent.com/d/${fileId}=s800`;
       }
       return cleanUrl;
     }
@@ -238,9 +291,6 @@
       if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
       if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
-      if (isNaN(cleanStr) && !/^\d{4}-\d{2}-\d{2}$/.test(cleanStr) && !cleanStr.includes('T')) {
-        return cleanStr.charAt(0).toUpperCase() + cleanStr.slice(1);
-      }
       try {
         let date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
@@ -257,9 +307,7 @@
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
         let formatted = date.toLocaleDateString('es-ES', options);
         return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-      } catch (e) {
-        return cleanStr;
-      }
+      } catch (e) { return cleanStr; }
     }
 
     function toDateInputValue(rawDate) {
@@ -276,13 +324,8 @@
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return '';
-        const y = date.getUTCFullYear();
-        const m = String(date.getUTCMonth() + 1).padStart(2, '0');
-        const d = String(date.getUTCDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-      } catch (e) {
-        return '';
-      }
+        return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+      } catch (e) { return ''; }
     }
 
     async function fetchGoogleSheetData() {
@@ -290,68 +333,51 @@
       try {
         const response = await fetch(WEB_APP_URL);
         if (!response.ok) throw new Error('Error al conectar con Web App');
-        
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
+        
         globalEvents = data.map((item, index) => {
           const findKey = (possibleKeys) => {
             const found = Object.keys(item).find(k => {
               const cleanK = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-              return possibleKeys.some(pk => cleanK.includes(pk.toLowerCase()));
+              return possibleKeys.some(pk => cleanK.includes(pk));
             });
             return found ? String(item[found] || '').trim() : '';
           };
-          const rawDateValue = findKey(['date', 'fecha', 'dia']);
-          const rawImgValue = findKey(['img', 'imagen', 'foto']);
-          const processedImg = parseCloudImageUrl(rawImgValue);
-          const locationName = findKey(['location', 'lugar', 'ubicacion']) || 'San Miguel de Allende';
-          const webLinkValue = findKey(['link', 'web', 'enlace', 'url']);
-          const mapQuery = encodeURIComponent(`${locationName}, San Miguel de Allende, Gto.`);
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+          const rawDateValue = findKey(['date', 'fecha']);
+          const rawImgValue = findKey(['img', 'imagen']);
+          const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
           return {
             rowIndex: index + 2,
-            name: findKey(['name', 'nombre', 'evento']) || 'Evento sin nombre',
+            name: findKey(['name', 'nombre']) || 'Evento',
             category: findKey(['category', 'categoria']) || 'General',
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
-            time: findKey(['time', 'horario', 'hora']) || 'Todo el día',
-            price: findKey(['price', 'costo', 'precio']) || 'Acceso Libre',
+            time: findKey(['time', 'hora']) || 'Todo el día',
+            price: findKey(['price', 'costo']) || 'Entrada Libre',
             location: locationName,
-            mapsUrl: mapsUrl,
-            link: webLinkValue,
-            img: processedImg || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', San Miguel de Allende, Gto.')}`,
+            link: findKey(['web', 'link', 'enlace']),
+            img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             rawImg: rawImgValue,
             desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
           };
         });
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+
+        const today = new Date(); today.setHours(0, 0, 0, 0);
         let activeEvents = globalEvents.filter(ev => {
           if (!ev.rawDate) return true;
           try {
-            let eventDate;
-            if (/^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)) {
-              const parts = ev.rawDate.split('-');
-              eventDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-            } else {
-              eventDate = new Date(ev.rawDate);
-            }
+            let eventDate = /^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate) ? new Date(ev.rawDate.split('-')[0], ev.rawDate.split('-')[1] - 1, ev.rawDate.split('-')[2]) : new Date(ev.rawDate);
             if (isNaN(eventDate.getTime())) return true;
             eventDate.setHours(0, 0, 0, 0);
             return eventDate >= today;
-          } catch (e) {
-            return true;
-          }
+          } catch (e) { return true; }
         });
-        activeEvents.sort((a, b) => {
-          if (!a.rawDate) return 1;
-          if (!b.rawDate) return -1;
-          return new Date(a.rawDate) - new Date(b.rawDate);
-        });
+        activeEvents.sort((a, b) => (!a.rawDate ? 1 : !b.rawDate ? -1 : new Date(a.rawDate) - new Date(b.rawDate)));
         globalEvents = activeEvents;
         renderEvents();
       } catch (error) {
-        console.error("Error al sincronizar con Sheets:", error);
         container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento.</div>`;
       }
     }
@@ -364,15 +390,11 @@
 
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
-      if (!globalEvents.length) { 
-        container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles por el momento.</div>'; 
-        return; 
-      }
+      if (!globalEvents.length) { container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles por el momento.</div>'; return; }
       
       let html = '';
       globalEvents.forEach(ev => {
-        const webButtonHtml = (ev.link && ev.link !== '') ? `<a href="${ev.link}" target="_blank" class="event-web-link">🌐 Sitio Oficial / Boletos ↗</a>` : '';
-        
+        const webButton = (ev.link) ? `<a href="${ev.link}" target="_blank" class="event-web-link">🌐 Sitio Oficial / Boletos ↗</a>` : '';
         html += `
           <div class="event-card">
             <div class="event-img-wrapper">
@@ -380,15 +402,15 @@
               <span class="event-date-badge">📅 ${ev.date}</span>
               <div class="admin-card-actions">
                 <button class="btn-card-edit" onclick="openEditModal(${ev.rowIndex})" title="Editar evento">✏️</button>
-                <button class="btn-card-delete" onclick="handleDeleteEvent(${ev.rowIndex}, '${ev.name.replace(/'/g, "\\'")}')" title="Eliminar evento de Google Sheets">🗑️</button>
+                <button class="btn-card-delete" onclick="handleDeleteEvent(${ev.rowIndex}, '${ev.name.replace(/'/g, "\\'")}')" title="Eliminar evento">🗑️</button>
               </div>
               <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
             </div>
             <div class="event-body">
               <h3 class="event-name">${ev.name}</h3>
-              <a href="${ev.mapsUrl}" target="_blank" class="event-location" title="Ver ubicación en Google Maps">📍 ${ev.location} ↗</a>
+              <a href="${ev.mapsUrl}" target="_blank" class="event-location">📍 ${ev.location} ↗</a>
               <p class="event-desc">${ev.desc}</p>
-              ${webButtonHtml}
+              ${webButton}
               <div class="event-meta">
                 <span>🕒 ${ev.time}</span>
                 <span class="event-price">${ev.price}</span>
@@ -401,33 +423,36 @@
 
     function openLoginModal() {
       if (localStorage.getItem('sma_admin_logged') === 'true') {
-        localStorage.removeItem('sma_admin_logged');
-        checkSession();
-        alert('Sesión cerrada correctamente.');
+        localStorage.removeItem('sma_admin_logged'); checkSession();
       } else {
         document.getElementById('loginModal').classList.add('active');
       }
     }
 
+    function resetModal() {
+      document.getElementById('eventForm').reset();
+      document.getElementById('imgPreview').style.display = 'none';
+      document.getElementById('fileNameDisplay').textContent = 'Sin archivo';
+    }
+
     function openEventModal() {
       isEditMode = false;
-      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento en Google Sheet';
-      document.getElementById('submitEventBtn').textContent = 'Guardar en Google Sheets';
+      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento';
+      document.getElementById('submitEventBtn').textContent = 'Guardar Evento';
       document.getElementById('editRowIndex').value = '';
-      document.getElementById('eventForm').reset();
+      resetModal();
       document.getElementById('eventModal').classList.add('active');
     }
 
     function openEditModal(rowIndex) {
       const event = globalEvents.find(ev => ev.rowIndex === rowIndex);
-      if (!event) {
-        alert('No se encontró el evento para editar.');
-        return;
-      }
+      if (!event) return;
       isEditMode = true;
-      document.getElementById('eventModalTitle').textContent = 'Editar Evento';
-      document.getElementById('submitEventBtn').textContent = 'Actualizar en Google Sheets';
+      resetModal();
+      document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
+      document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
       document.getElementById('editRowIndex').value = rowIndex;
+      
       document.getElementById('inputName').value = event.name || '';
       document.getElementById('inputCategory').value = event.category || '';
       document.getElementById('inputDate').value = toDateInputValue(event.rawDate);
@@ -435,7 +460,13 @@
       document.getElementById('inputPrice').value = event.price || '';
       document.getElementById('inputLocation').value = event.location || '';
       document.getElementById('inputWeb').value = event.link || '';
+      
       document.getElementById('inputImg').value = event.rawImg || event.img || '';
+      if(event.rawImg || event.img) {
+         document.getElementById('imgPreview').src = parseCloudImageUrl(event.rawImg || event.img);
+         document.getElementById('imgPreview').style.display = 'block';
+      }
+      
       document.getElementById('inputDesc').value = event.desc || '';
       document.getElementById('eventModal').classList.add('active');
     }
@@ -446,17 +477,14 @@
         localStorage.setItem('sma_admin_logged', 'true');
         document.getElementById('loginModal').classList.remove('active');
         checkSession();
-        alert('¡Bienvenido, Administrador!');
-      } else { 
-        alert('Credenciales incorrectas'); 
-      }
+      } else { alert('Credenciales incorrectas'); }
     }
 
     async function handleSaveEvent(e) {
       e.preventDefault();
       const btn = document.getElementById('submitEventBtn');
       const originalText = btn.innerText;
-      btn.innerText = isEditMode ? "Actualizando en Google Sheets..." : "Guardando en Google Sheets...";
+      btn.innerText = isEditMode ? "Guardando cambios..." : "Publicando evento...";
       btn.disabled = true;
 
       const payload = {
@@ -472,82 +500,31 @@
         desc: document.getElementById('inputDesc').value
       };
 
-      if (isEditMode) {
-        payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
-      }
+      if (isEditMode) payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
 
       try {
-        const response = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
+        const response = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
         const result = await response.json();
-        
         if(result.status === 'success') {
-          alert(isEditMode 
-            ? '¡Evento actualizado correctamente en Google Sheets!' 
-            : '¡Evento agregado y guardado en Google Sheets con éxito!');
           document.getElementById('eventModal').classList.remove('active');
-          e.target.reset();
-          isEditMode = false;
           fetchGoogleSheetData(); 
-        } else {
-          alert('Error al ' + (isEditMode ? 'actualizar' : 'guardar') + ': ' + (result.message || 'Respuesta inesperada del servidor'));
-        }
-      } catch(err) {
-        console.error(err);
-        alert('Ocurrió un error de conexión con Apps Script.');
-      } finally {
-        btn.innerText = originalText;
-        btn.disabled = false;
-      }
+        } else { alert('Error: ' + result.message); }
+      } catch(err) { alert('Hubo un problema de conexión al guardar.'); } 
+      finally { btn.innerText = originalText; btn.disabled = false; }
     }
 
     async function handleDeleteEvent(rowIndex, eventName) {
-      if (!confirm(`¿Estás seguro de eliminar permanentemente el evento "${eventName}" de Google Sheets?`)) {
-        return;
-      }
-      const deletePayload = {
-        action: "delete",
-        rowIndex: rowIndex
-      };
+      if (!confirm(`¿Eliminar definitivamente "${eventName}"?`)) return;
       try {
-        const response = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          body: JSON.stringify(deletePayload)
-        });
+        const response = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "delete", rowIndex: rowIndex }) });
         const result = await response.json();
-        if (result.status === 'success') {
-          alert('¡Evento eliminado correctamente de Google Sheets!');
-          fetchGoogleSheetData();
-        } else {
-          alert('Error al eliminar: ' + (result.message || 'No se pudo procesar la solicitud en el servidor.'));
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Ocurrió un error de conexión al intentar borrar el registro.');
-      }
+        if (result.status === 'success') fetchGoogleSheetData();
+        else alert('Error: ' + result.message);
+      } catch (err) { alert('Fallo de conexión al eliminar.'); }
     }
 
-    window.onclick = function(event) {
-      if (event.target.classList.contains('modal-overlay')) {
-        event.target.classList.remove('active');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => { 
-      checkSession(); 
-      fetchGoogleSheetData(); 
-    });
-
-    // Registro del Service Worker para funcionamiento sin conexión (PWA)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-          .catch(err => console.log('Error al registrar el Service Worker:', err));
-      });
-    }
+    window.onclick = e => { if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active'); }
+    document.addEventListener('DOMContentLoaded', () => { checkSession(); fetchGoogleSheetData(); });
   </script>
 </body>
 </html>
