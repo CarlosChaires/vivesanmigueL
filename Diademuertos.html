@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Día de Muertos · San Miguel de Allende</title>
+<title>Día de Muertos 2026 · Vive San Miguel</title>
 <meta name="theme-color" content="#b27a32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,18 +52,25 @@ body::before {
 }
 .logo {
   display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text);
+  transition: opacity 0.2s ease;
 }
-.logo-mark {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--marigold));
-  display: grid; place-items: center;
-  font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: #fff;
+.logo:hover { opacity: 0.8; }
+.logo img {
+  height: 38px; /* Altura ajustada para destacar el logo sin romper el header */
+  width: auto;
+  object-fit: contain;
 }
-.logo span { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; }
+.logo-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
 .back {
   font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--text-dim); text-decoration: none; border: 1px solid var(--line);
-  padding: 10px 18px; border-radius: 2px; transition: all 0.25s ease;
+  padding: 10px 18px; border-radius: 24px; transition: all 0.25s ease;
   background: rgba(255,255,255,0.55);
 }
 .back:hover { color: var(--marigold); border-color: var(--marigold); background: #fff; }
@@ -152,12 +159,12 @@ body::before {
 
 .event {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 0;
   background: var(--panel);
   border: 1px solid var(--line-soft);
   box-shadow: 0 8px 28px -12px rgba(43,34,30,0.07);
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   overflow: hidden;
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -171,14 +178,12 @@ body::before {
 .event-media {
   position: relative;
   background: #e8e1da;
-  min-height: 220px;
-}
-@media (min-width: 781px) {
-  .event-media { min-height: 100%; aspect-ratio: 3/4; }
+  min-height: 240px;
+  overflow: hidden;
 }
 .event-media img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  position: absolute; inset: 0;
+  position: absolute; top: 0; left: 0;
   transition: transform 0.7s ease;
 }
 .event:hover .event-media img { transform: scale(1.04); }
@@ -265,15 +270,16 @@ body::before {
 <div class="site">
 
   <div class="top">
-    <a href="#" class="logo">
-      <div class="logo-mark">✦</div>
-      <span>San Miguel de Allende</span>
+    <!-- Logo embebido directamente desde tu archivo de Google Drive -->
+    <a href="https://vivesanmiguel.lat" class="logo">
+      <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA" alt="Vive San Miguel Logo">
+      <span class="logo-text">Vive San Miguel</span>
     </a>
-    <a href="#" class="back">← Volver</a>
+    <a href="https://vivesanmiguel.lat/blog" class="back">← Regresar</a>
   </div>
 
   <header class="hero">
-    <div class="hero-kicker">Temporada 2025 · Guanajuato</div>
+    <div class="hero-kicker">Temporada 2026 · Guanajuato</div>
     <h1>Día de <em>Muertos</em></h1>
     <p class="hero-lead">Una celebración de memoria, tradición, gastronomía y experiencias en San Miguel de Allende.</p>
     <div class="hero-stats">
@@ -312,7 +318,7 @@ body::before {
         <div class="event-place">
           <a href="https://www.google.com/maps/search/?api=1&query=Casa+de+la+Cultura+del+Chorro+San+Miguel+de+Allende" target="_blank" rel="noopener">Casa de la Cultura del Chorro</a>
         </div>
-        <p class="event-desc">Taller cultural oficial de Día de Muertos organizado por el Gobierno Municipal 2024-2027 a través de la Dirección de Cultura y Tradiciones.</p>
+        <p class="event-desc">Taller cultural oficial de Día de Muertos organizado por el Gobierno Municipal a través de la Dirección de Cultura y Tradiciones.</p>
         <div class="event-meta"><span>17:00 h</span><span>Evento Oficial</span><span>Taller</span></div>
       </div>
     </article>
@@ -1233,7 +1239,7 @@ body::before {
   </section>
 
   <footer class="footer">
-    Día de Muertos · San Miguel de Allende, Guanajuato
+    Día de Muertos 2026 · Vive San Miguel, Guanajuato
   </footer>
 </div>
 
