@@ -1,607 +1,530 @@
-[
-    {
-        "titulo": "Crear eventos / Iniciar sesión",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "English",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Otros Eventos Locales",
-        "descripcion": "10:00 am – 1:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "My Mexican Kitchen with Jazz",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Otras Artes",
-        "descripcion": "10:00 am – 12:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Instituto Allende Casa Museo",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Fábrica La Aurora",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Biblioteca Pública AC",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cine",
-        "descripcion": "1:15 pm – 2:15 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Teatro Santa Ana en La Biblioteca",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cine Bacco",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Música en Vivo",
-        "descripcion": "5:30 pm – 7:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Victor Monterrubio",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Karaoke / DJs",
-        "descripcion": "6:00 pm – 10:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "The Restaurant",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Chicago's Radio DJ KIDSCRATCH",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Raindog Lounge, Cantina & Terraza",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Daniel Árciga",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cent'Anni - Casa de entretenimiento EAT en vivo",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Lady Zen",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Sala Quetzal de la Biblioteca Pública",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Steven Jaymes",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Casa Europa México",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Los Rabeats",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Gen X",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "El Sindicato, Centro Cultural Comunitario",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Johnny’s Piano Bar",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Frad",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "The Last Chance Band",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Danza",
-        "descripcion": "7:30 pm – 9:30 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Teatro",
-        "descripcion": "12:00 pm – 1:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "David Mendoza",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Viñedo San Miguel",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Lyka Violinista",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "NÓMADA",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Teatro Ángela Peralta",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Daniel Hendrick tenor",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Paprika Restaurante and Music House",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Josué Tacoronte – Guitarrista Flamenco y Clásico",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Shago Fraga",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Pila Seca Social Club",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Hotel Hacienda el Santuario",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Elihú “Blue Beard”",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Festivales",
-        "descripcion": "4:00 pm – 6:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Antonio Lozoya",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "St. Paul’s Anglican / Episcopal Church",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Osmar Aquino",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Sekou Conte",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Chorale San Miguel",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Karen Libby",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Malasaña Rooftop",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Liah Alonso",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Elisea Valdez",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Recibe los eventos en vivo de la semana cada lunes",
-        "descripcion": "Un correo a la semana. Sin spam, te das de baja cuando quieras.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Iniciar Sesión",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartelera de Eventos | Vive San Miguel</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d97864">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cantera: #d97864;
+      --cantera-hover: #c46551;
+      --terracota: #a64b2a;
+      --ocre: #d99b26;
+      --noche: #1c1816;
+      --fondo: #fbf9f6;
+      --blanco: #ffffff;
+      --gris-suave: #f0ebe4;
+      --gris-texto: #6b635e;
+      --rojo-alerta: #b33939;
+      --rojo-hover: #8e2b2b;
+      --borde: rgba(28, 24, 22, 0.08);
+      --sombra-suave: 0 10px 30px -10px rgba(28, 24, 22, 0.06);
+      --transicion: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-]
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--fondo);
+      color: var(--noche);
+      line-height: 1.6;
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--borde);
+      padding-bottom: 1.5rem;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .brand-container { display: flex; align-items: center; gap: 1.2rem; }
+    .brand-logo { height: 65px; width: auto; object-fit: contain; }
+    .header-title span {
+      font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em;
+      color: var(--terracota); font-weight: 600; display: block; margin-bottom: 0.3rem;
+    }
+    .header-title h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 500; color: var(--noche);
+    }
+    .admin-actions-group { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+    .admin-trigger, .btn-home {
+      background: transparent; border: 1px solid var(--borde); color: var(--gris-texto);
+      padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer;
+      transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .admin-trigger { display: none; }
+    body.admin-logged .admin-panel-btn { display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
+    
+    .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
+    body.admin-logged .admin-panel-btn:hover { background: var(--cantera-hover); color: var(--blanco); }
+    .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+    .event-card {
+      background: var(--blanco); border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--borde); box-shadow: var(--sombra-suave);
+      transition: var(--transicion); display: flex; flex-direction: column; position: relative;
+    }
+    .event-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(28, 24, 22, 0.1); }
+    .event-img-wrapper { width: 100%; height: 200px; position: relative; background: var(--gris-suave); overflow: hidden; }
+    .event-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .event-card:hover .event-img-wrapper img { transform: scale(1.03); }
+    .event-category {
+      position: absolute; top: 1rem; left: 1rem; background: rgba(28, 24, 22, 0.75);
+      backdrop-filter: blur(4px); color: var(--blanco); padding: 0.3rem 0.8rem;
+      border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; font-weight: 500; z-index: 2;
+    }
+    .event-date-badge {
+      position: absolute; bottom: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px); color: var(--noche); padding: 0.3rem 0.8rem;
+      border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 2;
+      text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .admin-card-actions { position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10; }
+    body.admin-logged .admin-card-actions { display: flex; }
+    .btn-card-edit, .btn-card-delete {
+      border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transicion); box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 0.9rem;
+    }
+    .btn-card-edit { background: rgba(217, 155, 38, 0.95); color: var(--blanco); }
+    .btn-card-edit:hover { background: #c48a1f; transform: scale(1.1); }
+    .btn-card-delete { background: rgba(179, 57, 57, 0.9); color: var(--blanco); }
+    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
+    
+    .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
+    .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .event-location {
+      font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transicion);
+    }
+    .event-location:hover { color: var(--cantera-hover); text-decoration: underline; }
+    .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.2rem; flex: 1; }
+    .event-web-link {
+      display: inline-flex; align-items: center; gap: 0.4rem; background: var(--gris-suave);
+      color: var(--noche); padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem;
+      text-decoration: none; font-weight: 600; margin-bottom: 1.2rem; transition: var(--transicion);
+      width: fit-content;
+    }
+    .event-web-link:hover { background: var(--cantera); color: var(--blanco); }
+    .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
+    .event-price { font-weight: 600; color: var(--terracota); }
+    footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
+    .footer-actions { display: flex; gap: 1rem; align-items: center; }
+    .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .footer-lock:hover { color: var(--cantera); }
+    
+    .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box::-webkit-scrollbar { width: 6px; }
+    .modal-box::-webkit-scrollbar-thumb { background: #dcdcdc; border-radius: 4px; }
+    .modal-box h3 { font-family: 'Playfair Display', serif; margin-bottom: 1.2rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
+    input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
+    textarea { resize: vertical; height: 80px; }
+    .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); font-size: 1rem; }
+    .btn-primary:hover { background: var(--cantera-hover); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+    
+    /* Componente de Subida de Archivos */
+    .file-upload-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
+    .btn-upload { background: var(--gris-suave); color: var(--noche); border: 1px solid var(--borde); padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transicion); font-size: 0.85rem; }
+    .btn-upload:hover { background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
+    .divider-text { text-align: center; font-size: 0.75rem; color: var(--gris-texto); margin: 8px 0; text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
+  </style>
+</head>
+<body id="pageBody">
+  <div class="container">
+    <header>
+      <div class="brand-container">
+        <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="header-title">
+          <span>Patrimonio y Tradición</span>
+          <h1>Cartelera de Eventos</h1>
+        </div>
+      </div>
+      <div class="admin-actions-group">
+        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
+        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
+      </div>
+    </header>
+    <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
+  </div>
+  <footer>
+    <div>Vive San Miguel de Allende &copy; 2026</div>
+    <div class="footer-actions">
+      <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
+    </div>
+  </footer>
+
+  <!-- Modal Login -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <h3>Acceso Restringido</h3>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
+        <button type="submit" class="btn-primary">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Agregar / Editar Evento -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-box">
+      <h3 id="eventModalTitle">Nuevo Evento</h3>
+      <form onsubmit="handleSaveEvent(event)" id="eventForm">
+        <input type="hidden" id="editRowIndex" value="">
+        <div class="form-group"><label>Nombre del Evento</label><input type="text" id="inputName" required></div>
+        <div class="form-group"><label>Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
+        <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
+        <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..." ></div>
+        
+        <div class="form-group">
+          <label>Imagen del Evento</label>
+          <div class="file-upload-wrapper">
+            <button type="button" class="btn-upload" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
+            <input type="file" id="inputFile" accept="image/*" style="display: none;" onchange="processImageUpload(event)">
+            <span id="fileNameDisplay" style="font-size: 0.8rem; color: var(--gris-texto);">Sin archivo</span>
+          </div>
+          <div class="divider-text">— o ingresa la url —</div>
+          <input type="text" id="inputImg" placeholder="https://..." required>
+          <img id="imgPreview" style="display:none; width:100%; margin-top:12px; border-radius:8px; max-height: 220px; object-fit: cover;">
+        </div>
+
+        <div class="form-group"><label>Descripción</label><textarea id="inputDesc" required></textarea></div>
+        <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const AUTH_USER = "vivesanmiguel";
+    const AUTH_PASS = "c4rl0s1107";
+    // AQUÍ ESTÁ TU NUEVA URL INTEGRADA
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxwo-5RmT3hZHSMfufzA2VEMs44LSizwq9pSnpf0w8mNET8uRtbUo95B_ffoZU14p6k/exec";
+    let globalEvents = [];
+    let isEditMode = false;
+
+    // Procesa el archivo de imagen local, lo comprime a Base64 en un Canvas para envío
+    function processImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      document.getElementById('fileNameDisplay').textContent = file.name;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 1000; const MAX_HEIGHT = 1000;
+          let width = img.width; let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+          } else {
+            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+          }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Convertimos a base64 (JPEG al 80% de calidad)
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          
+          document.getElementById('inputImg').value = dataUrl;
+          const preview = document.getElementById('imgPreview');
+          preview.src = dataUrl;
+          preview.style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Escucha el input manual para previsualizar URLs
+    document.getElementById('inputImg').addEventListener('input', function(e) {
+       const preview = document.getElementById('imgPreview');
+       if(e.target.value && !e.target.value.startsWith('data:image')) {
+         preview.src = parseCloudImageUrl(e.target.value);
+         preview.style.display = 'block';
+       } else if (!e.target.value) {
+         preview.style.display = 'none';
+       }
+    });
+
+    function parseCloudImageUrl(url) {
+      if (!url) return '';
+      let cleanUrl = String(url).trim();
+      if (cleanUrl.includes('drive.google.com')) {
+        let fileId = '';
+        if (cleanUrl.includes('/file/d/')) {
+          fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
+        } else if (cleanUrl.includes('id=')) {
+          fileId = new URLSearchParams(cleanUrl.split('?')[1]).get('id');
+        }
+        if (fileId) return `https://lh3.googleusercontent.com/d/${fileId}=s800`;
+      }
+      return cleanUrl;
+    }
+
+    function formatDateToSpanish(dateString) {
+      if (!dateString) return 'Fecha por confirmar';
+      const cleanStr = String(dateString).trim();
+      if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
+      try {
+        let date;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+          const parts = cleanStr.split('-');
+          date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        } else if (cleanStr.includes('T') && cleanStr.includes('Z')) {
+          date = new Date(cleanStr);
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
+        } else {
+          date = new Date(cleanStr);
+        }
+        if (isNaN(date.getTime())) return cleanStr;
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+        let formatted = date.toLocaleDateString('es-ES', options);
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      } catch (e) { return cleanStr; }
+    }
+
+    function toDateInputValue(rawDate) {
+      if (!rawDate) return '';
+      const cleanStr = String(rawDate).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) return cleanStr;
+      try {
+        let date;
+        if (cleanStr.includes('T')) {
+          date = new Date(cleanStr);
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - (25567 + 2)) * 86400 * 1000);
+        } else {
+          date = new Date(cleanStr);
+        }
+        if (isNaN(date.getTime())) return '';
+        return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+      } catch (e) { return ''; }
+    }
+
+    async function fetchGoogleSheetData() {
+      const container = document.getElementById('eventsContainer');
+      try {
+        const response = await fetch(WEB_APP_URL);
+        if (!response.ok) throw new Error('Error al conectar con Web App');
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
+        
+        globalEvents = data.map((item, index) => {
+          const findKey = (possibleKeys) => {
+            const found = Object.keys(item).find(k => {
+              const cleanK = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+              return possibleKeys.some(pk => cleanK.includes(pk));
+            });
+            return found ? String(item[found] || '').trim() : '';
+          };
+          const rawDateValue = findKey(['date', 'fecha']);
+          const rawImgValue = findKey(['img', 'imagen']);
+          const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
+          return {
+            rowIndex: index + 2,
+            name: findKey(['name', 'nombre']) || 'Evento',
+            category: findKey(['category', 'categoria']) || 'General',
+            rawDate: rawDateValue,
+            date: formatDateToSpanish(rawDateValue),
+            time: findKey(['time', 'hora']) || 'Todo el día',
+            price: findKey(['price', 'costo']) || 'Entrada Libre',
+            location: locationName,
+            mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', San Miguel de Allende, Gto.')}`,
+            link: findKey(['web', 'link', 'enlace']),
+            img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            rawImg: rawImgValue,
+            desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
+          };
+        });
+
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        let activeEvents = globalEvents.filter(ev => {
+          if (!ev.rawDate) return true;
+          try {
+            let eventDate = /^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate) ? new Date(ev.rawDate.split('-')[0], ev.rawDate.split('-')[1] - 1, ev.rawDate.split('-')[2]) : new Date(ev.rawDate);
+            if (isNaN(eventDate.getTime())) return true;
+            eventDate.setHours(0, 0, 0, 0);
+            return eventDate >= today;
+          } catch (e) { return true; }
+        });
+        activeEvents.sort((a, b) => (!a.rawDate ? 1 : !b.rawDate ? -1 : new Date(a.rawDate) - new Date(b.rawDate)));
+        globalEvents = activeEvents;
+        renderEvents();
+      } catch (error) {
+        container.innerHTML = `<div class="empty-state">No se pudieron cargar los eventos en este momento.</div>`;
+      }
+    }
+
+    function checkSession() {
+      const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+      document.body.classList.toggle('admin-logged', isLogged);
+      document.getElementById('lockLabel').innerText = isLogged ? "Cerrar Sesión" : "Acceso Admin";
+    }
+
+    function renderEvents() {
+      const container = document.getElementById('eventsContainer');
+      if (!globalEvents.length) { container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles por el momento.</div>'; return; }
+      
+      let html = '';
+      globalEvents.forEach(ev => {
+        const webButton = (ev.link) ? `<a href="${ev.link}" target="_blank" class="event-web-link">🌐 Sitio Oficial / Boletos ↗</a>` : '';
+        html += `
+          <div class="event-card">
+            <div class="event-img-wrapper">
+              <span class="event-category">${ev.category}</span>
+              <span class="event-date-badge">📅 ${ev.date}</span>
+              <div class="admin-card-actions">
+                <button class="btn-card-edit" onclick="openEditModal(${ev.rowIndex})" title="Editar evento">✏️</button>
+                <button class="btn-card-delete" onclick="handleDeleteEvent(${ev.rowIndex}, '${ev.name.replace(/'/g, "\\'")}')" title="Eliminar evento">🗑️</button>
+              </div>
+              <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">${ev.name}</h3>
+              <a href="${ev.mapsUrl}" target="_blank" class="event-location">📍 ${ev.location} ↗</a>
+              <p class="event-desc">${ev.desc}</p>
+              ${webButton}
+              <div class="event-meta">
+                <span>🕒 ${ev.time}</span>
+                <span class="event-price">${ev.price}</span>
+              </div>
+            </div>
+          </div>`;
+      });
+      container.innerHTML = `<div class="events-grid">${html}</div>`;
+    }
+
+    function openLoginModal() {
+      if (localStorage.getItem('sma_admin_logged') === 'true') {
+        localStorage.removeItem('sma_admin_logged'); checkSession();
+      } else {
+        document.getElementById('loginModal').classList.add('active');
+      }
+    }
+
+    function resetModal() {
+      document.getElementById('eventForm').reset();
+      document.getElementById('imgPreview').style.display = 'none';
+      document.getElementById('fileNameDisplay').textContent = 'Sin archivo';
+    }
+
+    function openEventModal() {
+      isEditMode = false;
+      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento';
+      document.getElementById('submitEventBtn').textContent = 'Guardar Evento';
+      document.getElementById('editRowIndex').value = '';
+      resetModal();
+      document.getElementById('eventModal').classList.add('active');
+    }
+
+    function openEditModal(rowIndex) {
+      const event = globalEvents.find(ev => ev.rowIndex === rowIndex);
+      if (!event) return;
+      isEditMode = true;
+      resetModal();
+      document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
+      document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
+      document.getElementById('editRowIndex').value = rowIndex;
+      
+      document.getElementById('inputName').value = event.name || '';
+      document.getElementById('inputCategory').value = event.category || '';
+      document.getElementById('inputDate').value = toDateInputValue(event.rawDate);
+      document.getElementById('inputTime').value = event.time || '';
+      document.getElementById('inputPrice').value = event.price || '';
+      document.getElementById('inputLocation').value = event.location || '';
+      document.getElementById('inputWeb').value = event.link || '';
+      
+      document.getElementById('inputImg').value = event.rawImg || event.img || '';
+      if(event.rawImg || event.img) {
+         document.getElementById('imgPreview').src = parseCloudImageUrl(event.rawImg || event.img);
+         document.getElementById('imgPreview').style.display = 'block';
+      }
+      
+      document.getElementById('inputDesc').value = event.desc || '';
+      document.getElementById('eventModal').classList.add('active');
+    }
+    
+    function handleLogin(e) {
+      e.preventDefault();
+      if(document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+        localStorage.setItem('sma_admin_logged', 'true');
+        document.getElementById('loginModal').classList.remove('active');
+        checkSession();
+      } else { alert('Credenciales incorrectas'); }
+    }
+
+    async function handleSaveEvent(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitEventBtn');
+      const originalText = btn.innerText;
+      btn.innerText = isEditMode ? "Guardando cambios..." : "Publicando evento...";
+      btn.disabled = true;
+
+      const payload = {
+        action: isEditMode ? "update" : "add",
+        name: document.getElementById('inputName').value,
+        category: document.getElementById('inputCategory').value,
+        date: document.getElementById('inputDate').value,
+        time: document.getElementById('inputTime').value,
+        price: document.getElementById('inputPrice').value,
+        location: document.getElementById('inputLocation').value,
+        link: document.getElementById('inputWeb').value,
+        img: document.getElementById('inputImg').value,
+        desc: document.getElementById('inputDesc').value
+      };
+
+      if (isEditMode) payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
+
+      try {
+        const response = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await response.json();
+        if(result.status === 'success') {
+          document.getElementById('eventModal').classList.remove('active');
+          fetchGoogleSheetData(); 
+        } else { alert('Error: ' + result.message); }
+      } catch(err) { alert('Hubo un problema de conexión al guardar.'); } 
+      finally { btn.innerText = originalText; btn.disabled = false; }
+    }
+
+    async function handleDeleteEvent(rowIndex, eventName) {
+      if (!confirm(`¿Eliminar definitivamente "${eventName}"?`)) return;
+      try {
+        const response = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "delete", rowIndex: rowIndex }) });
+        const result = await response.json();
+        if (result.status === 'success') fetchGoogleSheetData();
+        else alert('Error: ' + result.message);
+      } catch (err) { alert('Fallo de conexión al eliminar.'); }
+    }
+
+    window.onclick = e => { if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active'); }
+    document.addEventListener('DOMContentLoaded', () => { checkSession(); fetchGoogleSheetData(); });
+  </script>
+</body>
+</html>
