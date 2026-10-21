@@ -8,9 +8,11 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#d97864">
 
+  <!-- Fuentes de Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+  
   <style>
     :root {
       --cantera: #d97864;
@@ -28,7 +30,9 @@
       --sombra-suave: 0 10px 30px -10px rgba(28, 24, 22, 0.06);
       --transicion: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--fondo);
@@ -40,7 +44,9 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    
     .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+    
     header {
       display: flex;
       justify-content: space-between;
@@ -51,67 +57,92 @@
       gap: 1.5rem;
       flex-wrap: wrap;
     }
+    
     .brand-container { display: flex; align-items: center; gap: 1.2rem; }
     .brand-logo { height: 65px; width: auto; object-fit: contain; }
+    
     .header-title span {
       font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em;
       color: var(--terracota); font-weight: 600; display: block; margin-bottom: 0.3rem;
     }
+    
     .header-title h1 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 500; color: var(--noche);
     }
+    
     .admin-actions-group { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+    
     .admin-trigger, .btn-home {
       background: transparent; border: 1px solid var(--borde); color: var(--gris-texto);
       padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer;
       transition: var(--transicion); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
     }
-    .admin-trigger { display: none; }
-    body.admin-logged .admin-panel-btn { display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
     
-    .admin-trigger:hover, .btn-home:hover { border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); }
+    .admin-trigger { display: none; }
+    
+    body.admin-logged .admin-panel-btn { 
+      display: inline-flex; background: var(--cantera); color: var(--blanco); border-color: var(--cantera); 
+    }
+    
+    .admin-trigger:hover, .btn-home:hover { 
+      border-color: var(--cantera); color: var(--cantera); background: rgba(217, 120, 100, 0.03); 
+    }
+    
     body.admin-logged .admin-panel-btn:hover { background: var(--cantera-hover); color: var(--blanco); }
+    
     .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+    
     .event-card {
       background: var(--blanco); border-radius: 16px; overflow: hidden;
       border: 1px solid var(--borde); box-shadow: var(--sombra-suave);
       transition: var(--transicion); display: flex; flex-direction: column; position: relative;
     }
+    
     .event-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(28, 24, 22, 0.1); }
+    
     .event-img-wrapper { width: 100%; height: 200px; position: relative; background: var(--gris-suave); overflow: hidden; }
     .event-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
     .event-card:hover .event-img-wrapper img { transform: scale(1.03); }
+    
     .event-category {
       position: absolute; top: 1rem; left: 1rem; background: rgba(28, 24, 22, 0.75);
       backdrop-filter: blur(4px); color: var(--blanco); padding: 0.3rem 0.8rem;
       border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; font-weight: 500; z-index: 2;
     }
+    
     .event-date-badge {
       position: absolute; bottom: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(4px); color: var(--noche); padding: 0.3rem 0.8rem;
       border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 2;
       text-transform: capitalize; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
+    
     .admin-card-actions { position: absolute; top: 1rem; right: 1rem; display: none; gap: 0.4rem; z-index: 10; }
     body.admin-logged .admin-card-actions { display: flex; }
+    
     .btn-card-edit, .btn-card-delete {
       border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: var(--transicion); box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 0.9rem;
     }
+    
     .btn-card-edit { background: rgba(217, 155, 38, 0.95); color: var(--blanco); }
     .btn-card-edit:hover { background: #c48a1f; transform: scale(1.1); }
+    
     .btn-card-delete { background: rgba(179, 57, 57, 0.9); color: var(--blanco); }
     .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
     
     .event-body { padding: 1.8rem; display: flex; flex-direction: column; flex: 1; }
     .event-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
+    
     .event-location {
       font-size: 0.85rem; color: var(--terracota); margin-bottom: 0.8rem; font-weight: 500;
       text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transicion);
     }
     .event-location:hover { color: var(--cantera-hover); text-decoration: underline; }
+    
     .event-desc { font-size: 0.95rem; color: var(--gris-texto); margin-bottom: 1.2rem; flex: 1; }
+    
     .event-web-link {
       display: inline-flex; align-items: center; gap: 0.4rem; background: var(--gris-suave);
       color: var(--noche); padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem;
@@ -119,33 +150,37 @@
       width: fit-content;
     }
     .event-web-link:hover { background: var(--cantera); color: var(--blanco); }
+    
     .event-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--borde); padding-top: 1.2rem; font-size: 0.85rem; color: var(--gris-texto); }
     .event-price { font-weight: 600; color: var(--terracota); }
+    
     footer { margin-top: 5rem; border-top: 1px solid var(--borde); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris-texto); flex-wrap: wrap; gap: 1rem; }
     .footer-actions { display: flex; gap: 1rem; align-items: center; }
+    
     .footer-lock { background: none; border: none; color: var(--gris-texto); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
     .footer-lock:hover { color: var(--cantera); }
     
     .modal-overlay { position: fixed; inset: 0; background: rgba(28, 24, 22, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transicion); }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    
     .modal-box { background: var(--blanco); width: 100%; max-width: 500px; border-radius: 20px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
     .modal-box::-webkit-scrollbar { width: 6px; }
     .modal-box::-webkit-scrollbar-thumb { background: #dcdcdc; border-radius: 4px; }
     .modal-box h3 { font-family: 'Playfair Display', serif; margin-bottom: 1.2rem; }
+    
     .form-group { margin-bottom: 1.1rem; }
     label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gris-texto); }
     input, textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; background: var(--fondo); font-size: 0.9rem; }
     textarea { resize: vertical; height: 80px; }
+    
     .btn-primary { background: var(--cantera); color: var(--blanco); border: none; width: 100%; padding: 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: var(--transicion); font-size: 1rem; }
     .btn-primary:hover { background: var(--cantera-hover); }
     .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
     
-    /* Componente de Subida de Archivos */
     .file-upload-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
     .btn-upload { background: var(--gris-suave); color: var(--noche); border: 1px solid var(--borde); padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transicion); font-size: 0.85rem; }
     .btn-upload:hover { background: var(--cantera); color: var(--blanco); border-color: var(--cantera); }
     .divider-text { text-align: center; font-size: 0.75rem; color: var(--gris-texto); margin: 8px 0; text-transform: uppercase; letter-spacing: 0.1em; }
-    
     .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texto); font-style: italic; }
   </style>
 </head>
@@ -164,8 +199,10 @@
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
     </header>
+    
     <div id="eventsContainer"><div class="empty-state">Cargando cartelera cultural...</div></div>
   </div>
+  
   <footer>
     <div>Vive San Miguel de Allende &copy; 2026</div>
     <div class="footer-actions">
@@ -197,7 +234,7 @@
         <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..." ></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..."></div>
         
         <div class="form-group">
           <label>Imagen del Evento</label>
@@ -220,12 +257,11 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    // AQUÍ ESTÁ TU NUEVA URL INTEGRADA
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxwo-5RmT3hZHSMfufzA2VEMs44LSizwq9pSnpf0w8mNET8uRtbUo95B_ffoZU14p6k/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzU0NuO69SZjaIz8T1572JQ85VxlDNDG4Exv59-qbizS_JQvvaEkTpcaHpDn8LdpYSk/exec";
+    
     let globalEvents = [];
     let isEditMode = false;
 
-    // Procesa el archivo de imagen local, lo comprime a Base64 en un Canvas para envío
     function processImageUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -248,9 +284,7 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
           
-          // Convertimos a base64 (JPEG al 80% de calidad)
           const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          
           document.getElementById('inputImg').value = dataUrl;
           const preview = document.getElementById('imgPreview');
           preview.src = dataUrl;
@@ -261,7 +295,6 @@
       reader.readAsDataURL(file);
     }
 
-    // Escucha el input manual para previsualizar URLs
     document.getElementById('inputImg').addEventListener('input', function(e) {
        const preview = document.getElementById('imgPreview');
        if(e.target.value && !e.target.value.startsWith('data:image')) {
@@ -332,7 +365,7 @@
       const container = document.getElementById('eventsContainer');
       try {
         const response = await fetch(WEB_APP_URL);
-        if (!response.ok) throw new Error('Error al conectar con Web App');
+        if (!response.ok) throw new Error('Error de conexión');
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
         
@@ -390,7 +423,7 @@
 
     function renderEvents() {
       const container = document.getElementById('eventsContainer');
-      if (!globalEvents.length) { container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles por el momento.</div>'; return; }
+      if (!globalEvents.length) { container.innerHTML = '<div class="empty-state">No hay eventos vigentes disponibles.</div>'; return; }
       
       let html = '';
       globalEvents.forEach(ev => {
