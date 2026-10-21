@@ -8,7 +8,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#d97864">
 
-  <!-- Fuentes de Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
@@ -234,7 +233,7 @@
         <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
         <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https://..."></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="www.ejemplo.com..."></div>
         
         <div class="form-group">
           <label>Imagen del Evento</label>
@@ -262,7 +261,7 @@
     let globalEvents = [];
     let isEditMode = false;
 
-    // Función inteligente que asegura que los URLs tengan formato absoluto (evita error 404 de GitHub Pages)
+    // Función inteligente que asegura que los URLs tengan formato absoluto ANTES de mandarlos a la base de datos
     function formatAbsoluteUrl(url) {
       if (!url) return '';
       let cleanUrl = String(url).trim();
@@ -400,7 +399,7 @@
             price: findKey(['price', 'costo']) || 'Entrada Libre',
             location: locationName,
             mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', San Miguel de Allende, Gto.')}`,
-            link: formatAbsoluteUrl(findKey(['web', 'link', 'enlace'])), // Aplicado aquí para asegurar enlaces absolutos
+            link: formatAbsoluteUrl(findKey(['web', 'link', 'enlace'])), // Mantiene retrocompatibilidad con los viejos
             img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             rawImg: rawImgValue,
             desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
@@ -530,6 +529,10 @@
       btn.innerText = isEditMode ? "Guardando cambios..." : "Publicando evento...";
       btn.disabled = true;
 
+      // Sanitizar URL antes de guardar en la base de datos
+      const rawWebLink = document.getElementById('inputWeb').value;
+      const cleanWebLink = formatAbsoluteUrl(rawWebLink);
+
       const payload = {
         action: isEditMode ? "update" : "add",
         name: document.getElementById('inputName').value,
@@ -538,7 +541,7 @@
         time: document.getElementById('inputTime').value,
         price: document.getElementById('inputPrice').value,
         location: document.getElementById('inputLocation').value,
-        link: document.getElementById('inputWeb').value, // El panel envía tal cual lo escribió el usuario
+        link: cleanWebLink, // Se envía con el https:// ya forzado
         img: document.getElementById('inputImg').value,
         desc: document.getElementById('inputDesc').value
       };
