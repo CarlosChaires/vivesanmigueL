@@ -1,14 +1,14 @@
 {
   "name": "Vive San Miguel",
-  "short_name": "San Miguel",
+  "short_name": "Vive SMA",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#fbf9f6",
-  "theme_color": "#d97864",
+  "background_color": "#f8f3ef",
+  "theme_color": "#c98982",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192 512x512",
+      "src": "https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
