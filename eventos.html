@@ -503,27 +503,56 @@
     .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
     
     .event-body {
-      padding: 1.55rem 1.65rem 1.65rem;
+      padding: 1.35rem 1.5rem 1.4rem;
       display: flex;
       flex-direction: column;
       flex: 1;
+      gap: 0;
     }
     
     .event-name {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.3rem;
+      font-size: 1.28rem;
       font-weight: 600;
-      margin-bottom: 0.45rem;
-      line-height: 1.28;
+      margin-bottom: 0.55rem;
+      line-height: 1.25;
       color: var(--noche);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
+    }
+    
+    /* Fila de datos clave: fecha + hora — lo más importante a la vista */
+    .event-key-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.7rem;
+      margin-bottom: 0.7rem;
+      align-items: center;
+    }
+    
+    .event-key-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--noche);
+      background: var(--gris-suave);
+      padding: 0.28rem 0.65rem;
+      border-radius: 6px;
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+    }
+    
+    .event-key-chip.price {
+      background: rgba(143, 61, 40, 0.1);
+      color: var(--terracota);
     }
     
     .event-location {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--terracota);
-      margin-bottom: 0.75rem;
-      font-weight: 500;
+      margin-bottom: 0.65rem;
+      font-weight: 550;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
@@ -538,65 +567,47 @@
     }
     
     .event-desc {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--gris-texto);
-      margin-bottom: 1.15rem;
+      margin-bottom: 0.9rem;
       flex: 1;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      line-height: 1.6;
+      line-height: 1.55;
     }
     
     .event-web-link {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      background: var(--gris-suave);
-      color: var(--noche);
-      padding: 0.4rem 0.95rem;
+      background: var(--cantera);
+      color: var(--blanco);
+      padding: 0.45rem 1rem;
       border-radius: var(--radius-xs);
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       text-decoration: none;
       font-weight: 600;
-      margin-bottom: 1.2rem;
+      margin-top: auto;
       transition: var(--transicion);
       width: fit-content;
       letter-spacing: 0.01em;
+      box-shadow: 0 3px 10px -2px var(--cantera-glow);
     }
     
     .event-web-link:hover {
-      background: var(--cantera);
-      color: var(--blanco);
+      background: var(--cantera-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px -2px var(--cantera-glow);
+      box-shadow: 0 5px 14px -2px var(--cantera-glow);
     }
     
     .event-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid var(--borde);
-      padding-top: 1.05rem;
-      font-size: 0.8rem;
-      color: var(--gris-texto);
-      gap: 0.6rem;
+      display: none; /* info clave ya está arriba */
     }
     
-    .event-meta-time {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-weight: 500;
-    }
-    
-    .event-price {
-      font-weight: 650;
-      color: var(--terracota);
-      text-align: right;
-      letter-spacing: 0.01em;
-    }
+    .event-meta-time { display: none; }
+    .event-price { display: none; }
     
     /* ── Skeleton Loading ── */
     .skeleton-grid {
@@ -862,7 +873,6 @@
       pointer-events: none;
       z-index: 9999;
       border-radius: 50%;
-      mix-blend-mode: screen;
       will-change: transform, opacity;
     }
 
@@ -925,21 +935,10 @@
       <div class="toolbar" id="toolbar">
         <div class="search-row">
           <div class="search-box">
-            <input type="search" id="searchInput" placeholder="Buscar por nombre, lugar o descripción…" autocomplete="off">
+            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar…  (ej. cine, octubre, jazz)" autocomplete="off">
             <span class="search-icon">🔍</span>
           </div>
           <span class="results-count" id="resultsCount"></span>
-        </div>
-        <div class="filter-row">
-          <span class="filter-label">Categoría</span>
-          <div class="filter-scroll" id="filterScroll">
-            <div class="filter-bar" id="filterBar"></div>
-          </div>
-          <div class="filter-select-wrap">
-            <select class="filter-select" id="filterSelect" aria-label="Filtrar por categoría">
-              <option value="Todos">Todos los eventos</option>
-            </select>
-          </div>
         </div>
       </div>
     </div>
@@ -1013,7 +1012,6 @@
     
     let globalEvents = [];
     let isEditMode = false;
-    let activeCategory = 'Todos';
     let searchQuery = '';
 
     const toolbarWrapper = document.getElementById('toolbarWrapper');
@@ -1100,6 +1098,27 @@
       } catch (e) { return cleanStr; }
     }
 
+    function formatDateShort(dateString) {
+      if (!dateString) return '';
+      var cleanStr = String(dateString).trim();
+      if (!cleanStr || cleanStr.includes('1899')) return '';
+      try {
+        var date;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+          var p = cleanStr.split('-');
+          date = new Date(+p[0], +p[1] - 1, +p[2]);
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
+        } else {
+          date = new Date(cleanStr);
+        }
+        if (isNaN(date.getTime())) return '';
+        var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+        return dias[date.getUTCDay()] + ' ' + date.getUTCDate() + ' ' + meses[date.getUTCMonth()];
+      } catch (e) { return ''; }
+    }
+
     function toDateInputValue(rawDate) {
       if (!rawDate) return '';
       const cleanStr = String(rawDate).trim();
@@ -1150,6 +1169,7 @@
             category: findKey(['category', 'categoria']) || 'General',
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
+            shortDate: formatDateShort(rawDateValue),
             time: findKey(['time', 'hora']) || 'Todo el día',
             price: findKey(['price', 'costo']) || 'Entrada Libre',
             location: locationName,
@@ -1178,7 +1198,6 @@
         });
         globalEvents = activeEvents;
         
-        buildFilterButtons();
         document.getElementById('toolbar').classList.add('visible');
         applyFilters();
       } catch (error) {
@@ -1196,85 +1215,50 @@
       return Array.from(cats).sort(function(a, b) { return a.localeCompare(b, 'es'); });
     }
 
-    function buildFilterButtons() {
-      var bar = document.getElementById('filterBar');
-      var select = document.getElementById('filterSelect');
-      var toolbar = document.getElementById('toolbar');
-      var categories = getUniqueCategories();
-      
-      // Si hay muchas categorías, usar el select (más limpio)
-      if (categories.length > 10) {
-        toolbar.classList.add('many-cats');
-      } else {
-        toolbar.classList.remove('many-cats');
-      }
-      
-      // Pills (scroll horizontal)
-      var html = '<button class="filter-btn ' + (activeCategory === 'Todos' ? 'active' : '') + '" data-cat="Todos">Todos</button>';
-      categories.forEach(function(cat) {
-        html += '<button class="filter-btn ' + (activeCategory === cat ? 'active' : '') + '" data-cat="' + cat.replace(/"/g, '&quot;') + '">' + cat + '</button>';
-      });
-      bar.innerHTML = html;
-      
-      bar.querySelectorAll('.filter-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          activeCategory = btn.dataset.cat;
-          bar.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          if (select) select.value = activeCategory;
-          applyFilters();
-        });
-      });
-      
-      // Select dropdown
-      var selHtml = '<option value="Todos">Todos los eventos</option>';
-      categories.forEach(function(cat) {
-        var selected = activeCategory === cat ? ' selected' : '';
-        selHtml += '<option value="' + cat.replace(/"/g, '&quot;') + '"' + selected + '>' + cat + '</option>';
-      });
-      select.innerHTML = selHtml;
-      select.value = activeCategory;
-      
-      select.onchange = function() {
-        activeCategory = select.value;
-        bar.querySelectorAll('.filter-btn').forEach(function(b) {
-          b.classList.toggle('active', b.dataset.cat === activeCategory);
-        });
-        applyFilters();
-      };
-      
-      // Fade edges del scroll
-      setupFilterScroll();
-    }
-    
-    function setupFilterScroll() {
-      var scroll = document.getElementById('filterScroll');
-      var bar = document.getElementById('filterBar');
-      if (!scroll || !bar) return;
-      
-      function updateFades() {
-        var max = bar.scrollWidth - bar.clientWidth;
-        scroll.classList.toggle('show-left', bar.scrollLeft > 8);
-        scroll.classList.toggle('show-right', bar.scrollLeft < max - 8);
-      }
-      
-      bar.addEventListener('scroll', updateFades, { passive: true });
-      updateFades();
-      // Recalcular tras layout
-      setTimeout(updateFades, 100);
+    function getMonthNames(rawDate) {
+      if (!rawDate) return [];
+      var cleanStr = String(rawDate).trim();
+      try {
+        var date;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+          var p = cleanStr.split('-');
+          date = new Date(+p[0], +p[1] - 1, +p[2]);
+        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
+          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
+        } else {
+          date = new Date(cleanStr);
+        }
+        if (isNaN(date.getTime())) return [];
+        var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+        var mes = meses[date.getUTCMonth()];
+        var num = String(date.getUTCMonth() + 1);
+        var numPad = num.padStart(2, '0');
+        // también abreviaciones comunes
+        var abbr = mes.substring(0, 3); // ene, feb, mar...
+        return [mes, abbr, num, numPad];
+      } catch (e) { return []; }
     }
 
     function getFilteredEvents() {
+      if (!searchQuery) return globalEvents;
+      var q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
       return globalEvents.filter(function(ev) {
-        var matchCat = activeCategory === 'Todos' || (ev.category || 'General').trim() === activeCategory;
-        if (!matchCat) return false;
-        if (!searchQuery) return true;
-        var q = searchQuery.toLowerCase();
+        var name = (ev.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var desc = (ev.desc || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var cat = (ev.category || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var dateStr = (ev.date || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var months = getMonthNames(ev.rawDate);
+        var monthHit = months.some(function(m) {
+          return m.normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q) || q.includes(m.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+        });
         return (
-          (ev.name || '').toLowerCase().includes(q) ||
-          (ev.location || '').toLowerCase().includes(q) ||
-          (ev.desc || '').toLowerCase().includes(q) ||
-          (ev.category || '').toLowerCase().includes(q)
+          name.includes(q) ||
+          loc.includes(q) ||
+          desc.includes(q) ||
+          cat.includes(q) ||
+          dateStr.includes(q) ||
+          monthHit
         );
       });
     }
@@ -1299,8 +1283,8 @@
       var list = eventsToShow || globalEvents;
       
       if (!list.length) {
-        var msg = searchQuery || activeCategory !== 'Todos'
-          ? 'No hay eventos que coincidan con tu búsqueda o filtro.'
+        var msg = searchQuery
+          ? 'No hay eventos que coincidan con tu búsqueda.'
           : 'No hay eventos vigentes disponibles por el momento.';
         container.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🔎</span><p>' + msg + '</p></div>';
         return;
@@ -1317,7 +1301,7 @@
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
               '<span class="event-category ' + catClass + '">' + ev.category + '</span>' +
-              '<span class="event-date-badge">' + ev.date + '</span>' +
+              '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
                 '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ', \'' + ev.name.replace(/'/g, "\\'") + '\')" title="Eliminar">🗑️</button>' +
@@ -1326,13 +1310,14 @@
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + ev.name + '</h3>' +
+              '<div class="event-key-info">' +
+                '<span class="event-key-chip">📅 ' + ev.date + '</span>' +
+                '<span class="event-key-chip">🕒 ' + ev.time + '</span>' +
+                '<span class="event-key-chip price">💰 ' + ev.price + '</span>' +
+              '</div>' +
               '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
               '<p class="event-desc">' + ev.desc + '</p>' +
               webButton +
-              '<div class="event-meta">' +
-                '<span class="event-meta-time">🕒 ' + ev.time + '</span>' +
-                '<span class="event-price">' + ev.price + '</span>' +
-              '</div>' +
             '</div>' +
           '</article>';
       });
@@ -1427,7 +1412,6 @@
         var result = await response.json();
         if (result.status === 'success') {
           document.getElementById('eventModal').classList.remove('active');
-          activeCategory = 'Todos';
           searchQuery = '';
           document.getElementById('searchInput').value = '';
           fetchGoogleSheetData();
@@ -1451,7 +1435,6 @@
         });
         var result = await response.json();
         if (result.status === 'success') {
-          activeCategory = 'Todos';
           searchQuery = '';
           document.getElementById('searchInput').value = '';
           fetchGoogleSheetData();
@@ -1468,8 +1451,8 @@
     function createSparkles(x, y, count) {
       count = count || 18;
       const colors = [
-        '#c45c4a', '#e8a87c', '#f5d0a9', '#d4a574',
-        '#fff5eb', '#c48a1f', '#f0c987', '#ffffff'
+        '#c45c4a', '#a84a3a', '#e07a5f', '#c48a1f',
+        '#d4a017', '#e8b84a', '#8f3d28', '#f4a261'
       ];
       
       for (let i = 0; i < count; i++) {
@@ -1488,7 +1471,7 @@
         particle.style.left = x + 'px';
         particle.style.top = y + 'px';
         particle.style.background = color;
-        particle.style.boxShadow = '0 0 ' + (size * 1.8) + 'px ' + color;
+        particle.style.boxShadow = '0 0 ' + (size * 2.5) + 'px ' + color + ', 0 0 ' + (size * 5) + 'px ' + color;
         
         if (isStar) {
           particle.style.borderRadius = '2px';
