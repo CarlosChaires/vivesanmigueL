@@ -243,11 +243,10 @@
       text-align: right;
     }
     
-    .filter-bar {
+    .filter-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
       align-items: center;
+      gap: 0.65rem;
     }
     
     .filter-label {
@@ -256,29 +255,76 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--gris-muted);
-      margin-right: 0.35rem;
+      flex-shrink: 0;
     }
+    
+    .filter-scroll {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+    }
+    
+    .filter-scroll::before,
+    .filter-scroll::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 28px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    
+    .filter-scroll::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(248,245,241,0.95), transparent);
+    }
+    
+    .filter-scroll::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(248,245,241,0.95), transparent);
+    }
+    
+    .filter-scroll.show-left::before { opacity: 1; }
+    .filter-scroll.show-right::after { opacity: 1; }
+    
+    .filter-bar {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.4rem;
+      align-items: center;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.15rem 0.1rem 0.35rem;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    
+    .filter-bar::-webkit-scrollbar { display: none; }
     
     .filter-btn {
       background: var(--blanco);
       border: 1px solid var(--borde-fuerte);
       color: var(--gris-texto);
-      padding: 0.42rem 1.05rem;
+      padding: 0.42rem 0.95rem;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 500;
       cursor: pointer;
       transition: var(--transicion);
       font-family: inherit;
       white-space: nowrap;
       letter-spacing: 0.01em;
+      flex-shrink: 0;
     }
     
     .filter-btn:hover {
       border-color: var(--cantera);
       color: var(--cantera);
       background: var(--cantera-soft);
-      transform: translateY(-1px);
     }
     
     .filter-btn.active {
@@ -292,8 +338,42 @@
       background: var(--cantera-hover);
       border-color: var(--cantera-hover);
       color: var(--blanco);
-      transform: translateY(-1px);
     }
+    
+    /* Dropdown alternativo cuando hay muchas categorías */
+    .filter-select-wrap {
+      display: none;
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .filter-select {
+      width: 100%;
+      max-width: 320px;
+      padding: 0.55rem 2.2rem 0.55rem 1rem;
+      border: 1px solid var(--borde-fuerte);
+      border-radius: 999px;
+      background: var(--blanco);
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--noche);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e655f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      outline: none;
+      transition: var(--transicion);
+    }
+    
+    .filter-select:focus {
+      border-color: var(--cantera);
+      box-shadow: 0 0 0 4px var(--cantera-soft);
+    }
+    
+    /* Si hay demasiadas categorías (>12), usamos el select en desktop también se puede forzar */
+    .toolbar.many-cats .filter-scroll { display: none; }
+    .toolbar.many-cats .filter-select-wrap { display: block; }
     
     /* ── Grid ── */
     .events-grid {
@@ -814,6 +894,8 @@
       }
       .event-img-wrapper, .skeleton-img { height: 200px; }
       .filter-btn { padding: 0.38rem 0.9rem; font-size: 0.74rem; }
+      .filter-scroll { display: none; }
+      .filter-select-wrap { display: block; }
       .modal-box { padding: 1.75rem; border-radius: 20px; }
       .results-count { min-width: auto; text-align: left; }
     }
@@ -848,8 +930,16 @@
           </div>
           <span class="results-count" id="resultsCount"></span>
         </div>
-        <div class="filter-bar" id="filterBar">
+        <div class="filter-row">
           <span class="filter-label">Categoría</span>
+          <div class="filter-scroll" id="filterScroll">
+            <div class="filter-bar" id="filterBar"></div>
+          </div>
+          <div class="filter-select-wrap">
+            <select class="filter-select" id="filterSelect" aria-label="Filtrar por categoría">
+              <option value="Todos">Todos los eventos</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -1108,10 +1198,19 @@
 
     function buildFilterButtons() {
       var bar = document.getElementById('filterBar');
+      var select = document.getElementById('filterSelect');
+      var toolbar = document.getElementById('toolbar');
       var categories = getUniqueCategories();
       
-      var html = '<span class="filter-label">Categoría</span>';
-      html += '<button class="filter-btn ' + (activeCategory === 'Todos' ? 'active' : '') + '" data-cat="Todos">Todos</button>';
+      // Si hay muchas categorías, usar el select (más limpio)
+      if (categories.length > 10) {
+        toolbar.classList.add('many-cats');
+      } else {
+        toolbar.classList.remove('many-cats');
+      }
+      
+      // Pills (scroll horizontal)
+      var html = '<button class="filter-btn ' + (activeCategory === 'Todos' ? 'active' : '') + '" data-cat="Todos">Todos</button>';
       categories.forEach(function(cat) {
         html += '<button class="filter-btn ' + (activeCategory === cat ? 'active' : '') + '" data-cat="' + cat.replace(/"/g, '&quot;') + '">' + cat + '</button>';
       });
@@ -1122,9 +1221,47 @@
           activeCategory = btn.dataset.cat;
           bar.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
+          if (select) select.value = activeCategory;
           applyFilters();
         });
       });
+      
+      // Select dropdown
+      var selHtml = '<option value="Todos">Todos los eventos</option>';
+      categories.forEach(function(cat) {
+        var selected = activeCategory === cat ? ' selected' : '';
+        selHtml += '<option value="' + cat.replace(/"/g, '&quot;') + '"' + selected + '>' + cat + '</option>';
+      });
+      select.innerHTML = selHtml;
+      select.value = activeCategory;
+      
+      select.onchange = function() {
+        activeCategory = select.value;
+        bar.querySelectorAll('.filter-btn').forEach(function(b) {
+          b.classList.toggle('active', b.dataset.cat === activeCategory);
+        });
+        applyFilters();
+      };
+      
+      // Fade edges del scroll
+      setupFilterScroll();
+    }
+    
+    function setupFilterScroll() {
+      var scroll = document.getElementById('filterScroll');
+      var bar = document.getElementById('filterBar');
+      if (!scroll || !bar) return;
+      
+      function updateFades() {
+        var max = bar.scrollWidth - bar.clientWidth;
+        scroll.classList.toggle('show-left', bar.scrollLeft > 8);
+        scroll.classList.toggle('show-right', bar.scrollLeft < max - 8);
+      }
+      
+      bar.addEventListener('scroll', updateFades, { passive: true });
+      updateFades();
+      // Recalcular tras layout
+      setTimeout(updateFades, 100);
     }
 
     function getFilteredEvents() {
