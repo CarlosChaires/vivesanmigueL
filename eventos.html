@@ -775,6 +775,32 @@
       letter-spacing: 0.12em;
     }
     
+
+    /* ── Sparkle / Chispitas effect ── */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      mix-blend-mode: screen;
+      will-change: transform, opacity;
+    }
+
+    .event-card {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .event-card.sparkle-burst {
+      animation: card-pulse 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes card-pulse {
+      0% { transform: translateY(-6px) scale(1); }
+      40% { transform: translateY(-8px) scale(1.018); }
+      100% { transform: translateY(-6px) scale(1); }
+    }
+
     /* ── Responsive ── */
     @media (max-width: 680px) {
       .container { padding: 0 1.1rem; }
@@ -1174,6 +1200,7 @@
           '</article>';
       });
       container.innerHTML = '<div class="events-grid">' + html + '</div>';
+      attachSparkleListeners();
     }
 
     function openLoginModal() {
@@ -1298,6 +1325,102 @@
         alert('Fallo de conexión al eliminar.');
       }
     }
+
+
+    // ── Efecto de chispitas inmersivo al tocar un evento ──
+    function createSparkles(x, y, count) {
+      count = count || 18;
+      const colors = [
+        '#c45c4a', '#e8a87c', '#f5d0a9', '#d4a574',
+        '#fff5eb', '#c48a1f', '#f0c987', '#ffffff'
+      ];
+      
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'sparkle-particle';
+        
+        const size = 3 + Math.random() * 7;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
+        const distance = 40 + Math.random() * 90;
+        const duration = 550 + Math.random() * 450;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const isStar = Math.random() > 0.55;
+        
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.background = color;
+        particle.style.boxShadow = '0 0 ' + (size * 1.8) + 'px ' + color;
+        
+        if (isStar) {
+          particle.style.borderRadius = '2px';
+          particle.style.transform = 'rotate(45deg)';
+        }
+        
+        document.body.appendChild(particle);
+        
+        const endX = Math.cos(angle) * distance;
+        const endY = Math.sin(angle) * distance - 20 - Math.random() * 30;
+        
+        const anim = particle.animate([
+          {
+            transform: isStar ? 'translate(0,0) scale(0.3) rotate(45deg)' : 'translate(0,0) scale(0.3)',
+            opacity: 1
+          },
+          {
+            transform: isStar
+              ? 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.2) rotate(45deg)'
+              : 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.15)',
+            opacity: 1,
+            offset: 0.35
+          },
+          {
+            transform: isStar
+              ? 'translate(' + endX + 'px,' + endY + 'px) scale(0) rotate(90deg)'
+              : 'translate(' + endX + 'px,' + endY + 'px) scale(0)',
+            opacity: 0
+          }
+        ], {
+          duration: duration,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'forwards'
+        });
+        
+        anim.onfinish = function() { particle.remove(); };
+      }
+    }
+
+    function triggerCardSparkle(e, card) {
+      // No disparar si se hizo clic en un botón admin o enlace
+      if (e.target.closest('.admin-card-actions') || e.target.closest('a')) return;
+      
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX || (rect.left + rect.width / 2);
+      const y = e.clientY || (rect.top + rect.height / 2);
+      
+      createSparkles(x, y, 20);
+      
+      card.classList.remove('sparkle-burst');
+      void card.offsetWidth; // reflow
+      card.classList.add('sparkle-burst');
+      setTimeout(function() { card.classList.remove('sparkle-burst'); }, 500);
+    }
+
+    function attachSparkleListeners() {
+      document.querySelectorAll('.event-card').forEach(function(card) {
+        if (card.dataset.sparkleBound) return;
+        card.dataset.sparkleBound = '1';
+        
+        // pointerdown cubre mouse + touch sin duplicar
+        card.addEventListener('pointerdown', function(e) {
+          // Solo primario (clic izquierdo / primer dedo)
+          if (e.button !== 0 && e.button !== undefined) return;
+          triggerCardSparkle(e, card);
+        });
+      });
+    }
+
 
     document.getElementById('searchInput').addEventListener('input', function(e) {
       searchQuery = e.target.value.trim();
