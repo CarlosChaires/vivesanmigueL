@@ -624,6 +624,38 @@
             background: #ffffff;
         }
 
+        .image-input-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .image-input-box input[type="text"] {
+            flex: 1;
+        }
+
+        .image-input-box input[type="file"] {
+            display: none;
+        }
+
+        .btn-upload-file {
+            background: rgba(166, 75, 42, 0.1);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-file:hover {
+            background: var(--accent-terracotta);
+            color: #fff;
+        }
+
         .btn-modal-save {
             background: var(--accent-terracotta);
             color: #ffffff;
@@ -787,18 +819,33 @@
                     <label>Enlace Instagram (URL)</label>
                     <input type="text" id="editInstagram" placeholder="Si no tiene, poner #">
                 </div>
+
+                <!-- Gestor Dual de Imágenes (URL o Archivo Local) -->
                 <div class="input-group">
-                    <label>Foto 1 (URL)</label>
-                    <input type="text" id="editImg1" required>
+                    <label>Foto 1 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg1" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg1" accept="image/*" onchange="convertImageFile(event, 'editImg1')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg1').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL)</label>
-                    <input type="text" id="editImg2" required>
+                    <label>Foto 2 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg2" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg2" accept="image/*" onchange="convertImageFile(event, 'editImg2')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg2').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL)</label>
-                    <input type="text" id="editImg3" required>
+                    <label>Foto 3 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg3" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg3" accept="image/*" onchange="convertImageFile(event, 'editImg3')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
+                    </div>
                 </div>
+
                 <button type="submit" class="btn-modal-save">Guardar Cambios</button>
             </form>
         </div>
@@ -1034,9 +1081,13 @@
 
             filtered.forEach(a => {
                 let slidesHtml = '';
-                a.images.forEach((img, idx) => {
-                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${a.name} foto ${idx+1}"></div>`;
-                });
+                if (a.images && a.images.length > 0) {
+                    a.images.forEach((img, idx) => {
+                        slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${a.name} foto ${idx+1}"></div>`;
+                    });
+                } else {
+                    slidesHtml = `<div class="carousel-slide"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23" alt="Placeholder"></div>`;
+                }
 
                 let specialtiesHtml = '';
                 if (a.specialties && Array.isArray(a.specialties)) {
@@ -1078,7 +1129,7 @@
                             <div class="carousel-slides" id="slides-${a.key}">
                                 ${slidesHtml}
                             </div>
-                            ${a.images.length > 1 ? `
+                            ${a.images && a.images.length > 1 ? `
                                 <button class="carousel-btn prev" onclick="moveSlide('${a.key}', -1)"><i class="fas fa-chevron-left"></i></button>
                                 <button class="carousel-btn next" onclick="moveSlide('${a.key}', 1)"><i class="fas fa-chevron-right"></i></button>
                             ` : ''}
@@ -1130,7 +1181,7 @@
             if (!slideIndices[key]) slideIndices[key] = 0;
             const data = getStoredAdventures();
             const a = data.adventures.find(el => el.key === key);
-            if (!a) return;
+            if (!a || !a.images) return;
 
             slideIndices[key] += direction;
             if (slideIndices[key] >= a.images.length) slideIndices[key] = 0;
@@ -1140,6 +1191,17 @@
             if (slider) {
                 slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
             }
+        }
+
+        // Conversión de archivo local a Base64
+        function convertImageFile(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         // Auth & CMS
@@ -1197,9 +1259,9 @@
             document.getElementById('editWeb').value = a.web || '';
             document.getElementById('editFacebook').value = a.facebook || '';
             document.getElementById('editInstagram').value = a.instagram || '';
-            document.getElementById('editImg1').value = a.images[0] || '';
-            document.getElementById('editImg2').value = a.images[1] || '';
-            document.getElementById('editImg3').value = a.images[2] || '';
+            document.getElementById('editImg1').value = (a.images && a.images[0]) ? a.images[0] : '';
+            document.getElementById('editImg2').value = (a.images && a.images[1]) ? a.images[1] : '';
+            document.getElementById('editImg3').value = (a.images && a.images[2]) ? a.images[2] : '';
             document.getElementById('editModal').classList.add('active');
         }
 
@@ -1226,10 +1288,11 @@
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ];
+                ].filter(img => img.trim() !== '');
+
                 saveStoredAdventures(data, true);
                 closeEditModal();
-                alert('¡Actividad actualizada con éxito!');
+                alert('¡Actividad y fotografías actualizadas con éxito!');
             }
         }
 
@@ -1246,9 +1309,9 @@
                 sitio_web: el.web,
                 facebook_url: el.facebook || '',
                 instagram_url: el.instagram || '',
-                foto_1: el.images[0] || '',
-                foto_2: el.images[1] || '',
-                foto_3: el.images[2] || ''
+                foto_1: (el.images && el.images[0]) ? el.images[0] : '',
+                foto_2: (el.images && el.images[1]) ? el.images[1] : '',
+                foto_3: (el.images && el.images[2]) ? el.images[2] : ''
             }));
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
