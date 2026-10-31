@@ -722,6 +722,7 @@
             <button class="btn-admin" onclick="downloadAdventureTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleAdventureExcelUpload(event)">
+            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
             <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
@@ -854,7 +855,8 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+        // URL configurada con tu Web App de Google Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVaS-asUPZOrz-XK5wTxzmsxFtthG11n3Po9b3_QN5RngUFwP-4EZPt2rq4v8S64zvKA/exec";
 
         const defaultAdventureData = {
             adventures: [
@@ -1011,7 +1013,6 @@
             ]
         };
 
-        // Llave v7 para actualizar caché local
         function getStoredAdventures() {
             const data = localStorage.getItem('sma_adventures_data_v7');
             if (!data) {
@@ -1039,6 +1040,27 @@
                 });
             } catch (err) {
                 console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        async function syncWithGoogleDrive() {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
+            try {
+                const data = getStoredAdventures();
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data.adventures)
+                });
+                setTimeout(() => {
+                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Drive & Sheets`;
+                    alert('¡Sincronización con Google Drive y Google Sheets completada exitosamente!');
+                }, 1000);
+            } catch (error) {
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error de sincronización`;
+                alert('No se pudo conectar con Google Apps Script. Verifique la URL de su Web App.');
             }
         }
 
@@ -1175,7 +1197,6 @@
             });
         }
 
-        // Control del carrusel de fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
@@ -1193,7 +1214,6 @@
             }
         }
 
-        // Conversión de archivo local a Base64
         function convertImageFile(event, targetInputId) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1204,7 +1224,6 @@
             reader.readAsDataURL(file);
         }
 
-        // Auth & CMS
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
                 if (confirm("¿Desea cerrar la sesión de administración?")) {
@@ -1447,7 +1466,6 @@
         }
         animateParticles();
 
-        // Registro del Service Worker para funcionamiento sin conexión (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
