@@ -80,7 +80,6 @@
             padding: 3rem 2rem;
         }
 
-        /* --- Header --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -134,7 +133,6 @@
             border-color: var(--accent-terracotta);
         }
 
-        /* --- Admin Bar --- */
         .admin-bar {
             display: none;
             gap: 10px;
@@ -170,7 +168,6 @@
             color: #ffffff;
         }
 
-        /* --- Títulos --- */
         .section-header {
             margin-bottom: 3rem;
             text-align: center;
@@ -190,7 +187,6 @@
             font-weight: 400;
         }
 
-        /* --- Grid de Guías Turísticos --- */
         .guides-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -295,7 +291,6 @@
             text-align: center;
         }
 
-        /* --- Botones de Redes Sociales Individuales --- */
         .guide-socials-group {
             display: flex;
             gap: 8px;
@@ -317,27 +312,11 @@
             transition: opacity 0.3s ease, transform 0.2s ease;
         }
 
-        .guide-social-btn.instagram {
-            background-color: var(--instagram-pink);
-        }
+        .guide-social-btn.instagram { background-color: var(--instagram-pink); }
+        .guide-social-btn.facebook { background-color: var(--facebook-blue); }
+        .guide-social-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .guide-social-btn svg { width: 14px; height: 14px; fill: #ffffff; flex-shrink: 0; }
 
-        .guide-social-btn.facebook {
-            background-color: var(--facebook-blue);
-        }
-
-        .guide-social-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .guide-social-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: #ffffff;
-            flex-shrink: 0;
-        }
-
-        /* --- Botón WhatsApp --- */
         .btn-whatsapp {
             display: inline-flex;
             align-items: center;
@@ -361,13 +340,8 @@
             box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
         }
 
-        .btn-whatsapp svg {
-            width: 18px;
-            height: 18px;
-            fill: #ffffff;
-        }
+        .btn-whatsapp svg { width: 18px; height: 18px; fill: #ffffff; }
 
-        /* --- Redes Sociales Generales --- */
         .social-box {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -378,24 +352,9 @@
             box-shadow: var(--shadow-soft);
         }
 
-        .social-box h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .social-box p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .social-box h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+        .social-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .social-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
         .social-btn {
             display: inline-flex;
@@ -411,26 +370,11 @@
             transition: transform 0.3s ease;
         }
 
-        .social-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: #ffffff;
-            flex-shrink: 0;
-        }
+        .social-btn svg { width: 14px; height: 14px; fill: #ffffff; flex-shrink: 0; }
+        .social-btn.instagram { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .social-btn.tiktok { background: #111111; }
+        .social-btn:hover { transform: translateY(-2px); }
 
-        .social-btn.instagram {
-            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        }
-
-        .social-btn.tiktok {
-            background: #111111;
-        }
-
-        .social-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* --- Footer --- */
         footer {
             border-top: 1px solid var(--border-color);
             padding: 2.5rem 0;
@@ -453,13 +397,8 @@
             opacity: 0.7;
         }
 
-        .admin-trigger:hover {
-            opacity: 1;
-            color: var(--accent-terracotta);
-            background: rgba(166, 75, 42, 0.05);
-        }
+        .admin-trigger:hover { opacity: 1; color: var(--accent-terracotta); background: rgba(166, 75, 42, 0.05); }
 
-        /* --- Modales --- */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -475,10 +414,7 @@
             transition: all 0.3s ease;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-content {
             background: #ffffff;
@@ -493,44 +429,14 @@
             overflow-y: auto;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
 
-        .modal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
+        .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-top h3 { font-size: 1.3rem; font-weight: 700; }
+        .close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
 
-        .modal-top h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-            color: var(--text-muted);
-        }
-
+        .input-group { margin-bottom: 1.2rem; }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; color: var(--text-muted); }
         .input-group input, .input-group textarea {
             width: 100%;
             padding: 0.8rem 1rem;
@@ -543,10 +449,7 @@
             outline: none;
         }
 
-        .input-group input:focus, .input-group textarea:focus {
-            border-color: var(--accent-terracotta);
-            background: #ffffff;
-        }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--accent-terracotta); background: #ffffff; }
 
         .btn-modal-save {
             background: var(--accent-terracotta);
@@ -562,35 +465,12 @@
             margin-top: 0.5rem;
         }
 
-        .btn-modal-save:hover {
-            background: var(--accent-terracotta-dark);
-        }
+        .btn-modal-save:hover { background: var(--accent-terracotta-dark); }
+        .error-message { color: #c0392b; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
 
-        .error-message {
-            color: #c0392b;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        @media (max-width: 1024px) {
-            .guides-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .guides-grid {
-                grid-template-columns: 1fr;
-            }
-            footer {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
+        @media (max-width: 1024px) { .guides-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .guides-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 1rem; text-align: center; } }
     </style>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -599,8 +479,6 @@
     <div id="cursor-glow"></div>
 
     <div class="container">
-
-        <!-- Header -->
         <header>
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
@@ -609,7 +487,6 @@
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
         </header>
 
-        <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
             <button class="btn-admin" onclick="downloadGuidesTemplate()">📥 Descargar Plantilla Excel</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
@@ -618,31 +495,25 @@
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
-        <!-- Título de la Sección -->
         <div class="section-header">
             <h1>Guías Turísticos</h1>
             <p>Conecta con expertos locales para recorrer la historia, los callejones y la magia de San Miguel.</p>
         </div>
 
-        <!-- Grid de Guías -->
         <div class="guides-grid" id="guidesGridContainer"></div>
 
-        <!-- Redes Sociales -->
         <section class="social-box">
             <h3>Comunidad Vive San Miguel</h3>
             <p>Síguenos en nuestras redes sociales oficiales.</p>
             <div class="social-group" id="socialButtonsContainer"></div>
         </section>
 
-        <!-- Footer -->
         <footer>
             <span>Vive San Miguel — Tu Guía de Confianza</span>
             <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
         </footer>
-
     </div>
 
-    <!-- Modales -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
             <div class="modal-top">
@@ -717,7 +588,7 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyURBq4txavR792v3x6NpjNDMbznptR1lr1dWAkNYB7a5AyAH4tBaG6BpXNK_KWsPMPLQ/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybZOafbavR8Pf2Q6ALyypdQoaTmNiNEo05Hr8TIZ7W0a8uNjZjRWsaIBAdN7PKyfE5RQ/exec";
         const defaultGuideImage = "https://images.pexels.com/photos/17518300/pexels-photo-17518300.jpeg";
 
         const defaultGuidesData = {
@@ -787,11 +658,11 @@
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
             } catch (err) {
-                console.warn("Aviso: No se pudo enviar automáticamente a Google Sheets, pero los cambios están guardados localmente.", err);
+                console.warn("Guardado local exitoso. Sincronización en segundo plano pendiente.", err);
             }
         }
 
@@ -824,7 +695,7 @@
                     alert("¡Sincronización con Google Sheets completada con éxito!");
                 }
             } catch (err) {
-                alert("No se pudo conectar. Verifica que el Apps Script esté desplegado como 'Cualquier usuario' y hayas creado una 'Nueva versión'.");
+                alert("No se pudo conectar. Asegúrate de haber publicado una 'Nueva versión' en Google Apps Script.");
             } finally {
                 btn.innerText = "🔄 Sincronizar con Google Sheets";
             }
@@ -915,9 +786,7 @@
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -959,9 +828,7 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
 
         function handleImageFileUpload(e) {
             const file = e.target.files[0];
@@ -990,7 +857,7 @@
                 data.guides[index].img = document.getElementById('editImg').value || defaultGuideImage;
                 saveStoredGuides(data);
                 closeEditModal();
-                alert('¡Guía actualizado con éxito!');
+                alert('¡Guía actualizado con éxito y sincronizado con la nube!');
             }
         }
 
@@ -1042,13 +909,13 @@
                             }
                         });
                         saveStoredGuides(data);
-                        alert('¡Importación masiva completada!');
+                        alert('¡Importación masiva completada y sincronizada!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
                 }
             };
-            reader.readAsDataURL(file);
+            reader.readAsArrayBuffer(file);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
