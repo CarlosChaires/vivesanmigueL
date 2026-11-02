@@ -30,10 +30,10 @@
             --shadow: 0 24px 70px rgba(48,31,21,.09);
             --shadow-sm: 0 10px 35px rgba(48,31,21,.07);
             --radius: 24px;
+            --google-green: #0F9D58;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -459,13 +459,14 @@
             z-index: 1;
         }
 
-        /* Admin */
+        /* Admin Bar */
         .admin-bar {
             display: none;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
+            align-items: center;
             margin: 20px 0 35px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 16px;
             background: rgba(255,253,249,.92);
             border: 1px solid var(--line);
@@ -479,7 +480,7 @@
             background: rgba(167,77,50,.06);
             color: var(--terracotta);
             border: 1px solid rgba(167,77,50,.15);
-            padding: 7px 13px;
+            padding: 7px 16px;
             border-radius: 999px;
             font-weight: 700;
             font-size: .68rem;
@@ -490,6 +491,16 @@
         .btn-admin:hover {
             background: var(--terracotta);
             color: #fff;
+        }
+
+        .sync-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--google-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 5px;
         }
 
         /* Social */
@@ -548,13 +559,8 @@
         }
 
         .social-btn:hover { transform: translateY(-3px); }
-
         .social-btn svg { width: 14px; height: 14px; fill: #fff; }
-
-        .social-btn.instagram {
-            background: linear-gradient(135deg, #bc1888, #dc2743, #f09433);
-        }
-
+        .social-btn.instagram { background: linear-gradient(135deg, #bc1888, #dc2743, #f09433); }
         .social-btn.tiktok { background: #161616; }
 
         /* Footer */
@@ -620,9 +626,7 @@
             transition: .3s ease;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0) scale(1);
-        }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
 
         .modal-top {
             display: flex;
@@ -712,10 +716,7 @@
         .reveal.visible { opacity: 1; transform: none; }
 
         @media (max-width: 980px) {
-            .hero {
-                grid-template-columns: 1fr;
-                padding-top: 65px;
-            }
+            .hero { grid-template-columns: 1fr; padding-top: 65px; }
             .hero-visual { max-width: 720px; width: 100%; }
             .cards-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -734,15 +735,6 @@
             .social-box h3 { font-size: 2.3rem; }
             .social-box::before, .social-box::after { display: none; }
             footer { flex-direction: column; gap: 15px; text-align: center; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                scroll-behavior: auto !important;
-                transition-duration: .01ms !important;
-                animation-duration: .01ms !important;
-            }
-            #immersive-canvas, #cursor-glow { display: none; }
         }
     </style>
 </head>
@@ -764,9 +756,11 @@
 
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="downloadTemplate()">📥 Descargar Plantilla Excel</button>
+            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
+            <button class="btn-admin" onclick="downloadTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -787,10 +781,7 @@
 
             <div class="hero-visual">
                 <div class="hero-frame">
-                    <img
-                        src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200"
-                        alt="San Miguel de Allende"
-                    >
+                    <img src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200" alt="San Miguel de Allende">
                     <div class="hero-caption">
                         <span>Patrimonio · Cultura · Experiencias</span>
                         <strong>San Miguel de Allende</strong>
@@ -890,6 +881,9 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
+        
+        // Enlace de Google Apps Script integrado
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwafYiisd5AJLQmdZcdHs5agreLvjUZGcpGSh8Jhwb4-bEJWl5YfKm8B1GnhgoGKcT2IQ/exec";
 
         const defaultSiteData = {
             mainItems: [
@@ -989,50 +983,98 @@
             ]
         };
 
-        const githubBase = "https://carloschaires.github.io/vivesanmigueL/";
-        const linkMapping = {
-            'item_eventos': githubBase + 'eventos',
-            'item_historia': githubBase + 'historia',
-            'item_sitios': githubBase + 'sitiosdeinteres',
-            'item_guias': githubBase + 'guiasdeturistas',
-            'item_rutas': 'https://viveturuta.blog/',
-            'item_blog': githubBase + 'blog',
-            'item_hospedaje': githubBase + 'hospedaje',
-            'item_gastronomia': githubBase + 'gastronomia',
-            'item_aventura': githubBase + 'aventura',
-            'item_romance': githubBase + 'romance',
-            'item_vinedos': githubBase + 'viñedos'
-        };
-
-        function applyGithubLinks(data) {
-            data.mainItems.forEach(item => {
-                if (linkMapping[item.key]) {
-                    item.link = linkMapping[item.key];
-                }
-            });
-            data.secondaryItems.forEach(item => {
-                if (linkMapping[item.key]) {
-                    item.link = linkMapping[item.key];
-                }
-            });
-            return data;
-        }
-
         function getStoredData() {
-            const data = localStorage.getItem('sma_site_data');
+            const data = localStorage.getItem('sma_site_data_v2');
             if (!data) {
-                const initializedData = applyGithubLinks(defaultSiteData);
-                localStorage.setItem('sma_site_data', JSON.stringify(initializedData));
-                return initializedData;
+                localStorage.setItem('sma_site_data_v2', JSON.stringify(defaultSiteData));
+                return defaultSiteData;
             }
-            const parsed = JSON.parse(data);
-            return applyGithubLinks(parsed);
+            return JSON.parse(data);
         }
 
-        function saveStoredData(data) {
-            const processedData = applyGithubLinks(data);
-            localStorage.setItem('sma_site_data', JSON.stringify(processedData));
+        function saveStoredData(data, syncCloud = true) {
+            localStorage.setItem('sma_site_data_v2', JSON.stringify(data));
             renderSite();
+            if (syncCloud) {
+                pushDataToGoogleSheets(data);
+            }
+        }
+
+        async function pushDataToGoogleSheets(data) {
+            try {
+                const payload = [...data.mainItems, ...data.secondaryItems].map(item => ({
+                    key: item.key,
+                    titulo: item.title,
+                    descripcion: item.desc,
+                    enlace: item.link,
+                    imagen_url: item.img
+                }));
+
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        async function fetchMenuFromCloud() {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
+                    const main = [];
+                    const secondary = [];
+                    
+                    cloudData.forEach((row, idx) => {
+                        const item = {
+                            key: row.key || 'item_' + idx,
+                            title: row.titulo || 'Sección',
+                            desc: row.descripcion || '',
+                            link: row.enlace || '#',
+                            img: row.imagen_url || ''
+                        };
+                        if (idx < 6) {
+                            main.push(item);
+                        } else {
+                            secondary.push(item);
+                        }
+                    });
+
+                    const currentData = getStoredData();
+                    currentData.mainItems = main.length > 0 ? main : currentData.mainItems;
+                    if (secondary.length > 0) currentData.secondaryItems = secondary;
+
+                    localStorage.setItem('sma_site_data_v2', JSON.stringify(currentData));
+                    renderSite();
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                }
+            } catch (error) {
+                console.warn("Modo local activo:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local`;
+            }
+        }
+
+        async function syncWithGoogleDrive() {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+            try {
+                const data = getStoredData();
+                await pushDataToGoogleSheets(data);
+                setTimeout(() => {
+                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    alert('¡Sincronización con Google Sheets completada exitosamente!');
+                }, 1000);
+            } catch (error) {
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error`;
+                alert('No se pudo conectar con Google Apps Script.');
+            }
         }
 
         function checkSession() {
@@ -1055,7 +1097,7 @@
                 mainContainer.innerHTML += `
                     <div class="card-item">
                         <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}">
+                            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'">
                         </div>
                         <div class="card-body">
                             <div>
@@ -1076,7 +1118,7 @@
                 secContainer.innerHTML += `
                     <div class="card-item">
                         <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}">
+                            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'">
                         </div>
                         <div class="card-body">
                             <div>
@@ -1168,16 +1210,20 @@
                 list[index].desc = document.getElementById('editDesc').value;
                 list[index].link = document.getElementById('editLink').value;
                 list[index].img = document.getElementById('editImg').value;
-                saveStoredData(data);
+                saveStoredData(data, true);
                 closeEditModal();
-                alert('¡Actualizado con éxito!');
+                alert('¡Actualizado y sincronizado en la nube!');
             }
         }
 
         function downloadTemplate() {
             const data = getStoredData();
             const flatData = [...data.mainItems, ...data.secondaryItems].map(el => ({
-                titulo: el.title, descripcion: el.desc, enlace: el.link, imagen_url: el.img
+                key: el.key,
+                titulo: el.title,
+                descripcion: el.desc,
+                enlace: el.link,
+                imagen_url: el.img
             }));
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
@@ -1207,8 +1253,8 @@
                                 if (row.imagen_url) targetList[targetIdx].img = row.imagen_url;
                             }
                         });
-                        saveStoredData(data);
-                        alert('¡Importación masiva completada!');
+                        saveStoredData(data, true);
+                        alert('¡Importación masiva completada y sincronizada en Google Sheets!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1218,10 +1264,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const data = getStoredData();
-            saveStoredData(data);
             checkSession();
             renderSite();
+            fetchMenuFromCloud();
         });
 
         const revealObserver = new IntersectionObserver((entries) => {
@@ -1233,11 +1278,9 @@
             });
         }, { threshold: 0.08 });
 
-        function initReveal() {
+        document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        document.addEventListener('DOMContentLoaded', initReveal);
+        });
 
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -1318,15 +1361,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        // Registro del Service Worker para funcionamiento sin conexión (PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
-            });
-        }
     </script>
 </body>
 </html>
