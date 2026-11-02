@@ -717,7 +717,7 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzp1NDJuvBiQRJXJHdwr6jsdpxj_I91Zifxwqg_j07DCkzckTbNEBK5PaRgMABstjWDw/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyURBq4txavR792v3x6NpjNDMbznptR1lr1dWAkNYB7a5AyAH4tBaG6BpXNK_KWsPMPLQ/exec";
         const defaultGuideImage = "https://images.pexels.com/photos/17518300/pexels-photo-17518300.jpeg";
 
         const defaultGuidesData = {
@@ -767,7 +767,6 @@
         function saveStoredGuides(data) {
             localStorage.setItem('sma_guides_data', JSON.stringify(data));
             renderGuidesPage();
-            // Auto-sincronizar con Google Sheets en segundo plano
             pushToGoogleSheets(data);
         }
 
@@ -792,7 +791,7 @@
                     body: JSON.stringify(payload)
                 });
             } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
+                console.warn("Aviso: No se pudo enviar automáticamente a Google Sheets, pero los cambios están guardados localmente.", err);
             }
         }
 
@@ -825,7 +824,7 @@
                     alert("¡Sincronización con Google Sheets completada con éxito!");
                 }
             } catch (err) {
-                alert("No se pudo conectar con Google Sheets. Verifica tu conexión.");
+                alert("No se pudo conectar. Verifica que el Apps Script esté desplegado como 'Cualquier usuario' y hayas creado una 'Nueva versión'.");
             } finally {
                 btn.innerText = "🔄 Sincronizar con Google Sheets";
             }
@@ -964,7 +963,6 @@
             document.getElementById('editModal').classList.remove('active');
         }
 
-        // Función para procesar la subida de fotos locales (Base64)
         function handleImageFileUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -992,7 +990,7 @@
                 data.guides[index].img = document.getElementById('editImg').value || defaultGuideImage;
                 saveStoredGuides(data);
                 closeEditModal();
-                alert('¡Guía actualizado con éxito y sincronizado!');
+                alert('¡Guía actualizado con éxito!');
             }
         }
 
@@ -1044,13 +1042,13 @@
                             }
                         });
                         saveStoredGuides(data);
-                        alert('¡Importación masiva completada y sincronizada con Google Sheets!');
+                        alert('¡Importación masiva completada!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
                 }
             };
-            reader.readAsArrayBuffer(file);
+            reader.readAsDataURL(file);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1138,14 +1136,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado:', reg.scope))
-                    .catch(err => console.log('Error SW:', err));
-            });
-        }
     </script>
 </body>
 </html>
