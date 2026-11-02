@@ -25,6 +25,7 @@
             --accent-terracotta-dark: #82381C;
             --booking-blue: #003580;
             --booking-blue-dark: #00224f;
+            --google-sheets-green: #0F9D58;
             --border-color: rgba(166, 75, 42, 0.12);
             --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
             --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
@@ -166,6 +167,16 @@
         .btn-admin:hover {
             background: var(--accent-terracotta);
             color: #ffffff;
+        }
+
+        .sync-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--google-sheets-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
         }
 
         /* --- Títulos y Buscador --- */
@@ -550,6 +561,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transform: translateY(15px);
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -605,6 +618,38 @@
         .input-group input:focus, .input-group textarea:focus {
             border-color: var(--accent-terracotta);
             background: #ffffff;
+        }
+
+        .image-input-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .image-input-box input[type="text"] {
+            flex: 1;
+        }
+
+        .image-input-box input[type="file"] {
+            display: none;
+        }
+
+        .btn-upload-file {
+            background: rgba(166, 75, 42, 0.1);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-file:hover {
+            background: var(--accent-terracotta);
+            color: #fff;
         }
 
         .btn-modal-save {
@@ -670,10 +715,11 @@
 
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
             <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleHotelsExcelUpload(event)">
-            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -780,18 +826,33 @@
                     <label>Enlace WhatsApp (Opcional - URL)</label>
                     <input type="text" id="editWhatsapp" placeholder="Dejar en blanco si no tiene">
                 </div>
+
+                <!-- Gestor Dual de Imágenes (URL o Archivo Local) -->
                 <div class="input-group">
-                    <label>Foto 1 (URL del Carrete)</label>
-                    <input type="text" id="editImg1" required>
+                    <label>Foto 1 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg1" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg1" accept="image/*" onchange="convertImageFile(event, 'editImg1')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg1').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL del Carrete)</label>
-                    <input type="text" id="editImg2" required>
+                    <label>Foto 2 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg2" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg2" accept="image/*" onchange="convertImageFile(event, 'editImg2')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg2').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL del Carrete)</label>
-                    <input type="text" id="editImg3" required>
+                    <label>Foto 3 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg3" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg3" accept="image/*" onchange="convertImageFile(event, 'editImg3')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
+                    </div>
                 </div>
+
                 <button type="submit" class="btn-modal-save">Guardar Cambios</button>
             </form>
         </div>
@@ -800,7 +861,9 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+        
+        // Enlace actualizado de tu Google Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9KZb-DVN7vAVn1uU7FP5_tqDEhxEfz5DtlqpAk-lB8C2V4dFpFHfxdo_clRb4_EuMHQ/exec";
 
         const defaultHotelsData = {
             hotels: [
@@ -837,331 +900,7 @@
                     images: [
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLo4D6St6gJOTZ8XWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw',
                         'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBAOHC4mT9rXV7n3XLGKqsiPi0fd2fLCetfOclFxVI5IZWTIHPjzvP4xMcfEp_wHHOPKKatb9Ryh0cy3pOuBI-EimtJ4HCqOu1p1Le-muLSIocLkVUufI0rMFO6wmclXVg1v5U=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLo4D6St6gJOTZ8XWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_live_aqua',
-                    name: 'Live Aqua San Miguel de Allende',
-                    type: 'Lujo',
-                    desc: 'Un espacio sensorial sofisticado que combina arte, arquitectura moderna y toques tradicionales en la Calzada de la Presa.',
-                    price: '$$$$$',
-                    phone: '443 310 8137',
-                    address: 'Calz. De La Presa 85, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Calz+De+La+Presa+85+San+Miguel+de+Allende',
-                    web: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende',
-                    booking: 'https://www.fiestamericanatravelty.com/live-aqua/hoteles/live-aqua-san-miguel-de-allende/book/dates-of-stay',
-                    whatsapp: 'https://api.whatsapp.com/send?phone=5214431378728&text=Hola,%20%C2%BFMe%20pueden%20ayudar?',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyVxsXibuKD2y3er5V_BuBQMS_OVOFP7TfnUnHQc0dZlxOJGmblTGCfnoMURVN3zWUsWfAyzkFMdXI7A9A8n3OGpQiAZnvY1V08XuswrEiQy0mNO2Gn9hoN5-XmEn4MoQ5IJ1-=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlZ-z3baYAUDvIMi26bPNmKVWvAPp1T4FQezlvMME47tIGABdiLH2GipC1rH4215bulwe6Bcn9hoLN6HsTZ-8r3O4GfnEeABnAbj9mMqisUuZiLghMaM8fXgEk5RZcFJaGy8Ntv=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmzw2tyAi9VALivM00YAezIz7JV-YXJmPAOMndOWGA-PKfQ8gVDeicllRQHenNSg3PeEpaPQ6wLobRmhoDIJE7ggLEUefoLECD26PfFV2QOhJw-ElBVKwIcsWjwYPx6q62Hxxf_rw=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_numu',
-                    name: 'Numu Boutique Hotel',
-                    type: 'Hotel Boutique',
-                    desc: 'Parte de The Unbound Collection by Hyatt, ubicado en Nemesio Diez, ofreciendo exclusividad y refinamiento.',
-                    price: '$$$$',
-                    phone: '415 148 1234',
-                    address: 'Nemesio Diez 20, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Nemesio+Diez+20+San+Miguel+de+Allende',
-                    web: 'https://www.hyatt.com/unbound-collection/en-US/bjxub-numu',
-                    booking: 'https://www.hyatt.com/shop/rooms/bjxub',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlN0DqX-xz-PNAjI1N_ESsZQybF0rdszq8Yzv-LOegTe-NW_5Wbi5M9WyvWl3lhzvZI76aDA_PWHiZlHm-xCAxKyq8ZvSqLVvyPt1BVCut7t3TDJKT3HAPfdzw6rZOVhl4Y_Mg=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmW0jhKkQFtmDTY4Xpb5Xr4sIJ4G0WUO0VbsW0b7fHWYBz2-hXvWv_q0RPFTmNg2cUdp6wOGQ9WUWEA2GYKT2CNQAI8G0KCfDT6oYGccmm1sby901-CyK5w6YBjz6cCnddY0HG6=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmN0sbSk4ZGq1zPGCWQrAkEhqG1vRNCWMPq0fIUQ_k6TJPBSrGAIZy8sn1NGDkyQ2klpnSEqtjgEgMtA2eV7PdPeIY-2BCezSMUmu_PcmxPfSmkLEDFN8oy5IXx00jW7A-arvvJ=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_matilda',
-                    name: 'Hotel Matilda',
-                    type: 'Hotel Boutique',
-                    desc: 'Un santuario de diseño vanguardista y arte contemporáneo ubicado en el corazón histórico, famoso por su ambiente chic y su exclusivo spa.',
-                    price: '$$$$',
-                    phone: '415 152 1015',
-                    address: 'Aldama 53, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Hotel+Matilda+San+Miguel+de+Allende',
-                    web: 'https://hotelmatilda.com/',
-                    booking: 'https://hotelmatilda.com/?namastay=true',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151142699&text&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAKTA1UHjYA2GNv807f-BHkSV7jcgct0jJXdH4fBR284ejxlvnZJ3QPaheKx9u05jmFH5xHZSxrIjPnXqyRfPoYpyX0hJRcuOLoB9vmERmYfq-ecHHIkhjrQTbpA5HscGYRZazdg=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmt2d-aPv60PmhUUJdknYagUfe4sSBB3PTR5Hsimv3_amb0phv4CK5ce2G9DZ6i5pAIlX6QFEX01nRR6wrZk4-TY3B3g6mo6K-F9p1WAPLXWDfDYz-sXMQBL4DYKoN6ZiRB4Yyz=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmt2d-aPv60PmhUUJdknYagUfe4sSBB3PTR5Hsimv3_amb0phv4CK5ce2G9DZ6i5pAIlX6QFEX01nRR6wrZk4-TY3B3g6mo6K-F9p1WAPLXWDfDYz-sXMQBL4DYKoN6ZiRB4Yyz=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_aguasanta',
-                    name: 'Agua Santa Hotel Boutique',
-                    type: 'Hotel Boutique',
-                    desc: 'Encantador hotel boutique en la histórica calle El Cardo, ideal para disfrutar de la tranquilidad y la cercanía al centro.',
-                    price: '$$$$',
-                    phone: '415 690 2946',
-                    address: 'El Cardo 10, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=El+Cardo+10+San+Miguel+de+Allende',
-                    web: 'https://aguasantahotel.com/',
-                    booking: 'https://aguasantahotel.com/reservaciones/',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk0s40XYMX7l0tQzPAPe1iFreoFSkjoMwoy9btILBt4SmYh2kqkBiJyRX5TR6t8jK52RaW0VCLAcEoo9oV-UeqRpPEjKsYgcd6BsUyV9IS9f8L92Ki-PJZ9MbBIe1la0Xu9HLpg=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmR3mf3mrCQWyyJRiaDcxd62QXkKJRRJuof4apuhqtgAn8jDi1iKOUJYwdIZbGtYUtaLeiIliHZuGwC7RgtHzmnFD9Ep-bbWd6Loeqm8j7PAf4VQF-zZnuWJmzFo2xamx-jF1G0=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWny4oPApxk_lDkgtdQJeFkAcSX0zRwZR_OdFcpWiaTN_jV8ZC2TXvbLNWJLCjbPBlXF9-CkLTGSmmTFiVEfhvGmfgwJdivyFOwtl3ndEOBjs_PniSnExXPc329bgy2QgK9W7OG4=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_amatte',
-                    name: 'Hotel Amatte San Miguel de Allende',
-                    type: 'Lujo',
-                    desc: 'Diseño arquitectónico contemporáneo rodeado de vegetación con vistas panorámicas desde su increíble terraza y restaurante.',
-                    price: '$$$$$',
-                    phone: '415 980 0223',
-                    address: 'Salida Real a Querétaro 168, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Salida+Real+a+Queretaro+168+San+Miguel+de+Allende',
-                    web: 'https://www.amatte.com.mx/es',
-                    booking: 'https://www.amatte.com.mx/bookingstep1',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151400418&text&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlnlhI9rjMd5-E0nMusx36AmEwBJbhKNsn24fCrYDi0cRLnybhQa85ywrsQ66ZIWllXFNBJhEX2zzenQ0jVgOx6mabtbxNKxpa2a3-CUFLM-BJw8gl5hW0TnEI0dnCFNPXqAbEJ=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkeuZ4KHPbFg2D2GBl4ZRi1vU7nof1D3FJzex-FzP9iSnKNiZxZlT9H6g4_acbrYq21CcqAHc8Ctvd2kqxWGEQOohoQvAloM7Bfq21KMOFZSgcvpT1iAbEsimV7aTl25GdB_iwXgS9nRxaW=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZHHlzBydGhRereOnJh8ya3hXiFiXLqiT4bXRnwkNoy6PxYR7s1SXz66x1q2BFLyH1-m59m34DfYxORChHhSE9XoHqEVxobPgDuN2Gu7ROHFjerf0PJzTFM5FwzC5utyliYI0e=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_casanare',
-                    name: 'Hotel Casa Naré - Adults Only',
-                    type: 'Hotel Boutique',
-                    desc: 'Exclusivo hotel para adultos con un ambiente íntimo y sofisticado, ubicado en el corazón del centro histórico.',
-                    price: '$$$$',
-                    phone: '415 126 2477',
-                    address: 'Calle del Dr Ignacio Hernandez Macias 18, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Calle+del+Dr+Ignacio+Hernandez+Macias+18+San+Miguel+de+Allende',
-                    web: 'https://www.casanare.com.mx/es/index.html',
-                    booking: 'https://direct-book.com/properties/hotelcasanaredirect',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnOG2JMah_UiWpKMlb_DXX6jniW4FdFRZZEEu7uA8bnYroCcZ-Vg8F9LWAIGFqrlmZdZC69nmTEsWsycoENLjmCrySsropnBY5MTv5wZErwjbqzVyUxvafU_srSqs8kLwfMY9rA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfISkkdJ5j1z1uE92tgNXZsQELcxXHLfOfkkbhz5BPzrsFvhiKUG9x9X9z1hZZtGB5RurZRSfNEkyIWl0fM0rJAQNEB-NZreITgNMxHp22AlstFvgUqurqYaLk7HiSUn8GfQfR=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnagJEKYWMnuZkyRkiuvFJi6Vl-jWmiaiXwC8sM424L17gIftiqxffecobk1jMRcoZjEp8JqTicf4q3b7t1RjSfMVDhGIog6FbeVxr4kPUJ5pupQGZp7bnaKIsKwgz-YPYYIFsOHg=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_lamorada',
-                    name: 'Hotel La Morada',
-                    type: 'Hotel Boutique',
-                    desc: 'A pocos pasos del Jardín Principal, ofrece una estancia cómoda, limpia y con un auténtico toque colonial tradicional.',
-                    price: '$$$',
-                    phone: '415 152 1647',
-                    address: 'Correo 10, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Correo+10+San+Miguel+de+Allende',
-                    web: 'https://www.lamoradahotel.com.mx/',
-                    booking: '',
-                    whatsapp: 'https://api.whatsapp.com/send?phone=5214151567374&text=%C2%A1Hola!%20Quiero%20informaci%C3%B3n%20sobre%20La%20Morada.',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9wFXd5CzRDenMC6fnHHJuTDw8ZUAXNI_q1_occrNN9Ie89igOt_gXpLbWECtm_mFpkk-cEWEeAWjyrOQUKDjf0-p90d3UYkdfCK7U9JZRm4RAX0ABipj_cN1jOb9DFhgz7pw1JA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkTOyJw2_VH_nvdb8KwtXjns0NpxF3vMYndta81b8GjEJJVH5tH7_HmEm3iwD6lesTKrsr2Ah_p1HOxltNVaRuJouY3ze4d57qX5AFEwKxuj7Y2jaZLHQuibz64t26O3WDp59Y4iQ=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9F_YAvndqDaUU_w2di0keAFc2KYvv_fGi7vqYLo89j0YE-FVhhutDPAJq1HzuSHlZJ_XVB84NC10ZGG40AKKVQ8Dv1FE7CW8fCX7foVWic5RFg06SdWxmCEIDTyFI8p3Vk3t8Jw=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_nena',
-                    name: 'Hotel Boutique Nena',
-                    type: 'Hotel Boutique',
-                    desc: 'Elegancia y confort en la calle San Francisco, con una terraza espectacular y atención personalizada.',
-                    price: '$$$$',
-                    phone: '415 188 1890',
-                    address: 'San Francisco 32, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=San+Francisco+32+San+Miguel+de+Allende',
-                    web: 'https://www.hotelnenasanmigueldeallende.mx/',
-                    booking: '',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkPtQ4Xd58AtOb_6RjGrrw4vhmk_AJJnz_TYtFdLD_X7guqNlsA3NVL1zEpXJGtgF0E0uKOunzXuayPltsBQXJqPjnTdHNz_nNb42ITz8d1fy5a33SM9qOgal__SNTCjuirf_c=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmIUQue0dHi_E-DO5DM9m6qOJ7FvRAVS3yQTh-i9LddNH26-z6v55CDU97ykQfDKjRifWDjDfJl__mOO7t0OBxGThm9-Knd1orMZ9yeHbdiF-QVINXXSFYawA2_eOgrecCvcTO65eY3OD4=w141-h101-n-k-no-nu',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1lgyA15PteNZd4_mlxD9kiqwMsQjXC5TDIUUtr9sUmzGx7vGD4ouCA3jDfDH7O86rXCRDW8Vebm_1_2E0xRSI7OISbqY4tpkcluZnaKeij2EjZjvrutRhZPf70SuoGPXgXk8S=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_mision',
-                    name: 'Hotel Misión San Miguel de Allende',
-                    type: 'Moderado',
-                    desc: 'Estilo hacienda tradicional con amplios espacios, jardines y alberca, ubicado sobre la Salida Real a Querétaro.',
-                    price: '$$',
-                    phone: '55 9160 1680',
-                    address: 'Salida Real a Querétaro 1, Zona Centro, 37774 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Salida+Real+a+Queretaro+1+San+Miguel+de+Allende',
-                    web: 'https://www.hotelesmision.com.mx/destinos/guanajuato/hotel-mision-san-miguel-de-allende',
-                    booking: 'https://hotelesmision.revenatium.com/4/rooms',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMIABG-PIFUCxHudOw22bbs7QzMLq07KzT8IrjyylA9fHbTlZDU4UJENRqsracLl0a7gXaVXK2ejFmjlV3Bw6oSbmVt68_ha5GD8fnGJ92HZrk01Ax-R2X2J_5-9uFjSZjY0mb=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk1JY9QwVeu1BBdIovqwlVYsmkJ4YvPueRF0ZGVbQIO9U295lxJj73fuYMYL59PdoGweFsrKUeK4hcvnVMy2mMQvm6WP_GQxhhm7_2jNcwpzuaXC-5XGJCPxkdjG7xOE1MJOrcF2w=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlV6X_0StprskYZnqQlHxnumwwqC6pVpMgYD7WjtjrIP--tr0lkyy8-F_48mV1QFqPIa-M3fv-7lLJDn5ATuknv5Pc5IZlB7mbS_upcC4L6RfqTluSm4TlKx7LFC1cTA0zFtqyn=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_crisol',
-                    name: 'Hotel Crisol',
-                    type: 'Moderado',
-                    desc: 'Ubicación privilegiada justo frente al Portal Allende, ofreciendo una experiencia acogedora y auténtica en el centro.',
-                    price: '$$',
-                    phone: '415 151 4883',
-                    address: 'Portal Allende 8, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Portal+Allende+8+San+Miguel+de+Allende',
-                    web: 'https://www.hotelcrisol.com/',
-                    booking: 'https://www.hotelcrisol.com/bookingstep1/',
-                    whatsapp: 'https://api.whatsapp.com/send?phone=524151514883',
-                    images: [
-                        'https://static-resources-elementor.mirai.com/wp-content/uploads/sites/1975/crisol-offers-home3.webp',
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHp0PBy2CtogSK0tL7DJCoHc5Ne9zXCSyNrCojeabXzw&s=10',
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJ4GZYC_CW_okERGtz9TbZ63xOTMXDCTaMoX_xBlTwQ&s=10'
-                    ]
-                },
-                {
-                    key: 'hotel_monteverde',
-                    name: 'Hotel Hacienda Monteverde',
-                    type: 'Moderado',
-                    desc: 'Un remanso de paz con arquitectura tradicional mexicana, patios coloniales y habitaciones confortables.',
-                    price: '$$',
-                    phone: '415 152 1814',
-                    address: 'De Volanteros 2, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=De+Volanteros+2+San+Miguel+de+Allende',
-                    web: 'https://haciendamonteverde.com/',
-                    booking: 'https://haciendamonteverde.com/reserva/',
-                    whatsapp: 'http://api.whatsapp.com/send/?phone=5214151090801&text&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnbZDFJaWnoIWJ5dpazX3INwwlA4nidjR1iMrwpq1An_TnoXOGN58qhvwAgGhdoDEg0NBAuqDAR1DiT7OX2DYt_YgCAl-nPEh7_3BRIeHUq_UZcuFp-N07U0mcmLuCRv0e4Bq0d=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmZe-4YyQOHmkDx85nxNd6pGgcPwoN0ulLjOSWGkHvvZfqQ1dkk9CKXS1XZQKnVZ-llJv-z6Dox8mUaWCksG6YxQDKflN6uUdJQdyBxH25jk-1kxPD10KctEdceYRnG62-IVpZpXXiX-ts=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlO0YDGeZIDOEo9rrGJrkWintXQRtTE561xTgjn3bEmL8G2fGZNweRdz_teBg5q7hQ3_6afxg6s5_Zy8YChN5KWZE91k36zMoVbxCoEWgycTSMz5glTkL2VTgk_Gvuv7GDPWLa3Rw=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_mx',
-                    name: 'Hotel MX San Miguel de Allende',
-                    type: 'Moderado',
-                    desc: 'Estancia moderna, práctica y funcional cerca de la zona comercial La Luciérnaga, perfecta para viajeros dinámicos.',
-                    price: '$$',
-                    phone: '415 688 5518',
-                    address: 'Cam. a Alcocer 18, La Luciérnaga, 37745 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Cam+a+Alcocer+18+San+Miguel+de+Allende',
-                    web: 'https://www.hotelesmx.com/mx-mas-san-miguel-de-allende',
-                    booking: 'https://hotels.cloudbeds.com/es/reservation/iroPVx',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=525621702676&text&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWma8OxoOQGFGge3wUMA91dilo3W55udaNI60OXNr9Uko0Vv7kIICKefTJWJfIoY_H5bq33jKs5PctNUfdudRD_NK-mqO94vjHjtd3PTD8NdP60jTJQPr8nl4q-MsuFsS6N4V1HS=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnZaw_8-A9pUMZyXiNq00rJDWSeIVvwYTzGxf7rQPxqubckcv5UdHN-FP3DrzCPsQWbtztIFQrQnuSvpVYy2T3yZHhM0LRghOx63H5fLoSKMEmMxbHzpRNL9g9NaDQSOtVfCk-EtA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCs8kvj1_b7GOcuIXE7uki9Z2ar45ZkMfWUiebYxxjHIqclCyFzkatjaDjvDWNtWXteYKFm2BPmZAxX6om5qy91iGCOfb-FMEhTwuI-zLjl1P9uCv9JWCI-sYyybIvqUjG4Mn4=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_posada_gloria',
-                    name: 'Hotel Posada La Gloria',
-                    type: 'Económico',
-                    desc: 'Acogedor y tradicional callejón de Loreto, brindando una experiencia rústica, económica y muy cerca de los atractivos principales.',
-                    price: '$',
-                    phone: '415 152 3170',
-                    address: 'Cjon. de Loreto 68, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Cjon+de+Loreto+68+San+Miguel+de+Allende',
-                    web: 'https://www.travelbymexico.com/guan/posadalagloria/',
-                    booking: '',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl9mnnogYwIfZMApokgzOm1Oo4-sPkNdqkzJHxaCWIUEuD8c1OSZawAjEGkqfdh6gE93TYM3oc9O0RvKgsY5CEWjEe81HAahR6kvoDnfmudP0RNNnct8pq9ZXCwI1Qi6lZvAMUh74oUdlzH=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZAJQSxzjC4vK7mFQajILpdSggNlLfQjchyiPXUOC-aCc57fhm6ZUt73q5KpsyH4Cf4SeHj4AKagQupG1HtdWFkF_5D9ro0BsIQL8OlReLWNune-Xp9P87Dd9yseL4Gj1jXfmE=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZAJQSxzjC4vK7mFQajILpdSggNlLfQjchyiPXUOC-aCc57fhm6ZUt73q5KpsyH4Cf4SeHj4AKagQupG1HtdWFkF_5D9ro0BsIQL8OlReLWNune-Xp9P87Dd9yseL4Gj1jXfmE=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_eden',
-                    name: 'Hotel Edén de Los Ángeles',
-                    type: 'Económico',
-                    desc: 'Hospedaje accesible y confortable sobre la calle Jesús, perfecto para recorrer el centro a pie.',
-                    price: '$',
-                    phone: '415 150 0020',
-                    address: 'Jesús 28, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Jesus+28+San+Miguel+de+Allende',
-                    web: 'https://www.hoteledendelosangeles.com/',
-                    booking: 'https://www.hoteledendelosangeles.com/book-a-room',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlobQpbZxn9f28QpXWQEaA4MY42vmYSHwJ8aMQmsAkeFihZ4tJbX6elCPpTypA0XB1WWSz2XPRMt64fBWpaChnSjxprboDPUaQX6kpmCvpTEZ4E12Lcp6iXJX0PFffeOTZXNFN=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLgyOaq9VTDI-JWwlxQHbQDGy-ZV3DxV75AgYmAZG66daEB0T3dcIh5Aoi9V25-lpMkqWfY-rl9sVqnZSwpam3UjEctlvxQw-4zuchi1BDoGeHk9kT_XNFMh16u-rJttbf11-F=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrPZrI-MTP23R1HFxk0eDWuTzhWe3v-yvIZmFGSYnuQYFctzCRf87ZQSgDEEnah3r_hHR0wyEncqU5lAin_z8SmjUqqoAyWdq-96tqoq2V_soU8pbIfZcJTABGp-ok4eQD471XEg=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_santuario',
-                    name: 'Hotel y Hostal Santuario',
-                    type: 'Económico',
-                    desc: 'Opción versátil y económica combinando privacidad de hotel y la vibra social de hostal en la calle Ánimas.',
-                    price: '$',
-                    phone: '415 690 4282',
-                    address: 'Animas 16, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Animas+16+San+Miguel+de+Allende',
-                    web: '#',
-                    booking: 'https://www.booking.com/hotel/mx/amp-hostal-santuario-san-miguel-de-allende.es.html',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWV_AETm10zjXyV8-9KHbzkDBsbPaVrg4mVZ8ol57o8zvkb2HSIks6-wNS7Q4iiYSR1NlzE_oHjAbKyRW-lCkzATnMVGKtF5Aoc1oujl61T_GclI2WAh31fkP9gS6XMq_wUSzi2w=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWldpu1Ep1Wiy6EZ4_OBFZTu2kJmUDYV3g1HakITj4Ti1-41ICrPTyx5bhERcfK7daaZFdFKp3GxQccPbpuWtxhMcTeSta2Ci5nPyCS2ptGqEcFIkx-vexVFiXCUJdzyBW5384Ne=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWZBswPz41Gs_YG3Kgb4p4LX8JaiktIbBGecLIZWozSZZmPaxcuWrpUNAlTnuXe79TqU1XxU3kQPLW0_b_qtES7v9XhxR-8BVPdW1opp1Q8IIiNylbzHJzugl4ho0ROQyIKsw=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'glamping_coyote',
-                    name: 'Coyote Park & Hotel',
-                    type: 'Glamping',
-                    desc: 'Exclusiva experiencia de naturaleza, aventura y glamping en la carretera a Querétaro con comodidades de primer nivel.',
-                    price: '$$$',
-                    phone: '415 114 3834',
-                    address: 'Carretera a Querétaro, San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Coyote+Park+San+Miguel+de+Allende',
-                    web: 'https://coyotehotel.mx/',
-                    booking: 'https://hotels.cloudbeds.com/en/reservation/CL7zB1',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=%2B524151143834&text&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmMzAgbHXxgiE7ziciufAGpQ13SdefwIiGRWeDsRiK35z2EV4URmTSsE_MBmK31VSAXcW_--fiFx4q7oURrQjgIRNfDiJLxYq3qWFd6NtAAfl_YWD2-hTG-xBQvXCVJKexE91WPkw=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmxQZzMhg3hUDotN1KOiptTBqr5rACxs3H-Aa40hUxVzMLaBlOpE2clhxQQUz4Zq3TOtuS2UTN55uKY2GrOgtVyo9QjHsOQuVCJzmjZe_fwDa_sfL67_TVPzmn9NPqSAuXE0tCqGAGPznDL=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn3_emwnmpV8GBlb8qwbvuBf08b4iHX5iCb1oiaI1gPd2DQgbFPoQ2MZyi8j13ECxdDiZfR6yiCE1e2VvRuSHjoSqPwQKla4XDx2E4BUtpcSuK3gvtKtF4ocT8hMCoCEEG0iicWmh0QxC0-=w141-h141-n-k-no-nu'
-                    ]
-                },
-                {
-                    key: 'glamping_chichijamaica',
-                    name: 'Glamping ChichiJamaica',
-                    type: 'Glamping',
-                    desc: 'Campamento de lujo rodeado de paisajes naturales en El Batán, ideal para desconectarse y disfrutar bajo las estrellas.',
-                    price: '$$$',
-                    phone: '461 106 8864',
-                    address: 'R5H4+CFW, 37898 El Batán, Gto.',
-                    maps: 'https://maps.google.com/?q=Glamping+ChichiJamaica+El+Batan',
-                    web: 'https://glampingchichijamaica.com/',
-                    booking: 'https://www.booking.com/hotel/mx/chichi-jamaica.es.html',
-                    whatsapp: 'https://api.whatsapp.com/resolve/?deeplink=%2F52461106%25208864&not_found=1',
-                    images: [
-                        'https://glampingchichijamaica.com/assets/images/carrucel-7-506x675.webp',
-                        'https://glampingchichijamaica.com/assets/images/galera-3-506x675.webp',
-                        'https://glampingchichijamaica.com/assets/images/galera-1-1108x1662.webp'
-                    ]
-                },
-                {
-                    key: 'glamping_nomada',
-                    name: 'Nomada Glamping',
-                    type: 'Glamping',
-                    desc: 'Estancias inmersivas en Atotonilco con diseño sofisticado, fogatas y un entorno natural inigualable.',
-                    price: '$$$',
-                    phone: '247 100 3537',
-                    address: 'Insurgentes 333, Atotonilco, 37893 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Nomada+Glamping+Atotonilco',
-                    web: 'https://www.nomadaglampingsma.com/',
-                    booking: 'https://www.nomadaglampingsma.com/reservas',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=522471003537&text=Vi+su+p%C3%A1gina+web+y+quisiera+m%C3%A1s+informaci%C3%B3n+sobre+Nomada+Glamping&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl9Yvyc-5Bjt86404oVJzPJbzqh33k5SxKq5j1cP2U8NBk4iNQeaNGMZoTZfQHmkitDHeR6eJJLYOYJjvC9J9YBQIFA5Yq07m0JxK6vM5QCLEKw35cVDDvwECx2qe-wGfnGEXlD=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnx-z09DWRXQgWSFrUsNfFrA_suysUBBoLRn4N-Yzw-9MhLHGuhXp3Ra_y1ggF-A8cXWMABNHy1Ur9gPbNwrJ07AxKO0pCbqT_oow6f8VpCx-a0vSUFlN1ondEDjHHPErqoUrbnBQ=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWknnHr1hJdhZyww-YrmlQ-qBKdYLwiuTXNuQWRtYShdStDGOLP6fc5Yg0G8rPiE6ydq3X-GcC_8UX7k_hwl-Mhkfh5ZE5FSTkPQjjcfXYqIsVTyKyU6jnWbS5Zpug55X9c5vMGK=s1360-w1360-h1020-rw'
+                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw'
                     ]
                 }
             ]
@@ -1177,16 +916,16 @@
         }
 
         function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data_v3');
+            const data = localStorage.getItem('sma_hotels_data_v4');
             if (!data) {
-                localStorage.setItem('sma_hotels_data_v3', JSON.stringify(defaultHotelsData));
+                localStorage.setItem('sma_hotels_data_v4', JSON.stringify(defaultHotelsData));
                 return defaultHotelsData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data_v3', JSON.stringify(data));
+            localStorage.setItem('sma_hotels_data_v4', JSON.stringify(data));
             renderHotels(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -1195,14 +934,87 @@
 
         async function pushDataToGoogleSheets(data) {
             try {
+                const payload = data.hotels.map(item => ({
+                    key: item.key,
+                    name: item.name,
+                    type: item.type,
+                    desc: item.desc,
+                    price: item.price,
+                    phone: item.phone,
+                    address: item.address,
+                    maps: item.maps,
+                    web: item.web,
+                    booking: item.booking || '',
+                    whatsapp: item.whatsapp || '',
+                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+                }));
+
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data.hotels)
+                    body: JSON.stringify(payload)
                 });
             } catch (err) {
                 console.error("Error al sincronizar con Google Sheets:", err);
+            }
+        }
+
+        async function fetchHotelsFromCloud() {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
+                    const normalizedHotels = cloudData.map(item => {
+                        let imgs = item.images;
+                        if (typeof imgs === 'string') {
+                            try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
+                        }
+                        if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1566073771259-6a8506099945'];
+
+                        return {
+                            key: item.key || 'hotel_' + Math.random().toString(36).substring(2, 7),
+                            name: item.name || 'Hotel SMA',
+                            type: item.type || 'Lujo',
+                            desc: item.desc || '',
+                            price: item.price || '$$$',
+                            phone: item.phone || '',
+                            address: item.address || '',
+                            maps: item.maps || '#',
+                            web: item.web || '#',
+                            booking: item.booking || '',
+                            whatsapp: item.whatsapp || '',
+                            images: imgs
+                        };
+                    });
+
+                    const formattedData = { hotels: normalizedHotels };
+                    localStorage.setItem('sma_hotels_data_v4', JSON.stringify(formattedData));
+                    renderHotels(document.getElementById('searchInput').value);
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                }
+            } catch (error) {
+                console.warn("Modo local activo:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local`;
+            }
+        }
+
+        async function syncWithGoogleDrive() {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+            try {
+                const data = getStoredHotels();
+                await pushDataToGoogleSheets(data);
+                setTimeout(() => {
+                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    alert('¡Sincronización con Google Drive y Google Sheets completada exitosamente!');
+                }, 1000);
+            } catch (error) {
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error`;
+                alert('No se pudo conectar con Google Apps Script.');
             }
         }
 
@@ -1224,6 +1036,7 @@
             const data = getStoredHotels();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('hotelsGridContainer');
+            if (!container) return;
             container.innerHTML = '';
 
             let filtered = data.hotels;
@@ -1243,9 +1056,18 @@
             }
 
             filtered.forEach(h => {
+                let imgList = h.images;
+                if (typeof imgList === 'string') {
+                    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+                }
+                if (!Array.isArray(imgList) || imgList.length === 0) {
+                    imgList = ['https://images.unsplash.com/photo-1566073771259-6a8506099945'];
+                }
+
                 let slidesHtml = '';
-                h.images.forEach((img, idx) => {
-                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${h.name} foto ${idx+1}"></div>`;
+                imgList.forEach((img, idx) => {
+                    const cleanImg = String(img).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${h.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'"></div>`;
                 });
 
                 const webButtonHtml = (h.web && h.web !== '#') ? `
@@ -1274,7 +1096,7 @@
                             <div class="carousel-slides" id="slides-${h.key}">
                                 ${slidesHtml}
                             </div>
-                            ${h.images.length > 1 ? `
+                            ${imgList.length > 1 ? `
                                 <button class="carousel-btn prev" onclick="moveSlide('${h.key}', -1)"><i class="fas fa-chevron-left"></i></button>
                                 <button class="carousel-btn next" onclick="moveSlide('${h.key}', 1)"><i class="fas fa-chevron-right"></i></button>
                             ` : ''}
@@ -1318,16 +1140,30 @@
             if (!slideIndices[key]) slideIndices[key] = 0;
             const data = getStoredHotels();
             const h = data.hotels.find(el => el.key === key);
-            if (!h) return;
+            if (!h || !h.images) return;
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
 
             slideIndices[key] += direction;
-            if (slideIndices[key] >= h.images.length) slideIndices[key] = 0;
-            if (slideIndices[key] < 0) slideIndices[key] = h.images.length - 1;
+            if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
 
             const slider = document.getElementById(`slides-${key}`);
             if (slider) {
                 slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
             }
+        }
+
+        function convertImageFile(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function openLoginModal() {
@@ -1384,9 +1220,15 @@
             document.getElementById('editWeb').value = h.web;
             document.getElementById('editBooking').value = h.booking || '';
             document.getElementById('editWhatsapp').value = h.whatsapp || '';
-            document.getElementById('editImg1').value = h.images[0] || '';
-            document.getElementById('editImg2').value = h.images[1] || '';
-            document.getElementById('editImg3').value = h.images[2] || '';
+            
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
+
+            document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+            document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+            document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
             document.getElementById('editModal').classList.add('active');
         }
 
@@ -1413,33 +1255,33 @@
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ];
+                ].filter(img => img.trim() !== '');
+
                 saveStoredHotels(data, true);
                 closeEditModal();
-                alert('¡Hospedaje actualizado con éxito!');
+                alert('¡Hospedaje actualizado y sincronizado en Google Sheets!');
             }
         }
 
         function downloadHotelsTemplate() {
             const data = getStoredHotels();
             const flatData = data.hotels.map(el => ({
-                nombre: el.name,
-                tipo_hospedaje: el.type,
-                descripcion: el.desc,
-                rango_precio: el.price,
-                telefono: el.phone,
-                direccion_escrita: el.address,
-                direccion_maps: el.maps,
-                sitio_web: el.web,
-                booking_url: el.booking || '',
-                whatsapp_url: el.whatsapp || '',
-                foto_1: el.images[0] || '',
-                foto_2: el.images[1] || '',
-                foto_3: el.images[2] || ''
+                key: el.key,
+                name: el.name,
+                type: el.type,
+                desc: el.desc,
+                price: el.price,
+                phone: el.phone,
+                address: el.address,
+                maps: el.maps,
+                web: el.web,
+                booking: el.booking || '',
+                whatsapp: el.whatsapp || '',
+                images: Array.isArray(el.images) ? JSON.stringify(el.images) : el.images
             }));
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "HospedajeGlamping");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Hospedaje");
             XLSX.writeFile(workbook, "plantilla_hospedaje_vivesanmiguel.xlsx");
         }
 
@@ -1457,26 +1299,27 @@
                         const data = getStoredHotels();
                         json.forEach((row, idx) => {
                             if (idx < data.hotels.length) {
-                                if (row.nombre) data.hotels[idx].name = row.nombre;
-                                if (row.tipo_hospedaje) data.hotels[idx].type = row.tipo_hospedaje;
-                                if (row.descripcion) data.hotels[idx].desc = row.descripcion;
-                                if (row.rango_precio) data.hotels[idx].price = row.rango_precio;
-                                if (row.telefono) data.hotels[idx].phone = row.telefono;
-                                if (row.direccion_escrita) data.hotels[idx].address = row.direccion_escrita;
-                                if (row.direccion_maps) data.hotels[idx].maps = row.direccion_maps;
-                                if (row.sitio_web) data.hotels[idx].web = row.sitio_web;
-                                if (row.booking_url !== undefined) data.hotels[idx].booking = row.booking_url;
-                                if (row.whatsapp_url !== undefined) data.hotels[idx].whatsapp = row.whatsapp_url;
-                                
-                                let imgs = [];
-                                if (row.foto_1) imgs.push(row.foto_1);
-                                if (row.foto_2) imgs.push(row.foto_2);
-                                if (row.foto_3) imgs.push(row.foto_3);
-                                if (imgs.length > 0) data.hotels[idx].images = imgs;
+                                if (row.name) data.hotels[idx].name = row.name;
+                                if (row.type) data.hotels[idx].type = row.type;
+                                if (row.desc) data.hotels[idx].desc = row.desc;
+                                if (row.price) data.hotels[idx].price = row.price;
+                                if (row.phone) data.hotels[idx].phone = row.phone;
+                                if (row.address) data.hotels[idx].address = row.address;
+                                if (row.maps) data.hotels[idx].maps = row.maps;
+                                if (row.web) data.hotels[idx].web = row.web;
+                                if (row.booking) data.hotels[idx].booking = row.booking;
+                                if (row.whatsapp) data.hotels[idx].whatsapp = row.whatsapp;
+                                if (row.images) {
+                                    try {
+                                        data.hotels[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                    } catch(e) {
+                                        data.hotels[idx].images = [row.images];
+                                    }
+                                }
                             }
                         });
                         saveStoredHotels(data, true);
-                        alert('¡Importación masiva completada!');
+                        alert('¡Importación masiva completada y sincronizada en la nube!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1488,6 +1331,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
             renderHotels();
+            fetchHotelsFromCloud();
         });
 
         // Partículas y cursor
@@ -1571,7 +1415,6 @@
         }
         animateParticles();
 
-        // Registro del Service Worker para funcionamiento sin conexión (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
