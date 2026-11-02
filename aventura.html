@@ -855,8 +855,9 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
+        
         // URL actualizada con tu nueva implementación de Google Apps Script
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxrEnQPEFSijptztwNoiYEhtYzAe6tasDJybmNMq5uhV-Jpa1_6Ey3VC7_3CYjb_54gA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwagmurEQNdNtL1O4wyq4y7W3BtLSqLr2RSNDvJB39VgkMWAIIMGjuWUyWqBeYOJUmtcg/exec";
 
         const defaultAdventureData = {
             adventures: [
@@ -1043,6 +1044,26 @@
             }
         }
 
+        async function fetchAdventuresFromCloud() {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
+                    const formattedData = { adventures: cloudData };
+                    localStorage.setItem('sma_adventures_data_v7', JSON.stringify(formattedData));
+                    renderAdventures(document.getElementById('searchInput').value);
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado con Google Sheets`;
+                }
+            } catch (error) {
+                console.warn("No se pudo conectar con la nube, usando caché local:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local (Offline)`;
+            }
+        }
+
         async function syncWithGoogleDrive() {
             const statusEl = document.getElementById('syncStatus');
             statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
@@ -1103,8 +1124,13 @@
 
             filtered.forEach(a => {
                 let slidesHtml = '';
-                if (a.images && a.images.length > 0) {
-                    a.images.forEach((img, idx) => {
+                let imgList = a.images;
+                if (typeof imgList === 'string') {
+                    try { imgList = JSON.parse(imgList); } catch(e) { imgList = [imgList]; }
+                }
+
+                if (imgList && imgList.length > 0) {
+                    imgList.forEach((img, idx) => {
                         slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${a.name} foto ${idx+1}"></div>`;
                     });
                 } else {
@@ -1112,15 +1138,19 @@
                 }
 
                 let specialtiesHtml = '';
-                if (a.specialties && Array.isArray(a.specialties)) {
-                    a.specialties.forEach(spec => {
+                let specs = a.specialties;
+                if (typeof specs === 'string') {
+                    specs = specs.split(',').map(s => s.trim()).filter(s => s);
+                }
+                if (specs && Array.isArray(specs)) {
+                    specs.forEach(spec => {
                         specialtiesHtml += `<span class="activity-pill">${spec}</span>`;
                     });
                 }
 
-                const primarySpec = (a.specialties && a.specialties.length > 0) ? a.specialties[0] : a.type;
+                const primarySpec = (specs && specs.length > 0) ? specs[0] : a.type;
 
-                const cleanPhone = a.phone.replace(/[^0-9+]/g, '');
+                const cleanPhone = String(a.phone || '').replace(/[^0-9+]/g, '');
                 const cleanWa = cleanPhone.replace('+', '');
 
                 let waLink = a.whatsapp || `https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20reservar%20la%20actividad:%20${encodeURIComponent(a.name)}`;
@@ -1151,7 +1181,7 @@
                             <div class="carousel-slides" id="slides-${a.key}">
                                 ${slidesHtml}
                             </div>
-                            ${a.images && a.images.length > 1 ? `
+                            ${imgList && imgList.length > 1 ? `
                                 <button class="carousel-btn prev" onclick="moveSlide('${a.key}', -1)"><i class="fas fa-chevron-left"></i></button>
                                 <button class="carousel-btn next" onclick="moveSlide('${a.key}', 1)"><i class="fas fa-chevron-right"></i></button>
                             ` : ''}
@@ -1203,10 +1233,14 @@
             const data = getStoredAdventures();
             const a = data.adventures.find(el => el.key === key);
             if (!a || !a.images) return;
+            let imgList = a.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = [imgList]; }
+            }
 
             slideIndices[key] += direction;
-            if (slideIndices[key] >= a.images.length) slideIndices[key] = 0;
-            if (slideIndices[key] < 0) slideIndices[key] = a.images.length - 1;
+            if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
 
             const slider = document.getElementById(`slides-${key}`);
             if (slider) {
@@ -1270,7 +1304,11 @@
             document.getElementById('editAdvKey').value = key;
             document.getElementById('editName').value = a.name;
             document.getElementById('editType').value = a.type;
-            document.getElementById('editSpecialties').value = a.specialties ? a.specialties.join(', ') : '';
+            
+            let specs = a.specialties;
+            if (Array.isArray(specs)) specs = specs.join(', ');
+            document.getElementById('editSpecialties').value = specs || '';
+            
             document.getElementById('editDesc').value = a.desc;
             document.getElementById('editPhone').value = a.phone;
             document.getElementById('editAddress').value = a.address;
@@ -1278,9 +1316,15 @@
             document.getElementById('editWeb').value = a.web || '';
             document.getElementById('editFacebook').value = a.facebook || '';
             document.getElementById('editInstagram').value = a.instagram || '';
-            document.getElementById('editImg1').value = (a.images && a.images[0]) ? a.images[0] : '';
-            document.getElementById('editImg2').value = (a.images && a.images[1]) ? a.images[1] : '';
-            document.getElementById('editImg3').value = (a.images && a.images[2]) ? a.images[2] : '';
+            
+            let imgList = a.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = [imgList]; }
+            }
+
+            document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+            document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+            document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
             document.getElementById('editModal').classList.add('active');
         }
 
@@ -1318,19 +1362,19 @@
         function downloadAdventureTemplate() {
             const data = getStoredAdventures();
             const flatData = data.adventures.map(el => ({
-                nombre: el.name,
-                categoria: el.type,
-                especialidades: el.specialties ? el.specialties.join(', ') : '',
-                descripcion: el.desc,
-                telefono: el.phone,
-                direccion: el.address,
-                direccion_maps: el.maps,
-                sitio_web: el.web,
-                facebook_url: el.facebook || '',
-                instagram_url: el.instagram || '',
-                foto_1: (el.images && el.images[0]) ? el.images[0] : '',
-                foto_2: (el.images && el.images[1]) ? el.images[1] : '',
-                foto_3: (el.images && el.images[2]) ? el.images[2] : ''
+                key: el.key,
+                name: el.name,
+                type: el.type,
+                specialties: Array.isArray(el.specialties) ? el.specialties.join(', ') : el.specialties,
+                desc: el.desc,
+                phone: el.phone,
+                address: el.address,
+                maps: el.maps,
+                web: el.web,
+                facebook: el.facebook || '',
+                instagram: el.instagram || '',
+                whatsapp: el.whatsapp || '',
+                images: Array.isArray(el.images) ? JSON.stringify(el.images) : el.images
             }));
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
@@ -1352,26 +1396,32 @@
                         const data = getStoredAdventures();
                         json.forEach((row, idx) => {
                             if (idx < data.adventures.length) {
-                                if (row.nombre) data.adventures[idx].name = row.nombre;
-                                if (row.categoria) data.adventures[idx].type = row.categoria;
-                                if (row.especialidades) data.adventures[idx].specialties = row.especialidades.split(',').map(s => s.trim()).filter(s => s);
-                                if (row.descripcion) data.adventures[idx].desc = row.descripcion;
-                                if (row.telefono) data.adventures[idx].phone = row.telefono;
-                                if (row.direccion) data.adventures[idx].address = row.direccion;
-                                if (row.direccion_maps) data.adventures[idx].maps = row.direccion_maps;
-                                if (row.sitio_web) data.adventures[idx].web = row.sitio_web;
-                                if (row.facebook_url) data.adventures[idx].facebook = row.facebook_url;
-                                if (row.instagram_url) data.adventures[idx].instagram = row.instagram_url;
-                                
-                                let imgs = [];
-                                if (row.foto_1) imgs.push(row.foto_1);
-                                if (row.foto_2) imgs.push(row.foto_2);
-                                if (row.foto_3) imgs.push(row.foto_3);
-                                if (imgs.length > 0) data.adventures[idx].images = imgs;
+                                if (row.name) data.adventures[idx].name = row.name;
+                                if (row.type) data.adventures[idx].type = row.type;
+                                if (row.specialties) {
+                                    data.adventures[idx].specialties = typeof row.specialties === 'string' 
+                                        ? row.specialties.split(',').map(s => s.trim()).filter(s => s) 
+                                        : row.specialties;
+                                }
+                                if (row.desc) data.adventures[idx].desc = row.desc;
+                                if (row.phone) data.adventures[idx].phone = row.phone;
+                                if (row.address) data.adventures[idx].address = row.address;
+                                if (row.maps) data.adventures[idx].maps = row.maps;
+                                if (row.web) data.adventures[idx].web = row.web;
+                                if (row.facebook) data.adventures[idx].facebook = row.facebook;
+                                if (row.instagram) data.adventures[idx].instagram = row.instagram;
+                                if (row.whatsapp) data.adventures[idx].whatsapp = row.whatsapp;
+                                if (row.images) {
+                                    try {
+                                        data.adventures[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                    } catch(e) {
+                                        data.adventures[idx].images = [row.images];
+                                    }
+                                }
                             }
                         });
                         saveStoredAdventures(data, true);
-                        alert('¡Importación masiva completada!');
+                        alert('¡Importación masiva completada y sincronizada en la nube!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1382,7 +1432,8 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            renderAdventures();
+            renderAdventures(); // Render inmediato con caché local
+            fetchAdventuresFromCloud(); // Sincronización automática de lectura con Google Sheets
         });
 
         // Partículas y cursor
