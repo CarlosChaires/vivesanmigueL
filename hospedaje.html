@@ -863,7 +863,7 @@
         const AUTH_PASS = "c4rl0s1107";
         
         // Enlace actualizado de tu Google Apps Script
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9KZb-DVN7vAVn1uU7FP5_tqDEhxEfz5DtlqpAk-lB8C2V4dFpFHfxdo_clRb4_EuMHQ/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec";
 
         const defaultHotelsData = {
             hotels: [
@@ -916,16 +916,16 @@
         }
 
         function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data_v4');
+            const data = localStorage.getItem('sma_hotels_data_v5');
             if (!data) {
-                localStorage.setItem('sma_hotels_data_v4', JSON.stringify(defaultHotelsData));
+                localStorage.setItem('sma_hotels_data_v5', JSON.stringify(defaultHotelsData));
                 return defaultHotelsData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data_v4', JSON.stringify(data));
+            localStorage.setItem('sma_hotels_data_v5', JSON.stringify(data));
             renderHotels(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -992,7 +992,7 @@
                     });
 
                     const formattedData = { hotels: normalizedHotels };
-                    localStorage.setItem('sma_hotels_data_v4', JSON.stringify(formattedData));
+                    localStorage.setItem('sma_hotels_data_v5', JSON.stringify(formattedData));
                     renderHotels(document.getElementById('searchInput').value);
                     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
