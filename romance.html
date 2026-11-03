@@ -26,6 +26,8 @@
             --google-sheets-green: #0F9D58;
             --whatsapp-green: #25D366;
             --whatsapp-dark: #1EBE5D;
+            --instagram-pink: #E1306C;
+            --facebook-blue: #1877F2;
             --border-color: rgba(166, 75, 42, 0.12);
             --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
             --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
@@ -430,6 +432,7 @@
         .action-row {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .btn-action {
@@ -444,6 +447,7 @@
             font-size: 0.8rem;
             text-decoration: none;
             transition: all 0.3s ease;
+            min-width: 90px;
         }
 
         .btn-action.map {
@@ -464,6 +468,28 @@
 
         .btn-action.web:hover {
             background: var(--accent-terracotta-dark);
+        }
+
+        .btn-action.instagram {
+            background: rgba(225, 48, 108, 0.1);
+            color: var(--instagram-pink);
+            border: 1px solid rgba(225, 48, 108, 0.25);
+        }
+
+        .btn-action.instagram:hover {
+            background: var(--instagram-pink);
+            color: #ffffff;
+        }
+
+        .btn-action.facebook {
+            background: rgba(24, 119, 242, 0.1);
+            color: var(--facebook-blue);
+            border: 1px solid rgba(24, 119, 242, 0.25);
+        }
+
+        .btn-action.facebook:hover {
+            background: var(--facebook-blue);
+            color: #ffffff;
         }
 
         .btn-action.whatsapp {
@@ -531,7 +557,7 @@
         .modal-content {
             background: #ffffff;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -792,6 +818,14 @@
                     <input type="text" id="editWeb" required placeholder="Si no tiene, poner #">
                 </div>
                 <div class="input-group">
+                    <label>Enlace Instagram (URL)</label>
+                    <input type="text" id="editInstagram" required placeholder="https://instagram.com/... (Si no tiene, poner #)">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Facebook (URL)</label>
+                    <input type="text" id="editFacebook" required placeholder="https://facebook.com/... (Si no tiene, poner #)">
+                </div>
+                <div class="input-group">
                     <label>Foto 1 (URL o Archivo)</label>
                     <div class="image-input-box">
                         <input type="text" id="editImg1" placeholder="https://..." required>
@@ -824,7 +858,6 @@
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
         
-        // URL actualizada con tu nueva implementación de Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLZkNdRD-nO1MNtY1MxW7ATvZoojsS_OAjkA0LJTQvHVSYaSGO74fyss8fYrUD4j-_NQ/exec";
 
         let cloudDataCache = [];
@@ -857,6 +890,8 @@
                             address: item.address || item.direccion || '',
                             maps: item.maps || item.direccion_maps || '#',
                             web: item.web || item.sitio_web || '#',
+                            instagram: item.instagram || item.ig || '#',
+                            facebook: item.facebook || item.fb || '#',
                             images: imgs
                         };
                     });
@@ -884,6 +919,8 @@
                     address: item.address,
                     maps: item.maps,
                     web: item.web,
+                    instagram: item.instagram,
+                    facebook: item.facebook,
                     images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
                 }));
 
@@ -966,7 +1003,19 @@
 
                 const webButtonHtml = (r.web && r.web !== '#') ? `
                     <a href="${r.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
-                        <i class="fas fa-globe"></i> Sitio Web
+                        <i class="fas fa-globe"></i> Web
+                    </a>
+                ` : '';
+
+                const igButtonHtml = (r.instagram && r.instagram !== '#') ? `
+                    <a href="${r.instagram}" target="_blank" rel="noopener noreferrer" class="btn-action instagram">
+                        <i class="fab fa-instagram"></i> IG
+                    </a>
+                ` : '';
+
+                const fbButtonHtml = (r.facebook && r.facebook !== '#') ? `
+                    <a href="${r.facebook}" target="_blank" rel="noopener noreferrer" class="btn-action facebook">
+                        <i class="fab fa-facebook-f"></i> FB
                     </a>
                 ` : '';
 
@@ -1003,6 +1052,8 @@
                                             <i class="fas fa-directions"></i> Mapa
                                         </a>
                                         ${webButtonHtml}
+                                        ${igButtonHtml}
+                                        ${fbButtonHtml}
                                     </div>
                                     <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20información%20sobre:%20${encodeURIComponent(r.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
                                         <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
@@ -1099,7 +1150,9 @@
             document.getElementById('editPhone').value = '';
             document.getElementById('editAddress').value = '';
             document.getElementById('editMaps').value = '';
-            document.getElementById('editWeb').value = '';
+            document.getElementById('editWeb').value = '#';
+            document.getElementById('editInstagram').value = '#';
+            document.getElementById('editFacebook').value = '#';
             document.getElementById('editImg1').value = '';
             document.getElementById('editImg2').value = '';
             document.getElementById('editImg3').value = '';
@@ -1119,7 +1172,9 @@
             document.getElementById('editPhone').value = r.phone;
             document.getElementById('editAddress').value = r.address;
             document.getElementById('editMaps').value = r.maps;
-            document.getElementById('editWeb').value = r.web;
+            document.getElementById('editWeb').value = r.web || '#';
+            document.getElementById('editInstagram').value = r.instagram || '#';
+            document.getElementById('editFacebook').value = r.facebook || '#';
             
             let imgList = r.images;
             if (typeof imgList === 'string') {
@@ -1147,7 +1202,9 @@
                 phone: document.getElementById('editPhone').value,
                 address: document.getElementById('editAddress').value,
                 maps: document.getElementById('editMaps').value,
-                web: document.getElementById('editWeb').value,
+                web: document.getElementById('editWeb').value || '#',
+                instagram: document.getElementById('editInstagram').value || '#',
+                facebook: document.getElementById('editFacebook').value || '#',
                 images: [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
