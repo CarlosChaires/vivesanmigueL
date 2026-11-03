@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vive San Miguel | Sitios de Interés</title>
     
-    <!-- PWA Manifest & Theme -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#b76f72">
 
@@ -15,8 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
-
         :root {
             --cream: #f7f1e8;
             --paper: #fffdf9;
@@ -46,7 +43,6 @@
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -262,90 +258,28 @@
 
         .site-card {
             position: relative;
-            min-height: 0;
             background: #fff;
             border-radius: 24px;
             overflow: hidden;
             border: 1px solid rgba(45,39,37,.075);
-            box-shadow:
-                0 2px 4px rgba(35,30,28,.025),
-                0 14px 35px rgba(35,30,28,.055);
+            box-shadow: 0 2px 4px rgba(35,30,28,.025), 0 14px 35px rgba(35,30,28,.055);
             display: flex;
             flex-direction: column;
             transform: translateZ(0);
-            transition:
-                transform .55s cubic-bezier(.2,.75,.25,1),
-                box-shadow .55s ease,
-                border-color .4s ease;
-            animation: cardReveal .7s ease both;
-        }
-
-        .site-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 6;
-            background: linear-gradient(125deg, rgba(255,255,255,.22), transparent 32%, transparent 72%, rgba(255,255,255,.08));
-            opacity: 0;
-            transition: opacity .5s ease;
-        }
-
-        .site-card::after {
-            content: "";
-            position: absolute;
-            left: 22px;
-            right: 22px;
-            bottom: 0;
-            height: 1px;
-            background: #b06d70;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .55s cubic-bezier(.2,.75,.25,1);
-            z-index: 7;
+            transition: transform .55s cubic-bezier(.2,.75,.25,1), box-shadow .55s ease, border-color .4s ease;
         }
 
         .site-card:hover {
             transform: translateY(-8px);
-            box-shadow:
-                0 10px 24px rgba(35,30,28,.06),
-                0 28px 65px rgba(35,30,28,.11);
+            box-shadow: 0 10px 24px rgba(35,30,28,.06), 0 28px 65px rgba(35,30,28,.11);
             border-color: rgba(45,39,37,.14);
         }
-
-        .site-card:hover::before { opacity: 1; }
-        .site-card:hover::after { transform: scaleX(1); }
 
         .card-image-wrap {
             position: relative;
             height: 245px;
             background: #e9e5df;
             overflow: hidden;
-        }
-
-        .card-image-wrap::before {
-            content: "";
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            width: 34px;
-            height: 34px;
-            border: 1px solid rgba(255,255,255,.58);
-            border-radius: 50%;
-            z-index: 3;
-            opacity: .8;
-        }
-
-        .card-image-wrap::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(to bottom, transparent 46%, rgba(22,19,18,.38) 100%),
-                linear-gradient(120deg, rgba(255,255,255,.10), transparent 45%);
-            opacity: .68;
-            pointer-events: none;
-            transition: opacity .5s ease;
         }
 
         .card-image-wrap img {
@@ -361,8 +295,6 @@
             filter: saturate(1.04) contrast(1.025);
         }
 
-        .site-card:hover .card-image-wrap::after { opacity: .28; }
-
         .card-index {
             position: absolute;
             right: 18px;
@@ -377,11 +309,9 @@
             color: #fff;
             font-size: .66rem;
             font-weight: 700;
-            letter-spacing: .4px;
             background: rgba(35,30,28,.28);
             border: 1px solid rgba(255,255,255,.35);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
 
         .card-label {
@@ -397,8 +327,6 @@
         }
 
         .site-body {
-            position: relative;
-            z-index: 4;
             padding: 21px 22px 20px;
             display: flex;
             flex-direction: column;
@@ -418,10 +346,7 @@
             text-transform: uppercase;
         }
 
-        .site-meta i {
-            color: #b06d70;
-            font-size: .48rem;
-        }
+        .site-meta i { color: #b06d70; font-size: .48rem; }
 
         .site-name {
             font-size: 1.06rem;
@@ -452,27 +377,14 @@
             letter-spacing: .55px;
             text-transform: uppercase;
             text-decoration: none;
-            transition:
-                background .35s ease,
-                border-color .35s ease,
-                color .35s ease,
-                transform .35s ease,
-                box-shadow .35s ease;
+            transition: all .35s ease;
             background: #fff;
             color: #342e2c;
             box-shadow: 0 3px 12px rgba(35,30,28,.035);
         }
 
-        .btn-action > span:first-child {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .btn-action > span:first-child i {
-            color: #9b5e61;
-            font-size: .76rem;
-        }
+        .btn-action > span:first-child { display: inline-flex; align-items: center; gap: 9px; }
+        .btn-action > span:first-child i { color: #9b5e61; font-size: .76rem; }
 
         .btn-arrow {
             width: 33px;
@@ -495,10 +407,7 @@
             box-shadow: 0 10px 22px rgba(47,41,39,.08);
         }
 
-        .btn-action:hover .btn-arrow {
-            background: #9d6063;
-            transform: translateX(2px);
-        }
+        .btn-action:hover .btn-arrow { background: #9d6063; transform: translateX(2px); }
 
         .admin-bar {
             display: none;
@@ -566,7 +475,6 @@
             inset: 0;
             background: rgba(48,37,38,.42);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -665,69 +573,7 @@
 
         .btn-modal-save:hover { transform: translateY(-2px); box-shadow: 0 16px 30px rgba(169,96,102,.28); }
 
-        .error-message {
-            color: #b44747;
-            font-size: .82rem;
-            margin-top: .5rem;
-            display: none;
-        }
-
-        .sma-atmosphere {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .sma-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(95px);
-            opacity: .055;
-            animation: floatOrb 18s ease-in-out infinite alternate;
-        }
-
-        .sma-orb-a {
-            width: 360px;
-            height: 360px;
-            left: -120px;
-            top: 24%;
-            background: #e9b9c0;
-        }
-
-        .sma-orb-b {
-            width: 300px;
-            height: 300px;
-            right: -80px;
-            top: 52%;
-            background: #d9a59d;
-            animation-delay: -5s;
-        }
-
-        .sma-orb-c {
-            width: 220px;
-            height: 220px;
-            left: 42%;
-            top: -100px;
-            background: #f0cfd4;
-            animation-delay: -9s;
-        }
-
-        @keyframes floatOrb {
-            from { transform: translate3d(0,0,0) scale(1); }
-            to { transform: translate3d(35px,-24px,0) scale(1.12); }
-        }
-
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes cardReveal {
-            from { opacity: 0; transform: translateY(22px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .error-message { color: #b44747; font-size: .82rem; margin-top: .5rem; display: none; }
 
         @media (max-width: 1024px) {
             .sites-grid { grid-template-columns: repeat(2, 1fr); }
@@ -740,25 +586,13 @@
             .brand-name { display: none; }
             .section-header h1 { letter-spacing: -2px; }
             .sites-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-            .site-card { min-height: 390px; }
-            .card-image-wrap { height: 225px; }
             footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
-            #cursor-glow { display: none; }
-        }
     </style>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="sma-atmosphere" aria-hidden="true">
-        <span class="sma-orb sma-orb-a"></span>
-        <span class="sma-orb sma-orb-b"></span>
-        <span class="sma-orb sma-orb-c"></span>
-    </div>
+
     <canvas id="immersive-canvas"></canvas>
     <div id="cursor-glow"></div>
 
@@ -777,7 +611,7 @@
             <button class="btn-admin" onclick="downloadSitesTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleSitesExcelUpload(event)">
-            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="syncWithGoogleSheets()" id="syncBtn">🔄 Sincronizar con Google Sheets</button>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -853,94 +687,24 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybZOafbavR8Pf2Q6ALyypdQoaTmNiNEo05Hr8TIZ7W0a8uNjZjRWsaIBAdN7PKyfE5RQ/exec";
 
         const defaultSitesData = {
             sites: [
-                {
-                    key: 'site_1',
-                    title: 'MUSEO CASA DE ALLENDE',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/museocasadeallende',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024'
-                },
-                {
-                    key: 'site_2',
-                    title: 'CASA DEL MAYORAZGO DE LA CANAL',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/casadelmayorazgo',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024'
-                },
-                {
-                    key: 'site_3',
-                    title: 'UNIVERCIUDAD CASA DEL NIGROMANTE',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/unverciudadug',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835'
-                },
-                {
-                    key: 'site_4',
-                    title: 'CENTRO CULTURAL IGNACIO RAMIREZ',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/bellasartes',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024'
-                },
-                {
-                    key: 'site_5',
-                    title: 'INSTITUTO ALLENDE',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/institutoallende',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024'
-                },
-                {
-                    key: 'site_6',
-                    title: 'FABRICA LA AURORA',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/fabricalaaurora',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024'
-                },
-                {
-                    key: 'site_7',
-                    title: 'MERCADO IGNACIO RAMIREZ',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/mercadodeartesanias',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024'
-                },
-                {
-                    key: 'site_8',
-                    title: 'PARQUE JUAREZ',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/parquejuarez',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024'
-                },
-                {
-                    key: 'site_9',
-                    title: 'PASEO DEL CHORRO',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/paseodelchorro',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024'
-                },
-                {
-                    key: 'site_10',
-                    title: 'MIRADOR',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/mirador',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639'
-                },
-                {
-                    key: 'site_11',
-                    title: 'EL CHARCO DEL INGENIO',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/charcodelingenio',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024'
-                },
-                {
-                    key: 'site_12',
-                    title: 'ATOTONILCO',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/atotonilco',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800'
-                },
-                {
-                    key: 'site_13',
-                    title: 'BALNEARIOS DE AGUAS TERMALES',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/aguastermales',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889'
-                },
-                {
-                    key: 'site_14',
-                    title: 'CAÑADA DE LA VIRGEN',
-                    link: 'https://carloschaires.github.io/vivesanmigueL/ca%C3%B1adadelavirgen',
-                    img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600'
-                }
+                { key: 'site_1', title: 'MUSEO CASA DE ALLENDE', link: 'https://carloschaires.github.io/vivesanmigueL/museocasadeallende', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024' },
+                { key: 'site_2', title: 'CASA DEL MAYORAZGO DE LA CANAL', link: 'https://carloschaires.github.io/vivesanmigueL/casadelmayorazgo', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024' },
+                { key: 'site_3', title: 'UNIVERCIUDAD CASA DEL NIGROMANTE', link: 'https://carloschaires.github.io/vivesanmigueL/unverciudadug', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-20.png?w=835' },
+                { key: 'site_4', title: 'CENTRO CULTURAL IGNACIO RAMIREZ', link: 'https://carloschaires.github.io/vivesanmigueL/bellasartes', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-21.png?w=1024' },
+                { key: 'site_5', title: 'INSTITUTO ALLENDE', link: 'https://carloschaires.github.io/vivesanmigueL/institutoallende', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-22.png?w=1024' },
+                { key: 'site_6', title: 'FABRICA LA AURORA', link: 'https://carloschaires.github.io/vivesanmigueL/fabricalaaurora', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-8.png?w=1024' },
+                { key: 'site_7', title: 'MERCADO IGNACIO RAMIREZ', link: 'https://carloschaires.github.io/vivesanmigueL/mercadodeartesanias', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024' },
+                { key: 'site_8', title: 'PARQUE JUAREZ', link: 'https://carloschaires.github.io/vivesanmigueL/parquejuarez', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-3.png?w=1024' },
+                { key: 'site_9', title: 'PASEO DEL CHORRO', link: 'https://carloschaires.github.io/vivesanmigueL/paseodelchorro', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-2.png?w=1024' },
+                { key: 'site_10', title: 'MIRADOR', link: 'https://carloschaires.github.io/vivesanmigueL/mirador', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-24.png?w=639' },
+                { key: 'site_11', title: 'EL CHARCO DEL INGENIO', link: 'https://carloschaires.github.io/vivesanmigueL/charcodelingenio', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-16.png?w=1024' },
+                { key: 'site_12', title: 'ATOTONILCO', link: 'https://carloschaires.github.io/vivesanmigueL/atotonilco', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800' },
+                { key: 'site_13', title: 'BALNEARIOS DE AGUAS TERMALES', link: 'https://carloschaires.github.io/vivesanmigueL/aguastermales', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-14.png?w=889' },
+                { key: 'site_14', title: 'CAÑADA DE LA VIRGEN', link: 'https://carloschaires.github.io/vivesanmigueL/ca%C3%B1adadelavirgen', img: 'https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-15.png?w=600' }
             ]
         };
 
@@ -953,24 +717,54 @@
             return JSON.parse(data);
         }
 
-        function saveStoredSites(data, syncCloud = true) {
+        function saveStoredSites(data) {
             localStorage.setItem('sma_sitios_interes_v6', JSON.stringify(data));
             renderSites(document.getElementById('searchInput').value);
-            if (syncCloud) {
-                pushDataToGoogleSheets(data);
-            }
+            pushDataToGoogleSheets(data);
         }
 
         async function pushDataToGoogleSheets(data) {
             try {
+                const payload = data.sites.map(s => ({
+                    key: s.key,
+                    titulo: s.title,
+                    enlace: s.link,
+                    imagen_url: s.img
+                }));
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data.sites)
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
                 });
             } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
+                console.warn("Guardado local exitoso.", err);
+            }
+        }
+
+        async function syncWithGoogleSheets() {
+            const btn = document.getElementById('syncBtn');
+            btn.innerText = "🔄 Sincronizando...";
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const remoteData = await response.json();
+                if (Array.isArray(remoteData) && remoteData.length > 0) {
+                    const currentData = getStoredSites();
+                    remoteData.forEach((row, idx) => {
+                        if (currentData.sites[idx]) {
+                            if (row.titulo) currentData.sites[idx].title = row.titulo;
+                            if (row.enlace) currentData.sites[idx].link = row.enlace;
+                            if (row.imagen_url) currentData.sites[idx].img = row.imagen_url;
+                        }
+                    });
+                    localStorage.setItem('sma_sitios_interes_v6', JSON.stringify(currentData));
+                    renderSites(document.getElementById('searchInput').value);
+                    alert("¡Sincronización con Google Sheets completada con éxito!");
+                }
+            } catch (err) {
+                alert("No se pudo conectar. Verifica que el Apps Script esté desplegado como 'Cualquier usuario' y con 'Nueva versión'.");
+            } finally {
+                btn.innerText = "🔄 Sincronizar con Google Sheets";
             }
         }
 
@@ -1007,7 +801,7 @@
 
             filtered.forEach((s, index) => {
                 container.innerHTML += `
-                    <article class="site-card" style="animation-delay:${Math.min(index * 0.055, 0.5)}s;">
+                    <article class="site-card">
                         <div class="card-image-wrap">
                             <img src="${s.img}" alt="${s.title}">
                             <span class="card-index">${String(index + 1).padStart(2, '0')}</span>
@@ -1045,9 +839,7 @@
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -1082,9 +874,7 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
 
         function saveEditedSite(e) {
             e.preventDefault();
@@ -1094,9 +884,9 @@
                 data.sites[index].title = document.getElementById('editTitle').value;
                 data.sites[index].link = document.getElementById('editLink').value;
                 data.sites[index].img = document.getElementById('editImg').value;
-                saveStoredSites(data, true);
+                saveStoredSites(data);
                 closeEditModal();
-                alert('¡Sitio actualizado con éxito!');
+                alert('¡Sitio actualizado con éxito y sincronizado en la nube!');
             }
         }
 
@@ -1132,8 +922,8 @@
                                 if (row.imagen_url) data.sites[idx].img = row.imagen_url;
                             }
                         });
-                        saveStoredSites(data, true);
-                        alert('¡Importación masiva completada!');
+                        saveStoredSites(data);
+                        alert('¡Importación masiva completada y sincronizada!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1147,7 +937,7 @@
             renderSites();
         });
 
-        // Partículas interactivas de cursor y canvas
+        // Partículas interactivas
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
@@ -1227,15 +1017,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        // Registro del Service Worker para funcionamiento sin conexión (PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
-            });
-        }
     </script>
 </body>
 </html>
