@@ -715,6 +715,7 @@
 
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="openAddHotelModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Hospedaje</button>
             <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
             <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
@@ -784,7 +785,7 @@
                 <h3 id="editModalTitle">Editar Hospedaje</h3>
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
-            <form onsubmit="saveEditedHotel(event)">
+            <form onsubmit="saveHotelForm(event)">
                 <input type="hidden" id="editHotelKey">
                 <div class="input-group">
                     <label>Nombre del Lugar</label>
@@ -853,7 +854,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -862,7 +863,6 @@
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
         
-        // Enlace actualizado de tu Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec";
 
         const defaultHotelsData = {
@@ -916,16 +916,16 @@
         }
 
         function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data_v5');
+            const data = localStorage.getItem('sma_hotels_data_v6');
             if (!data) {
-                localStorage.setItem('sma_hotels_data_v5', JSON.stringify(defaultHotelsData));
+                localStorage.setItem('sma_hotels_data_v6', JSON.stringify(defaultHotelsData));
                 return defaultHotelsData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data_v5', JSON.stringify(data));
+            localStorage.setItem('sma_hotels_data_v6', JSON.stringify(data));
             renderHotels(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -992,7 +992,7 @@
                     });
 
                     const formattedData = { hotels: normalizedHotels };
-                    localStorage.setItem('sma_hotels_data_v5', JSON.stringify(formattedData));
+                    localStorage.setItem('sma_hotels_data_v6', JSON.stringify(formattedData));
                     renderHotels(document.getElementById('searchInput').value);
                     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
@@ -1127,7 +1127,12 @@
                                         ${whatsappButtonHtml}
                                     </div>
                                 </div>
-                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditHotelModal('${h.key}')">✏️ Editar Hospedaje</button>` : ''}
+                                ${isLogged ? `
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <button class="btn-admin" style="flex: 1;" onclick="openEditHotelModal('${h.key}')">✏️ Editar</button>
+                                        <button class="btn-admin" style="flex: 1; border-color: #c0392b; color: #c0392b;" onclick="deleteHotel('${h.key}')">🗑️ Eliminar</button>
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -1203,12 +1208,33 @@
             alert('Sesión cerrada.');
         }
 
+        function openAddHotelModal() {
+            currentEditingKey = null;
+            document.getElementById('editModalTitle').innerText = 'Agregar Nuevo Hospedaje';
+            document.getElementById('editHotelKey').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editType').value = '';
+            document.getElementById('editDesc').value = '';
+            document.getElementById('editPrice').value = '$$$';
+            document.getElementById('editPhone').value = '';
+            document.getElementById('editAddress').value = '';
+            document.getElementById('editMaps').value = '';
+            document.getElementById('editWeb').value = '';
+            document.getElementById('editBooking').value = '';
+            document.getElementById('editWhatsapp').value = '';
+            document.getElementById('editImg1').value = '';
+            document.getElementById('editImg2').value = '';
+            document.getElementById('editImg3').value = '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
         let currentEditingKey = null;
         function openEditHotelModal(key) {
             const data = getStoredHotels();
             const h = data.hotels.find(el => el.key === key);
             if (!h) return;
             currentEditingKey = key;
+            document.getElementById('editModalTitle').innerText = 'Editar Hospedaje';
             document.getElementById('editHotelKey').value = key;
             document.getElementById('editName').value = h.name;
             document.getElementById('editType').value = h.type;
@@ -1236,30 +1262,49 @@
             document.getElementById('editModal').classList.remove('active');
         }
 
-        function saveEditedHotel(e) {
+        function saveHotelForm(e) {
             e.preventDefault();
             const data = getStoredHotels();
-            const index = data.hotels.findIndex(el => el.key === currentEditingKey);
-            if (index !== -1) {
-                data.hotels[index].name = document.getElementById('editName').value;
-                data.hotels[index].type = document.getElementById('editType').value;
-                data.hotels[index].desc = document.getElementById('editDesc').value;
-                data.hotels[index].price = document.getElementById('editPrice').value;
-                data.hotels[index].phone = document.getElementById('editPhone').value;
-                data.hotels[index].address = document.getElementById('editAddress').value;
-                data.hotels[index].maps = document.getElementById('editMaps').value;
-                data.hotels[index].web = document.getElementById('editWeb').value;
-                data.hotels[index].booking = document.getElementById('editBooking').value;
-                data.hotels[index].whatsapp = document.getElementById('editWhatsapp').value;
-                data.hotels[index].images = [
+            
+            const hotelObj = {
+                key: currentEditingKey ? currentEditingKey : 'hotel_' + Math.random().toString(36).substring(2, 9),
+                name: document.getElementById('editName').value,
+                type: document.getElementById('editType').value,
+                desc: document.getElementById('editDesc').value,
+                price: document.getElementById('editPrice').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                maps: document.getElementById('editMaps').value,
+                web: document.getElementById('editWeb').value,
+                booking: document.getElementById('editBooking').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                images: [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ].filter(img => img.trim() !== '');
+                ].filter(img => img.trim() !== '')
+            };
 
+            if (currentEditingKey) {
+                const index = data.hotels.findIndex(el => el.key === currentEditingKey);
+                if (index !== -1) {
+                    data.hotels[index] = hotelObj;
+                }
+            } else {
+                data.hotels.unshift(hotelObj);
+            }
+
+            saveStoredHotels(data, true);
+            closeEditModal();
+            alert('¡Hospedaje guardado y sincronizado exitosamente!');
+        }
+
+        function deleteHotel(key) {
+            if (confirm("¿Estás seguro de eliminar este hospedaje?")) {
+                const data = getStoredHotels();
+                data.hotels = data.hotels.filter(h => h.key !== key);
                 saveStoredHotels(data, true);
-                closeEditModal();
-                alert('¡Hospedaje actualizado y sincronizado en Google Sheets!');
+                alert('Hospedaje eliminado correctamente.');
             }
         }
 
