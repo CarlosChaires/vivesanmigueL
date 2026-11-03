@@ -716,11 +716,11 @@
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
             <button class="btn-admin" onclick="openAddHotelModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Hospedaje</button>
-            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
+            <button class="btn-admin" onclick="fetchHotelsFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
             <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleHotelsExcelUpload(event)">
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> En línea con Google</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -828,7 +828,7 @@
                     <input type="text" id="editWhatsapp" placeholder="Dejar en blanco si no tiene">
                 </div>
 
-                <!-- Gestor Dual de Imágenes (URL o Archivo Local) -->
+                <!-- Gestor Dual de Imágenes -->
                 <div class="input-group">
                     <label>Foto 1 (URL o Subir Archivo)</label>
                     <div class="image-input-box">
@@ -854,7 +854,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar Cambios</button>
+                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
             </form>
         </div>
     </div>
@@ -863,49 +863,11 @@
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
         
+        // Enlace oficial de tu Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec";
 
-        const defaultHotelsData = {
-            hotels: [
-                {
-                    key: 'hotel_rosewood',
-                    name: 'Rosewood San Miguel',
-                    type: 'Lujo',
-                    desc: 'Resort de lujo que refleja la arquitectura colonial de la ciudad, con jardines tranquilos, spa de clase mundial y vistas panorámicas.',
-                    price: '$$$$$',
-                    phone: '415 152 9700',
-                    address: 'Nemesio Diez 11, Zona Centro, Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Nemesio+Diez+11+San+Miguel+de+Allende',
-                    web: 'https://www.rosewoodhotels.com/en/san-miguel-de-allende',
-                    booking: 'https://www.rosewoodhotels.com/en/san-miguel-de-allende',
-                    whatsapp: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnDm6Nst4DHFVKLbM-G_u3wXFabE1zoA_t5d2GpEw5gx8brar7iYy_wfbJcaaD0jhWHW8KHai-RFIqAkF4ToGtK-WDKA_FSsmzNPueOjkS9DGF7tWZGBE4M8fZlLX3d3l5iKa1nnHySVOc1=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaUVSSAt6xMXTuJOWLKZgHK3Jiw95oX44fi5Y_-DuXltyAUIdBk8raCnypzs1DA8h8sSe7oPhTt4AVcy_VRZFpg9wEJz8HPUYKpxExz2pdpRIL7XY5n7bWLtHRXj-3mRR5ssGP=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0ak8DtFd70_cJU3yeD4I8iXlqMdkPvr1AznzwCB3cYHhDLK3BifhyTFjKyPhY2hKG4uVtr8CQmFI7HMf_US1f2PyLGHPY7n_RmJYuicWh1Tc96l1uEn33qclpghfmJu707KQmNA=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'hotel_trazo1810',
-                    name: 'Trazo 1810',
-                    type: 'Lujo',
-                    desc: 'Hotel boutique y restaurante de alta cocina con vistas incomparables a la Parroquia, diseño vanguardista y elegancia colonial.',
-                    price: '$$$$$',
-                    phone: '415 121 3506',
-                    address: 'Hidalgo 8, Zona Centro, 37700 San Miguel de Allende, Gto.',
-                    maps: 'https://maps.google.com/?q=Hidalgo+8+San+Miguel+de+Allende',
-                    web: 'https://casa1810.com/centro/trazo/',
-                    booking: 'https://hotels.cloudbeds.com/es/reservation/oqBpi9',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=5214151000508&text=Hola%2C+quisiera+recibir+informaci%C3%B3n+sobre+Trazo+1810.&type=phone_number&app_absent=0',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLo4D6St6gJOTZ8XWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBAOHC4mT9rXV7n3XLGKqsiPi0fd2fLCetfOclFxVI5IZWTIHPjzvP4xMcfEp_wHHOPKKatb9Ryh0cy3pOuBI-EimtJ4HCqOu1p1Le-muLSIocLkVUufI0rMFO6wmclXVg1v5U=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm99P5zwia2ca_0ORwmrmBQoDo-3l7mbVI4aoE61L4PthUmJxkrTJqeE3NLybHpf-kXIEbzEJv0EmsIeCebJG-C-w4u20DviF3bODvWLyMpiWcGzJSyrMOxLAfeLPxo=s1360-w1360-h1020-rw'
-                    ]
-                }
-            ]
-        };
-
+        // Memoria en caliente directa de la nube (sin localStorage de persistencia de registros)
+        let cloudHotelsCache = [];
         let currentPriceFilter = 'all';
 
         function setPriceFilter(price) {
@@ -915,51 +877,7 @@
             renderHotels(document.getElementById('searchInput').value);
         }
 
-        function getStoredHotels() {
-            const data = localStorage.getItem('sma_hotels_data_v6');
-            if (!data) {
-                localStorage.setItem('sma_hotels_data_v6', JSON.stringify(defaultHotelsData));
-                return defaultHotelsData;
-            }
-            return JSON.parse(data);
-        }
-
-        function saveStoredHotels(data, syncCloud = true) {
-            localStorage.setItem('sma_hotels_data_v6', JSON.stringify(data));
-            renderHotels(document.getElementById('searchInput').value);
-            if (syncCloud) {
-                pushDataToGoogleSheets(data);
-            }
-        }
-
-        async function pushDataToGoogleSheets(data) {
-            try {
-                const payload = data.hotels.map(item => ({
-                    key: item.key,
-                    name: item.name,
-                    type: item.type,
-                    desc: item.desc,
-                    price: item.price,
-                    phone: item.phone,
-                    address: item.address,
-                    maps: item.maps,
-                    web: item.web,
-                    booking: item.booking || '',
-                    whatsapp: item.whatsapp || '',
-                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
-                }));
-
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
-            }
-        }
-
+        // Conexión Directa a Google Sheets (GET para leer, POST para escribir/eliminar)
         async function fetchHotelsFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
@@ -967,8 +885,8 @@
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData) && cloudData.length > 0) {
-                    const normalizedHotels = cloudData.map(item => {
+                if (Array.isArray(cloudData)) {
+                    cloudHotelsCache = cloudData.map(item => {
                         let imgs = item.images;
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
@@ -991,30 +909,47 @@
                         };
                     });
 
-                    const formattedData = { hotels: normalizedHotels };
-                    localStorage.setItem('sma_hotels_data_v6', JSON.stringify(formattedData));
                     renderHotels(document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a Google`;
                 }
             } catch (error) {
-                console.warn("Modo local activo:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local`;
+                console.warn("Error de conexión con Google Sheets:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
             }
         }
 
-        async function syncWithGoogleDrive() {
+        async function pushDataToGoogleSheets(hotelsArray) {
             const statusEl = document.getElementById('syncStatus');
-            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
             try {
-                const data = getStoredHotels();
-                await pushDataToGoogleSheets(data);
-                setTimeout(() => {
-                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
-                    alert('¡Sincronización con Google Drive y Google Sheets completada exitosamente!');
-                }, 1000);
-            } catch (error) {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error`;
-                alert('No se pudo conectar con Google Apps Script.');
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Nube...`;
+                const payload = hotelsArray.map(item => ({
+                    key: item.key,
+                    name: item.name,
+                    type: item.type,
+                    desc: item.desc,
+                    price: item.price,
+                    phone: item.phone,
+                    address: item.address,
+                    maps: item.maps,
+                    web: item.web,
+                    booking: item.booking || '',
+                    whatsapp: item.whatsapp || '',
+                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+                }));
+
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                cloudHotelsCache = [...hotelsArray];
+                renderHotels(document.getElementById('searchInput').value);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
+            } catch (err) {
+                console.error("Error al actualizar Google Sheets:", err);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
             }
         }
 
@@ -1033,13 +968,12 @@
         }
 
         function renderHotels(searchQuery = '') {
-            const data = getStoredHotels();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('hotelsGridContainer');
             if (!container) return;
             container.innerHTML = '';
 
-            let filtered = data.hotels;
+            let filtered = cloudHotelsCache;
 
             if (currentPriceFilter !== 'all') {
                 filtered = filtered.filter(h => h.price === currentPriceFilter);
@@ -1051,7 +985,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con los filtros aplicados.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados en Google Sheets con los filtros aplicados.</p>`;
                 return;
             }
 
@@ -1143,8 +1077,7 @@
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
-            const data = getStoredHotels();
-            const h = data.hotels.find(el => el.key === key);
+            const h = cloudHotelsCache.find(el => el.key === key);
             if (!h || !h.images) return;
             let imgList = h.images;
             if (typeof imgList === 'string') {
@@ -1230,8 +1163,7 @@
 
         let currentEditingKey = null;
         function openEditHotelModal(key) {
-            const data = getStoredHotels();
-            const h = data.hotels.find(el => el.key === key);
+            const h = cloudHotelsCache.find(el => el.key === key);
             if (!h) return;
             currentEditingKey = key;
             document.getElementById('editModalTitle').innerText = 'Editar Hospedaje';
@@ -1264,7 +1196,6 @@
 
         function saveHotelForm(e) {
             e.preventDefault();
-            const data = getStoredHotels();
             
             const hotelObj = {
                 key: currentEditingKey ? currentEditingKey : 'hotel_' + Math.random().toString(36).substring(2, 9),
@@ -1285,32 +1216,31 @@
                 ].filter(img => img.trim() !== '')
             };
 
+            let updatedList = [...cloudHotelsCache];
             if (currentEditingKey) {
-                const index = data.hotels.findIndex(el => el.key === currentEditingKey);
+                const index = updatedList.findIndex(el => el.key === currentEditingKey);
                 if (index !== -1) {
-                    data.hotels[index] = hotelObj;
+                    updatedList[index] = hotelObj;
                 }
             } else {
-                data.hotels.unshift(hotelObj);
+                updatedList.unshift(hotelObj);
             }
 
-            saveStoredHotels(data, true);
+            pushDataToGoogleSheets(updatedList);
             closeEditModal();
-            alert('¡Hospedaje guardado y sincronizado exitosamente!');
+            alert('¡Registro guardado directamente en Google Sheets!');
         }
 
         function deleteHotel(key) {
-            if (confirm("¿Estás seguro de eliminar este hospedaje?")) {
-                const data = getStoredHotels();
-                data.hotels = data.hotels.filter(h => h.key !== key);
-                saveStoredHotels(data, true);
-                alert('Hospedaje eliminado correctamente.');
+            if (confirm("¿Estás seguro de eliminar este hospedaje de Google Sheets?")) {
+                let updatedList = cloudHotelsCache.filter(h => h.key !== key);
+                pushDataToGoogleSheets(updatedList);
+                alert('Hospedaje eliminado correctamente de la nube.');
             }
         }
 
         function downloadHotelsTemplate() {
-            const data = getStoredHotels();
-            const flatData = data.hotels.map(el => ({
+            const flatData = cloudHotelsCache.map(el => ({
                 key: el.key,
                 name: el.name,
                 type: el.type,
@@ -1341,30 +1271,30 @@
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const json = XLSX.utils.sheet_to_json(sheet);
                     if (json.length > 0) {
-                        const data = getStoredHotels();
+                        let updatedList = [...cloudHotelsCache];
                         json.forEach((row, idx) => {
-                            if (idx < data.hotels.length) {
-                                if (row.name) data.hotels[idx].name = row.name;
-                                if (row.type) data.hotels[idx].type = row.type;
-                                if (row.desc) data.hotels[idx].desc = row.desc;
-                                if (row.price) data.hotels[idx].price = row.price;
-                                if (row.phone) data.hotels[idx].phone = row.phone;
-                                if (row.address) data.hotels[idx].address = row.address;
-                                if (row.maps) data.hotels[idx].maps = row.maps;
-                                if (row.web) data.hotels[idx].web = row.web;
-                                if (row.booking) data.hotels[idx].booking = row.booking;
-                                if (row.whatsapp) data.hotels[idx].whatsapp = row.whatsapp;
+                            if (idx < updatedList.length) {
+                                if (row.name) updatedList[idx].name = row.name;
+                                if (row.type) updatedList[idx].type = row.type;
+                                if (row.desc) updatedList[idx].desc = row.desc;
+                                if (row.price) updatedList[idx].price = row.price;
+                                if (row.phone) updatedList[idx].phone = row.phone;
+                                if (row.address) updatedList[idx].address = row.address;
+                                if (row.maps) updatedList[idx].maps = row.maps;
+                                if (row.web) updatedList[idx].web = row.web;
+                                if (row.booking) updatedList[idx].booking = row.booking;
+                                if (row.whatsapp) updatedList[idx].whatsapp = row.whatsapp;
                                 if (row.images) {
                                     try {
-                                        data.hotels[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                        updatedList[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
                                     } catch(e) {
-                                        data.hotels[idx].images = [row.images];
+                                        updatedList[idx].images = [row.images];
                                     }
                                 }
                             }
                         });
-                        saveStoredHotels(data, true);
-                        alert('¡Importación masiva completada y sincronizada en la nube!');
+                        pushDataToGoogleSheets(updatedList);
+                        alert('¡Importación masiva completada y enviada a Google Sheets!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1375,7 +1305,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            renderHotels();
             fetchHotelsFromCloud();
         });
 
@@ -1459,14 +1388,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
-            });
-        }
     </script>
 </body>
 </html>
