@@ -152,7 +152,7 @@ nav {
   min-width: 100%; height: 100%;
 }
 .carousel-slide img {
-  width: 100%; height: 100%; object-fit: display; display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .carousel-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -377,7 +377,7 @@ nav {
   </div>
 </div>
 
-<!-- Modal Agregar / Editar Viñedo (Con 3 Fotos Locales / URL) -->
+<!-- Modal Agregar / Editar Viñedo -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-content">
     <div class="modal-top">
@@ -415,7 +415,7 @@ nav {
         <input type="text" id="editIg" required placeholder="https://www.instagram.com/...">
       </div>
       
-      <!-- Campos para 3 imágenes (Subir archivo o URL) -->
+      <!-- Campos para 3 imágenes -->
       <div class="input-group">
         <label>Foto 1 (Carrusel)</label>
         <div class="image-input-box">
@@ -449,7 +449,7 @@ nav {
 <script>
 const AUTH_USER = "vivesanmiguel";
 const AUTH_PASS = "c4rl0s1107";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPt4tzXlN9IB9-227JDls6keyk09uFbE3tx2xeZxOf0dQfjjKj9BkXAve25z0axzw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGZGU2imHSfEOniKV6UKicGYBWYGi4l_-F04uUL9gtTq6_4ftoOB-BLFCPwo5hRMtE/exec";
 
 const defaultVineyards = [
   {
@@ -641,6 +641,7 @@ async function fetchDataFromCloud() {
       });
     } else {
       vineyardsCache = [...defaultVineyards];
+      pushDataToCloud(vineyardsCache);
     }
     renderVineyards();
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
@@ -673,7 +674,7 @@ async function pushDataToCloud(newArray) {
       web: item.web,
       ig: item.ig,
       igHandle: item.igHandle,
-      image: Array.isArray(item.images) ? item.images[0] : item.images,
+      image: Array.isArray(item.images) ? item.images[0] : '',
       images: JSON.stringify(item.images)
     }));
 
