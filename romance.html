@@ -23,6 +23,7 @@
             --text-muted: #7A6B67;
             --accent-terracotta: #A64B2A;
             --accent-terracotta-dark: #82381C;
+            --google-sheets-green: #0F9D58;
             --whatsapp-green: #25D366;
             --whatsapp-dark: #1EBE5D;
             --border-color: rgba(166, 75, 42, 0.12);
@@ -168,7 +169,17 @@
             color: #ffffff;
         }
 
-        /* --- Títulos, Buscador y Pestañas / Filtros --- */
+        .sync-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--google-sheets-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+
+        /* --- Títulos, Buscador y Filtros --- */
         .section-header {
             margin-bottom: 2.5rem;
             text-align: center;
@@ -188,7 +199,6 @@
             font-weight: 400;
         }
 
-        /* Barra de Búsqueda */
         .search-bar-wrap {
             max-width: 600px;
             margin: 0 auto 2rem auto;
@@ -222,7 +232,6 @@
             font-size: 0.95rem;
         }
 
-        /* Filtros por Categoría de Romance */
         .filter-container {
             display: flex;
             justify-content: center;
@@ -276,7 +285,6 @@
             border-color: rgba(166, 75, 42, 0.25);
         }
 
-        /* Carrusel de Fotos */
         .carousel-container {
             position: relative;
             height: 220px;
@@ -529,6 +537,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transform: translateY(15px);
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -584,6 +594,38 @@
         .input-group input:focus, .input-group textarea:focus {
             border-color: var(--accent-terracotta);
             background: #ffffff;
+        }
+
+        .image-input-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .image-input-box input[type="text"] {
+            flex: 1;
+        }
+
+        .image-input-box input[type="file"] {
+            display: none;
+        }
+
+        .btn-upload-file {
+            background: rgba(166, 75, 42, 0.1);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-file:hover {
+            background: var(--accent-terracotta);
+            color: #fff;
         }
 
         .btn-modal-save {
@@ -649,10 +691,9 @@
 
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="downloadRomanceTemplate()">📥 Descargar Plantilla</button>
-            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
-            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRomanceExcelUpload(event)">
-            <button class="btn-admin" onclick="syncWithGoogleSheets()" id="syncBtn">🔄 Sincronizar con Google Sheets</button>
+            <button class="btn-admin" onclick="openAddModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Registro</button>
+            <button class="btn-admin" onclick="fetchDataFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado en Google</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -709,13 +750,14 @@
         </div>
     </div>
 
+    <!-- Modal de Edición / Creación -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-top">
-                <h3 id="editModalTitle">Editar Apartado de Romance</h3>
+                <h3 id="editModalTitle">Agregar / Editar Apartado de Romance</h3>
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
-            <form onsubmit="saveEditedRomance(event)">
+            <form onsubmit="saveDataForm(event)">
                 <input type="hidden" id="editRomanceKey">
                 <div class="input-group">
                     <label>Nombre del Lugar o Proveedor</label>
@@ -747,21 +789,33 @@
                 </div>
                 <div class="input-group">
                     <label>Sitio Web (URL)</label>
-                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                    <input type="text" id="editWeb" required placeholder="Si no tiene, poner #">
                 </div>
                 <div class="input-group">
-                    <label>Foto 1 (URL del Carrete)</label>
-                    <input type="text" id="editImg1" required>
+                    <label>Foto 1 (URL o Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg1" placeholder="https://..." required>
+                        <input type="file" id="fileImg1" accept="image/*" onchange="convertImageFile(event, 'editImg1')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg1').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 2 (URL del Carrete)</label>
-                    <input type="text" id="editImg2" required>
+                    <label>Foto 2 (URL o Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg2" placeholder="https://..." required>
+                        <input type="file" id="fileImg2" accept="image/*" onchange="convertImageFile(event, 'editImg2')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg2').click()">📁 Subir</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Foto 3 (URL del Carrete)</label>
-                    <input type="text" id="editImg3" required>
+                    <label>Foto 3 (URL o Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg3" placeholder="https://..." required>
+                        <input type="file" id="fileImg3" accept="image/*" onchange="convertImageFile(event, 'editImg3')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
+                    </div>
                 </div>
-                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
             </form>
         </div>
     </div>
@@ -771,112 +825,79 @@
         const AUTH_PASS = "c4rl0s1107";
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMBhRIgbJ_RagUJAu_1JayaAg_O4CuMMO1OeREHbL5UirqqLNc7JyX9sZsFgmp2eDN/exec";
 
-        const defaultRomanceData = {
-            romance: [
-                {
-                    key: 'rom_1',
-                    name: 'San Miguel Wedding Planners',
-                    type: 'Wedding Planners',
-                    desc: 'Expertos en diseñar bodas de destino inolvidables, cuidando cada detalle floral, iluminación romántica y coordinación integral.',
-                    price: '$$$$ (Personalizado)',
-                    phone: '+52 415 152 7788',
-                    address: 'Reloj 21, Zona Centro, C.P. 37700',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
-                    web: '#',
-                    images: [
-                        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80'
-                    ]
-                },
-                {
-                    key: 'rom_2',
-                    name: 'Hacienda San José Lavista',
-                    type: 'Recintos y Haciendas',
-                    desc: 'Un recinto majestuoso con viñedos propios y arquitectura colonial, ideal para bodas de ensueño y eventos sociales exclusivos.',
-                    price: '$$$$$ (Exclusivo)',
-                    phone: '+52 415 154 9000',
-                    address: 'Carretera San Miguel - Dolores Km 7.5',
-                    maps: 'https://maps.google.com/?q=Hacienda+San+Jose+Lavista',
-                    web: 'https://sanjoselavista.com',
-                    images: [
-                        'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1545232979-fbf802c63838?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
-                    ]
-                },
-                {
-                    key: 'rom_3',
-                    name: 'Cena Privada Bajo las Velas en Terraza',
-                    type: 'Cenas y Experiencias',
-                    desc: 'Disfruta de un menú de 4 tiempos a la luz de las velas con vista directa a la Parroquia de San Miguel Arcángel.',
-                    price: '$$$ ($1,800 - $3,500 MXN p/p)',
-                    phone: '+52 415 152 1467',
-                    address: 'Cuna de Allende 13, Zona Centro',
-                    maps: 'https://maps.google.com/?q=San+Miguel+de+Allende',
-                    web: '#',
-                    images: [
-                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
-                    ]
-                }
-            ]
-        };
+        let cloudDataCache = [];
+        let currentEditingKey = null;
+        let currentFilter = 'todos';
 
-        function getStoredRomance() {
-            const data = localStorage.getItem('sma_romance_data_v2');
-            if (!data) {
-                localStorage.setItem('sma_romance_data_v2', JSON.stringify(defaultRomanceData));
-                return defaultRomanceData;
-            }
-            return JSON.parse(data);
-        }
-
-        function saveStoredRomance(data) {
-            localStorage.setItem('sma_romance_data_v2', JSON.stringify(data));
-            renderRomance(currentFilter, document.getElementById('searchInput').value);
-            pushDataToGoogleSheets(data);
-        }
-
-        async function pushDataToGoogleSheets(data) {
+        async function fetchDataFromCloud() {
+            const statusEl = document.getElementById('syncStatus');
             try {
-                const payload = data.romance.map(r => ({
-                    key: r.key,
-                    nombre: r.name,
-                    categoria: r.type,
-                    descripcion: r.desc,
-                    precio: r.price,
-                    telefono: r.phone,
-                    direccion: r.address,
-                    direccion_maps: r.maps,
-                    sitio_web: r.web,
-                    foto_1: r.images[0] || '',
-                    foto_2: r.images[1] || '',
-                    foto_3: r.images[2] || ''
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData)) {
+                    cloudDataCache = cloudData.map(item => {
+                        let imgs = item.images || [item.foto_1, item.foto_2, item.foto_3];
+                        if (typeof imgs === 'string') {
+                            try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
+                        }
+                        if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1519741497674-611481863552'];
+                        imgs = imgs.filter(i => i && i.trim() !== '');
+
+                        return {
+                            key: item.key || 'rom_' + Math.random().toString(36).substring(2, 7),
+                            name: item.name || item.nombre || 'Sin Nombre',
+                            type: item.type || item.categoria || 'Wedding Planners',
+                            desc: item.desc || item.descripcion || '',
+                            price: item.price || item.precio || '$$$',
+                            phone: item.phone || item.telefono || '',
+                            address: item.address || item.direccion || '',
+                            maps: item.maps || item.direccion_maps || '#',
+                            web: item.web || item.sitio_web || '#',
+                            images: imgs
+                        };
+                    });
+
+                    renderRomance(currentFilter, document.getElementById('searchInput').value);
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
+                }
+            } catch (error) {
+                console.warn("Error de conexión con Google Sheets:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+            }
+        }
+
+        async function pushDataToGoogleSheets(dataArray) {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
+                const payload = dataArray.map(item => ({
+                    key: item.key,
+                    name: item.name,
+                    type: item.type,
+                    desc: item.desc,
+                    price: item.price,
+                    phone: item.phone,
+                    address: item.address,
+                    maps: item.maps,
+                    web: item.web,
+                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
                 }));
+
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-            } catch (err) {
-                console.warn("Guardado local exitoso.", err);
-            }
-        }
 
-        async function syncWithGoogleSheets() {
-            const btn = document.getElementById('syncBtn');
-            btn.innerText = "🔄 Sincronizando...";
-            try {
-                const data = getStoredRomance();
-                await pushDataToGoogleSheets(data);
-                alert("¡Sincronización enviada a Google Sheets con éxito!");
+                cloudDataCache = [...dataArray];
+                renderRomance(currentFilter, document.getElementById('searchInput').value);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
             } catch (err) {
-                alert("Error al sincronizar con la nube.");
-            } finally {
-                btn.innerText = "🔄 Sincronizar con Google Sheets";
+                console.error("Error al actualizar Google Sheets:", err);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
             }
         }
 
@@ -890,46 +911,55 @@
             }
         }
 
-        let currentFilter = 'todos';
-
         function filterRomance(category) {
             currentFilter = category;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            const query = document.getElementById('searchInput').value;
-            renderRomance(category, query);
+            renderRomance(category, document.getElementById('searchInput').value);
         }
 
         function handleSearch() {
-            const query = document.getElementById('searchInput').value;
-            renderRomance(currentFilter, query);
+            renderRomance(currentFilter, document.getElementById('searchInput').value);
         }
 
         function renderRomance(filter = 'todos', searchQuery = '') {
-            const data = getStoredRomance();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('romanceGridContainer');
+            if (!container) return;
             container.innerHTML = '';
 
-            let filtered = filter === 'todos' ? data.romance : data.romance.filter(r => r.type === filter);
+            let filtered = filter === 'todos' ? cloudDataCache : cloudDataCache.filter(r => r.type === filter);
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(r => r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q));
+                filtered = filtered.filter(r => 
+                    r.name.toLowerCase().includes(q) || 
+                    r.type.toLowerCase().includes(q) || 
+                    r.desc.toLowerCase().includes(q)
+                );
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con esa búsqueda.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron registros de romance en Google Sheets.</p>`;
                 return;
             }
 
             filtered.forEach(r => {
+                let imgList = r.images;
+                if (typeof imgList === 'string') {
+                    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+                }
+                if (!Array.isArray(imgList) || imgList.length === 0) {
+                    imgList = ['https://images.unsplash.com/photo-1519741497674-611481863552'];
+                }
+
                 let slidesHtml = '';
-                r.images.forEach((img, idx) => {
-                    slidesHtml += `<div class="carousel-slide"><img src="${img}" alt="${r.name} foto ${idx+1}"></div>`;
+                imgList.forEach((img, idx) => {
+                    const cleanImg = String(img).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${r.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552'"></div>`;
                 });
 
-                const cleanPhone = r.phone.replace(/[^0-9+]/g, '');
+                const cleanPhone = String(r.phone).replace(/[^0-9+]/g, '');
                 const cleanWa = cleanPhone.replace('+', '');
 
                 const webButtonHtml = (r.web && r.web !== '#') ? `
@@ -946,7 +976,7 @@
                             <div class="carousel-slides" id="slides-${r.key}">
                                 ${slidesHtml}
                             </div>
-                            ${r.images.length > 1 ? `
+                            ${imgList.length > 1 ? `
                                 <button class="carousel-btn prev" onclick="moveSlide('${r.key}', -1)"><i class="fas fa-chevron-left"></i></button>
                                 <button class="carousel-btn next" onclick="moveSlide('${r.key}', 1)"><i class="fas fa-chevron-right"></i></button>
                             ` : ''}
@@ -976,7 +1006,12 @@
                                         <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
                                     </a>
                                 </div>
-                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditRomanceModal('${r.key}')">✏️ Editar Apartado</button>` : ''}
+                                ${isLogged ? `
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <button class="btn-admin" style="flex: 1;" onclick="openEditModal('${r.key}')">✏️ Editar</button>
+                                        <button class="btn-admin" style="flex: 1; border-color: #c0392b; color: #c0392b;" onclick="deleteItem('${r.key}')">🗑️ Eliminar</button>
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -984,17 +1019,19 @@
             });
         }
 
-        // Control del carrusel de 3 fotos
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
-            const data = getStoredRomance();
-            const r = data.romance.find(el => el.key === key);
-            if (!r) return;
+            const r = cloudDataCache.find(el => el.key === key);
+            if (!r || !r.images) return;
+            let imgList = r.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
 
             slideIndices[key] += direction;
-            if (slideIndices[key] >= r.images.length) slideIndices[key] = 0;
-            if (slideIndices[key] < 0) slideIndices[key] = r.images.length - 1;
+            if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
 
             const slider = document.getElementById(`slides-${key}`);
             if (slider) {
@@ -1002,7 +1039,16 @@
             }
         }
 
-        // Auth & CMS
+        function convertImageFile(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
                 if (confirm("¿Desea cerrar la sesión de administración?")) {
@@ -1040,12 +1086,29 @@
             alert('Sesión cerrada.');
         }
 
-        let currentEditingKey = null;
-        function openEditRomanceModal(key) {
-            const data = getStoredRomance();
-            const r = data.romance.find(el => el.key === key);
+        function openAddModal() {
+            currentEditingKey = null;
+            document.getElementById('editModalTitle').innerText = 'Agregar Nuevo Registro de Romance';
+            document.getElementById('editRomanceKey').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editType').value = '';
+            document.getElementById('editDesc').value = '';
+            document.getElementById('editPrice').value = '';
+            document.getElementById('editPhone').value = '';
+            document.getElementById('editAddress').value = '';
+            document.getElementById('editMaps').value = '';
+            document.getElementById('editWeb').value = '';
+            document.getElementById('editImg1').value = '';
+            document.getElementById('editImg2').value = '';
+            document.getElementById('editImg3').value = '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function openEditModal(key) {
+            const r = cloudDataCache.find(el => el.key === key);
             if (!r) return;
             currentEditingKey = key;
+            document.getElementById('editModalTitle').innerText = 'Editar Registro de Romance';
             document.getElementById('editRomanceKey').value = key;
             document.getElementById('editName').value = r.name;
             document.getElementById('editType').value = r.type;
@@ -1055,9 +1118,14 @@
             document.getElementById('editAddress').value = r.address;
             document.getElementById('editMaps').value = r.maps;
             document.getElementById('editWeb').value = r.web;
-            document.getElementById('editImg1').value = r.images[0] || '';
-            document.getElementById('editImg2').value = r.images[1] || '';
-            document.getElementById('editImg3').value = r.images[2] || '';
+            
+            let imgList = r.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
+            document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+            document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+            document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
             document.getElementById('editModal').classList.add('active');
         }
 
@@ -1065,94 +1133,52 @@
             document.getElementById('editModal').classList.remove('active');
         }
 
-        function saveEditedRomance(e) {
+        function saveDataForm(e) {
             e.preventDefault();
-            const data = getStoredRomance();
-            const index = data.romance.findIndex(el => el.key === currentEditingKey);
-            if (index !== -1) {
-                data.romance[index].name = document.getElementById('editName').value;
-                data.romance[index].type = document.getElementById('editType').value;
-                data.romance[index].desc = document.getElementById('editDesc').value;
-                data.romance[index].price = document.getElementById('editPrice').value;
-                data.romance[index].phone = document.getElementById('editPhone').value;
-                data.romance[index].address = document.getElementById('editAddress').value;
-                data.romance[index].maps = document.getElementById('editMaps').value;
-                data.romance[index].web = document.getElementById('editWeb').value;
-                data.romance[index].images = [
+            
+            const itemObj = {
+                key: currentEditingKey ? currentEditingKey : 'rom_' + Math.random().toString(36).substring(2, 9),
+                name: document.getElementById('editName').value,
+                type: document.getElementById('editType').value,
+                desc: document.getElementById('editDesc').value,
+                price: document.getElementById('editPrice').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                maps: document.getElementById('editMaps').value,
+                web: document.getElementById('editWeb').value,
+                images: [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ];
-                saveStoredRomance(data);
-                closeEditModal();
-                alert('¡Apartado actualizado con éxito y sincronizado en la nube!');
-            }
-        }
-
-        function downloadRomanceTemplate() {
-            const data = getStoredRomance();
-            const flatData = data.romance.map(el => ({
-                nombre: el.name,
-                categoria: el.type,
-                descripcion: el.desc,
-                precio: el.price,
-                telefono: el.phone,
-                direccion: el.address,
-                direccion_maps: el.maps,
-                sitio_web: el.web,
-                foto_1: el.images[0] || '',
-                foto_2: el.images[1] || '',
-                foto_3: el.images[2] || ''
-            }));
-            const worksheet = XLSX.utils.json_to_sheet(flatData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "RomanceBodas");
-            XLSX.writeFile(workbook, "plantilla_romance_vivesanmiguel.xlsx");
-        }
-
-        function handleRomanceExcelUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const dataArr = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(dataArr, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(sheet);
-                    if (json.length > 0) {
-                        const data = getStoredRomance();
-                        json.forEach((row, idx) => {
-                            if (idx < data.romance.length) {
-                                if (row.nombre) data.romance[idx].name = row.nombre;
-                                if (row.categoria) data.romance[idx].type = row.categoria;
-                                if (row.descripcion) data.romance[idx].desc = row.descripcion;
-                                if (row.precio) data.romance[idx].price = row.precio;
-                                if (row.telefono) data.romance[idx].phone = row.telefono;
-                                if (row.direccion) data.romance[idx].address = row.direccion;
-                                if (row.direccion_maps) data.romance[idx].maps = row.direccion_maps;
-                                if (row.sitio_web) data.romance[idx].web = row.sitio_web;
-                                
-                                let imgs = [];
-                                if (row.foto_1) imgs.push(row.foto_1);
-                                if (row.foto_2) imgs.push(row.foto_2);
-                                if (row.foto_3) imgs.push(row.foto_3);
-                                if (imgs.length > 0) data.romance[idx].images = imgs;
-                            }
-                        });
-                        saveStoredRomance(data);
-                        alert('¡Importación masiva completada y sincronizada!');
-                    }
-                } catch (err) {
-                    alert('Error al procesar el archivo Excel.');
-                }
+                ].filter(img => img && img.trim() !== '')
             };
-            reader.readAsArrayBuffer(file);
+
+            let updatedList = [...cloudDataCache];
+            if (currentEditingKey) {
+                const index = updatedList.findIndex(el => el.key === currentEditingKey);
+                if (index !== -1) {
+                    updatedList[index] = itemObj;
+                }
+            } else {
+                updatedList.unshift(itemObj);
+            }
+
+            pushDataToGoogleSheets(updatedList);
+            closeEditModal();
+            alert('¡Guardado y sincronizado directamente en Google Sheets!');
+        }
+
+        function deleteItem(key) {
+            if (confirm("¿Estás seguro de eliminar este registro de Google Sheets?")) {
+                let updatedList = cloudDataCache.filter(item => item.key !== key);
+                pushDataToGoogleSheets(updatedList);
+                alert('Registro eliminado correctamente de la nube.');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            renderRomance('todos');
+            fetchDataFromCloud();
         });
 
         // Partículas y cursor
