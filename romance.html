@@ -652,7 +652,7 @@
             <button class="btn-admin" onclick="downloadRomanceTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRomanceExcelUpload(event)">
-            <span class="sync-status" id="syncStatus" style="font-size:0.75rem; color:#0F9D58; font-weight:600;"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="syncWithGoogleSheets()" id="syncBtn">🔄 Sincronizar con Google Sheets</button>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -769,7 +769,7 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_TU_CONFIGURACION_AUTOMATICA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMBhRIgbJ_RagUJAu_1JayaAg_O4CuMMO1OeREHbL5UirqqLNc7JyX9sZsFgmp2eDN/exec";
 
         const defaultRomanceData = {
             romance: [
@@ -825,32 +825,58 @@
         };
 
         function getStoredRomance() {
-            const data = localStorage.getItem('sma_romance_data');
+            const data = localStorage.getItem('sma_romance_data_v2');
             if (!data) {
-                localStorage.setItem('sma_romance_data', JSON.stringify(defaultRomanceData));
+                localStorage.setItem('sma_romance_data_v2', JSON.stringify(defaultRomanceData));
                 return defaultRomanceData;
             }
             return JSON.parse(data);
         }
 
-        function saveStoredRomance(data, syncCloud = true) {
-            localStorage.setItem('sma_romance_data', JSON.stringify(data));
+        function saveStoredRomance(data) {
+            localStorage.setItem('sma_romance_data_v2', JSON.stringify(data));
             renderRomance(currentFilter, document.getElementById('searchInput').value);
-            if (syncCloud) {
-                pushDataToGoogleSheets(data);
-            }
+            pushDataToGoogleSheets(data);
         }
 
         async function pushDataToGoogleSheets(data) {
             try {
+                const payload = data.romance.map(r => ({
+                    key: r.key,
+                    nombre: r.name,
+                    categoria: r.type,
+                    descripcion: r.desc,
+                    precio: r.price,
+                    telefono: r.phone,
+                    direccion: r.address,
+                    direccion_maps: r.maps,
+                    sitio_web: r.web,
+                    foto_1: r.images[0] || '',
+                    foto_2: r.images[1] || '',
+                    foto_3: r.images[2] || ''
+                }));
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data.romance)
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
                 });
             } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
+                console.warn("Guardado local exitoso.", err);
+            }
+        }
+
+        async function syncWithGoogleSheets() {
+            const btn = document.getElementById('syncBtn');
+            btn.innerText = "🔄 Sincronizando...";
+            try {
+                const data = getStoredRomance();
+                await pushDataToGoogleSheets(data);
+                alert("¡Sincronización enviada a Google Sheets con éxito!");
+            } catch (err) {
+                alert("Error al sincronizar con la nube.");
+            } finally {
+                btn.innerText = "🔄 Sincronizar con Google Sheets";
             }
         }
 
@@ -1057,9 +1083,9 @@
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
                 ];
-                saveStoredRomance(data, true);
+                saveStoredRomance(data);
                 closeEditModal();
-                alert('¡Apartado actualizado con éxito!');
+                alert('¡Apartado actualizado con éxito y sincronizado en la nube!');
             }
         }
 
@@ -1114,8 +1140,8 @@
                                 if (imgs.length > 0) data.romance[idx].images = imgs;
                             }
                         });
-                        saveStoredRomance(data, true);
-                        alert('¡Importación masiva completada!');
+                        saveStoredRomance(data);
+                        alert('¡Importación masiva completada y sincronizada!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1209,15 +1235,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        // Registro del Service Worker para funcionamiento sin conexión (PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
-            });
-        }
     </script>
 </body>
 </html>
