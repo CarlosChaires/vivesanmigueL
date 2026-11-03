@@ -747,23 +747,11 @@
             const btn = document.getElementById('syncBtn');
             btn.innerText = "🔄 Sincronizando...";
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                const remoteData = await response.json();
-                if (Array.isArray(remoteData) && remoteData.length > 0) {
-                    const currentData = getStoredSites();
-                    remoteData.forEach((row, idx) => {
-                        if (currentData.sites[idx]) {
-                            if (row.titulo) currentData.sites[idx].title = row.titulo;
-                            if (row.enlace) currentData.sites[idx].link = row.enlace;
-                            if (row.imagen_url) currentData.sites[idx].img = row.imagen_url;
-                        }
-                    });
-                    localStorage.setItem('sma_sitios_interes_v6', JSON.stringify(currentData));
-                    renderSites(document.getElementById('searchInput').value);
-                    alert("¡Sincronización con Google Sheets completada con éxito!");
-                }
+                const data = getStoredSites();
+                await pushDataToGoogleSheets(data);
+                alert("¡Sincronización enviada a Google Sheets con éxito!");
             } catch (err) {
-                alert("No se pudo conectar. Asegúrate de probarlo en un servidor local (Live Server) o en GitHub Pages, y que el Apps Script tenga acceso libre.");
+                alert("Error al sincronizar con la nube.");
             } finally {
                 btn.innerText = "🔄 Sincronizar con Google Sheets";
             }
