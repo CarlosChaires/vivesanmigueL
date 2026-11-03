@@ -823,7 +823,9 @@
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMBhRIgbJ_RagUJAu_1JayaAg_O4CuMMO1OeREHbL5UirqqLNc7JyX9sZsFgmp2eDN/exec";
+        
+        // URL actualizada con tu nueva implementación de Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLZkNdRD-nO1MNtY1MxW7ATvZoojsS_OAjkA0LJTQvHVSYaSGO74fyss8fYrUD4j-_NQ/exec";
 
         let cloudDataCache = [];
         let currentEditingKey = null;
@@ -838,12 +840,12 @@
                 
                 if (Array.isArray(cloudData)) {
                     cloudDataCache = cloudData.map(item => {
-                        let imgs = item.images || [item.foto_1, item.foto_2, item.foto_3];
+                        let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
                         }
                         if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1519741497674-611481863552'];
-                        imgs = imgs.filter(i => i && i.trim() !== '');
+                        imgs = imgs.filter(i => i && String(i).trim() !== '');
 
                         return {
                             key: item.key || 'rom_' + Math.random().toString(36).substring(2, 7),
@@ -888,7 +890,7 @@
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
