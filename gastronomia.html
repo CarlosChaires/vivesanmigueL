@@ -701,13 +701,14 @@
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
         </header>
 
-        <!-- Admin Bar con Sincronización Automática a Google Sheets -->
+        <!-- Admin Bar con Sincronización en Directo a Google Sheets -->
         <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
+            <button class="btn-admin" onclick="openAddRestaurantModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Restaurante</button>
+            <button class="btn-admin" onclick="fetchRestaurantsFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
             <button class="btn-admin" onclick="downloadRestaurantsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRestaurantExcelUpload(event)">
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Conectado a Google</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -772,7 +773,7 @@
                 <h3 id="editModalTitle">Editar Restaurante</h3>
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
-            <form onsubmit="saveEditedRestaurant(event)">
+            <form onsubmit="saveRestaurantForm(event)">
                 <input type="hidden" id="editRestKey">
                 <div class="input-group">
                     <label>Nombre del Restaurante</label>
@@ -841,7 +842,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
             </form>
         </div>
     </div>
@@ -850,177 +851,23 @@
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
 
-        // URL actualizada con tu nueva implementación de Google Apps Script para Gastronomía
+        // URL de tu Google Apps Script para Gastronomía
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxc0T_ttqk7lXsu9hXpCa13Co3WsMzO_TVd1l0mplTZ2EEfnPhsS581Ny_4_lCOmEnuTw/exec";
 
-        const defaultRestaurantsData = {
-            restaurants: [
-                {
-                    key: 'rest_1826',
-                    name: '1826 - Cocina de Autor',
-                    type: 'Internacional',
-                    desc: 'Exquisita alta cocina de autor en el prestigioso Hotel Rosewood San Miguel de Allende.',
-                    phone: '415 152 97 00',
-                    address: 'Nemesio Díez #11, Centro',
-                    maps: 'https://maps.google.com/?q=Nemesio+Diez+11+San+Miguel+de+Allende',
-                    web: 'https://rosewoodsanmiguel.com',
-                    opentable: 'https://www.opentable.com.mx/r/restaurante-1826-rosewood-san-miguel-de-allende?ref=16420',
-                    whatsapp: '',
-                    instagram: '',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQW319oEp8Zi0bLz56cyeKr96Ds7j-7PKyf_LBa1sXFc3o7BKBgz3d6WaLN_pmeynhWLu4S4hMGQ9xMh359bxD4iKrkO-h-UPvUmHHL9Il37d6uDBfRKFvVVuRqDJLfw2sxFw=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWljFynaSaII5ehcs3dN1J8apqywcBxpNhjkSBnvubEl_WahgBfjWceGo6DDU749l0H3-pHw0aRZzWzyDibH3zZ_K7U4rq7FvO4a3DPdPQHvXZu4b_odCAdfwBG3zxDW5sTSnW4lYKQjaBpA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkD3vKtE5SnskhUhvmWb75j_o6TxRLA6xiBVscAOhtDZSzYi_-_t5H0Rw9qvkKK56o59fXemWHUGwwtXp_T9Gh1ZLR-HauECJh-Xp0SNrLHxdgQFhXbx5Z-sb8yv3yACBx0SXsS1Q=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'rest_aperi',
-                    name: 'Aperi',
-                    type: 'Internacional',
-                    desc: 'Cocina de autor excepcional galardonada, ubicada en el corazón de la ciudad.',
-                    phone: '415 152 09 41',
-                    address: 'Quebrada #101, Centro',
-                    maps: 'https://maps.google.com/?q=Quebrada+101+San+Miguel+de+Allende',
-                    web: 'https://www.aperi.mx',
-                    opentable: 'https://www.opentable.com.mx/booking/restref/availability?restRef=1049872',
-                    whatsapp: '',
-                    instagram: 'https://www.instagram.com/aperimx/?hl=es',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwKhQiqGdJX50hSQZZoOL8vYus97yynYDkJxSafgPYG66T1MDWLTgM7uZr4GtH5G6Vzp45HxASPUPO-w5Dqkoe-QY8Tj4-byTKJ_N9BRsW0KtJsGwuYojCqaJVoZUz0fyqjNKuYA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkyYeHT5NjehaRtkjqSEoLJpq-4fv9sPhbmDccU7391MslsW3L-MmruOvscsF50Ur6diIEJP1YAw1i1Bxg78Ebxo5u3nmk-eGnLThbWNzIhzmGVjJxW8KwrBM6BFtmDORMJOLI8uA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkNx7JhsCKyFa4yqOYmk5OQpZcLMRlhsVVo9OENumaJn2gfZozYv794hZlb4dU8qM8AW5zy6Gv5s2PJDEsiUefVi9IW9AhJwPog3vA9RkzIjj3y4UD5jEl_kEq5Nq-GrlIGI8I-=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'rest_bennu',
-                    name: 'Bennu',
-                    type: 'Pizza',
-                    desc: 'Pizzas artesanales y ambiente acogedor en una de las calles emblemáticas del centro.',
-                    phone: '415 688 70 18',
-                    address: 'Jesús #20, Centro',
-                    maps: 'https://maps.google.com/?q=Jesus+20+San+Miguel+de+Allende',
-                    web: 'https://bennu.mx',
-                    opentable: 'https://bennu.mx/hola',
-                    whatsapp: '',
-                    instagram: 'https://www.instagram.com/bennu.mx/?hl=es',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz_utgB8ks9AfWBu0ZhYs7JEejSljUJ2mjpC95wz5mWcW_17QsEf--DOsOsQ1SsT7_pTD1j9EL-iQwe1uVPVWIPL9XLQ1l9XUFu1t4NoSam95mHa67-tpQFdOVABJe87aFOkM3MU8PrqMD=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz_utgB8ks9AfWBu0ZhYs7JEejSljUJ2mjpC95wz5mWcW_17QsEf--DOsOsQ1SsT7_pTD1j9EL-iQwe1uVPVWIPL9XLQ1l9XUFu1t4NoSam95mHa67-tpQFdOVABJe87aFOkM3MU8PrqMD=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkxBqGmQF_97NpByDAHJhVUmN9rZEepKSorscO6fzsjAPNXkM6JG8Dq75h-wt59T2cQFnB3bQQ7oQKTF8nlSVVslsAp4sotidRiJaoQIbdQB6htJYXeRrUYrL2F37kE_YaVeWY=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'rest_botanero21',
-                    name: 'Botanero 21 - Terraza Bar',
-                    type: 'Terraza Bar',
-                    desc: 'Excelente ambiente de terraza bar con mixología y antojitos mexicanos en el centro histórico.',
-                    phone: '415 188 23 50',
-                    address: 'Hernández Macías #71, Centro',
-                    maps: 'https://maps.google.com/?q=Hernandez+Macias+71+San+Miguel+de+Allende',
-                    web: '#',
-                    opentable: '',
-                    whatsapp: '',
-                    instagram: 'https://www.instagram.com/botaneroveintiuno_sma/?hl=es',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpfFnD8TVWP1TCtDJOKwlKcONYz6lnRrzNV9WkGHeG0kDt4KVejoG_PqXp7XKFoaPDaoilysxnpu_Fc8iL0-b2gSTq9RMqobh6DRbeA00os-zMUZn5DX2lcCA0fdVfnmzdd7ie=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkEUSZjH8kOlZhwZIaSlBUoQBDEuhfy8dQ5UQ5J8-VL6KBRPDC4lG9L5J8AyudOTyJbad3_mMkzCEEVuI1Le1pacYsCddAZrlzrGu0Xg33k8VMu8dftwrzCCN8mdsnCfbhnzPlT=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkqn1Bv9Y5qMy6V0ge53Xsmqj1RaE9wRIHuBMyHw_ZyEHgslmwOjjvkaIPrhjLcGUlftp_w6TN86Xe-1HBaac9Wky7TpEO06TQvqzDJ_3zjZoS33aJSn9u1rs09aQl8kSnX37SeFA=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'rest_bovine',
-                    name: 'Bovine',
-                    type: 'Internacional',
-                    desc: 'Brasserie contemporánea y cortes de carne prémium con diseño interior sofisticado.',
-                    phone: '415 121 67 87',
-                    address: 'Canal #6, Centro',
-                    maps: 'https://maps.google.com/?q=Canal+6+San+Miguel+de+Allende',
-                    web: 'https://www.bovinerestaurant.com.mx',
-                    opentable: 'https://www.opentable.com.mx/r/bovine-reservations-san-miguel-de-allende/?restref=1046887',
-                    whatsapp: 'https://api.whatsapp.com/message/7GKWHTN3PJCGA1?autoload=1&app_absent=0',
-                    instagram: 'https://www.instagram.com/bovinebrasserie/',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_f6ea9_6QXOOyizub6dDwli4WWz7-P-MkQWuENEtnw4NiByIHXoaXhmlylQ14km_PNCNUl1tNBVsK-jL_VzkSACiEkeiJpCJmdcqYxnrC9zwWzO0fB3xr84Zt_-MUcla-4SFG=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnI0zFA1Ht2Hg8MrwF_EzRMhrchOZMELDt0QgqR3dv4mG5Lilot5VEYhQEzAS-u2R_oGXPqMjK8kWYkKMfzJd_cPPpDRFYytxRx64Q0TW5dwJAALz60x1k526n0AVIVU8Ovhyc=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm57ergd1r7Zstx0uvtXku4Mz-7EHpOcXpoIIjwQkkhYYQ0EUl2EtwtmhZYaAYLrI0ft7-dzc1QbLOEUabPcKed3mgFgQJgyFPEi_misdADH9rcI1Jktqj_gkwfQE2kqAf5QeNt7R9IujQ=s1360-w1360-h1020-rw'
-                    ]
-                },
-                {
-                    key: 'rest_tacoreal',
-                    name: 'Buffet El Taco Real',
-                    type: 'Mexicana',
-                    desc: 'Auténtico bufete mexicano tradicional con una gran variedad de guisados típicos.',
-                    phone: '415 152 66 77',
-                    address: 'Relox #15, Centro',
-                    maps: 'https://maps.google.com/?q=Relox+15+San+Miguel+de+Allende',
-                    web: '#',
-                    opentable: '',
-                    whatsapp: '',
-                    instagram: 'https://www.instagram.com/taco_real_oficial/',
-                    images: [
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn37RMCKJjU-Sr6299tQ4-kvlerTvyUlqFhwBARfGUaUOFQv6JjlJ5SKrWGVkY7woHeZdNJVdKERuqIFCGl9PxcuJN8GBRQZAE0gjUWILf0r2RrBFiDCNzDSpOq1yoe0pL6NjkUIA=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkmGETDBy1c2pQCniaK0vnRKdj1l_Ut157S40l7p2kM7_fAVisEnZDIQP4SO7jZ2nw0slHGQLDffUd3GCxIi4goRogolM1i_nmWRmCFcEu3ax16lHwUMDTHtLi02Q2iHLfd16QMWg=s1360-w1360-h1020-rw',
-                        'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKv5a2n2IiSBZ2qRGgHE12ZYJrIo4TJlD-nHveN8DKSkaYYL1nfB2xWhzuTGV3dFLJ7-wvcpTmfJ_EWX2sUAEDSAREcWfxx_EJcg5fbVTmZgLkk_AGP_RTXyq4ZGyWcRyhiiW0=s1360-w1360-h1020-rw'
-                    ]
-                }
-            ]
-        };
+        let cloudRestaurantsCache = [];
+        let currentFilter = 'todos';
+        let currentEditingKey = null;
 
-        function getStoredRestaurants() {
-            const data = localStorage.getItem('sma_restaurants_data_v2');
-            if (!data) {
-                localStorage.setItem('sma_restaurants_data_v2', JSON.stringify(defaultRestaurantsData));
-                return defaultRestaurantsData;
-            }
-            return JSON.parse(data);
-        }
-
-        function saveStoredRestaurants(data, syncCloud = true) {
-            localStorage.setItem('sma_restaurants_data_v2', JSON.stringify(data));
-            renderRestaurants(currentFilter, document.getElementById('searchInput').value);
-            if (syncCloud) {
-                pushDataToGoogleSheets(data);
-            }
-        }
-
-        async function pushDataToGoogleSheets(data) {
-            try {
-                const payload = data.restaurants.map(item => ({
-                    key: item.key,
-                    name: item.name,
-                    type: item.type,
-                    desc: item.desc,
-                    phone: item.phone,
-                    address: item.address,
-                    maps: item.maps,
-                    web: item.web,
-                    opentable: item.opentable || '',
-                    whatsapp: item.whatsapp || '',
-                    instagram: item.instagram || '',
-                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
-                }));
-
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
-            }
-        }
-
+        // Conexión Directa a Google Sheets (GET para leer, POST para escribir/eliminar)
         async function fetchRestaurantsFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
-                
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData) && cloudData.length > 0) {
-                    const normalizedRestaurants = cloudData.map(item => {
+                if (Array.isArray(cloudData)) {
+                    cloudRestaurantsCache = cloudData.map(item => {
                         let imgs = item.images;
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
@@ -1043,30 +890,47 @@
                         };
                     });
 
-                    const formattedData = { restaurants: normalizedRestaurants };
-                    localStorage.setItem('sma_restaurants_data_v2', JSON.stringify(formattedData));
                     renderRestaurants(currentFilter, document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado con Google Sheets`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a Google`;
                 }
             } catch (error) {
-                console.warn("No se pudo conectar con la nube, usando caché local:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local (Offline)`;
+                console.warn("Error de conexión con Google Sheets:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
             }
         }
 
-        async function syncWithGoogleDrive() {
+        async function pushDataToGoogleSheets(restaurantsArray) {
             const statusEl = document.getElementById('syncStatus');
-            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
             try {
-                const data = getStoredRestaurants();
-                await pushDataToGoogleSheets(data);
-                setTimeout(() => {
-                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Drive & Sheets`;
-                    alert('¡Sincronización con Google Drive y Google Sheets completada exitosamente!');
-                }, 1000);
-            } catch (error) {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error de sincronización`;
-                alert('No se pudo conectar con Google Apps Script. Verifique la URL de su Web App.');
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Nube...`;
+                const payload = restaurantsArray.map(item => ({
+                    key: item.key,
+                    name: item.name,
+                    type: item.type,
+                    desc: item.desc,
+                    phone: item.phone,
+                    address: item.address,
+                    maps: item.maps,
+                    web: item.web,
+                    opentable: item.opentable || '',
+                    whatsapp: item.whatsapp || '',
+                    instagram: item.instagram || '',
+                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+                }));
+
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                cloudRestaurantsCache = [...restaurantsArray];
+                renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
+            } catch (err) {
+                console.error("Error al actualizar Google Sheets:", err);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
             }
         }
 
@@ -1079,8 +943,6 @@
                 controls.classList.remove('active');
             }
         }
-
-        let currentFilter = 'todos';
 
         function filterRestaurants(type) {
             currentFilter = type;
@@ -1096,13 +958,12 @@
         }
 
         function renderRestaurants(filter = 'todos', searchQuery = '') {
-            const data = getStoredRestaurants();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('restaurantsGridContainer');
             if (!container) return;
             container.innerHTML = '';
 
-            let filtered = filter === 'todos' ? data.restaurants : data.restaurants.filter(r => r.type === filter);
+            let filtered = filter === 'todos' ? cloudRestaurantsCache : cloudRestaurantsCache.filter(r => r.type === filter);
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
@@ -1110,7 +971,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron restaurantes con esa búsqueda.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron restaurantes con esa búsqueda en Google Sheets.</p>`;
                 return;
             }
 
@@ -1192,7 +1053,12 @@
                                         ${instagramButtonHtml}
                                     </div>
                                 </div>
-                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditRestaurantModal('${r.key}')">✏️ Editar Restaurante</button>` : ''}
+                                ${isLogged ? `
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <button class="btn-admin" style="flex: 1;" onclick="openEditRestaurantModal('${r.key}')">✏️ Editar</button>
+                                        <button class="btn-admin" style="flex: 1; border-color: #c0392b; color: #c0392b;" onclick="deleteRestaurant('${r.key}')">🗑️ Eliminar</button>
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -1203,8 +1069,7 @@
         const slideIndices = {};
         function moveSlide(key, direction) {
             if (!slideIndices[key]) slideIndices[key] = 0;
-            const data = getStoredRestaurants();
-            const r = data.restaurants.find(el => el.key === key);
+            const r = cloudRestaurantsCache.find(el => el.key === key);
             if (!r || !r.images) return;
             let imgList = r.images;
             if (typeof imgList === 'string') {
@@ -1268,12 +1133,31 @@
             alert('Sesión cerrada.');
         }
 
-        let currentEditingKey = null;
+        function openAddRestaurantModal() {
+            currentEditingKey = null;
+            document.getElementById('editModalTitle').innerText = 'Agregar Nuevo Restaurante';
+            document.getElementById('editRestKey').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editType').value = 'Internacional';
+            document.getElementById('editDesc').value = '';
+            document.getElementById('editPhone').value = '';
+            document.getElementById('editAddress').value = '';
+            document.getElementById('editMaps').value = '';
+            document.getElementById('editWeb').value = '#';
+            document.getElementById('editOpenTable').value = '';
+            document.getElementById('editWhatsapp').value = '';
+            document.getElementById('editInstagram').value = '';
+            document.getElementById('editImg1').value = '';
+            document.getElementById('editImg2').value = '';
+            document.getElementById('editImg3').value = '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
         function openEditRestaurantModal(key) {
-            const data = getStoredRestaurants();
-            const r = data.restaurants.find(el => el.key === key);
+            const r = cloudRestaurantsCache.find(el => el.key === key);
             if (!r) return;
             currentEditingKey = key;
+            document.getElementById('editModalTitle').innerText = 'Editar Restaurante';
             document.getElementById('editRestKey').value = key;
             document.getElementById('editName').value = r.name;
             document.getElementById('editType').value = r.type;
@@ -1301,36 +1185,53 @@
             document.getElementById('editModal').classList.remove('active');
         }
 
-        function saveEditedRestaurant(e) {
+        function saveRestaurantForm(e) {
             e.preventDefault();
-            const data = getStoredRestaurants();
-            const index = data.restaurants.findIndex(el => el.key === currentEditingKey);
-            if (index !== -1) {
-                data.restaurants[index].name = document.getElementById('editName').value;
-                data.restaurants[index].type = document.getElementById('editType').value;
-                data.restaurants[index].desc = document.getElementById('editDesc').value;
-                data.restaurants[index].phone = document.getElementById('editPhone').value;
-                data.restaurants[index].address = document.getElementById('editAddress').value;
-                data.restaurants[index].maps = document.getElementById('editMaps').value;
-                data.restaurants[index].web = document.getElementById('editWeb').value;
-                data.restaurants[index].opentable = document.getElementById('editOpenTable').value;
-                data.restaurants[index].whatsapp = document.getElementById('editWhatsapp').value;
-                data.restaurants[index].instagram = document.getElementById('editInstagram').value;
-                data.restaurants[index].images = [
+            
+            const restaurantObj = {
+                key: currentEditingKey ? currentEditingKey : 'rest_' + Math.random().toString(36).substring(2, 9),
+                name: document.getElementById('editName').value,
+                type: document.getElementById('editType').value,
+                desc: document.getElementById('editDesc').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                maps: document.getElementById('editMaps').value,
+                web: document.getElementById('editWeb').value,
+                opentable: document.getElementById('editOpenTable').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                instagram: document.getElementById('editInstagram').value,
+                images: [
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ].filter(img => img.trim() !== '');
+                ].filter(img => img.trim() !== '')
+            };
 
-                saveStoredRestaurants(data, true);
-                closeEditModal();
-                alert('¡Restaurante actualizado y sincronizado en Google Sheets!');
+            let updatedList = [...cloudRestaurantsCache];
+            if (currentEditingKey) {
+                const index = updatedList.findIndex(el => el.key === currentEditingKey);
+                if (index !== -1) {
+                    updatedList[index] = restaurantObj;
+                }
+            } else {
+                updatedList.unshift(restaurantObj);
+            }
+
+            pushDataToGoogleSheets(updatedList);
+            closeEditModal();
+            alert('¡Registro guardado directamente en Google Sheets!');
+        }
+
+        function deleteRestaurant(key) {
+            if (confirm("¿Estás seguro de eliminar este restaurante de Google Sheets?")) {
+                let updatedList = cloudRestaurantsCache.filter(r => r.key !== key);
+                pushDataToGoogleSheets(updatedList);
+                alert('Restaurante eliminado correctamente de la nube.');
             }
         }
 
         function downloadRestaurantsTemplate() {
-            const data = getStoredRestaurants();
-            const flatData = data.restaurants.map(el => ({
+            const flatData = cloudRestaurantsCache.map(el => ({
                 key: el.key,
                 name: el.name,
                 type: el.type,
@@ -1361,30 +1262,30 @@
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const json = XLSX.utils.sheet_to_json(sheet);
                     if (json.length > 0) {
-                        const data = getStoredRestaurants();
+                        let updatedList = [...cloudRestaurantsCache];
                         json.forEach((row, idx) => {
-                            if (idx < data.restaurants.length) {
-                                if (row.name) data.restaurants[idx].name = row.name;
-                                if (row.type) data.restaurants[idx].type = row.type;
-                                if (row.desc) data.restaurants[idx].desc = row.desc;
-                                if (row.phone) data.restaurants[idx].phone = row.phone;
-                                if (row.address) data.restaurants[idx].address = row.address;
-                                if (row.maps) data.restaurants[idx].maps = row.maps;
-                                if (row.web) data.restaurants[idx].web = row.web;
-                                if (row.opentable) data.restaurants[idx].opentable = row.opentable;
-                                if (row.whatsapp) data.restaurants[idx].whatsapp = row.whatsapp;
-                                if (row.instagram) data.restaurants[idx].instagram = row.instagram;
+                            if (idx < updatedList.length) {
+                                if (row.name) updatedList[idx].name = row.name;
+                                if (row.type) updatedList[idx].type = row.type;
+                                if (row.desc) updatedList[idx].desc = row.desc;
+                                if (row.phone) updatedList[idx].phone = row.phone;
+                                if (row.address) updatedList[idx].address = row.address;
+                                if (row.maps) updatedList[idx].maps = row.maps;
+                                if (row.web) updatedList[idx].web = row.web;
+                                if (row.opentable) updatedList[idx].opentable = row.opentable;
+                                if (row.whatsapp) updatedList[idx].whatsapp = row.whatsapp;
+                                if (row.instagram) updatedList[idx].instagram = row.instagram;
                                 if (row.images) {
                                     try {
-                                        data.restaurants[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                        updatedList[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
                                     } catch(e) {
-                                        data.restaurants[idx].images = [row.images];
+                                        updatedList[idx].images = [row.images];
                                     }
                                 }
                             }
                         });
-                        saveStoredRestaurants(data, true);
-                        alert('¡Importación masiva completada y sincronizada en la nube!');
+                        pushDataToGoogleSheets(updatedList);
+                        alert('¡Importación masiva completada y enviada a Google Sheets!');
                     }
                 } catch (err) {
                     alert('Error al procesar el archivo Excel.');
@@ -1395,8 +1296,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            renderRestaurants('todos');
-            fetchRestaurantsFromCloud(); // Sincroniza y descarga automáticamente desde Google Sheets al abrir
+            fetchRestaurantsFromCloud();
         });
 
         // Partículas y cursor
@@ -1479,14 +1379,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
-            });
-        }
     </script>
 </body>
 </html>
