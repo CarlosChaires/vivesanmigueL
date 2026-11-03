@@ -145,16 +145,31 @@ nav {
 .card-media {
   position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--rose-soft);
 }
-.card-media img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+.carousel-slides {
+  display: flex; width: 100%; height: 100%; transition: transform 0.5s ease;
 }
-.card:hover .card-media img { transform: scale(1.06); }
+.carousel-slide {
+  min-width: 100%; height: 100%;
+}
+.carousel-slide img {
+  width: 100%; height: 100%; object-fit: display; display: block;
+}
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4); color: #fff; border: none;
+  width: 30px; height: 30px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; cursor: pointer;
+  font-size: 0.8rem; z-index: 5; transition: background 0.3s;
+}
+.carousel-btn:hover { background: rgba(0, 0, 0, 0.7); }
+.carousel-btn.prev { left: 8px; }
+.carousel-btn.next { right: 8px; }
+
 .badge {
   position: absolute; top: 14px; left: 14px;
   background: rgba(44, 36, 34, 0.82); backdrop-filter: blur(10px);
   color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 6px 12px; border-radius: 100px;
+  padding: 6px 12px; border-radius: 100px; z-index: 5;
 }
 .card-body {
   padding: 22px 20px 24px;
@@ -264,6 +279,18 @@ nav {
   font-family: 'Outfit', sans-serif; font-size: 0.9rem; background: var(--paper); color: var(--stone); outline: none;
 }
 .input-group input:focus, .input-group textarea:focus { border-color: var(--cantera); background: #ffffff; }
+
+.image-input-box {
+  display: flex; gap: 8px; align-items: center;
+}
+.image-input-box input[type="text"] { flex: 1; }
+.image-input-box input[type="file"] { display: none; }
+.btn-upload-file {
+  background: rgba(184, 107, 92, 0.1); color: var(--cantera); border: 1px solid var(--border);
+  padding: 0.8rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: all 0.3s;
+}
+.btn-upload-file:hover { background: var(--cantera); color: #fff; }
+
 .btn-modal-save {
   background: var(--cantera); color: #ffffff; border: none; width: 100%; padding: 0.9rem;
   border-radius: 30px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.3s ease; margin-top: 0.5rem;
@@ -350,7 +377,7 @@ nav {
   </div>
 </div>
 
-<!-- Modal Agregar / Editar Viñedo -->
+<!-- Modal Agregar / Editar Viñedo (Con 3 Fotos Locales / URL) -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-content">
     <div class="modal-top">
@@ -387,10 +414,33 @@ nav {
         <label>Enlace Instagram (URL)</label>
         <input type="text" id="editIg" required placeholder="https://www.instagram.com/...">
       </div>
+      
+      <!-- Campos para 3 imágenes (Subir archivo o URL) -->
       <div class="input-group">
-        <label>Imagen (URL)</label>
-        <input type="text" id="editImage" required placeholder="https://...">
+        <label>Foto 1 (Carrusel)</label>
+        <div class="image-input-box">
+          <input type="text" id="editImg1" placeholder="https://... o sube archivo" required>
+          <input type="file" id="fileImg1" accept="image/*" onchange="convertImageFile(event, 'editImg1')">
+          <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg1').click()">📁 Subir</button>
+        </div>
       </div>
+      <div class="input-group">
+        <label>Foto 2 (Carrusel)</label>
+        <div class="image-input-box">
+          <input type="text" id="editImg2" placeholder="https://... o sube archivo" required>
+          <input type="file" id="fileImg2" accept="image/*" onchange="convertImageFile(event, 'editImg2')">
+          <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg2').click()">📁 Subir</button>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Foto 3 (Carrusel)</label>
+        <div class="image-input-box">
+          <input type="text" id="editImg3" placeholder="https://... o sube archivo" required>
+          <input type="file" id="fileImg3" accept="image/*" onchange="convertImageFile(event, 'editImg3')">
+          <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
+        </div>
+      </div>
+
       <button type="submit" class="btn-modal-save">Guardar Cambios</button>
     </form>
   </div>
@@ -413,7 +463,11 @@ const defaultVineyards = [
     web: "https://www.vinedossanlucas.com/",
     ig: "https://www.instagram.com/vinedossanlucas/",
     igHandle: "@vinedossanlucas",
-    image: "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-lucas-san-miguel-de-allende-59.jpg?w=960"
+    images: [
+      "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-lucas-san-miguel-de-allende-59.jpg?w=960",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v2",
@@ -426,7 +480,11 @@ const defaultVineyards = [
     web: "https://vinedosanmiguel.com.mx/",
     ig: "https://www.instagram.com/vinedosanmiguel/",
     igHandle: "@vinedosanmiguel",
-    image: "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-miguel-3.jpg?w=1024"
+    images: [
+      "https://vivemigueldeallende.wordpress.com/wp-content/uploads/2025/03/vinedo-san-miguel-3.jpg?w=1024",
+      "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v3",
@@ -439,7 +497,11 @@ const defaultVineyards = [
     web: "https://www.vinicolatoyan.com/",
     ig: "https://www.instagram.com/vinedotoyan/",
     igHandle: "@vinedotoyan",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80"
+    images: [
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v4",
@@ -452,7 +514,11 @@ const defaultVineyards = [
     web: "https://dosbuhos.com/",
     ig: "https://www.instagram.com/dosbuhos/",
     igHandle: "@dosbuhos",
-    image: "https://dosbuhos.com/wp-content/uploads/2023/07/dos-buhos-vinedo.jpg"
+    images: [
+      "https://dosbuhos.com/wp-content/uploads/2023/07/dos-buhos-vinedo.jpg",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v5",
@@ -465,7 +531,11 @@ const defaultVineyards = [
     web: "https://haciendasanjoselavista.com/",
     ig: "https://www.instagram.com/sanjoselavista/",
     igHandle: "@sanjoselavista",
-    image: "https://sanjoselavista.com/wp-content/uploads/2021/05/hacienda-san-jose-lavista-vinedo.jpg"
+    images: [
+      "https://sanjoselavista.com/wp-content/uploads/2021/05/hacienda-san-jose-lavista-vinedo.jpg",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v6",
@@ -478,7 +548,11 @@ const defaultVineyards = [
     web: "https://lasantisimatrinidad.com.mx/",
     ig: "https://www.instagram.com/lasantisimatrinidadsma/",
     igHandle: "@lasantisimatrinidadsma",
-    image: "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkUQuNU_QadpC_uvJsLIGh2psAgE6TYmo_LdMQUtCLo9pzHvwKakPpsOFw6ZTxvi-HtoKQ3Onf4cVUP57Y6TtdfEUtqnapVZCvXr_xukyJCY3SWKn8l2uDKhbH_Oi9HCNdrJ5QQGw=s680-w680-h510-rw"
+    images: [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkUQuNU_QadpC_uvJsLIGh2psAgE6TYmo_LdMQUtCLo9pzHvwKakPpsOFw6ZTxvi-HtoKQ3Onf4cVUP57Y6TtdfEUtqnapVZCvXr_xukyJCY3SWKn8l2uDKhbH_Oi9HCNdrJ5QQGw=s680-w680-h510-rw",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v7",
@@ -491,7 +565,11 @@ const defaultVineyards = [
     web: "https://vinedotresraices.com/",
     ig: "https://www.instagram.com/vinedotresraices/",
     igHandle: "@vinedotresraices",
-    image: "https://vinedotresraices.com/wp-content/uploads/2023/05/tres-raices-vinedo.jpg"
+    images: [
+      "https://vinedotresraices.com/wp-content/uploads/2023/05/tres-raices-vinedo.jpg",
+      "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v8",
@@ -504,7 +582,11 @@ const defaultVineyards = [
     web: "https://vinedossanfrancisco.com/",
     ig: "https://www.instagram.com/vinedossanfrancisco/",
     igHandle: "@vinedossanfrancisco",
-    image: "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-zHrxah037mdufUI3N7XPvXlOK_pZ3xC-aDk2W4cgHFqAkbirYI7TLtaqLga46siIOiriDq1SWy16OY5dpX-DcIr5KGKvgGQ5uh4bOuhLmwYsem88RMpOT1fIOIQh89hFsm0FzQ=s680-w680-h510-rw"
+    images: [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-zHrxah037mdufUI3N7XPvXlOK_pZ3xC-aDk2W4cgHFqAkbirYI7TLtaqLga46siIOiriDq1SWy16OY5dpX-DcIr5KGKvgGQ5uh4bOuhLmwYsem88RMpOT1fIOIQh89hFsm0FzQ=s680-w680-h510-rw",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1000&q=80"
+    ]
   },
   {
     key: "v9",
@@ -517,7 +599,11 @@ const defaultVineyards = [
     web: "https://www.vinedolosarcangeles.com/",
     ig: "https://www.instagram.com/vinedoslosarcangeles/",
     igHandle: "@vinedoslosarcangeles",
-    image: "https://vinedoslosar-cangeles.com/wp-content/uploads/2023/04/los-arcangeles-vinedo.jpg"
+    images: [
+      "https://vinedoslosar-cangeles.com/wp-content/uploads/2023/04/los-arcangeles-vinedo.jpg",
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1000&q=80"
+    ]
   }
 ];
 
@@ -531,19 +617,28 @@ async function fetchDataFromCloud() {
     const data = await response.json();
     
     if (Array.isArray(data) && data.length > 0) {
-      vineyardsCache = data.map(item => ({
-        key: item.key || 'v_' + Math.random().toString(36).substring(2, 7),
-        name: item.name || item.nombre || 'Sin Nombre',
-        badge: item.badge || item.insignia || 'Vinícola',
-        location: item.location || item.direccion || '',
-        desc: item.desc || item.descripcion || '',
-        phone: item.phone || item.telefono || '',
-        phoneNum: item.phoneNum || ('+52' + String(item.phone || '').replace(/[^0-9]/g, '')),
-        web: item.web || '#',
-        ig: item.ig || '#',
-        igHandle: item.igHandle || '@vinedo',
-        image: item.image || item.imagen || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'
-      }));
+      vineyardsCache = data.map(item => {
+        let imgs = item.images || item.fotos || [item.image, item.imagen];
+        if (typeof imgs === 'string') {
+          try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
+        }
+        if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'];
+        imgs = imgs.filter(i => i && String(i).trim() !== '');
+
+        return {
+          key: item.key || 'v_' + Math.random().toString(36).substring(2, 7),
+          name: item.name || item.nombre || 'Sin Nombre',
+          badge: item.badge || item.insignia || 'Vinícola',
+          location: item.location || item.direccion || '',
+          desc: item.desc || item.descripcion || '',
+          phone: item.phone || item.telefono || '',
+          phoneNum: item.phoneNum || ('+52' + String(item.phone || '').replace(/[^0-9]/g, '')),
+          web: item.web || '#',
+          ig: item.ig || '#',
+          igHandle: item.igHandle || '@vinedo',
+          images: imgs
+        };
+      });
     } else {
       vineyardsCache = [...defaultVineyards];
     }
@@ -566,17 +661,63 @@ async function pushDataToCloud(newArray) {
   const statusEl = document.getElementById('syncStatus');
   try {
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
+    
+    const payload = vineyardsCache.map(item => ({
+      key: item.key,
+      name: item.name,
+      badge: item.badge,
+      location: item.location,
+      desc: item.desc,
+      phone: item.phone,
+      phoneNum: item.phoneNum,
+      web: item.web,
+      ig: item.ig,
+      igHandle: item.igHandle,
+      image: Array.isArray(item.images) ? item.images[0] : item.images,
+      images: JSON.stringify(item.images)
+    }));
+
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(vineyardsCache)
+      body: JSON.stringify(payload)
     });
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
   } catch (err) {
     console.error("Error al enviar a Google Sheets:", err);
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
   }
+}
+
+const slideIndices = {};
+function moveSlide(key, direction) {
+  if (!slideIndices[key]) slideIndices[key] = 0;
+  const v = vineyardsCache.find(el => el.key === key);
+  if (!v || !v.images) return;
+  let imgList = v.images;
+  if (typeof imgList === 'string') {
+    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+  }
+
+  slideIndices[key] += direction;
+  if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+  if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
+
+  const slider = document.getElementById(`slides-${key}`);
+  if (slider) {
+    slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+  }
+}
+
+function convertImageFile(event, targetInputId) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(uploadEvent) {
+    document.getElementById(targetInputId).value = uploadEvent.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function renderVineyards() {
@@ -590,11 +731,31 @@ function renderVineyards() {
     const igHandleMatch = v.ig ? v.ig.split('/').filter(Boolean).pop() : 'viniedo';
     const igDisplay = v.igHandle || ('@' + igHandleMatch);
 
+    let imgList = v.images;
+    if (typeof imgList === 'string') {
+      try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+    }
+    if (!Array.isArray(imgList) || imgList.length === 0) {
+      imgList = ['https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'];
+    }
+
+    let slidesHtml = '';
+    imgList.forEach((img, idx) => {
+      const cleanImg = String(img).trim();
+      slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${v.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'"></div>`;
+    });
+
     container.innerHTML += `
       <article class="card">
         <div class="card-media">
           <span class="badge">${v.badge}</span>
-          <img src="${v.image}" alt="${v.name}" onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80'">
+          <div class="carousel-slides" id="slides-${v.key}">
+            ${slidesHtml}
+          </div>
+          ${imgList.length > 1 ? `
+            <button class="carousel-btn prev" onclick="moveSlide('${v.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-btn next" onclick="moveSlide('${v.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+          ` : ''}
         </div>
         <div class="card-body">
           <h2>${v.name}</h2>
@@ -671,7 +832,9 @@ function openAddModal() {
   document.getElementById('editPhone').value = '';
   document.getElementById('editWeb').value = '';
   document.getElementById('editIg').value = '';
-  document.getElementById('editImage').value = '';
+  document.getElementById('editImg1').value = '';
+  document.getElementById('editImg2').value = '';
+  document.getElementById('editImg3').value = '';
   document.getElementById('editModal').classList.add('active');
 }
 
@@ -687,7 +850,15 @@ function openEditModal(key) {
   document.getElementById('editPhone').value = v.phone;
   document.getElementById('editWeb').value = v.web;
   document.getElementById('editIg').value = v.ig;
-  document.getElementById('editImage').value = v.image;
+  
+  let imgList = v.images;
+  if (typeof imgList === 'string') {
+    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+  }
+  document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+  document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+  document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
+  
   document.getElementById('editModal').classList.add('active');
 }
 
@@ -708,7 +879,11 @@ function saveVineyardForm(e) {
     web: document.getElementById('editWeb').value,
     ig: document.getElementById('editIg').value,
     igHandle: '@' + (document.getElementById('editIg').value.split('/').filter(Boolean).pop() || 'vinedo'),
-    image: document.getElementById('editImage').value
+    images: [
+      document.getElementById('editImg1').value,
+      document.getElementById('editImg2').value,
+      document.getElementById('editImg3').value
+    ].filter(img => img && img.trim() !== '')
   };
 
   let updatedList = [...vineyardsCache];
