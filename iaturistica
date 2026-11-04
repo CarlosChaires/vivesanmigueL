@@ -3,120 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Itinerario Rápido · Vive San Miguel</title>
+<title>Diseñador de Itinerarios · Vive San Miguel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
     --cantera: #b86b5c;
-    --noche: #2c2422;
-    --fondo: #fdf8f6;
-    --blanco: #ffffff;
-    --borde: rgba(184, 107, 92, 0.2);
+    --cantera-dark: #8f4f42;
+    --stone: #2c2422;
+    --muted: #6b5e5a;
+    --paper: #fdf8f6;
+    --surface: #ffffff;
+    --border: rgba(184, 107, 92, 0.18);
+    --shadow: 0 20px 40px -12px rgba(44, 36, 34, 0.08);
   }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Outfit', system-ui, sans-serif;
-    background: var(--fondo);
-    color: var(--noche);
-    margin: 0; padding: 20px;
+    font-family: 'Outfit', sans-serif;
+    background: var(--paper);
+    color: var(--stone);
+    line-height: 1.6;
+    padding: 2rem 1rem;
   }
+  .wrap { max-width: 800px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 2.5rem; }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+  }
+  header p { color: var(--muted); font-size: 0.95rem; }
   .card {
-    background: var(--blanco);
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 16px;
-    border: 1px solid var(--borde);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
   }
-  h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cantera); margin-top: 0; }
-  label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin: 15px 0 5px; }
-  select, button {
+  .input-group { margin-bottom: 1.5rem; }
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  select {
     width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--borde);
-    font-size: 1rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    background: var(--paper);
+    color: var(--stone);
     outline: none;
   }
-  select { background: #fff; margin-bottom: 20px; }
-  button {
+  select:focus { border-color: var(--cantera); background: #fff; }
+  .btn-main {
     background: var(--cantera);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+    color: #fff;
     border: none;
-    transition: background 0.3s;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
-  button:hover { background: #8f4f42; }
-  .resultado {
-    margin-top: 25px;
-    background: #faf4f2;
-    padding: 20px;
-    border-radius: 10px;
+  .btn-main:hover { background: var(--cantera-dark); }
+  .result-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
     display: none;
   }
-  .resultado.activo { display: block; }
-  .item { margin-bottom: 12px; font-size: 0.95rem; }
-  .item strong { color: var(--cantera); }
+  .result-box.active { display: block; }
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--cantera-dark);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.8rem;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px dashed var(--border);
+  }
+  .timeline-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .time {
+    background: var(--paper);
+    color: var(--cantera);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    height: fit-content;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+  }
+  .desc h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--stone); }
+  .desc p { font-size: 0.9rem; color: var(--muted); }
+  .nav-back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--cantera);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-back:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <a href="sitiosdeinteres.html" class="nav-back"><i class="fas fa-arrow-left"></i> Volver a Sitios</a>
+    <header>
+      <h1>Diseñador de Itinerarios</h1>
+      <p>Crea tu recorrido personalizado por San Miguel de Allende al instante.</p>
+    </header>
 
-<div class="card">
-  <h2>Arma tu Viaje al Instante</h2>
-  <p>Selecciona tu plan ideal y el sistema te genera un recorrido automático guardado en tu sesión.</p>
+    <div class="card">
+      <div class="input-group">
+        <label>Selecciona tu Experiencia</label>
+        <select id="estiloViaje">
+          <option value="enoturismo">🍷 Ruta Enológica y Viñedos</option>
+          <option value="romance">✨ Escapada Romántica & Lujo</option>
+          <option value="cultura">🏛️ Historia, Arte y Arquitectura</option>
+        </select>
+      </div>
+      <button class="btn-main" onclick="generarItinerario()">Generar Itinerario</button>
+    </div>
 
-  <label>Tipo de Experiencia</label>
-  <select id="tipoViaje">
-    <option value="enoturismo">🍷 Ruta de Viñedos y Cavas</option>
-    <option value="romance">✨ Escapada Romántica</option>
-    <option value="cultura">🏛️ Historia y Arquitectura Colonial</option>
-  </select>
-
-  <button onclick="crearItinerario()">Generar Itinerario</button>
-
-  <div class="resultado" id="cajaResultado">
-    <h3 id="tituloPlan" style="margin-top:0; color:var(--noche);"></h3>
-    <div id="detallePlan"></div>
+    <div class="result-box" id="cajaResultado">
+      <h3 class="result-title" id="tituloResultado">Tu Itinerario</h3>
+      <div id="contenidoItinerario"></div>
+    </div>
   </div>
-</div>
 
 <script>
-  const planes = {
+  const itinerariosDB = {
     enoturismo: [
-      { hora: "10:00 AM", texto: "Visita guiada y cata de bienvenida en Viñedos San Lucas." },
-      { hora: "02:00 PM", texto: "Comida maridaje con menú mediterráneo en el viñedo." },
-      { hora: "06:00 PM", texto: "Atardecer y recorrido por la cava subterránea de Vinícola Toyan." }
+      { hora: "10:00 AM", titulo: "Bienvenida en Viñedos San Lucas", desc: "Recorrido por los campos de lavanda, olivos y cata de bienvenida." },
+      { hora: "02:00 PM", titulo: "Comida en Restaurante Vinícola", desc: "Menú mediterráneo de tiempos maridado con etiquetas selectas." },
+      { hora: "05:00 PM", titulo: "Atardecer en Vinícola Toyan", desc: "Visita a la cava subterránea profunda y degustación orgánica." }
     ],
     romance: [
-      { hora: "11:00 AM", texto: "Paseo tranquilo por los callejones históricos del centro." },
-      { hora: "02:30 PM", texto: "Comida íntima en terraza con vista panorámica a la Parroquia." },
-      { hora: "07:00 PM", texto: "Cena a la luz de las velas en un restaurante boutique." }
+      { hora: "11:00 AM", titulo: "Paseo Callejero al Atardecer", desc: "Caminata romántica por los mesones históricos y callejones empedrados." },
+      { hora: "02:30 PM", titulo: "Comida Íntima con Vista", desc: "Almuerzo en terraza panorámica frente a la Parroquia." },
+      { hora: "07:30 PM", titulo: "Cena de Gala Gourmet", desc: "Cena a la luz de las velas con cocina de autor en el centro." }
     ],
     cultura: [
-      { hora: "09:30 AM", texto: "Fotografía y recorrido arquitectónico por la Parroquia de San Miguel Arcángel." },
-      { hora: "12:00 PM", texto: "Visita cultural al Museo Casa de Allende." },
-      { hora: "04:00 PM", texto: "Recorrido por talleres tradicionales de latón y cantera." }
+      { hora: "09:00 AM", titulo: "Parroquia de San Miguel Arcángel", desc: "Contemplación de la icónica fachada neogótica de cantera rosa." },
+      { hora: "11:30 AM", titulo: "Museo Casa de Allende", desc: "Recorrido por la cuna histórica del general Ignacio Allende." },
+      { hora: "04:00 PM", titulo: "Talleres Artesanales", desc: "Visita a talleres locales de latón, vidrio soplado y cantera tradicional." }
     ]
   };
 
-  function crearItinerario() {
-    const tipo = document.getElementById('tipoViaje').value;
-    const seleccion = planes[tipo];
+  function generarItinerario() {
+    const tipo = document.getElementById('estiloViaje').value;
+    const datos = itinerariosDB[tipo];
     
-    // Guardamos en localStorage para que el navegador lo recuerde
-    localStorage.setItem('ultimo_itinerario', JSON.stringify(seleccion));
-
     let html = "";
-    seleccion.forEach(act => {
-      html += `<div class="item"><strong>${act.hora}:</strong> ${act.texto}</div>`;
+    datos.forEach(item => {
+      html += `
+        <div class="timeline-item">
+          <div class="time">${item.hora}</div>
+          <div class="desc">
+            <h4>${item.titulo}</h4>
+            <p>${item.desc}</p>
+          </div>
+        </div>
+      `;
     });
 
-    document.getElementById('tituloPlan').innerText = "Tu Itinerario Personalizado:";
-    document.getElementById('detallePlan').innerHTML = html;
-    document.getElementById('cajaResultado').classList.add('activo');
+    document.getElementById('contenidoItinerario').innerHTML = html;
+    document.getElementById('cajaResultado').classList.add('active');
+    document.getElementById('cajaResultado').scrollIntoView({ behavior: 'smooth' });
+    
+    localStorage.setItem('sma_ultimo_itinerario', JSON.stringify(datos));
   }
 </script>
-
 </body>
 </html>
