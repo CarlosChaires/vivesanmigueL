@@ -3,367 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Itinerario Inteligente en Línea · Vive San Miguel</title>
-
-<!-- PWA Manifest & Theme -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#b86b5c">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Itinerario Rápido · Vive San Miguel</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root {
-  --cantera: #b86b5c;
-  --cantera-dark: #8f4f42;
-  --rose: #d4a09a;
-  --rose-soft: #f5e8e5;
-  --stone: #2c2422;
-  --muted: #6b5e5a;
-  --paper: #fdf8f6;
-  --surface: #ffffff;
-  --border: rgba(184, 107, 92, 0.14);
-  --shadow: 0 22px 48px -14px rgba(44, 36, 34, 0.08);
-  --google-sheets-green: #0F9D58;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Outfit', system-ui, sans-serif;
-  background: var(--paper);
-  color: var(--stone);
-  line-height: 1.65;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-.ambient {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 70% 45% at 12% 8%, rgba(212, 160, 154, 0.1), transparent),
-    radial-gradient(ellipse 55% 40% at 88% 92%, rgba(184, 107, 92, 0.06), transparent);
-}
-.wrap {
-  position: relative; z-index: 2;
-  max-width: 960px; margin: 0 auto; padding: 0 24px 100px;
-}
-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 26px 0 40px; gap: 14px; flex-wrap: wrap;
-}
-.brand {
-  display: flex; align-items: center; gap: 12px; text-decoration: none;
-  background: var(--surface); padding: 8px 18px 8px 10px; border-radius: 100px;
-  border: 1px solid var(--border); box-shadow: 0 4px 14px rgba(0,0,0,0.02); transition: all 0.3s ease;
-}
-.brand:hover { border-color: var(--cantera); transform: translateY(-2px); }
-.brand img { height: 34px; width: auto; object-fit: contain; }
-.brand span { font-size: 0.85rem; font-weight: 700; color: var(--stone); }
-.nav-back {
-  display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); text-decoration: none;
-  padding: 10px 20px; border: 1px solid var(--stone); border-radius: 100px; transition: all 0.3s ease; background: var(--surface);
-}
-.nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
-
-.sync-bar {
-  display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 20px;
-  font-size: 0.75rem; font-weight: 600; color: var(--google-sheets-green);
-}
-
-.intro { text-align: center; margin-bottom: 40px; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--cantera); margin-bottom: 14px;
-}
-.eyebrow::before, .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--cantera); }
-.intro h1 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2.3rem, 5vw, 3.2rem); font-weight: 600;
-  color: var(--stone); line-height: 1.12; margin-bottom: 14px;
-}
-.intro p {
-  font-size: 1.02rem; color: var(--muted); font-weight: 300;
-  max-width: 600px; margin: 0 auto; line-height: 1.7;
-}
-
-.planner-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: var(--shadow);
-  margin-bottom: 40px;
-}
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
-
-.input-group label {
-  display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 0.6rem; color: var(--muted);
-}
-.input-group select {
-  width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px;
-  font-family: 'Outfit', sans-serif; font-size: 0.95rem; background: var(--paper); color: var(--stone); outline: none;
-  transition: border-color 0.3s;
-}
-.input-group select:focus { border-color: var(--cantera); background: #fff; }
-
-.btn-generate {
-  background: var(--cantera); color: #fff; border: none; width: 100%; padding: 14px;
-  border-radius: 30px; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-generate:hover { background: var(--cantera-dark); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(184, 107, 92, 0.3); }
-
-/* Resultado Itinerario */
-.itinerary-result {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 36px;
-  box-shadow: var(--shadow);
-  display: none;
-}
-.itinerary-result.active { display: block; animation: fadeIn 0.5s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.itinerary-header {
-  display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);
-  padding-bottom: 20px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
-}
-.itinerary-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--stone); }
-.itinerary-actions { display: flex; gap: 10px; }
-.btn-action-it {
-  background: var(--rose-soft); color: var(--cantera-dark); border: 1px solid var(--border);
-  padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: all 0.3s;
-}
-.btn-action-it:hover { background: var(--cantera); color: #fff; }
-
-.day-block { margin-bottom: 28px; }
-.day-block h3 {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--cantera-dark);
-  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
-}
-.activity-item {
-  background: var(--paper); border: 1px solid var(--border); border-radius: 14px; padding: 16px;
-  margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start;
-}
-.activity-time { font-weight: 700; font-size: 0.85rem; color: var(--stone); background: var(--rose-soft); padding: 4px 10px; border-radius: 8px; white-space: nowrap; }
-.activity-desc h4 { font-size: 1rem; font-weight: 600; color: var(--stone); margin-bottom: 4px; }
-.activity-desc p { font-size: 0.88rem; color: var(--muted); }
-.badge-source {
-  display: inline-block; font-size: 0.7rem; font-weight: 600; background: rgba(184,107,92,0.1);
-  color: var(--cantera); padding: 2px 8px; border-radius: 6px; margin-top: 6px;
-}
-
-.credits {
-  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
-  text-align: center; font-size: 0.85rem; color: var(--muted);
-}
+  :root {
+    --cantera: #b86b5c;
+    --noche: #2c2422;
+    --fondo: #fdf8f6;
+    --blanco: #ffffff;
+    --borde: rgba(184, 107, 92, 0.2);
+  }
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--fondo);
+    color: var(--noche);
+    margin: 0; padding: 20px;
+  }
+  .card {
+    background: var(--blanco);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--borde);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  }
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cantera); margin-top: 0; }
+  label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin: 15px 0 5px; }
+  select, button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--borde);
+    font-size: 1rem;
+    outline: none;
+  }
+  select { background: #fff; margin-bottom: 20px; }
+  button {
+    background: var(--cantera);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+  }
+  button:hover { background: #8f4f42; }
+  .resultado {
+    margin-top: 25px;
+    background: #faf4f2;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+  }
+  .resultado.activo { display: block; }
+  .item { margin-bottom: 12px; font-size: 0.95rem; }
+  .item strong { color: var(--cantera); }
 </style>
 </head>
 <body>
-<div class="ambient"></div>
-<div class="wrap">
-  <nav>
-    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
-      <span>Vive San Miguel</span>
-    </a>
-    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Inicio
-    </a>
-  </nav>
 
-  <div class="sync-bar" id="syncStatus">
-    <i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...
+<div class="card">
+  <h2>Arma tu Viaje al Instante</h2>
+  <p>Selecciona tu plan ideal y el sistema te genera un recorrido automático guardado en tu sesión.</p>
+
+  <label>Tipo de Experiencia</label>
+  <select id="tipoViaje">
+    <option value="enoturismo">🍷 Ruta de Viñedos y Cavas</option>
+    <option value="romance">✨ Escapada Romántica</option>
+    <option value="cultura">🏛️ Historia y Arquitectura Colonial</option>
+  </select>
+
+  <button onclick="crearItinerario()">Generar Itinerario</button>
+
+  <div class="resultado" id="cajaResultado">
+    <h3 id="tituloPlan" style="margin-top:0; color:var(--noche);"></h3>
+    <div id="detallePlan"></div>
   </div>
-
-  <header class="intro">
-    <div class="eyebrow">Inteligencia Turística en Línea</div>
-    <h1>Diseñador de Itinerarios Basado en la Web</h1>
-    <p>Este sistema extrae dinámicamente la información en tiempo real desde tus bases de datos en la nube (Viñedos, Hospedajes y Eventos oficiales).</p>
-  </header>
-
-  <div class="planner-card">
-    <div class="form-grid">
-      <div class="input-group">
-        <label>Enfoque de la Experiencia</label>
-        <select id="travelStyle">
-          <option value="enoturismo">🍷 Ruta Enológica y Viñedos en Línea</option>
-          <option value="romance">✨ Estancias Románticas & Hospedaje</option>
-          <option value="cultura">🏛️ Historia, Arte y Eventos Registrados</option>
-        </select>
-      </div>
-      <div class="input-group">
-        <label>Duración de la Estancia</label>
-        <select id="travelDays">
-          <option value="1">1 Día (Excursión Express)</option>
-          <option value="2" selected>2 Días (Fin de Semana)</option>
-          <option value="3">3 Días (Inmersión Completa)</option>
-        </select>
-      </div>
-    </div>
-    <button class="btn-generate" onclick="generateLiveItinerary()">
-      <i class="fas fa-wand-magic-sparkles"></i> Generar Itinerario Dinámico en Línea
-    </button>
-  </div>
-
-  <div class="itinerary-result" id="itineraryResult">
-    <div class="itinerary-header">
-      <h2 id="resultTitle">Tu Itinerario Personalizado</h2>
-      <div class="itinerary-actions">
-        <button class="btn-action-it" onclick="copyItinerary()"><i class="fas fa-copy"></i> Copiar</button>
-        <button class="btn-action-it" onclick="window.print()"><i class="fas fa-print"></i> Imprimir / PDF</button>
-      </div>
-    </div>
-    <div id="resultBody"></div>
-  </div>
-
-  <footer class="credits">
-    <p>Vive San Miguel · Ecosistema Digital en la Nube</p>
-  </footer>
 </div>
 
 <script>
-// URL oficial de tu Apps Script en Google Sheets
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuGOgTLPzNCNzBUIVvQ3Fv-cKmEFV3lLS-0PBLpPkZkWPiurN4gXnM4YiTnr6mkwL4/exec";
-
-let cloudDataCache = [];
-
-// Cargar datos en vivo desde Google Sheets al abrir la página
-async function initLiveSync() {
-  const statusEl = document.getElementById('syncStatus');
-  try {
-    const response = await fetch(GOOGLE_SCRIPT_URL);
-    const data = await response.json();
-    if (Array.isArray(data) && data.length > 0) {
-      cloudDataCache = data;
-    }
-    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado con Google Sheets en línea`;
-  } catch (err) {
-    console.warn("Error al conectar con la nube, usando respaldo local.");
-    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (Modo Respaldo)`;
-  }
-}
-
-function generateLiveItinerary() {
-  const style = document.getElementById('travelStyle').value;
-  const daysCount = parseInt(document.getElementById('travelDays').value);
-
-  // Extraer nombres reales directo de la base de datos en línea si existen
-  const item1 = cloudDataCache[0] ? (cloudDataCache[0].name || cloudDataCache[0].nombre || "Viñedos San Lucas") : "Viñedos San Lucas";
-  const item2 = cloudDataCache[1] ? (cloudDataCache[1].name || cloudDataCache[1].nombre || "Viñedo San Miguel") : "Viñedo San Miguel";
-  const item3 = cloudDataCache[2] ? (cloudDataCache[2].name || cloudDataCache[2].nombre || "Vinícola Toyan") : "Vinícola Toyan";
-
-  const liveDB = {
-    enoturismo: {
-      title: "Ruta Enológica Oficial (En Línea desde Google Sheets)",
-      days: {
-        1: [
-          { time: "10:00 AM", title: `Llegada y Registro`, desc: "Instalación en estancia verificada desde la base de datos central de la web.", source: "Google Sheets / Base Central" },
-          { time: "11:30 AM", title: `Recorrido y Cata en ${item1}`, desc: "Visita guiada por los campos y cata de etiquetas sincronizadas.", source: "Google Sheets / Cloud Data" },
-          { time: "02:30 PM", title: "Comida Maridaje en Viñedo", desc: "Experiencia culinaria de tiempos con productos de la región.", source: "Gastronomía Enológica" },
-          { time: "06:00 PM", title: `Atardecer en ${item2}`, desc: "Visita a instalaciones y copa de despedida vespertina.", source: "Google Sheets / Cloud Data" }
-        ],
-        2: [
-          { time: "10:00 AM", title: `Experiencia en ${item3}`, desc: "Recorrido por las instalaciones del viñedo y zonas de producción.", source: "Google Sheets / Cloud Data" },
-          { time: "02:00 PM", title: "Almuerzo en Restaurante Campestre", desc: "Cocina de autor y mixología con botánicos locales.", source: "Directorio Gastronómico" },
-          { time: "05:00 PM", title: "Cierre de Ruta en Centro Histórico", desc: "Compra de vino artesanal y recuerdos de la denominación de origen.", source: "Ruta Turística" }
-        ],
-        3: [
-          { time: "10:30 AM", title: "Visita a Vinícola Boutique Adicional", desc: "Recorrido exclusivo y cata íntima con quesos artesanales de la zona.", source: "Catálogo en Línea" },
-          { time: "02:00 PM", title: "Comida de Despedida y Salida", desc: "Última vista panorámica del Valle de la Independencia.", source: "Directorio General" }
-        ]
-      }
-    },
-    romance: {
-      title: "Escapada Romántica (Sincronizada con la Web)",
-      days: {
-        1: [
-          { time: "12:00 PM", title: `Check-in Preferencial`, desc: "Llegada al hospedaje registrado en el sistema en la nube.", source: "Google Sheets / Hospedaje" },
-          { time: "04:30 PM", title: "Paseo Callejero Histórico", desc: "Caminata romántica por callejones coloniales alumbrados por faroles de cantera.", source: "Sitios de Interés" },
-          { time: "08:00 PM", title: "Cena Íntima de Autor", desc: "Cena a la luz de las velas en un restaurante exclusivo del centro.", source: "Gastronomía" }
-        ],
-        2: [
-          { time: "09:30 AM", title: "Desayuno en Terraza Panorámica", desc: "Café de especialidad y panadería artesanal con vista a las cúpulas.", source: "Directorio de Hospedaje" },
-          { time: "01:00 PM", title: "Tarde de Spa y Bienestar", desc: "Circuito hidrotermal en un refugio botánico de relajación.", source: "Experiencias SMA" },
-          { time: "07:30 PM", title: "Brindis Nocturno en Rooftop", desc: "Cóctel exclusivo frente a la Parroquia de San Miguel Arcángel.", source: "Vida Nocturna" }
-        ],
-        3: [
-          { time: "10:00 AM", title: `Estancia final y salida`, desc: "Desayuno relajado y check-out con el mejor recuerdo de la ciudad.", source: "Google Sheets / Central" }
-        ]
-      }
-    },
-    cultura: {
-      title: "Inmersión Histórica, Arte y Eventos en Línea",
-      days: {
-        1: [
-          { time: "09:00 AM", title: "Parroquia de San Miguel Arcángel", desc: "Recorrido arquitectónico e histórico por el símbolo neogótico de la ciudad.", source: "Sitios de Interés Oficial" },
-          { time: "11:30 AM", title: "Museo Casa de Allende", desc: "Visita al recinto histórico que vio nacer al héroe de la Independencia.", source: "Directorio Cultural" },
-          { time: "02:30 PM", title: "Comida Tradicional Guanajuatense", desc: "Gastronomía típica en una casona colonial del siglo XVIII.", source: "Gastronomía Tradicional" }
-        ],
-        2: [
-          { time: "10:00 AM", title: "El Mirador de San Miguel", desc: "Vista panorámica imperdible de toda la traza urbana y la presa.", source: "Sitios de Interés" },
-          { time: "12:00 PM", title: "Centro Cultural El Nigromante", desc: "Recorrido por galerías de arte, claustros y el mural de Siqueiros.", source: "Agenda Cultural" },
-          { time: "04:00 PM", title: "Talleres Artesanales Locales", desc: "Visita a talleres de latón, vidrio soplado y cantera.", source: "Artesanías" }
-        ],
-        3: [
-          { time: "10:00 AM", title: "Santuario de Atotonilco", desc: "Visita imperdible al templo declarado Patrimonio Mundial por la UNESCO.", source: "Patrimonio UNESCO" }
-        ]
-      }
-    }
+  const planes = {
+    enoturismo: [
+      { hora: "10:00 AM", texto: "Visita guiada y cata de bienvenida en Viñedos San Lucas." },
+      { hora: "02:00 PM", texto: "Comida maridaje con menú mediterráneo en el viñedo." },
+      { hora: "06:00 PM", texto: "Atardecer y recorrido por la cava subterránea de Vinícola Toyan." }
+    ],
+    romance: [
+      { hora: "11:00 AM", texto: "Paseo tranquilo por los callejones históricos del centro." },
+      { hora: "02:30 PM", texto: "Comida íntima en terraza con vista panorámica a la Parroquia." },
+      { hora: "07:00 PM", texto: "Cena a la luz de las velas en un restaurante boutique." }
+    ],
+    cultura: [
+      { hora: "09:30 AM", texto: "Fotografía y recorrido arquitectónico por la Parroquia de San Miguel Arcángel." },
+      { hora: "12:00 PM", texto: "Visita cultural al Museo Casa de Allende." },
+      { hora: "04:00 PM", texto: "Recorrido por talleres tradicionales de latón y cantera." }
+    ]
   };
 
-  const data = liveDB[style] || liveDB.enoturismo;
-  document.getElementById('resultTitle').innerText = data.title;
+  function crearItinerario() {
+    const tipo = document.getElementById('tipoViaje').value;
+    const seleccion = planes[tipo];
+    
+    // Guardamos en localStorage para que el navegador lo recuerde
+    localStorage.setItem('ultimo_itinerario', JSON.stringify(seleccion));
 
-  let htmlContent = '';
-  for (let d = 1; d <= daysCount; d++) {
-    const dayActivities = data.days[d] || data.days[1];
-    htmlContent += `
-      <div class="day-block">
-        <h3><i class="fas fa-calendar-day"></i> Día ${d}</h3>
-    `;
-    dayActivities.forEach(act => {
-      htmlContent += `
-        <div class="activity-item">
-          <span class="activity-time">${act.time}</span>
-          <div class="activity-desc">
-            <h4>${act.title}</h4>
-            <p>${act.desc}</p>
-            <span class="badge-source"><i class="fas fa-cloud"></i> Fuente: ${act.source}</span>
-          </div>
-        </div>
-      `;
+    let html = "";
+    seleccion.forEach(act => {
+      html += `<div class="item"><strong>${act.hora}:</strong> ${act.texto}</div>`;
     });
-    htmlContent += `</div>`;
+
+    document.getElementById('tituloPlan').innerText = "Tu Itinerario Personalizado:";
+    document.getElementById('detallePlan').innerHTML = html;
+    document.getElementById('cajaResultado').classList.add('activo');
   }
-
-  document.getElementById('resultBody').innerHTML = htmlContent;
-  const resultBox = document.getElementById('itineraryResult');
-  resultBox.classList.add('active');
-  resultBox.scrollIntoView({ behavior: 'smooth' });
-}
-
-function copyItinerary() {
-  const textToCopy = document.getElementById('itineraryResult').innerText;
-  navigator.clipboard.writeText(textToCopy).then(() => {
-    alert('¡Itinerario en línea copiado al portapapeles!');
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  initLiveSync();
-});
 </script>
+
 </body>
 </html>
