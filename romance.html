@@ -146,12 +146,12 @@
             border-radius: 14px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-soft);
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .admin-bar.active {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
         }
 
         .btn-admin {
@@ -696,7 +696,6 @@
             }
         }
     </style>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -719,7 +718,10 @@
         <div class="admin-bar" id="adminControls">
             <button class="btn-admin" onclick="openAddModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Registro</button>
             <button class="btn-admin" onclick="fetchDataFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado en Google</span>
+            <button class="btn-admin" onclick="downloadRomanceTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRomanceExcelUpload(event)">
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -849,29 +851,46 @@
                         <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
                     </div>
                 </div>
-                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
+                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
+    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS -->
+    <iframe name="hidden_iframe_romance" id="hidden_iframe_romance" style="display:none;"></iframe>
+    <form id="sheetsSyncFormRomance" action="https://script.google.com/macros/s/AKfycbxLZkNdRD-nO1MNtY1MxW7ATvZoojsS_OAjkA0LJTQvHVSYaSGO74fyss8fYrUD4j-_NQ/exec" method="POST" target="hidden_iframe_romance" style="display:none;">
+        <input type="hidden" name="payload" id="formPayloadInputRomance">
+    </form>
+
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLZkNdRD-nO1MNtY1MxW7ATvZoojsS_OAjkA0LJTQvHVSYaSGO74fyss8fYrUD4j-_NQ/exec";
 
         let cloudDataCache = [];
         let currentEditingKey = null;
         let currentFilter = 'todos';
 
+        // Carga inmediata desde localStorage para evitar esperas y sincronización silenciosa en fondo
+        function initApp() {
+            const localData = localStorage.getItem('sma_romance_data');
+            if (localData) {
+                try {
+                    cloudDataCache = JSON.parse(localData);
+                    renderRomance(currentFilter, '');
+                } catch(e) {}
+            }
+            fetchDataFromCloud();
+        }
+
         async function fetchDataFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                if (statusEl && cloudDataCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData)) {
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
                     cloudDataCache = cloudData.map(item => {
                         let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
                         if (typeof imgs === 'string') {
@@ -896,58 +915,52 @@
                         };
                     });
 
+                    localStorage.setItem('sma_romance_data', JSON.stringify(cloudDataCache));
                     renderRomance(currentFilter, document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
             } catch (error) {
-                console.warn("Error de conexión con Google Sheets:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+                console.warn("Usando respaldo local por error de red:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
             }
         }
 
-        async function pushDataToGoogleSheets(dataArray) {
+        function pushDataToGoogleSheets(dataArray) {
+            cloudDataCache = [...dataArray];
+            localStorage.setItem('sma_romance_data', JSON.stringify(cloudDataCache));
+            renderRomance(currentFilter, document.getElementById('searchInput').value);
+
             const statusEl = document.getElementById('syncStatus');
-            try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
-                const payload = dataArray.map(item => ({
-                    key: item.key,
-                    name: item.name,
-                    type: item.type,
-                    desc: item.desc,
-                    price: item.price,
-                    phone: item.phone,
-                    address: item.address,
-                    maps: item.maps,
-                    web: item.web,
-                    instagram: item.instagram,
-                    facebook: item.facebook,
-                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
-                }));
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
 
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+            const payload = cloudDataCache.map(item => ({
+                key: item.key,
+                name: item.name,
+                type: item.type,
+                desc: item.desc,
+                price: item.price,
+                phone: item.phone,
+                address: item.address,
+                maps: item.maps,
+                web: item.web,
+                instagram: item.instagram,
+                facebook: item.facebook,
+                images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+            }));
 
-                cloudDataCache = [...dataArray];
-                renderRomance(currentFilter, document.getElementById('searchInput').value);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
-            } catch (err) {
-                console.error("Error al actualizar Google Sheets:", err);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
-            }
+            document.getElementById('formPayloadInputRomance').value = JSON.stringify(payload);
+            document.getElementById('sheetsSyncFormRomance').submit();
+
+            setTimeout(() => {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+            }, 1500);
         }
 
         function checkSession() {
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const controls = document.getElementById('adminControls');
-            if (isLogged) {
-                controls.classList.add('active');
-            } else {
-                controls.classList.remove('active');
-            }
+            if (isLogged) controls.classList.add('active');
+            else controls.classList.remove('active');
         }
 
         function filterRomance(category) {
@@ -979,7 +992,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron registros de romance en Google Sheets.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron registros de romance con los filtros aplicados.</p>`;
                 return;
             }
 
@@ -1055,7 +1068,7 @@
                                         ${igButtonHtml}
                                         ${fbButtonHtml}
                                     </div>
-                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20información%20sobre:%20${encodeURIComponent(r.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre:%20${encodeURIComponent(r.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
                                         <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
                                     </a>
                                 </div>
@@ -1104,9 +1117,7 @@
 
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
-                    logoutAdmin();
-                }
+                if (confirm("¿Desea cerrar la sesión de administración?")) logoutAdmin();
                 return;
             }
             document.getElementById('usernameInput').value = '';
@@ -1115,9 +1126,7 @@
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -1186,13 +1195,10 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
 
         function saveDataForm(e) {
             e.preventDefault();
-            
             const itemObj = {
                 key: currentEditingKey ? currentEditingKey : 'rom_' + Math.random().toString(36).substring(2, 9),
                 name: document.getElementById('editName').value,
@@ -1215,29 +1221,90 @@
             let updatedList = [...cloudDataCache];
             if (currentEditingKey) {
                 const index = updatedList.findIndex(el => el.key === currentEditingKey);
-                if (index !== -1) {
-                    updatedList[index] = itemObj;
-                }
+                if (index !== -1) updatedList[index] = itemObj;
             } else {
                 updatedList.unshift(itemObj);
             }
 
             pushDataToGoogleSheets(updatedList);
             closeEditModal();
-            alert('¡Guardado y sincronizado directamente en Google Sheets!');
+            alert('¡Guardado y sincronizado con Google Sheets exitosamente!');
         }
 
         function deleteItem(key) {
-            if (confirm("¿Estás seguro de eliminar este registro de Google Sheets?")) {
+            if (confirm("¿Estás seguro de eliminar este registro?")) {
                 let updatedList = cloudDataCache.filter(item => item.key !== key);
                 pushDataToGoogleSheets(updatedList);
-                alert('Registro eliminado correctamente de la nube.');
             }
+        }
+
+        function downloadRomanceTemplate() {
+            const flatData = cloudDataCache.map(el => ({
+                key: el.key,
+                name: el.name,
+                type: el.type,
+                desc: el.desc,
+                price: el.price,
+                phone: el.phone,
+                address: el.address,
+                maps: el.maps,
+                web: el.web,
+                instagram: el.instagram,
+                facebook: el.facebook,
+                images: Array.isArray(el.images) ? JSON.stringify(el.images) : el.images
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Romance");
+            XLSX.writeFile(workbook, "plantilla_romance_vivesanmiguel.xlsx");
+        }
+
+        function handleRomanceExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        let updatedList = [...cloudDataCache];
+                        json.forEach((row, idx) => {
+                            if (idx < updatedList.length) {
+                                if (row.name) updatedList[idx].name = row.name;
+                                if (row.type) updatedList[idx].type = row.type;
+                                if (row.desc) updatedList[idx].desc = row.desc;
+                                if (row.price) updatedList[idx].price = row.price;
+                                if (row.phone) updatedList[idx].phone = row.phone;
+                                if (row.address) updatedList[idx].address = row.address;
+                                if (row.maps) updatedList[idx].maps = row.maps;
+                                if (row.web) updatedList[idx].web = row.web;
+                                if (row.instagram) updatedList[idx].instagram = row.instagram;
+                                if (row.facebook) updatedList[idx].facebook = row.facebook;
+                                if (row.images) {
+                                    try {
+                                        updatedList[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                    } catch(e) {
+                                        updatedList[idx].images = [row.images];
+                                    }
+                                }
+                            }
+                        });
+                        pushDataToGoogleSheets(updatedList);
+                        alert('¡Importación masiva completada y enviada a Google Sheets!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            fetchDataFromCloud();
+            initApp();
         });
 
         // Partículas y cursor
@@ -1288,9 +1355,9 @@
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 let maxDistance = 150;
                 if (distance < maxDistance) {
-                    let force = (maxDistance - distance) / maxDistance;
-                    this.x -= (dx / distance) * force * this.density * 0.4;
-                    this.y -= (dy / distance) * force * this.density * 0.4;
+                    let file = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * file * this.density * 0.4;
+                    this.y -= (dy / distance) * file * this.density * 0.4;
                 } else {
                     if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
                     if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
