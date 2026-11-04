@@ -371,7 +371,6 @@
       box-shadow: 0 0 0 4px var(--cantera-soft);
     }
     
-    /* Si hay demasiadas categorías (>12), usamos el select en desktop también se puede forzar */
     .toolbar.many-cats .filter-scroll { display: none; }
     .toolbar.many-cats .filter-select-wrap { display: block; }
     
@@ -520,7 +519,6 @@
       letter-spacing: -0.015em;
     }
     
-    /* Fila de datos clave: fecha + hora — lo más importante a la vista */
     .event-key-info {
       display: flex;
       flex-wrap: wrap;
@@ -601,13 +599,6 @@
       transform: translateY(-1px);
       box-shadow: 0 5px 14px -2px var(--cantera-glow);
     }
-    
-    .event-meta {
-      display: none; /* info clave ya está arriba */
-    }
-    
-    .event-meta-time { display: none; }
-    .event-price { display: none; }
     
     /* ── Skeleton Loading ── */
     .skeleton-grid {
@@ -866,7 +857,6 @@
       letter-spacing: 0.12em;
     }
     
-
     /* ── Sparkle / Chispitas effect ── */
     .sparkle-particle {
       position: fixed;
@@ -1206,15 +1196,6 @@
       }
     }
 
-    function getUniqueCategories() {
-      var cats = new Set();
-      globalEvents.forEach(function(ev) {
-        var c = (ev.category || 'General').trim();
-        if (c) cats.add(c);
-      });
-      return Array.from(cats).sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    }
-
     function getMonthNames(rawDate) {
       if (!rawDate) return [];
       var cleanStr = String(rawDate).trim();
@@ -1233,8 +1214,7 @@
         var mes = meses[date.getUTCMonth()];
         var num = String(date.getUTCMonth() + 1);
         var numPad = num.padStart(2, '0');
-        // también abreviaciones comunes
-        var abbr = mes.substring(0, 3); // ene, feb, mar...
+        var abbr = mes.substring(0, 3);
         return [mes, abbr, num, numPad];
       } catch (e) { return []; }
     }
@@ -1446,7 +1426,6 @@
       }
     }
 
-
     // ── Efecto de chispitas inmersivo al tocar un evento ──
     function createSparkles(x, y, count) {
       count = count || 18;
@@ -1512,7 +1491,6 @@
     }
 
     function triggerCardSparkle(e, card) {
-      // No disparar si se hizo clic en un botón admin o enlace
       if (e.target.closest('.admin-card-actions') || e.target.closest('a')) return;
       
       const rect = card.getBoundingClientRect();
@@ -1522,7 +1500,7 @@
       createSparkles(x, y, 20);
       
       card.classList.remove('sparkle-burst');
-      void card.offsetWidth; // reflow
+      void card.offsetWidth;
       card.classList.add('sparkle-burst');
       setTimeout(function() { card.classList.remove('sparkle-burst'); }, 500);
     }
@@ -1532,15 +1510,12 @@
         if (card.dataset.sparkleBound) return;
         card.dataset.sparkleBound = '1';
         
-        // pointerdown cubre mouse + touch sin duplicar
         card.addEventListener('pointerdown', function(e) {
-          // Solo primario (clic izquierdo / primer dedo)
           if (e.button !== 0 && e.button !== undefined) return;
           triggerCardSparkle(e, card);
         });
       });
     }
-
 
     document.getElementById('searchInput').addEventListener('input', function(e) {
       searchQuery = e.target.value.trim();
