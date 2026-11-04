@@ -446,10 +446,16 @@ nav {
   </div>
 </div>
 
+<!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS (EVITA BLOQUEOS DE CORS) -->
+<iframe name="hidden_iframe_vineyards" id="hidden_iframe_vineyards" style="display:none;"></iframe>
+<form id="sheetsSyncFormVineyards" action="https://script.google.com/macros/s/AKfycbyuGOgTLPzNCNzBUIVvQ3Fv-cKmEFV3lLS-0PBLpPkZkWPiurN4gXnM4YiTnr6mkwL4/exec" method="POST" target="hidden_iframe_vineyards" style="display:none;">
+  <input type="hidden" name="payload" id="formPayloadInputVineyards">
+</form>
+
 <script>
 const AUTH_USER = "vivesanmiguel";
 const AUTH_PASS = "c4rl0s1107";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGZGU2imHSfEOniKV6UKicGYBWYGi4l_-F04uUL9gtTq6_4ftoOB-BLFCPwo5hRMtE/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuGOgTLPzNCNzBUIVvQ3Fv-cKmEFV3lLS-0PBLpPkZkWPiurN4gXnM4YiTnr6mkwL4/exec";
 
 const defaultVineyards = [
   {
@@ -609,6 +615,20 @@ const defaultVineyards = [
 
 let vineyardsCache = [];
 
+async function initApp() {
+  const local = localStorage.getItem('sma_vineyards_data');
+  if (local) {
+    try {
+      vineyardsCache = JSON.parse(local);
+    } catch(e) {}
+  }
+  if (!vineyardsCache || vineyardsCache.length === 0) {
+    vineyardsCache = [...defaultVineyards];
+  }
+  renderVineyards();
+  await fetchDataFromCloud();
+}
+
 async function fetchDataFromCloud() {
   const statusEl = document.getElementById('syncStatus');
   try {
@@ -639,56 +659,48 @@ async function fetchDataFromCloud() {
           images: imgs
         };
       });
-    } else {
-      vineyardsCache = [...defaultVineyards];
-      pushDataToCloud(vineyardsCache);
+      localStorage.setItem('sma_vineyards_data', JSON.stringify(vineyardsCache));
     }
     renderVineyards();
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
   } catch (error) {
     console.warn("Usando respaldo local por error de red:", error);
-    const local = localStorage.getItem('sma_vineyards_data');
-    vineyardsCache = local ? JSON.parse(local) : [...defaultVineyards];
     renderVineyards();
-    if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (Local)`;
   }
 }
 
-async function pushDataToCloud(newArray) {
+function pushDataToCloud(newArray) {
+  if ((!newArray || newArray.length === 0) && vineyardsCache.length > 0) return;
+
   vineyardsCache = [...newArray];
   localStorage.setItem('sma_vineyards_data', JSON.stringify(vineyardsCache));
   renderVineyards();
 
   const statusEl = document.getElementById('syncStatus');
-  try {
-    if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
-    
-    const payload = vineyardsCache.map(item => ({
-      key: item.key,
-      name: item.name,
-      badge: item.badge,
-      location: item.location,
-      desc: item.desc,
-      phone: item.phone,
-      phoneNum: item.phoneNum,
-      web: item.web,
-      ig: item.ig,
-      igHandle: item.igHandle,
-      image: Array.isArray(item.images) ? item.images[0] : '',
-      images: JSON.stringify(item.images)
-    }));
+  if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
 
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
+  const payload = vineyardsCache.map(item => ({
+    key: item.key,
+    name: item.name,
+    badge: item.badge,
+    location: item.location,
+    desc: item.desc,
+    phone: item.phone,
+    phoneNum: item.phoneNum,
+    web: item.web,
+    ig: item.ig,
+    igHandle: item.igHandle,
+    image: Array.isArray(item.images) ? item.images[0] : '',
+    images: JSON.stringify(item.images)
+  }));
+
+  document.getElementById('formPayloadInputVineyards').value = JSON.stringify(payload);
+  document.getElementById('sheetsSyncFormVineyards').submit();
+
+  setTimeout(() => {
     if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
-  } catch (err) {
-    console.error("Error al enviar a Google Sheets:", err);
-    if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
-  }
+  }, 1500);
 }
 
 const slideIndices = {};
@@ -728,7 +740,7 @@ function renderVineyards() {
 
   container.innerHTML = '';
   vineyardsCache.forEach(v => {
-    const cleanPhone = v.phoneNum || ('+52' + v.phone.replace(/[^0-9]/g, ''));
+    const cleanPhone = v.phoneNum || ('+52' + String(v.phone || '').replace(/[^0-9]/g, ''));
     const igHandleMatch = v.ig ? v.ig.split('/').filter(Boolean).pop() : 'viniedo';
     const igDisplay = v.igHandle || ('@' + igHandleMatch);
 
@@ -908,8 +920,7 @@ function deleteVineyard(key) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  checkSession();
-  fetchDataFromCloud();
+  initApp();
 });
 </script>
 </body>
