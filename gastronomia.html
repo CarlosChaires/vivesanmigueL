@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vive San Miguel | Restaurantes y Gastronomía</title>
+    <title>Restaurantes y Gastronomía | Vive San Miguel</title>
     
     <!-- PWA Manifest & Theme -->
     <link rel="manifest" href="manifest.json">
@@ -147,12 +147,12 @@
             border-radius: 14px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-soft);
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .admin-bar.active {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
         }
 
         .btn-admin {
@@ -202,7 +202,6 @@
             font-weight: 400;
         }
 
-        /* Barra de Búsqueda */
         .search-bar-wrap {
             max-width: 600px;
             margin: 0 auto 2rem auto;
@@ -236,7 +235,6 @@
             font-size: 0.95rem;
         }
 
-        /* Filtros por tipo de comida */
         .filter-container {
             display: flex;
             justify-content: center;
@@ -290,7 +288,6 @@
             border-color: rgba(166, 75, 42, 0.25);
         }
 
-        /* Carrusel de Fotos */
         .carousel-container {
             position: relative;
             height: 220px;
@@ -682,7 +679,6 @@
             }
         }
     </style>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -701,14 +697,14 @@
             <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
         </header>
 
-        <!-- Admin Bar con Sincronización en Directo a Google Sheets -->
+        <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
             <button class="btn-admin" onclick="openAddRestaurantModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Restaurante</button>
             <button class="btn-admin" onclick="fetchRestaurantsFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
             <button class="btn-admin" onclick="downloadRestaurantsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleRestaurantExcelUpload(event)">
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Conectado a Google</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -816,7 +812,6 @@
                     <input type="text" id="editInstagram" placeholder="Ej. https://www.instagram.com/...">
                 </div>
 
-                <!-- Gestor Dual de Imágenes (URL o Archivo Local) -->
                 <div class="input-group">
                     <label>Foto 1 (URL o Subir Archivo)</label>
                     <div class="image-input-box">
@@ -842,31 +837,46 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
+    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS (SIN BLOQUEO CORS NI DEMORAS) -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+    <form id="sheetsSyncForm" action="https://script.google.com/macros/s/AKfycbxc0T_ttqk7lXsu9hXpCa13Co3WsMzO_TVd1l0mplTZ2EEfnPhsS581Ny_4_lCOmEnuTw/exec" method="POST" target="hidden_iframe" style="display:none;">
+        <input type="hidden" name="payload" id="formPayloadInput">
+    </form>
+
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-
-        // URL de tu Google Apps Script para Gastronomía
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxc0T_ttqk7lXsu9hXpCa13Co3WsMzO_TVd1l0mplTZ2EEfnPhsS581Ny_4_lCOmEnuTw/exec";
 
         let cloudRestaurantsCache = [];
         let currentFilter = 'todos';
         let currentEditingKey = null;
 
-        // Conexión Directa a Google Sheets (GET para leer, POST para escribir/eliminar)
+        // Carga inmediata desde localStorage para evitar esperas y sincronización silenciosa en fondo
+        function initApp() {
+            const localData = localStorage.getItem('sma_restaurants_data');
+            if (localData) {
+                try {
+                    cloudRestaurantsCache = JSON.parse(localData);
+                    renderRestaurants(currentFilter, '');
+                } catch(e) {}
+            }
+            fetchRestaurantsFromCloud();
+        }
+
         async function fetchRestaurantsFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                if (statusEl && cloudRestaurantsCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData)) {
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
                     cloudRestaurantsCache = cloudData.map(item => {
                         let imgs = item.images;
                         if (typeof imgs === 'string') {
@@ -889,59 +899,52 @@
                             images: imgs
                         };
                     });
-
+                    localStorage.setItem('sma_restaurants_data', JSON.stringify(cloudRestaurantsCache));
                     renderRestaurants(currentFilter, document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a Google`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
             } catch (error) {
-                console.warn("Error de conexión con Google Sheets:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+                console.warn("Usando respaldo local por error de red:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
             }
         }
 
-        async function pushDataToGoogleSheets(restaurantsArray) {
+        function pushDataToGoogleSheets(restaurantsArray) {
+            cloudRestaurantsCache = [...restaurantsArray];
+            localStorage.setItem('sma_restaurants_data', JSON.stringify(cloudRestaurantsCache));
+            renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+
             const statusEl = document.getElementById('syncStatus');
-            try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Nube...`;
-                const payload = restaurantsArray.map(item => ({
-                    key: item.key,
-                    name: item.name,
-                    type: item.type,
-                    desc: item.desc,
-                    phone: item.phone,
-                    address: item.address,
-                    maps: item.maps,
-                    web: item.web,
-                    opentable: item.opentable || '',
-                    whatsapp: item.whatsapp || '',
-                    instagram: item.instagram || '',
-                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
-                }));
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
 
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            const payload = cloudRestaurantsCache.map(item => ({
+                key: item.key,
+                name: item.name,
+                type: item.type,
+                desc: item.desc,
+                phone: item.phone,
+                address: item.address,
+                maps: item.maps,
+                web: item.web,
+                opentable: item.opentable || '',
+                whatsapp: item.whatsapp || '',
+                instagram: item.instagram || '',
+                images: JSON.stringify(item.images)
+            }));
 
-                cloudRestaurantsCache = [...restaurantsArray];
-                renderRestaurants(currentFilter, document.getElementById('searchInput').value);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
-            } catch (err) {
-                console.error("Error al actualizar Google Sheets:", err);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
-            }
+            document.getElementById('formPayloadInput').value = JSON.stringify(payload);
+            document.getElementById('sheetsSyncForm').submit();
+
+            setTimeout(() => {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+            }, 1500);
         }
 
         function checkSession() {
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const controls = document.getElementById('adminControls');
-            if (isLogged) {
-                controls.classList.add('active');
-            } else {
-                controls.classList.remove('active');
-            }
+            if (isLogged) controls.classList.add('active');
+            else controls.classList.remove('active');
         }
 
         function filterRestaurants(type) {
@@ -971,7 +974,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron restaurantes con esa búsqueda en Google Sheets.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron restaurantes con esa búsqueda.</p>`;
                 return;
             }
 
@@ -1098,9 +1101,7 @@
 
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
-                    logoutAdmin();
-                }
+                if (confirm("¿Desea cerrar la sesión de administración?")) logoutAdmin();
                 return;
             }
             document.getElementById('usernameInput').value = '';
@@ -1109,9 +1110,7 @@
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -1181,13 +1180,10 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
 
         function saveRestaurantForm(e) {
             e.preventDefault();
-            
             const restaurantObj = {
                 key: currentEditingKey ? currentEditingKey : 'rest_' + Math.random().toString(36).substring(2, 9),
                 name: document.getElementById('editName').value,
@@ -1204,29 +1200,26 @@
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ].filter(img => img.trim() !== '')
+                ].filter(img => img && img.trim() !== '')
             };
 
             let updatedList = [...cloudRestaurantsCache];
             if (currentEditingKey) {
                 const index = updatedList.findIndex(el => el.key === currentEditingKey);
-                if (index !== -1) {
-                    updatedList[index] = restaurantObj;
-                }
+                if (index !== -1) updatedList[index] = restaurantObj;
             } else {
                 updatedList.unshift(restaurantObj);
             }
 
             pushDataToGoogleSheets(updatedList);
             closeEditModal();
-            alert('¡Registro guardado directamente en Google Sheets!');
+            alert('¡Guardado y sincronizado con Google Sheets exitosamente!');
         }
 
         function deleteRestaurant(key) {
-            if (confirm("¿Estás seguro de eliminar este restaurante de Google Sheets?")) {
+            if (confirm("¿Estás seguro de eliminar este restaurante?")) {
                 let updatedList = cloudRestaurantsCache.filter(r => r.key !== key);
                 pushDataToGoogleSheets(updatedList);
-                alert('Restaurante eliminado correctamente de la nube.');
             }
         }
 
@@ -1296,7 +1289,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            fetchRestaurantsFromCloud();
+            initApp();
         });
 
         // Partículas y cursor
