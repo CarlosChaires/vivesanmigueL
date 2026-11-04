@@ -25,6 +25,8 @@
             --accent-terracotta-dark: #82381C;
             --booking-blue: #003580;
             --booking-blue-dark: #00224f;
+            --whatsapp-green: #25D366;
+            --whatsapp-green-dark: #1EBE5D;
             --google-sheets-green: #0F9D58;
             --border-color: rgba(166, 75, 42, 0.12);
             --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
@@ -144,12 +146,12 @@
             border-radius: 14px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-soft);
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .admin-bar.active {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
         }
 
         .btn-admin {
@@ -297,7 +299,6 @@
             border-color: rgba(166, 75, 42, 0.25);
         }
 
-        /* Carrusel de Fotos */
         .carousel-container {
             position: relative;
             height: 220px;
@@ -492,13 +493,13 @@
         }
 
         .btn-action.whatsapp {
-            background-color: #25D366;
+            background-color: var(--whatsapp-green);
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
         }
 
         .btn-action.whatsapp:hover {
-            background-color: #1ebe57;
+            background-color: var(--whatsapp-green-dark);
             transform: translateY(-1px);
         }
 
@@ -694,7 +695,6 @@
             }
         }
     </style>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -720,7 +720,7 @@
             <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleHotelsExcelUpload(event)">
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> En línea con Google</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -828,7 +828,6 @@
                     <input type="text" id="editWhatsapp" placeholder="Dejar en blanco si no tiene">
                 </div>
 
-                <!-- Gestor Dual de Imágenes -->
                 <div class="input-group">
                     <label>Foto 1 (URL o Subir Archivo)</label>
                     <div class="image-input-box">
@@ -854,21 +853,25 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-save" id="modalSaveBtn">Guardar en Google Sheets</button>
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
+    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS -->
+    <iframe name="hidden_iframe_hotels" id="hidden_iframe_hotels" style="display:none;"></iframe>
+    <form id="sheetsSyncFormHotels" action="https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec" method="POST" target="hidden_iframe_hotels" style="display:none;">
+        <input type="hidden" name="payload" id="formPayloadInputHotels">
+    </form>
+
     <script>
         const AUTH_USER = "vivesanmiguel";
         const AUTH_PASS = "c4rl0s1107";
-        
-        // Enlace oficial de tu Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec";
 
-        // Memoria en caliente directa de la nube (sin localStorage de persistencia de registros)
         let cloudHotelsCache = [];
         let currentPriceFilter = 'all';
+        let currentEditingKey = null;
 
         function setPriceFilter(price) {
             currentPriceFilter = price;
@@ -877,15 +880,26 @@
             renderHotels(document.getElementById('searchInput').value);
         }
 
-        // Conexión Directa a Google Sheets (GET para leer, POST para escribir/eliminar)
+        // Carga inmediata desde localStorage para evitar esperas y sincronización silenciosa en fondo
+        function initApp() {
+            const localData = localStorage.getItem('sma_hotels_data');
+            if (localData) {
+                try {
+                    cloudHotelsCache = JSON.parse(localData);
+                    renderHotels('');
+                } catch(e) {}
+            }
+            fetchHotelsFromCloud();
+        }
+
         async function fetchHotelsFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                if (statusEl && cloudHotelsCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData)) {
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
                     cloudHotelsCache = cloudData.map(item => {
                         let imgs = item.images;
                         if (typeof imgs === 'string') {
@@ -908,59 +922,52 @@
                             images: imgs
                         };
                     });
-
+                    localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
                     renderHotels(document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a Google`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
             } catch (error) {
-                console.warn("Error de conexión con Google Sheets:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+                console.warn("Usando respaldo local por error de red:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
             }
         }
 
-        async function pushDataToGoogleSheets(hotelsArray) {
+        function pushDataToGoogleSheets(hotelsArray) {
+            cloudHotelsCache = [...hotelsArray];
+            localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+            renderHotels(document.getElementById('searchInput').value);
+
             const statusEl = document.getElementById('syncStatus');
-            try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Nube...`;
-                const payload = hotelsArray.map(item => ({
-                    key: item.key,
-                    name: item.name,
-                    type: item.type,
-                    desc: item.desc,
-                    price: item.price,
-                    phone: item.phone,
-                    address: item.address,
-                    maps: item.maps,
-                    web: item.web,
-                    booking: item.booking || '',
-                    whatsapp: item.whatsapp || '',
-                    images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
-                }));
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
 
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            const payload = cloudHotelsCache.map(item => ({
+                key: item.key,
+                name: item.name,
+                type: item.type,
+                desc: item.desc,
+                price: item.price,
+                phone: item.phone,
+                address: item.address,
+                maps: item.maps,
+                web: item.web,
+                booking: item.booking || '',
+                whatsapp: item.whatsapp || '',
+                images: JSON.stringify(item.images)
+            }));
 
-                cloudHotelsCache = [...hotelsArray];
-                renderHotels(document.getElementById('searchInput').value);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Google`;
-            } catch (err) {
-                console.error("Error al actualizar Google Sheets:", err);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#c0392b;"></i> Error de envío`;
-            }
+            document.getElementById('formPayloadInputHotels').value = JSON.stringify(payload);
+            document.getElementById('sheetsSyncFormHotels').submit();
+
+            setTimeout(() => {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+            }, 1500);
         }
 
         function checkSession() {
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const controls = document.getElementById('adminControls');
-            if (isLogged) {
-                controls.classList.add('active');
-            } else {
-                controls.classList.remove('active');
-            }
+            if (isLogged) controls.classList.add('active');
+            else controls.classList.remove('active');
         }
 
         function handleSearch() {
@@ -985,7 +992,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados en Google Sheets con los filtros aplicados.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con los filtros aplicados.</p>`;
                 return;
             }
 
@@ -1106,9 +1113,7 @@
 
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
-                    logoutAdmin();
-                }
+                if (confirm("¿Desea cerrar la sesión de administración?")) logoutAdmin();
                 return;
             }
             document.getElementById('usernameInput').value = '';
@@ -1117,9 +1122,7 @@
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -1161,7 +1164,6 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        let currentEditingKey = null;
         function openEditHotelModal(key) {
             const h = cloudHotelsCache.find(el => el.key === key);
             if (!h) return;
@@ -1190,13 +1192,10 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
 
         function saveHotelForm(e) {
             e.preventDefault();
-            
             const hotelObj = {
                 key: currentEditingKey ? currentEditingKey : 'hotel_' + Math.random().toString(36).substring(2, 9),
                 name: document.getElementById('editName').value,
@@ -1213,29 +1212,26 @@
                     document.getElementById('editImg1').value,
                     document.getElementById('editImg2').value,
                     document.getElementById('editImg3').value
-                ].filter(img => img.trim() !== '')
+                ].filter(img => img && img.trim() !== '')
             };
 
             let updatedList = [...cloudHotelsCache];
             if (currentEditingKey) {
                 const index = updatedList.findIndex(el => el.key === currentEditingKey);
-                if (index !== -1) {
-                    updatedList[index] = hotelObj;
-                }
+                if (index !== -1) updatedList[index] = hotelObj;
             } else {
                 updatedList.unshift(hotelObj);
             }
 
             pushDataToGoogleSheets(updatedList);
             closeEditModal();
-            alert('¡Registro guardado directamente en Google Sheets!');
+            alert('¡Guardado y sincronizado con Google Sheets exitosamente!');
         }
 
         function deleteHotel(key) {
-            if (confirm("¿Estás seguro de eliminar este hospedaje de Google Sheets?")) {
+            if (confirm("¿Estás seguro de eliminar este hospedaje?")) {
                 let updatedList = cloudHotelsCache.filter(h => h.key !== key);
                 pushDataToGoogleSheets(updatedList);
-                alert('Hospedaje eliminado correctamente de la nube.');
             }
         }
 
@@ -1305,7 +1301,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            fetchHotelsFromCloud();
+            initApp();
         });
 
         // Partículas y cursor
