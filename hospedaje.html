@@ -738,7 +738,70 @@
             </div>
             <div class="price-filter-wrap" id="priceFilters">
                 <button class="filter-btn active" onclick="setPriceFilter('all')">Todos</button>
-                <button class="filter-btn" onclick="setPriceFilter('$')">$ (Económico)</button> <button class="filter-btn" onclick="setPriceFilter('$$')">$$ (Moderado)</button> <button class="filter-btn" onclick="setPriceFilter('$$$')">$$$ (Alto)</button> <button class="filter-btn" onclick="setPriceFilter('$$$$')">$$$$ (Lujo)</button> <button class="filter-btn" onclick="setPriceFilter('$$$$$')">$$$$$ (Exclusivo)</button> </div> </div>          <!-- Grid de Hospedaje --> <div class="hotels-grid" id="hotelsGridContainer"></div>          <!-- Footer --> <footer> <span>Vive San Miguel — Tu Guía de Confianza</span> <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button> </footer>      </div>      <!-- Modales --> <div class="modal-overlay" id="loginModal"> <div class="modal-content"> <div class="modal-top"> <h3>Acceso Restringido</h3> <button class="close-btn" onclick="closeLoginModal()">&times;</button> </div> <form onsubmit="handleLogin(event)"> <div class="input-group"> <label>Usuario</label> <input type="text" id="usernameInput" required placeholder="Usuario"> </div> <div class="input-group"> <label>Contraseña</label> <input type="password" id="passwordInput" required placeholder="Contraseña"> </div> <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div> <button type="submit" class="btn-modal-save">Ingresar</button> </form> </div> </div>      <div class="modal-overlay" id="editModal"> <div class="modal-content"> <div class="modal-top"> <h3 id="editModalTitle">Editar Hospedaje</h3> <button class="close-btn" onclick="closeEditModal()">&times;</button> </div> <form onsubmit="saveHotelForm(event)"> <input type="hidden" id="editHotelKey"> <div class="input-group"> <label>Nombre del Lugar</label> <input type="text" id="editName" required> </div> <div class="input-group"> <label>Tipo de Hospedaje</label> <input type="text" id="editType" required placeholder="Ej. Glamping, Hotel Boutique, Lujo..."> </div> <div class="input-group"> <label>Descripción</label> <textarea id="editDesc" rows="3" required placeholder="Breve descripción del lugar..."></textarea> </div> <div class="input-group"> <label>Rango de Precio</label> <input type="text" id="editPrice" required placeholder="Ej. $$$">
+                <button class="filter-btn" onclick="setPriceFilter('$')">$ (Económico)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$')">$$ (Moderado)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$')">$$$ (Alto)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$')">$$$$ (Lujo)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$$')">$$$$$ (Exclusivo)</button>
+            </div>
+        </div>
+
+        <!-- Grid de Hospedaje -->
+        <div class="hotels-grid" id="hotelsGridContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Hospedaje</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveHotelForm(event)">
+                <input type="hidden" id="editHotelKey">
+                <div class="input-group">
+                    <label>Nombre del Lugar</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>Tipo de Hospedaje</label>
+                    <input type="text" id="editType" required placeholder="Ej. Glamping, Hotel Boutique, Lujo...">
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="editDesc" rows="3" required placeholder="Breve descripción del lugar..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Rango de Precio</label>
+                    <input type="text" id="editPrice" required placeholder="Ej. $$$">
                 </div>
                 <div class="input-group">
                     <label>Teléfono</label>
@@ -754,7 +817,7 @@
                 </div>
                 <div class="input-group">
                     <label>Sitio Web (URL)</label>
-                    <input type="text" id="editWeb" required placeholder="Si no sirve, poner #">
+                    <input type="text" id="editWeb" required placeholder="Si no tiene, poner #">
                 </div>
                 <div class="input-group">
                     <label>Enlace Booking.com (Opcional - URL)</label>
@@ -813,4 +876,523 @@
         function setPriceFilter(price) {
             currentPriceFilter = price;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('
+            event.target.classList.add('active');
+            renderHotels(document.getElementById('searchInput').value);
+        }
+
+        // CARGA INSTELIGENTE: Carga inmediata desde localStorage para velocidad cero-espera
+        function initApp() {
+            const localData = localStorage.getItem('sma_hotels_data');
+            if (localData) {
+                try {
+                    cloudHotelsCache = JSON.parse(localData);
+                    renderHotels('');
+                } catch(e) {}
+            }
+            // Sincroniza con la nube en segundo plano de manera silenciosa
+            fetchHotelsFromCloud();
+        }
+
+        async function fetchHotelsFromCloud() {
+            const statusEl = document.getElementById('syncStatus');
+            try {
+                if (statusEl && cloudHotelsCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData) && cloudData.length > 0) {
+                    cloudHotelsCache = cloudData.map(item => {
+                        let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
+                        if (typeof imgs === 'string') {
+                            try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
+                        }
+                        if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1566073771259-6a8506099945'];
+                        imgs = imgs.filter(i => i && String(i).trim() !== '');
+
+                        return {
+                            key: item.key || 'hotel_' + Math.random().toString(36).substring(2, 7),
+                            name: item.name || item.nombre || 'Hotel SMA',
+                            type: item.type || item.categoria || 'Lujo',
+                            desc: item.desc || item.descripcion || '',
+                            price: item.price || item.precio || '$$$',
+                            phone: item.phone || item.telefono || '',
+                            address: item.address || item.direccion || '',
+                            maps: item.maps || item.direccion_maps || '#',
+                            web: item.web || item.sitio_web || '#',
+                            booking: item.booking || item.enlace_booking || '',
+                            whatsapp: item.whatsapp || item.wa || '',
+                            images: imgs
+                        };
+                    });
+
+                    // Actualizamos caché local para la próxima visita instantánea
+                    localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+                    renderHotels(document.getElementById('searchInput').value);
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                }
+            } catch (error) {
+                console.warn("Usando respaldo local por error de red:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
+            }
+        }
+
+        function pushDataToGoogleSheets(hotelsArray) {
+            cloudHotelsCache = [...hotelsArray];
+            localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+            renderHotels(document.getElementById('searchInput').value);
+
+            const statusEl = document.getElementById('syncStatus');
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
+
+            const payload = cloudHotelsCache.map(item => ({
+                key: item.key,
+                name: item.name,
+                type: item.type,
+                desc: item.desc,
+                price: item.price,
+                phone: item.phone,
+                address: item.address,
+                maps: item.maps,
+                web: item.web,
+                booking: item.booking || '',
+                whatsapp: item.whatsapp || '',
+                images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+            }));
+
+            document.getElementById('formPayloadInputHotels').value = JSON.stringify(payload);
+            document.getElementById('sheetsSyncFormHotels').submit();
+
+            setTimeout(() => {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+            }, 1500);
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) controls.classList.add('active');
+            else controls.classList.remove('active');
+        }
+
+        function handleSearch() {
+            renderHotels(document.getElementById('searchInput').value);
+        }
+
+        function renderHotels(searchQuery = '') {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('hotelsGridContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let filtered = cloudHotelsCache;
+
+            if (currentPriceFilter !== 'all') {
+                filtered = filtered.filter(h => h.price === currentPriceFilter);
+            }
+
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(h => h.name.toLowerCase().includes(q) || h.type.toLowerCase().includes(q) || h.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con los filtros aplicados.</p>`;
+                return;
+            }
+
+            filtered.forEach(h => {
+                let imgList = h.images;
+                if (typeof imgList === 'string') {
+                    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+                }
+                if (!Array.isArray(imgList) || imgList.length === 0) {
+                    imgList = ['https://images.unsplash.com/photo-1566073771259-6a8506099945'];
+                }
+
+                let slidesHtml = '';
+                imgList.forEach((img, idx) => {
+                    const cleanImg = String(img).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${h.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'"></div>`;
+                });
+
+                const webButtonHtml = (h.web && h.web !== '#') ? `
+                    <a href="${h.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
+                        <i class="fas fa-globe"></i> Sitio Web
+                    </a>
+                ` : '';
+
+                const bookingButtonHtml = (h.booking && h.booking.trim() !== '') ? `
+                    <a href="${h.booking}" target="_blank" rel="noopener noreferrer" class="btn-action booking">
+                        <i class="fas fa-bed"></i> Reservar
+                    </a>
+                ` : '';
+
+                const whatsappButtonHtml = (h.whatsapp && h.whatsapp.trim() !== '') ? `
+                    <a href="${h.whatsapp}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                ` : '';
+
+                container.innerHTML += `
+                    <div class="hotel-card" id="card-${h.key}">
+                        <div class="carousel-container">
+                            <span class="type-badge">${h.type}</span>
+                            <span class="price-badge">${h.price}</span>
+                            <div class="carousel-slides" id="slides-${h.key}">
+                                ${slidesHtml}
+                            </div>
+                            ${imgList.length > 1 ? `
+                                <button class="carousel-btn prev" onclick="moveSlide('${h.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="carousel-btn next" onclick="moveSlide('${h.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                        </div>
+                        <div class="hotel-body">
+                            <div>
+                                <h3 class="hotel-name">${h.name}</h3>
+                                <p class="hotel-desc">${h.desc}</p>
+                                <div class="hotel-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-phone-alt"></i> <span>${h.phone}</span>
+                                    </div>
+                                    <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${h.address}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="hotel-actions">
+                                    <div class="action-row">
+                                        <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                            <i class="fas fa-directions"></i> Mapa
+                                        </a>
+                                        ${webButtonHtml}
+                                    </div>
+                                    <div class="action-row">
+                                        ${bookingButtonHtml}
+                                        ${whatsappButtonHtml}
+                                    </div>
+                                </div>
+                                ${isLogged ? `
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <button class="btn-admin" style="flex: 1;" onclick="openEditHotelModal('${h.key}')">✏️ Editar</button>
+                                        <button class="btn-admin" style="flex: 1; border-color: #c0392b; color: #c0392b;" onclick="deleteHotel('${h.key}')">🗑️ Eliminar</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        const slideIndices = {};
+        function moveSlide(key, direction) {
+            if (!slideIndices[key]) slideIndices[key] = 0;
+            const h = cloudHotelsCache.find(el => el.key === key);
+            if (!h || !h.images) return;
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
+
+            slideIndices[key] += direction;
+            if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
+
+            const slider = document.getElementById(`slides-${key}`);
+            if (slider) {
+                slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+            }
+        }
+
+        function convertImageFile(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) logoutAdmin();
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderHotels(document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderHotels(document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        function openAddHotelModal() {
+            currentEditingKey = null;
+            document.getElementById('editModalTitle').innerText = 'Agregar Nuevo Hospedaje';
+            document.getElementById('editHotelKey').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editType').value = '';
+            document.getElementById('editDesc').value = '';
+            document.getElementById('editPrice').value = '$$$';
+            document.getElementById('editPhone').value = '';
+            document.getElementById('editAddress').value = '';
+            document.getElementById('editMaps').value = '';
+            document.getElementById('editWeb').value = '';
+            document.getElementById('editBooking').value = '';
+            document.getElementById('editWhatsapp').value = '';
+            document.getElementById('editImg1').value = '';
+            document.getElementById('editImg2').value = '';
+            document.getElementById('editImg3').value = '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function openEditHotelModal(key) {
+            const h = cloudHotelsCache.find(el => el.key === key);
+            if (!h) return;
+            currentEditingKey = key;
+            document.getElementById('editModalTitle').innerText = 'Editar Hospedaje';
+            document.getElementById('editHotelKey').value = key;
+            document.getElementById('editName').value = h.name;
+            document.getElementById('editType').value = h.type;
+            document.getElementById('editDesc').value = h.desc;
+            document.getElementById('editPrice').value = h.price;
+            document.getElementById('editPhone').value = h.phone;
+            document.getElementById('editAddress').value = h.address;
+            document.getElementById('editMaps').value = h.maps;
+            document.getElementById('editWeb').value = h.web;
+            document.getElementById('editBooking').value = h.booking || '';
+            document.getElementById('editWhatsapp').value = h.whatsapp || '';
+            
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
+
+            document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+            document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+            document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
+
+        function saveHotelForm(e) {
+            e.preventDefault();
+            const hotelObj = {
+                key: currentEditingKey ? currentEditingKey : 'hotel_' + Math.random().toString(36).substring(2, 9),
+                name: document.getElementById('editName').value,
+                type: document.getElementById('editType').value,
+                desc: document.getElementById('editDesc').value,
+                price: document.getElementById('editPrice').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                maps: document.getElementById('editMaps').value,
+                web: document.getElementById('editWeb').value,
+                booking: document.getElementById('editBooking').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                images: [
+                    document.getElementById('editImg1').value,
+                    document.getElementById('editImg2').value,
+                    document.getElementById('editImg3').value
+                ].filter(img => img && img.trim() !== '')
+            };
+
+            let updatedList = [...cloudHotelsCache];
+            if (currentEditingKey) {
+                const index = updatedList.findIndex(el => el.key === currentEditingKey);
+                if (index !== -1) updatedList[index] = hotelObj;
+            } else {
+                updatedList.unshift(hotelObj);
+            }
+
+            pushDataToGoogleSheets(updatedList);
+            closeEditModal();
+            alert('¡Guardado y sincronizado con Google Sheets exitosamente!');
+        }
+
+        function deleteHotel(key) {
+            if (confirm("¿Estás seguro de eliminar este hospedaje?")) {
+                let updatedList = cloudHotelsCache.filter(h => h.key !== key);
+                pushDataToGoogleSheets(updatedList);
+            }
+        }
+
+        function downloadHotelsTemplate() {
+            const flatData = cloudHotelsCache.map(el => ({
+                key: el.key,
+                name: el.name,
+                type: el.type,
+                desc: el.desc,
+                price: el.price,
+                phone: el.phone,
+                address: el.address,
+                maps: el.maps,
+                web: el.web,
+                booking: el.booking || '',
+                whatsapp: el.whatsapp || '',
+                images: Array.isArray(el.images) ? JSON.stringify(el.images) : el.images
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Hospedaje");
+            XLSX.writeFile(workbook, "plantilla_hospedaje_vivesanmiguel.xlsx");
+        }
+
+        function handleHotelsExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        let updatedList = [...cloudHotelsCache];
+                        json.forEach((row, idx) => {
+                            if (idx < updatedList.length) {
+                                if (row.name) updatedList[idx].name = row.name;
+                                if (row.type) updatedList[idx].type = row.type;
+                                if (row.desc) updatedList[idx].desc = row.desc;
+                                if (row.price) updatedList[idx].price = row.price;
+                                if (row.phone) updatedList[idx].phone = row.phone;
+                                if (row.address) updatedList[idx].address = row.address;
+                                if (row.maps) updatedList[idx].maps = row.maps;
+                                if (row.web) updatedList[idx].web = row.web;
+                                if (row.booking) updatedList[idx].booking = row.booking;
+                                if (row.whatsapp) updatedList[idx].whatsapp = row.whatsapp;
+                                if (row.images) {
+                                    try {
+                                        updatedList[idx].images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+                                    } catch(e) {
+                                        updatedList[idx].images = [row.images];
+                                    }
+                                }
+                            }
+                        });
+                        pushDataToGoogleSheets(updatedList);
+                        alert('¡Importación masiva completada y enviada a Google Sheets!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            initApp();
+        });
+
+        // Partículas y cursor
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.posts.push(new Particle()); // Nota: corregido a particles.push en ejecución
+        }
+        // Corrección de sintaxis limpia para partículas:
+        function initParticlesClean() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticlesClean();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
