@@ -716,11 +716,11 @@
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
             <button class="btn-admin" onclick="openAddHotelModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Hospedaje</button>
-            <button class="btn-admin" onclick="fetchHotelsFromCloud()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
+            <button class="btn-admin" onclick="fetchHotelsFromCloud(true)" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
             <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
             <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleHotelsExcelUpload(event)">
-            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Conectado a Google</span>
             <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
@@ -858,7 +858,7 @@
         </div>
     </div>
 
-    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS -->
+    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS (EVITA CORS BLOCKS) -->
     <iframe name="hidden_iframe_hotels" id="hidden_iframe_hotels" style="display:none;"></iframe>
     <form id="sheetsSyncFormHotels" action="https://script.google.com/macros/s/AKfycbxmWeEofPcYGmLPtmrjUQk7OGwhVjGMKBclFgqmyKOl-Whd4GxwzG1BTZfO3gqCPBUoqw/exec" method="POST" target="hidden_iframe_hotels" style="display:none;">
         <input type="hidden" name="payload" id="formPayloadInputHotels">
@@ -880,27 +880,26 @@
             renderHotels(document.getElementById('searchInput').value);
         }
 
-        // CARGA INSTELIGENTE: Carga inmediata desde localStorage para velocidad cero-espera
+        // CARGA VELOZ: Revisa sessionStorage para render instantáneo, sincroniza en fondo
         function initApp() {
-            const localData = localStorage.getItem('sma_hotels_data');
-            if (localData) {
+            const cachedData = sessionStorage.getItem('sma_hotels_direct_cache');
+            if (cachedData) {
                 try {
-                    cloudHotelsCache = JSON.parse(localData);
+                    cloudHotelsCache = JSON.parse(cachedData);
                     renderHotels('');
                 } catch(e) {}
             }
-            // Sincroniza con la nube en segundo plano de manera silenciosa
-            fetchHotelsFromCloud();
+            fetchHotelsFromCloud(false);
         }
 
-        async function fetchHotelsFromCloud() {
+        async function fetchHotelsFromCloud(forceAlert = false) {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl && cloudHotelsCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                if (Array.isArray(cloudData) && cloudData.length > 0) {
+                if (Array.isArray(cloudData)) {
                     cloudHotelsCache = cloudData.map(item => {
                         let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
                         if (typeof imgs === 'string') {
@@ -925,24 +924,25 @@
                         };
                     });
 
-                    // Actualizamos caché local para la próxima visita instantánea
-                    localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+                    sessionStorage.setItem('sma_hotels_direct_cache', JSON.stringify(cloudHotelsCache));
                     renderHotels(document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a Google`;
+                    if (forceAlert) alert('¡Sincronizado correctamente con Google Sheets!');
                 }
             } catch (error) {
-                console.warn("Usando respaldo local por error de red:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
+                console.warn("Error al sincronizar con Google Sheets:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión`;
+                if (forceAlert) alert('No se pudo establecer conexión con Google Sheets.');
             }
         }
 
         function pushDataToGoogleSheets(hotelsArray) {
             cloudHotelsCache = [...hotelsArray];
-            localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+            sessionStorage.setItem('sma_hotels_direct_cache', JSON.stringify(cloudHotelsCache));
             renderHotels(document.getElementById('searchInput').value);
 
             const statusEl = document.getElementById('syncStatus');
-            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
 
             const payload = cloudHotelsCache.map(item => ({
                 key: item.key,
@@ -1378,14 +1378,9 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.posts.push(new Particle()); // Nota: corregido a particles.push en ejecución
-        }
-        // Corrección de sintaxis limpia para partículas:
-        function initParticlesClean() {
-            particles = [];
             for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
         }
-        initParticlesClean();
+        initParticles();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
