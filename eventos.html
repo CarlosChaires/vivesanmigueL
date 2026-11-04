@@ -1,1560 +1,1330 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cartelera de Eventos | Vive San Miguel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive San Miguel | Hospedaje, Hoteles y Glamping</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A64B2A">
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#c45c4a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
-  
-  <style>
-    :root {
-      --cantera: #c45c4a;
-      --cantera-hover: #a84a3a;
-      --cantera-soft: rgba(196, 92, 74, 0.08);
-      --cantera-glow: rgba(196, 92, 74, 0.22);
-      --terracota: #8f3d28;
-      --ocre: #c48a1f;
-      --noche: #1a1614;
-      --fondo: #f8f5f1;
-      --blanco: #ffffff;
-      --gris-suave: #f0ebe5;
-      --gris-texto: #6e655f;
-      --gris-muted: #9a918a;
-      --rojo-alerta: #b33939;
-      --rojo-hover: #8e2b2b;
-      --borde: rgba(26, 22, 20, 0.06);
-      --borde-fuerte: rgba(26, 22, 20, 0.10);
-      --sombra-card: 0 4px 20px -4px rgba(26, 22, 20, 0.06), 0 1px 3px rgba(26, 22, 20, 0.04);
-      --sombra-hover: 0 24px 48px -12px rgba(26, 22, 20, 0.14), 0 8px 16px -8px rgba(26, 22, 20, 0.08);
-      --sombra-sticky: 0 8px 32px -8px rgba(26, 22, 20, 0.10);
-      --transicion: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-      --transicion-rapida: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      --radius: 20px;
-      --radius-sm: 12px;
-      --radius-xs: 8px;
-    }
-    
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    html { scroll-behavior: smooth; }
-    
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--fondo);
-      color: var(--noche);
-      line-height: 1.65;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 1.5rem;
-    }
-    
-    /* ── Header ── */
-    .site-header {
-      padding: 2.25rem 0 1.75rem;
-      border-bottom: 1px solid var(--borde);
-      background: var(--fondo);
-    }
-    
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    
-    .brand-container {
-      display: flex;
-      align-items: center;
-      gap: 1.15rem;
-    }
-    
-    .brand-logo {
-      height: 56px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
-    }
-    
-    .header-title span {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.24em;
-      color: var(--terracota);
-      font-weight: 600;
-      display: block;
-      margin-bottom: 0.2rem;
-    }
-    
-    .header-title h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.75rem, 3vw, 2.25rem);
-      font-weight: 500;
-      color: var(--noche);
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    
-    .admin-actions-group {
-      display: flex;
-      gap: 0.65rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .admin-trigger, .btn-home {
-      background: transparent;
-      border: 1px solid var(--borde-fuerte);
-      color: var(--gris-texto);
-      padding: 0.55rem 1.2rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: var(--transicion);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      text-decoration: none;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-    }
-    
-    .admin-trigger { display: none; }
-    
-    body.admin-logged .admin-panel-btn {
-      display: inline-flex;
-      background: var(--cantera);
-      color: var(--blanco);
-      border-color: var(--cantera);
-      box-shadow: 0 4px 14px -2px var(--cantera-glow);
-    }
-    
-    .admin-trigger:hover, .btn-home:hover {
-      border-color: var(--cantera);
-      color: var(--cantera);
-      background: var(--cantera-soft);
-    }
-    
-    body.admin-logged .admin-panel-btn:hover {
-      background: var(--cantera-hover);
-      color: var(--blanco);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px -2px var(--cantera-glow);
-    }
-    
-    /* ── Sticky Toolbar ── */
-    .toolbar-wrapper {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(248, 245, 241, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--borde);
-      padding: 1.1rem 0;
-      margin-bottom: 2.25rem;
-      transition: box-shadow 0.35s ease;
-    }
-    
-    .toolbar-wrapper.scrolled {
-      box-shadow: var(--sombra-sticky);
-    }
-    
-    .toolbar {
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .toolbar.visible { display: flex; }
-    
-    .search-row {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .search-box {
-      flex: 1;
-      min-width: 240px;
-      position: relative;
-    }
-    
-    .search-box input {
-      width: 100%;
-      padding: 0.8rem 1.15rem 0.8rem 2.85rem;
-      border: 1px solid var(--borde-fuerte);
-      border-radius: 999px;
-      background: var(--blanco);
-      font-family: inherit;
-      font-size: 0.9rem;
-      color: var(--noche);
-      transition: var(--transicion);
-      outline: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    }
-    
-    .search-box input::placeholder { color: var(--gris-muted); }
-    
-    .search-box input:focus {
-      border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft), 0 2px 8px rgba(0,0,0,0.04);
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: 1.1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--gris-muted);
-      font-size: 0.95rem;
-      pointer-events: none;
-      transition: var(--transicion-rapida);
-    }
-    
-    .search-box:focus-within .search-icon {
-      color: var(--cantera);
-    }
-    
-    .results-count {
-      font-size: 0.8rem;
-      color: var(--gris-muted);
-      white-space: nowrap;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      min-width: 5.5rem;
-      text-align: right;
-    }
-    
-    .filter-row {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-    
-    .filter-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--gris-muted);
-      flex-shrink: 0;
-    }
-    
-    .filter-scroll {
-      flex: 1;
-      min-width: 0;
-      position: relative;
-    }
-    
-    .filter-scroll::before,
-    .filter-scroll::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 28px;
-      z-index: 2;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    
-    .filter-scroll::before {
-      left: 0;
-      background: linear-gradient(to right, rgba(248,245,241,0.95), transparent);
-    }
-    
-    .filter-scroll::after {
-      right: 0;
-      background: linear-gradient(to left, rgba(248,245,241,0.95), transparent);
-    }
-    
-    .filter-scroll.show-left::before { opacity: 1; }
-    .filter-scroll.show-right::after { opacity: 1; }
-    
-    .filter-bar {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 0.4rem;
-      align-items: center;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 0.15rem 0.1rem 0.35rem;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    
-    .filter-bar::-webkit-scrollbar { display: none; }
-    
-    .filter-btn {
-      background: var(--blanco);
-      border: 1px solid var(--borde-fuerte);
-      color: var(--gris-texto);
-      padding: 0.42rem 0.95rem;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transicion);
-      font-family: inherit;
-      white-space: nowrap;
-      letter-spacing: 0.01em;
-      flex-shrink: 0;
-    }
-    
-    .filter-btn:hover {
-      border-color: var(--cantera);
-      color: var(--cantera);
-      background: var(--cantera-soft);
-    }
-    
-    .filter-btn.active {
-      background: var(--cantera);
-      border-color: var(--cantera);
-      color: var(--blanco);
-      box-shadow: 0 4px 14px -2px var(--cantera-glow);
-    }
-    
-    .filter-btn.active:hover {
-      background: var(--cantera-hover);
-      border-color: var(--cantera-hover);
-      color: var(--blanco);
-    }
-    
-    /* Dropdown alternativo cuando hay muchas categorías */
-    .filter-select-wrap {
-      display: none;
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .filter-select {
-      width: 100%;
-      max-width: 320px;
-      padding: 0.55rem 2.2rem 0.55rem 1rem;
-      border: 1px solid var(--borde-fuerte);
-      border-radius: 999px;
-      background: var(--blanco);
-      font-family: inherit;
-      font-size: 0.85rem;
-      color: var(--noche);
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e655f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      outline: none;
-      transition: var(--transicion);
-    }
-    
-    .filter-select:focus {
-      border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft);
-    }
-    
-    /* Si hay demasiadas categorías (>12), usamos el select en desktop también se puede forzar */
-    .toolbar.many-cats .filter-scroll { display: none; }
-    .toolbar.many-cats .filter-select-wrap { display: block; }
-    
-    /* ── Grid ── */
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 2rem;
-      padding-bottom: 1rem;
-    }
-    
-    .event-card {
-      background: var(--blanco);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--borde);
-      box-shadow: var(--sombra-card);
-      transition: var(--transicion);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    
-    .event-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--sombra-hover);
-      border-color: rgba(196, 92, 74, 0.15);
-    }
-    
-    .event-img-wrapper {
-      width: 100%;
-      height: 220px;
-      position: relative;
-      background: linear-gradient(145deg, #ebe6e0, #f0ebe5);
-      overflow: hidden;
-    }
-    
-    .event-img-wrapper::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(26,22,20,0.18) 0%, transparent 45%);
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    .event-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    
-    .event-card:hover .event-img-wrapper img {
-      transform: scale(1.06);
-    }
-    
-    .event-category {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      padding: 0.3rem 0.85rem;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      z-index: 3;
-      color: #fff;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    
-    .cat-cultura { background: rgba(143, 61, 40, 0.88); }
-    .cat-musica { background: rgba(90, 70, 140, 0.88); }
-    .cat-arte { background: rgba(60, 110, 130, 0.88); }
-    .cat-gastronomia { background: rgba(160, 100, 40, 0.88); }
-    .cat-teatro { background: rgba(120, 50, 90, 0.88); }
-    .cat-general { background: rgba(80, 75, 70, 0.88); }
-    
-    .event-date-badge {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--noche);
-      padding: 0.32rem 0.8rem;
-      border-radius: var(--radius-xs);
-      font-size: 0.7rem;
-      font-weight: 600;
-      z-index: 3;
-      text-transform: capitalize;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      letter-spacing: 0.01em;
-    }
-    
-    .admin-card-actions {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      display: none;
-      gap: 0.35rem;
-      z-index: 10;
-    }
-    
-    body.admin-logged .admin-card-actions { display: flex; }
-    
-    .btn-card-edit, .btn-card-delete {
-      border: none;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transicion);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-      font-size: 0.85rem;
-    }
-    
-    .btn-card-edit { background: rgba(196, 138, 31, 0.95); color: #fff; }
-    .btn-card-edit:hover { background: #a87618; transform: scale(1.1); }
-    
-    .btn-card-delete { background: rgba(179, 57, 57, 0.92); color: #fff; }
-    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
-    
-    .event-body {
-      padding: 1.35rem 1.5rem 1.4rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      gap: 0;
-    }
-    
-    .event-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.28rem;
-      font-weight: 600;
-      margin-bottom: 0.55rem;
-      line-height: 1.25;
-      color: var(--noche);
-      letter-spacing: -0.015em;
-    }
-    
-    /* Fila de datos clave: fecha + hora — lo más importante a la vista */
-    .event-key-info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem 0.7rem;
-      margin-bottom: 0.7rem;
-      align-items: center;
-    }
-    
-    .event-key-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.28rem;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--noche);
-      background: var(--gris-suave);
-      padding: 0.28rem 0.65rem;
-      border-radius: 6px;
-      letter-spacing: 0.01em;
-      line-height: 1.3;
-    }
-    
-    .event-key-chip.price {
-      background: rgba(143, 61, 40, 0.1);
-      color: var(--terracota);
-    }
-    
-    .event-location {
-      font-size: 0.82rem;
-      color: var(--terracota);
-      margin-bottom: 0.65rem;
-      font-weight: 550;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.28rem;
-      transition: var(--transicion-rapida);
-    }
-    
-    .event-location:hover {
-      color: var(--cantera);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-    
-    .event-desc {
-      font-size: 0.86rem;
-      color: var(--gris-texto);
-      margin-bottom: 0.9rem;
-      flex: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.55;
-    }
-    
-    .event-web-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: var(--cantera);
-      color: var(--blanco);
-      padding: 0.45rem 1rem;
-      border-radius: var(--radius-xs);
-      font-size: 0.78rem;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: auto;
-      transition: var(--transicion);
-      width: fit-content;
-      letter-spacing: 0.01em;
-      box-shadow: 0 3px 10px -2px var(--cantera-glow);
-    }
-    
-    .event-web-link:hover {
-      background: var(--cantera-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 5px 14px -2px var(--cantera-glow);
-    }
-    
-    .event-meta {
-      display: none; /* info clave ya está arriba */
-    }
-    
-    .event-meta-time { display: none; }
-    .event-price { display: none; }
-    
-    /* ── Skeleton Loading ── */
-    .skeleton-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 2rem;
-    }
-    
-    .skeleton-card {
-      background: var(--blanco);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--borde);
-      box-shadow: var(--sombra-card);
-    }
-    
-    .skeleton-img {
-      height: 220px;
-      background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.6s ease-in-out infinite;
-    }
-    
-    .skeleton-body { padding: 1.55rem 1.65rem; }
-    
-    .skeleton-line {
-      height: 14px;
-      border-radius: 6px;
-      background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.6s ease-in-out infinite;
-      margin-bottom: 0.7rem;
-    }
-    
-    .skeleton-line.title { height: 22px; width: 75%; margin-bottom: 0.9rem; }
-    .skeleton-line.short { width: 45%; }
-    .skeleton-line.medium { width: 90%; }
-    
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    
-    /* ── Empty State ── */
-    .empty-state {
-      text-align: center;
-      padding: 5rem 2rem;
-      color: var(--gris-texto);
-    }
-    
-    .empty-state-icon {
-      font-size: 2.6rem;
-      margin-bottom: 1rem;
-      opacity: 0.45;
-      display: block;
-    }
-    
-    .empty-state p {
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--gris-muted);
-      max-width: 360px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    /* ── Footer ── */
-    footer {
-      margin-top: auto;
-      border-top: 1px solid var(--borde);
-      padding: 1.75rem 0;
-      background: var(--fondo);
-    }
-    
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-      color: var(--gris-muted);
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    
-    .footer-brand {
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-    
-    .footer-lock {
-      background: none;
-      border: 1px solid transparent;
-      color: var(--gris-muted);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.8rem;
-      font-family: inherit;
-      border-radius: 999px;
-      transition: var(--transicion);
-      font-weight: 500;
-    }
-    
-    .footer-lock:hover {
-      color: var(--cantera);
-      background: var(--cantera-soft);
-      border-color: rgba(196, 92, 74, 0.15);
-    }
-    
-    /* ── Modals ── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(26, 22, 20, 0.55);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    
-    .modal-box {
-      background: var(--blanco);
-      width: 100%;
-      max-width: 480px;
-      border-radius: 24px;
-      padding: 2.4rem;
-      box-shadow: 0 32px 64px -16px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: translateY(12px) scale(0.98);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    
-    .modal-overlay.active .modal-box {
-      transform: translateY(0) scale(1);
-    }
-    
-    .modal-box::-webkit-scrollbar { width: 5px; }
-    .modal-box::-webkit-scrollbar-thumb { background: #ddd8d2; border-radius: 4px; }
-    
-    .modal-box h3 {
-      font-family: 'Playfair Display', Georgia, serif;
-      margin-bottom: 1.4rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    
-    .form-group { margin-bottom: 1.05rem; }
-    
-    label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--gris-muted);
-    }
-    
-    input, textarea {
-      width: 100%;
-      padding: 0.72rem 0.95rem;
-      border: 1px solid var(--borde-fuerte);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      background: var(--fondo);
-      font-size: 0.9rem;
-      transition: var(--transicion);
-      outline: none;
-      color: var(--noche);
-    }
-    
-    input:focus, textarea:focus {
-      border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft);
-      background: var(--blanco);
-    }
-    
-    textarea { resize: vertical; height: 85px; }
-    
-    .btn-primary {
-      background: var(--cantera);
-      color: var(--blanco);
-      border: none;
-      width: 100%;
-      padding: 0.95rem;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: var(--transicion);
-      font-size: 0.95rem;
-      font-family: inherit;
-      letter-spacing: 0.01em;
-      box-shadow: 0 4px 14px -2px var(--cantera-glow);
-    }
-    
-    .btn-primary:hover {
-      background: var(--cantera-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px -2px var(--cantera-glow);
-    }
-    
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .file-upload-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 0.5rem;
-    }
-    
-    .btn-upload {
-      background: var(--gris-suave);
-      color: var(--noche);
-      border: 1px solid var(--borde-fuerte);
-      padding: 0.55rem 1rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-weight: 600;
-      transition: var(--transicion);
-      font-size: 0.8rem;
-      font-family: inherit;
-    }
-    
-    .btn-upload:hover {
-      background: var(--cantera);
-      color: var(--blanco);
-      border-color: var(--cantera);
-    }
-    
-    .divider-text {
-      text-align: center;
-      font-size: 0.68rem;
-      color: var(--gris-muted);
-      margin: 8px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-    
+    <style>
+        :root {
+            --bg-color: #FBF4F1;
+            --surface-color: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-main: #2D2422;
+            --text-muted: #7A6B67;
+            --accent-terracotta: #A64B2A;
+            --accent-terracotta-dark: #82381C;
+            --booking-blue: #003580;
+            --booking-blue-dark: #00224f;
+            --whatsapp-green: #25D366;
+            --whatsapp-green-dark: #1EBE5D;
+            --google-sheets-green: #0F9D58;
+            --border-color: rgba(166, 75, 42, 0.12);
+            --shadow-soft: 0 10px 30px rgba(45, 36, 34, 0.04);
+            --shadow-hover: 0 20px 40px rgba(166, 75, 42, 0.1);
+        }
 
-    /* ── Sparkle / Chispitas effect ── */
-    .sparkle-particle {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      border-radius: 50%;
-      will-change: transform, opacity;
-    }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .event-card {
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
 
-    .event-card.sparkle-burst {
-      animation: card-pulse 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+        #immersive-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    @keyframes card-pulse {
-      0% { transform: translateY(-6px) scale(1); }
-      40% { transform: translateY(-8px) scale(1.018); }
-      100% { transform: translateY(-6px) scale(1); }
-    }
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(166, 75, 42, 0.08) 0%, rgba(212, 163, 148, 0.04) 50%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(35px);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
 
-    /* ── Responsive ── */
-    @media (max-width: 680px) {
-      .container { padding: 0 1.1rem; }
-      .site-header { padding: 1.6rem 0 1.3rem; }
-      .brand-logo { height: 46px; }
-      .header-title h1 { font-size: 1.55rem; }
-      .toolbar-wrapper { padding: 0.9rem 0; margin-bottom: 1.6rem; }
-      .events-grid, .skeleton-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      .event-img-wrapper, .skeleton-img { height: 200px; }
-      .filter-btn { padding: 0.38rem 0.9rem; font-size: 0.74rem; }
-      .filter-scroll { display: none; }
-      .filter-select-wrap { display: block; }
-      .modal-box { padding: 1.75rem; border-radius: 20px; }
-      .results-count { min-width: auto; text-align: left; }
-    }
-  </style>
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-nav-home {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-nav-home:hover {
+            background-color: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        .admin-bar {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: var(--surface-color);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .admin-bar.active {
+            display: flex;
+        }
+
+        .btn-admin {
+            background: rgba(166, 75, 42, 0.05);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .sync-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--google-sheets-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-header h1 {
+            font-size: clamp(2.2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .controls-wrapper {
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-bar-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar-wrap input:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .search-bar-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .price-filter-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-terracotta);
+            color: var(--accent-terracotta);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border-color: var(--accent-terracotta);
+        }
+
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .hotel-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(166, 75, 42, 0.25);
+        }
+
+        .carousel-container {
+            position: relative;
+            height: 220px;
+            background: #F4EBE6;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
+
+        .price-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-terracotta);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .type-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(45, 36, 34, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hotel-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .hotel-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .hotel-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .hotel-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .meta-item i {
+            color: var(--accent-terracotta);
+            width: 16px;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .meta-item:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .hotel-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action.map {
+            background: rgba(166, 75, 42, 0.08);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+        }
+
+        .btn-action.map:hover {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+        }
+
+        .btn-action.web {
+            background: var(--text-main);
+            color: #ffffff;
+        }
+
+        .btn-action.web:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .btn-action.booking {
+            width: 100%;
+            background-color: var(--booking-blue);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 53, 128, 0.2);
+        }
+
+        .btn-action.booking:hover {
+            background-color: var(--booking-blue-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-action.whatsapp {
+            background-color: var(--whatsapp-green);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-action.whatsapp:hover {
+            background-color: var(--whatsapp-green-dark);
+            transform: translateY(-1px);
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-trigger {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--accent-terracotta);
+            background: rgba(166, 75, 42, 0.05);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 36, 34, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-top h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent-terracotta);
+            background: #ffffff;
+        }
+
+        .image-input-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .image-input-box input[type="text"] {
+            flex: 1;
+        }
+
+        .image-input-box input[type="file"] {
+            display: none;
+        }
+
+        .btn-upload-file {
+            background: rgba(166, 75, 42, 0.1);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(166, 75, 42, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-file:hover {
+            background: var(--accent-terracotta);
+            color: #fff;
+        }
+
+        .btn-modal-save {
+            background: var(--accent-terracotta);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-save:hover {
+            background: var(--accent-terracotta-dark);
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .hotels-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hotels-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body id="pageBody">
+<body>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand-container">
-        <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
-        <div class="header-title">
-          <span>Patrimonio y Tradición</span>
-          <h1>Cartelera de Eventos</h1>
-        </div>
-      </div>
-      <div class="admin-actions-group">
-        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
-        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
-      </div>
-    </div>
-  </header>
+    <canvas id="immersive-canvas"></canvas>
+    <div id="cursor-glow"></div>
 
-  <!-- Sticky Toolbar -->
-  <div class="toolbar-wrapper" id="toolbarWrapper">
     <div class="container">
-      <div class="toolbar" id="toolbar">
-        <div class="search-row">
-          <div class="search-box">
-            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar…  (ej. cine, octubre, jazz)" autocomplete="off">
-            <span class="search-icon">🔍</span>
-          </div>
-          <span class="results-count" id="resultsCount"></span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <main class="container" style="flex: 1; padding-bottom: 3rem;">
-    <div id="eventsContainer">
-      <div class="skeleton-grid" id="skeletonLoader">
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
-      </div>
-    </div>
-  </main>
-  
-  <footer>
-    <div class="container footer-inner">
-      <div class="footer-brand">Vive San Miguel de Allende &copy; 2026</div>
-      <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
-    </div>
-  </footer>
+        <header>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand">
+                <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
+                <span class="brand-name">Vive San Miguel</span>
+            </a>
+            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+        </header>
 
-  <!-- Modal Login -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-      <h3>Acceso Restringido</h3>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
-        <button type="submit" class="btn-primary">Ingresar</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Agregar / Editar Evento -->
-  <div class="modal-overlay" id="eventModal">
-    <div class="modal-box">
-      <h3 id="eventModalTitle">Nuevo Evento</h3>
-      <form onsubmit="handleSaveEvent(event)" id="eventForm">
-        <input type="hidden" id="editRowIndex" value="">
-        <div class="form-group"><label>Nombre del Evento</label><input type="text" id="inputName" required></div>
-        <div class="form-group"><label>Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
-        <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
-        <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
-        <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
-        <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https:// o www.ejemplo.com"></div>
-        
-        <div class="form-group">
-          <label>Imagen del Evento</label>
-          <div class="file-upload-wrapper">
-            <button type="button" class="btn-upload" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
-            <input type="file" id="inputFile" accept="image/*" style="display: none;" onchange="processImageUpload(event)">
-            <span id="fileNameDisplay" style="font-size: 0.8rem; color: var(--gris-muted);">Sin archivo</span>
-          </div>
-          <div class="divider-text">— o ingresa la url —</div>
-          <input type="text" id="inputImg" placeholder="https://..." required>
-          <img id="imgPreview" style="display:none; width:100%; margin-top:12px; border-radius:12px; max-height: 220px; object-fit: cover;">
+        <div class="admin-bar" id="adminControls">
+            <button class="btn-admin" onclick="openAddHotelModal()" style="background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3);">➕ Agregar Hospedaje</button>
+            <button class="btn-admin" onclick="syncWithGoogleSheets()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">🔄 Sincronizar Google Sheets</button>
+            <button class="btn-admin" onclick="downloadHotelsTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleHotelsExcelUpload(event)">
+            <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
+            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
-        <div class="form-group"><label>Descripción</label><textarea id="inputDesc" required></textarea></div>
-        <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
-      </form>
+        <div class="section-header">
+            <h1>Hospedaje, Hoteles y Glamping</h1>
+            <p>Encuentra estancias excepcionales, haciendas coloniales, hoteles boutique y experiencias únicas de glamping bajo las estrellas.</p>
+        </div>
+
+        <div class="controls-wrapper">
+            <div class="search-bar-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Busca por nombre, tipo o características..." oninput="handleSearch()">
+            </div>
+            <div class="price-filter-wrap" id="priceFilters">
+                <button class="filter-btn active" onclick="setPriceFilter('all')">Todos</button>
+                <button class="filter-btn" onclick="setPriceFilter('$')">$ (Económico)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$')">$$ (Moderado)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$')">$$$ (Alto)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$')">$$$$ (Lujo)</button>
+                <button class="filter-btn" onclick="setPriceFilter('$$$$$')">$$$$$ (Exclusivo)</button>
+            </div>
+        </div>
+
+        <div class="hotels-grid" id="hotelsGridContainer"></div>
+
+        <footer>
+            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
+        </footer>
+
     </div>
-  </div>
 
-  <script>
-    const AUTH_USER = "vivesanmiguel";
-    const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJA0jgInoZS3hrtKhCAG-NlsQWOxNJnRe_Drnk6Lz_gzaFmsiFDHxBL9XKprTnvClr/exec";
-    
-    let globalEvents = [];
-    let isEditMode = false;
-    let searchQuery = '';
+    <!-- Modales -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Acceso Restringido</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usernameInput" required placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passwordInput" required placeholder="Contraseña">
+                </div>
+                <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
+                <button type="submit" class="btn-modal-save">Ingresar</button>
+            </form>
+        </div>
+    </div>
 
-    const toolbarWrapper = document.getElementById('toolbarWrapper');
-    window.addEventListener('scroll', () => {
-      toolbarWrapper.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3 id="editModalTitle">Editar Hospedaje</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form onsubmit="saveHotelForm(event)">
+                <input type="hidden" id="editHotelKey">
+                <div class="input-group">
+                    <label>Nombre del Lugar</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>Tipo de Hospedaje</label>
+                    <input type="text" id="editType" required placeholder="Ej. Glamping, Hotel Boutique, Lujo...">
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="editDesc" rows="3" required placeholder="Breve descripción del lugar..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Rango de Precio</label>
+                    <input type="text" id="editPrice" required placeholder="Ej. $$$">
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="editPhone" required>
+                </div>
+                <div class="input-group">
+                    <label>Dirección Escrita</label>
+                    <input type="text" id="editAddress" required placeholder="Ej. Carretera San Miguel - Dolores Km 10">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Google Maps (URL)</label>
+                    <input type="text" id="editMaps" required>
+                </div>
+                <div class="input-group">
+                    <label>Sitio Web (URL)</label>
+                    <input type="text" id="editWeb" required placeholder="Si no tiene, poner #">
+                </div>
+                <div class="input-group">
+                    <label>Enlace Booking.com (Opcional - URL)</label>
+                    <input type="text" id="editBooking" placeholder="Dejar en blanco si no tiene">
+                </div>
+                <div class="input-group">
+                    <label>Enlace WhatsApp (Opcional - URL)</label>
+                    <input type="text" id="editWhatsapp" placeholder="Dejar en blanco si no tiene">
+                </div>
 
-    function sanitizeUrl(url) {
-      if (!url) return '';
-      let clean = String(url).trim();
-      if (clean === '' || clean.toLowerCase() === 'nan' || clean.toLowerCase() === 'undefined' || clean.length < 4) return '';
-      if (!/^https?:\/\//i.test(clean)) clean = 'https://' + clean;
-      try { new URL(clean); return clean; } catch (e) { return ''; }
-    }
+                <div class="input-group">
+                    <label>Foto 1 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg1" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg1" accept="image/*" onchange="convertImageFile(event, 'editImg1')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg1').click()">📁 Subir</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Foto 2 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg2" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg2" accept="image/*" onchange="convertImageFile(event, 'editImg2')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg2').click()">📁 Subir</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Foto 3 (URL o Subir Archivo)</label>
+                    <div class="image-input-box">
+                        <input type="text" id="editImg3" placeholder="https://... o sube archivo" required>
+                        <input type="file" id="fileImg3" accept="image/*" onchange="convertImageFile(event, 'editImg3')">
+                        <button type="button" class="btn-upload-file" onclick="document.getElementById('fileImg3').click()">📁 Subir</button>
+                    </div>
+                </div>
 
-    function processImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      document.getElementById('fileNameDisplay').textContent = file.name;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const MAX = 1000;
-          let w = img.width, h = img.height;
-          if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
-          else { if (h > MAX) { w *= MAX / h; h = MAX; } }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          document.getElementById('inputImg').value = dataUrl;
-          const preview = document.getElementById('imgPreview');
-          preview.src = dataUrl;
-          preview.style.display = 'block';
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
 
-    document.getElementById('inputImg').addEventListener('input', function(e) {
-      const preview = document.getElementById('imgPreview');
-      if (e.target.value && !e.target.value.startsWith('data:image')) {
-        preview.src = parseCloudImageUrl(e.target.value);
-        preview.style.display = 'block';
-      } else if (!e.target.value) {
-        preview.style.display = 'none';
-      }
-    });
+    <!-- FORMULARIO OCULTO PARA ENVÍO INVISIBLE A GOOGLE SHEETS -->
+    <iframe name="hidden_iframe_hotels" id="hidden_iframe_hotels" style="display:none;"></iframe>
+    <form id="sheetsSyncFormHotels" action="https://script.google.com/macros/s/AKfycbyiOPIfRtyrjaUPPYO1LmWXkXL25IKj5fttNyx9m_XJEobWe2wn8CqJLTIYPRAybhro-w/exec" method="POST" target="hidden_iframe_hotels" style="display:none;">
+        <input type="hidden" name="payload" id="formPayloadInputHotels">
+    </form>
 
-    function parseCloudImageUrl(url) {
-      if (!url) return '';
-      let cleanUrl = String(url).trim();
-      if (cleanUrl.includes('drive.google.com')) {
-        let fileId = '';
-        if (cleanUrl.includes('/file/d/')) fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
-        else if (cleanUrl.includes('id=')) fileId = new URLSearchParams(cleanUrl.split('?')[1]).get('id');
-        if (fileId) return 'https://lh3.googleusercontent.com/d/' + fileId + '=s800';
-      }
-      return cleanUrl;
-    }
+    <script>
+        const AUTH_USER = "vivesanmiguel";
+        const AUTH_PASS = "c4rl0s1107";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiOPIfRtyrjaUPPYO1LmWXkXL25IKj5fttNyx9m_XJEobWe2wn8CqJLTIYPRAybhro-w/exec";
 
-    function formatDateToSpanish(dateString) {
-      if (!dateString) return 'Fecha por confirmar';
-      const cleanStr = String(dateString).trim();
-      if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
-      try {
-        let date;
-        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-          const p = cleanStr.split('-');
-          date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (cleanStr.includes('T') && cleanStr.includes('Z')) {
-          date = new Date(cleanStr);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        } else {
-          date = new Date(cleanStr);
+        let cloudHotelsCache = [];
+
+        let currentPriceFilter = 'all';
+        let currentEditingKey = null;
+
+        function setPriceFilter(price) {
+            currentPriceFilter = price;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderHotels(document.getElementById('searchInput').value);
         }
-        if (isNaN(date.getTime())) return cleanStr;
-        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
-        let f = date.toLocaleDateString('es-ES', opts);
-        return f.charAt(0).toUpperCase() + f.slice(1);
-      } catch (e) { return cleanStr; }
-    }
 
-    function formatDateShort(dateString) {
-      if (!dateString) return '';
-      var cleanStr = String(dateString).trim();
-      if (!cleanStr || cleanStr.includes('1899')) return '';
-      try {
-        var date;
-        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-          var p = cleanStr.split('-');
-          date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        } else {
-          date = new Date(cleanStr);
+        function initApp() {
+            const localData = localStorage.getItem('sma_hotels_data');
+            if (localData) {
+                try {
+                    cloudHotelsCache = JSON.parse(localData);
+                } catch(e) {}
+            }
+            renderHotels('');
         }
-        if (isNaN(date.getTime())) return '';
-        var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-        var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-        return dias[date.getUTCDay()] + ' ' + date.getUTCDate() + ' ' + meses[date.getUTCMonth()];
-      } catch (e) { return ''; }
-    }
 
-    function toDateInputValue(rawDate) {
-      if (!rawDate) return '';
-      const cleanStr = String(rawDate).trim();
-      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) return cleanStr;
-      try {
-        let date;
-        if (cleanStr.includes('T')) date = new Date(cleanStr);
-        else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        else date = new Date(cleanStr);
-        if (isNaN(date.getTime())) return '';
-        return date.getUTCFullYear() + '-' + String(date.getUTCMonth()+1).padStart(2,'0') + '-' + String(date.getUTCDate()).padStart(2,'0');
-      } catch (e) { return ''; }
-    }
+        function syncWithGoogleSheets() {
+            const statusEl = document.getElementById('syncStatus');
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+            
+            pushDataToGoogleSheets(cloudHotelsCache);
+            setTimeout(() => {
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                alert('¡Sincronización completada!');
+            }, 1000);
+        }
 
-    function getCategoryClass(cat) {
-      const c = (cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      if (c.includes('cultura') || c.includes('tradicion')) return 'cat-cultura';
-      if (c.includes('musica') || c.includes('jazz') || c.includes('concierto')) return 'cat-musica';
-      if (c.includes('arte') || c.includes('exposicion') || c.includes('galeria')) return 'cat-arte';
-      if (c.includes('gastro') || c.includes('comida') || c.includes('vino') || c.includes('culinaria')) return 'cat-gastronomia';
-      if (c.includes('teatro') || c.includes('danza') || c.includes('espectaculo')) return 'cat-teatro';
-      return 'cat-general';
-    }
+        function pushDataToGoogleSheets(hotelsArray) {
+            cloudHotelsCache = [...hotelsArray];
+            localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
+            renderHotels(document.getElementById('searchInput').value);
 
-    async function fetchGoogleSheetData() {
-      try {
-        const response = await fetch(WEB_APP_URL);
-        if (!response.ok) throw new Error('Error de conexión');
-        const data = await response.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
-        
-        globalEvents = data.map(function(item, index) {
-          const findKey = function(possibleKeys) {
-            const found = Object.keys(item).find(function(k) {
-              const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-              return possibleKeys.some(function(pk) { return cleanK.includes(pk); });
+            const payload = cloudHotelsCache.map(item => ({
+                key: item.key,
+                name: item.name,
+                type: item.type,
+                desc: item.desc,
+                price: item.price,
+                phone: item.phone,
+                address: item.address,
+                maps: item.maps,
+                web: item.web,
+                booking: item.booking || '',
+                whatsapp: item.whatsapp || '',
+                images: Array.isArray(item.images) ? JSON.stringify(item.images) : item.images
+            }));
+
+            document.getElementById('formPayloadInputHotels').value = JSON.stringify(payload);
+            document.getElementById('sheetsSyncFormHotels').submit();
+        }
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const controls = document.getElementById('adminControls');
+            if (isLogged) controls.classList.add('active');
+            else controls.classList.remove('active');
+        }
+
+        function handleSearch() {
+            renderHotels(document.getElementById('searchInput').value);
+        }
+
+        function renderHotels(searchQuery = '') {
+            const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const container = document.getElementById('hotelsGridContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let filtered = cloudHotelsCache;
+
+            if (currentPriceFilter !== 'all') {
+                filtered = filtered.filter(h => h.price === currentPriceFilter);
+            }
+
+            if (searchQuery && searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(h => h.name.toLowerCase().includes(q) || h.type.toLowerCase().includes(q) || h.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No hay registros cargados. Sube tu Excel masivo desde el panel de administración o agrega un hospedaje.</p>`;
+                return;
+            }
+
+            filtered.forEach(h => {
+                let imgList = h.images;
+                if (typeof imgList === 'string') {
+                    try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+                }
+                if (!Array.isArray(imgList) || imgList.length === 0) {
+                    imgList = ['https://images.unsplash.com/photo-1566073771259-6a8506099945'];
+                }
+
+                let slidesHtml = '';
+                imgList.forEach((img, idx) => {
+                    const cleanImg = String(img).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${h.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'"></div>`;
+                });
+
+                const webButtonHtml = (h.web && h.web !== '#') ? `
+                    <a href="${h.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
+                        <i class="fas fa-globe"></i> Sitio Web
+                    </a>
+                ` : '';
+
+                const bookingButtonHtml = (h.booking && h.booking.trim() !== '') ? `
+                    <a href="${h.booking}" target="_blank" rel="noopener noreferrer" class="btn-action booking">
+                        <i class="fas fa-bed"></i> Reservar
+                    </a>
+                ` : '';
+
+                const whatsappButtonHtml = (h.whatsapp && h.whatsapp.trim() !== '') ? `
+                    <a href="${h.whatsapp}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                ` : '';
+
+                container.innerHTML += `
+                    <div class="hotel-card" id="card-${h.key}">
+                        <div class="carousel-container">
+                            <span class="type-badge">${h.type}</span>
+                            <span class="price-badge">${h.price}</span>
+                            <div class="carousel-slides" id="slides-${h.key}">
+                                ${slidesHtml}
+                            </div>
+                            ${imgList.length > 1 ? `
+                                <button class="carousel-btn prev" onclick="moveSlide('${h.key}', -1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="carousel-btn next" onclick="moveSlide('${h.key}', 1)"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                        </div>
+                        <div class="hotel-body">
+                            <div>
+                                <h3 class="hotel-name">${h.name}</h3>
+                                <p class="hotel-desc">${h.desc}</p>
+                                <div class="hotel-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-phone-alt"></i> <span>${h.phone}</span>
+                                    </div>
+                                    <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${h.address}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="hotel-actions">
+                                    <div class="action-row">
+                                        <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                            <i class="fas fa-directions"></i> Mapa
+                                        </a>
+                                        ${webButtonHtml}
+                                    </div>
+                                    <div class="action-row">
+                                        ${bookingButtonHtml}
+                                        ${whatsappButtonHtml}
+                                    </div>
+                                </div>
+                                ${isLogged ? `
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <button class="btn-admin" style="flex: 1;" onclick="openEditHotelModal('${h.key}')">✏️ Editar</button>
+                                        <button class="btn-admin" style="flex: 1; border-color: #c0392b; color: #c0392b;" onclick="deleteHotel('${h.key}')">🗑️ Eliminar</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
-            return found ? String(item[found] || '').trim() : '';
-          };
-          const rawDateValue = findKey(['date', 'fecha']);
-          const rawImgValue = findKey(['img', 'imagen']);
-          const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
-          const rawWebLink = findKey(['web', 'link', 'enlace', 'url']);
-
-          return {
-            rowIndex: index + 2,
-            name: findKey(['name', 'nombre']) || 'Evento',
-            category: findKey(['category', 'categoria']) || 'General',
-            rawDate: rawDateValue,
-            date: formatDateToSpanish(rawDateValue),
-            shortDate: formatDateShort(rawDateValue),
-            time: findKey(['time', 'hora']) || 'Todo el día',
-            price: findKey(['price', 'costo']) || 'Entrada Libre',
-            location: locationName,
-            mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationName + ', San Miguel de Allende, Gto.'),
-            link: sanitizeUrl(rawWebLink),
-            img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-            rawImg: rawImgValue,
-            desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
-          };
-        });
-
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        var activeEvents = globalEvents.filter(function(ev) {
-          if (!ev.rawDate) return true;
-          try {
-            var eventDate = /^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)
-              ? new Date(ev.rawDate.split('-')[0], ev.rawDate.split('-')[1] - 1, ev.rawDate.split('-')[2])
-              : new Date(ev.rawDate);
-            if (isNaN(eventDate.getTime())) return true;
-            eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today;
-          } catch (e) { return true; }
-        });
-        activeEvents.sort(function(a, b) {
-          return (!a.rawDate ? 1 : !b.rawDate ? -1 : new Date(a.rawDate) - new Date(b.rawDate));
-        });
-        globalEvents = activeEvents;
-        
-        document.getElementById('toolbar').classList.add('visible');
-        applyFilters();
-      } catch (error) {
-        document.getElementById('eventsContainer').innerHTML = 
-          '<div class="empty-state"><span class="empty-state-icon">📭</span><p>No se pudieron cargar los eventos en este momento. Intenta de nuevo más tarde.</p></div>';
-      }
-    }
-
-    function getUniqueCategories() {
-      var cats = new Set();
-      globalEvents.forEach(function(ev) {
-        var c = (ev.category || 'General').trim();
-        if (c) cats.add(c);
-      });
-      return Array.from(cats).sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    }
-
-    function getMonthNames(rawDate) {
-      if (!rawDate) return [];
-      var cleanStr = String(rawDate).trim();
-      try {
-        var date;
-        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-          var p = cleanStr.split('-');
-          date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        } else {
-          date = new Date(cleanStr);
         }
-        if (isNaN(date.getTime())) return [];
-        var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-        var mes = meses[date.getUTCMonth()];
-        var num = String(date.getUTCMonth() + 1);
-        var numPad = num.padStart(2, '0');
-        // también abreviaciones comunes
-        var abbr = mes.substring(0, 3); // ene, feb, mar...
-        return [mes, abbr, num, numPad];
-      } catch (e) { return []; }
-    }
 
-    function getFilteredEvents() {
-      if (!searchQuery) return globalEvents;
-      var q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-      return globalEvents.filter(function(ev) {
-        var name = (ev.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var desc = (ev.desc || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var cat = (ev.category || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var dateStr = (ev.date || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var months = getMonthNames(ev.rawDate);
-        var monthHit = months.some(function(m) {
-          return m.normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q) || q.includes(m.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-        });
-        return (
-          name.includes(q) ||
-          loc.includes(q) ||
-          desc.includes(q) ||
-          cat.includes(q) ||
-          dateStr.includes(q) ||
-          monthHit
-        );
-      });
-    }
+        const slideIndices = {};
+        function moveSlide(key, direction) {
+            if (!slideIndices[key]) slideIndices[key] = 0;
+            const h = cloudHotelsCache.find(el => el.key === key);
+            if (!h || !h.images) return;
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
 
-    function applyFilters() {
-      var filtered = getFilteredEvents();
-      var countEl = document.getElementById('resultsCount');
-      countEl.textContent = filtered.length === 0 ? '0 eventos'
-        : filtered.length === 1 ? '1 evento'
-        : filtered.length + ' eventos';
-      renderEvents(filtered);
-    }
+            slideIndices[key] += direction;
+            if (slideIndices[key] >= imgList.length) slideIndices[key] = 0;
+            if (slideIndices[key] < 0) slideIndices[key] = imgList.length - 1;
 
-    function checkSession() {
-      var isLogged = localStorage.getItem('sma_admin_logged') === 'true';
-      document.body.classList.toggle('admin-logged', isLogged);
-      document.getElementById('lockLabel').innerText = isLogged ? 'Cerrar Sesión' : 'Acceso Admin';
-    }
-
-    function renderEvents(eventsToShow) {
-      var container = document.getElementById('eventsContainer');
-      var list = eventsToShow || globalEvents;
-      
-      if (!list.length) {
-        var msg = searchQuery
-          ? 'No hay eventos que coincidan con tu búsqueda.'
-          : 'No hay eventos vigentes disponibles por el momento.';
-        container.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🔎</span><p>' + msg + '</p></div>';
-        return;
-      }
-      
-      var html = '';
-      list.forEach(function(ev) {
-        var webButton = (ev.link && ev.link.length > 5)
-          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">Sitio Oficial / Boletos ↗</a>'
-          : '';
-        var catClass = getCategoryClass(ev.category);
-        
-        html += 
-          '<article class="event-card">' +
-            '<div class="event-img-wrapper">' +
-              '<span class="event-category ' + catClass + '">' + ev.category + '</span>' +
-              '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
-              '<div class="admin-card-actions">' +
-                '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
-                '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ', \'' + ev.name.replace(/'/g, "\\'") + '\')" title="Eliminar">🗑️</button>' +
-              '</div>' +
-              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
-            '</div>' +
-            '<div class="event-body">' +
-              '<h3 class="event-name">' + ev.name + '</h3>' +
-              '<div class="event-key-info">' +
-                '<span class="event-key-chip">📅 ' + ev.date + '</span>' +
-                '<span class="event-key-chip">🕒 ' + ev.time + '</span>' +
-                '<span class="event-key-chip price">💰 ' + ev.price + '</span>' +
-              '</div>' +
-              '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
-              '<p class="event-desc">' + ev.desc + '</p>' +
-              webButton +
-            '</div>' +
-          '</article>';
-      });
-      container.innerHTML = '<div class="events-grid">' + html + '</div>';
-      attachSparkleListeners();
-    }
-
-    function openLoginModal() {
-      if (localStorage.getItem('sma_admin_logged') === 'true') {
-        localStorage.removeItem('sma_admin_logged');
-        checkSession();
-      } else {
-        document.getElementById('loginModal').classList.add('active');
-      }
-    }
-
-    function resetModal() {
-      document.getElementById('eventForm').reset();
-      document.getElementById('imgPreview').style.display = 'none';
-      document.getElementById('fileNameDisplay').textContent = 'Sin archivo';
-    }
-
-    function openEventModal() {
-      isEditMode = false;
-      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento';
-      document.getElementById('submitEventBtn').textContent = 'Guardar Evento';
-      document.getElementById('editRowIndex').value = '';
-      resetModal();
-      document.getElementById('eventModal').classList.add('active');
-    }
-
-    function openEditModal(rowIndex) {
-      var event = globalEvents.find(function(ev) { return ev.rowIndex === rowIndex; });
-      if (!event) return;
-      isEditMode = true;
-      resetModal();
-      document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
-      document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
-      document.getElementById('editRowIndex').value = rowIndex;
-      
-      document.getElementById('inputName').value = event.name || '';
-      document.getElementById('inputCategory').value = event.category || '';
-      document.getElementById('inputDate').value = toDateInputValue(event.rawDate);
-      document.getElementById('inputTime').value = event.time || '';
-      document.getElementById('inputPrice').value = event.price || '';
-      document.getElementById('inputLocation').value = event.location || '';
-      document.getElementById('inputWeb').value = event.link || '';
-      document.getElementById('inputImg').value = event.rawImg || event.img || '';
-      if (event.rawImg || event.img) {
-        document.getElementById('imgPreview').src = parseCloudImageUrl(event.rawImg || event.img);
-        document.getElementById('imgPreview').style.display = 'block';
-      }
-      document.getElementById('inputDesc').value = event.desc || '';
-      document.getElementById('eventModal').classList.add('active');
-    }
-    
-    function handleLogin(e) {
-      e.preventDefault();
-      if (document.getElementById('usernameInput').value === AUTH_USER &&
-          document.getElementById('passwordInput').value === AUTH_PASS) {
-        localStorage.setItem('sma_admin_logged', 'true');
-        document.getElementById('loginModal').classList.remove('active');
-        checkSession();
-      } else {
-        alert('Credenciales incorrectas');
-      }
-    }
-
-    async function handleSaveEvent(e) {
-      e.preventDefault();
-      var btn = document.getElementById('submitEventBtn');
-      var originalText = btn.innerText;
-      btn.innerText = isEditMode ? 'Guardando cambios…' : 'Publicando evento…';
-      btn.disabled = true;
-
-      var payload = {
-        action: isEditMode ? 'update' : 'add',
-        name: document.getElementById('inputName').value,
-        category: document.getElementById('inputCategory').value,
-        date: document.getElementById('inputDate').value,
-        time: document.getElementById('inputTime').value,
-        price: document.getElementById('inputPrice').value,
-        location: document.getElementById('inputLocation').value,
-        link: sanitizeUrl(document.getElementById('inputWeb').value),
-        img: document.getElementById('inputImg').value,
-        desc: document.getElementById('inputDesc').value
-      };
-      if (isEditMode) payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
-
-      try {
-        var response = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
-        var result = await response.json();
-        if (result.status === 'success') {
-          document.getElementById('eventModal').classList.remove('active');
-          searchQuery = '';
-          document.getElementById('searchInput').value = '';
-          fetchGoogleSheetData();
-        } else {
-          alert('Error: ' + result.message);
+            const slider = document.getElementById(`slides-${key}`);
+            if (slider) {
+                slider.style.transform = `translateX(-${slideIndices[key] * 100}%)`;
+            }
         }
-      } catch (err) {
-        alert('Hubo un problema de conexión al guardar.');
-      } finally {
-        btn.innerText = originalText;
-        btn.disabled = false;
-      }
-    }
 
-    async function handleDeleteEvent(rowIndex, eventName) {
-      if (!confirm('¿Eliminar definitivamente "' + eventName + '"?')) return;
-      try {
-        var response = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'delete', rowIndex: rowIndex })
-        });
-        var result = await response.json();
-        if (result.status === 'success') {
-          searchQuery = '';
-          document.getElementById('searchInput').value = '';
-          fetchGoogleSheetData();
-        } else {
-          alert('Error: ' + result.message);
+        function convertImageFile(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+            };
+            reader.readAsDataURL(file);
         }
-      } catch (err) {
-        alert('Fallo de conexión al eliminar.');
-      }
-    }
 
-
-    // ── Efecto de chispitas inmersivo al tocar un evento ──
-    function createSparkles(x, y, count) {
-      count = count || 18;
-      const colors = [
-        '#c45c4a', '#a84a3a', '#e07a5f', '#c48a1f',
-        '#d4a017', '#e8b84a', '#8f3d28', '#f4a261'
-      ];
-      
-      for (let i = 0; i < count; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'sparkle-particle';
-        
-        const size = 3 + Math.random() * 7;
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
-        const distance = 40 + Math.random() * 90;
-        const duration = 550 + Math.random() * 450;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const isStar = Math.random() > 0.55;
-        
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        particle.style.background = color;
-        particle.style.boxShadow = '0 0 ' + (size * 2.5) + 'px ' + color + ', 0 0 ' + (size * 5) + 'px ' + color;
-        
-        if (isStar) {
-          particle.style.borderRadius = '2px';
-          particle.style.transform = 'rotate(45deg)';
+        function openLoginModal() {
+            if (localStorage.getItem('sma_admin_logged') === 'true') {
+                if (confirm("¿Desea cerrar la sesión de administración?")) logoutAdmin();
+                return;
+            }
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginModal').classList.add('active');
         }
-        
-        document.body.appendChild(particle);
-        
-        const endX = Math.cos(angle) * distance;
-        const endY = Math.sin(angle) * distance - 20 - Math.random() * 30;
-        
-        const anim = particle.animate([
-          {
-            transform: isStar ? 'translate(0,0) scale(0.3) rotate(45deg)' : 'translate(0,0) scale(0.3)',
-            opacity: 1
-          },
-          {
-            transform: isStar
-              ? 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.2) rotate(45deg)'
-              : 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.15)',
-            opacity: 1,
-            offset: 0.35
-          },
-          {
-            transform: isStar
-              ? 'translate(' + endX + 'px,' + endY + 'px) scale(0) rotate(90deg)'
-              : 'translate(' + endX + 'px,' + endY + 'px) scale(0)',
-            opacity: 0
-          }
-        ], {
-          duration: duration,
-          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-          fill: 'forwards'
+
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('usernameInput').value === AUTH_USER && document.getElementById('passwordInput').value === AUTH_PASS) {
+                localStorage.setItem('sma_admin_logged', 'true');
+                closeLoginModal();
+                checkSession();
+                renderHotels(document.getElementById('searchInput').value);
+                alert('¡Sesión iniciada con éxito!');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sma_admin_logged');
+            checkSession();
+            renderHotels(document.getElementById('searchInput').value);
+            alert('Sesión cerrada.');
+        }
+
+        function openAddHotelModal() {
+            currentEditingKey = null;
+            document.getElementById('editModalTitle').innerText = 'Agregar Nuevo Hospedaje';
+            document.getElementById('editHotelKey').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editType').value = '';
+            document.getElementById('editDesc').value = '';
+            document.getElementById('editPrice').value = '$$$';
+            document.getElementById('editPhone').value = '';
+            document.getElementById('editAddress').value = '';
+            document.getElementById('editMaps').value = '';
+            document.getElementById('editWeb').value = '';
+            document.getElementById('editBooking').value = '';
+            document.getElementById('editWhatsapp').value = '';
+            document.getElementById('editImg1').value = '';
+            document.getElementById('editImg2').value = '';
+            document.getElementById('editImg3').value = '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function openEditHotelModal(key) {
+            const h = cloudHotelsCache.find(el => el.key === key);
+            if (!h) return;
+            currentEditingKey = key;
+            document.getElementById('editModalTitle').innerText = 'Editar Hospedaje';
+            document.getElementById('editHotelKey').value = key;
+            document.getElementById('editName').value = h.name;
+            document.getElementById('editType').value = h.type;
+            document.getElementById('editDesc').value = h.desc;
+            document.getElementById('editPrice').value = h.price;
+            document.getElementById('editPhone').value = h.phone;
+            document.getElementById('editAddress').value = h.address;
+            document.getElementById('editMaps').value = h.maps;
+            document.getElementById('editWeb').value = h.web;
+            document.getElementById('editBooking').value = h.booking || '';
+            document.getElementById('editWhatsapp').value = h.whatsapp || '';
+            
+            let imgList = h.images;
+            if (typeof imgList === 'string') {
+                try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
+            }
+
+            document.getElementById('editImg1').value = (imgList && imgList[0]) ? imgList[0] : '';
+            document.getElementById('editImg2').value = (imgList && imgList[1]) ? imgList[1] : '';
+            document.getElementById('editImg3').value = (imgList && imgList[2]) ? imgList[2] : '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
+
+        function saveHotelForm(e) {
+            e.preventDefault();
+            const hotelObj = {
+                key: currentEditingKey ? currentEditingKey : 'hotel_' + Math.random().toString(36).substring(2, 9),
+                name: document.getElementById('editName').value,
+                type: document.getElementById('editType').value,
+                desc: document.getElementById('editDesc').value,
+                price: document.getElementById('editPrice').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                maps: document.getElementById('editMaps').value,
+                web: document.getElementById('editWeb').value,
+                booking: document.getElementById('editBooking').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                images: [
+                    document.getElementById('editImg1').value,
+                    document.getElementById('editImg2').value,
+                    document.getElementById('editImg3').value
+                ].filter(img => img && img.trim() !== '')
+            };
+
+            let updatedList = [...cloudHotelsCache];
+            if (currentEditingKey) {
+                const index = updatedList.findIndex(el => el.key === currentEditingKey);
+                if (index !== -1) updatedList[index] = hotelObj;
+            } else {
+                updatedList.unshift(hotelObj);
+            }
+
+            pushDataToGoogleSheets(updatedList);
+            closeEditModal();
+            alert('¡Guardado y sincronizado con Google Sheets exitosamente!');
+        }
+
+        function deleteHotel(key) {
+            if (confirm("¿Estás seguro de eliminar este hospedaje?")) {
+                let updatedList = cloudHotelsCache.filter(h => h.key !== key);
+                pushDataToGoogleSheets(updatedList);
+            }
+        }
+
+        function downloadHotelsTemplate() {
+            const flatData = cloudHotelsCache.map(el => ({
+                key: el.key,
+                name: el.name,
+                type: el.type,
+                desc: el.desc,
+                price: el.price,
+                phone: el.phone,
+                address: el.address,
+                maps: el.maps,
+                web: el.web,
+                booking: el.booking || '',
+                whatsapp: el.whatsapp || '',
+                images: Array.isArray(el.images) ? JSON.stringify(el.images) : el.images
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(flatData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Hospedaje");
+            XLSX.writeFile(workbook, "plantilla_hospedaje_vivesanmiguel.xlsx");
+        }
+
+        function handleHotelsExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dataArr = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataArr, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        let updatedList = json.map(row => ({
+                            key: row.key || 'hotel_' + Math.random().toString(36).substring(2, 9),
+                            name: row.name || row.nombre || '',
+                            type: row.type || row.categoria || '',
+                            desc: row.desc || row.descripcion || '',
+                            price: row.price || row.precio || '$$$',
+                            phone: row.phone || row.telefono || '',
+                            address: row.address || row.direccion || '',
+                            maps: row.maps || row.direccion_maps || '#',
+                            web: row.web || row.sitio_web || '#',
+                            booking: row.booking || row.enlace_booking || '',
+                            whatsapp: row.whatsapp || row.wa || '',
+                            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : ['https://images.unsplash.com/photo-1566073771259-6a8506099945']
+                        }));
+                        pushDataToGoogleSheets(updatedList);
+                        alert('¡Importación masiva completada y enviada a Google Sheets!');
+                    }
+                } catch (err) {
+                    alert('Error al procesar el archivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            initApp();
         });
-        
-        anim.onfinish = function() { particle.remove(); };
-      }
-    }
 
-    function triggerCardSparkle(e, card) {
-      // No disparar si se hizo clic en un botón admin o enlace
-      if (e.target.closest('.admin-card-actions') || e.target.closest('a')) return;
-      
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX || (rect.left + rect.width / 2);
-      const y = e.clientY || (rect.top + rect.height / 2);
-      
-      createSparkles(x, y, 20);
-      
-      card.classList.remove('sparkle-burst');
-      void card.offsetWidth; // reflow
-      card.classList.add('sparkle-burst');
-      setTimeout(function() { card.classList.remove('sparkle-burst'); }, 500);
-    }
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let glowX = mouseX, glowY = mouseY;
 
-    function attachSparkleListeners() {
-      document.querySelectorAll('.event-card').forEach(function(card) {
-        if (card.dataset.sparkleBound) return;
-        card.dataset.sparkleBound = '1';
-        
-        // pointerdown cubre mouse + touch sin duplicar
-        card.addEventListener('pointerdown', function(e) {
-          // Solo primario (clic izquierdo / primer dedo)
-          if (e.button !== 0 && e.button !== undefined) return;
-          triggerCardSparkle(e, card);
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
-      });
-    }
 
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
 
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      searchQuery = e.target.value.trim();
-      applyFilters();
-    });
+        const canvas = document.getElementById('immersive-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
 
-    window.onclick = function(e) {
-      if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active');
-    };
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      checkSession();
-      fetchGoogleSheetData();
-    });
-  </script>
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 5;
+                this.vx = Math.random() * 0.4 - 0.2;
+                this.vy = Math.random() * 0.4 - 0.2;
+                this.color = 'rgba(166, 75, 42, 0.18)';
+            }
+            update() {
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDistance = 150;
+                if (distance < maxDistance) {
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
+                }
+                this.baseX += this.vx;
+                this.baseY += this.vy;
+                if (this.baseX < 0 || this.baseX > width) this.baseX = Math.random() * width;
+                if (this.baseY < 0 || this.baseY > height) this.baseY = Math.random() * height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
 </body>
 </html>
