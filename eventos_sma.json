@@ -78,139 +78,7 @@
     },
     {
         "titulo": "Música en Vivo",
-        "descripcion": "1:15 pm – 2:15 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "David Mendoza",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cine",
-        "descripcion": "2:00 pm – 3:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cine Bacco",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Cent'Anni - Casa de entretenimiento EAT en vivo",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Crazy Horse Promotions",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Raindog Lounge, Cantina & Terraza",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Steven Jaymes",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Pila Seca Social Club",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Carlos Vargas",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Danza",
-        "descripcion": "7:00 pm – 11:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Johnny’s Piano Bar",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Alain Creek",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "descripcion": "6:30 pm – 7:30 pm",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
         "lugar": "San Miguel de Allende, Gto.",
@@ -242,8 +110,52 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
+        "titulo": "Cent'Anni - Casa de entretenimiento EAT en vivo",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "David Mendoza",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Raindog Lounge, Cantina & Terraza",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
         "titulo": "Univerciudad UG Casa El Nigromante",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Cine",
+        "descripcion": "5:15 pm – 6:15 pm",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
         "lugar": "San Miguel de Allende, Gto.",
@@ -277,6 +189,17 @@
     {
         "titulo": "Liah Alonso",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Danza",
+        "descripcion": "5:30 pm – 6:30 pm",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
         "lugar": "San Miguel de Allende, Gto.",
@@ -331,6 +254,17 @@
     },
     {
         "titulo": "Gabriel Hernández",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Alain Creek",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
@@ -418,7 +352,51 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
+        "titulo": "Paprika Restaurante and Music House",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "The Last Chance Band",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Johnny’s Piano Bar",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
         "titulo": "Biblioteca Pública AC",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Steven Jaymes",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
@@ -462,29 +440,7 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
-        "titulo": "Clásica / Ópera",
-        "descripcion": "5:00 pm – 7:00 pm",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "St. Paul’s Anglican / Episcopal Church",
-        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
-        "fecha": "Próximamente",
-        "mes": "Agenda Cultural",
-        "lugar": "San Miguel de Allende, Gto.",
-        "costo": "Consultar sitio",
-        "contactoText": "🌐 Ver en San Miguel Live",
-        "contactoUrl": "https://sanmiguellive.com/es",
-        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        "titulo": "Pro Musica",
+        "titulo": "Crazy Horse Promotions",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
@@ -517,6 +473,28 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
+        "titulo": "Clásica / Ópera",
+        "descripcion": "5:00 pm – 7:00 pm",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Jair Cabrera",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
         "titulo": "Shago Fraga",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
@@ -529,6 +507,28 @@
     },
     {
         "titulo": "Elihú “Blue Beard”",
+        "descripcion": "Evento cultural destacado en San Miguel de Allende.",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "Festivales",
+        "descripcion": "10:00 am – 3:30 pm",
+        "fecha": "Próximamente",
+        "mes": "Agenda Cultural",
+        "lugar": "San Miguel de Allende, Gto.",
+        "costo": "Consultar sitio",
+        "contactoText": "🌐 Ver en San Miguel Live",
+        "contactoUrl": "https://sanmiguellive.com/es",
+        "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "titulo": "El Sindicato, Centro Cultural Comunitario",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
@@ -561,7 +561,7 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
-        "titulo": "Foro El Obraje",
+        "titulo": "Josué Tacoronte – Guitarrista Flamenco y Clásico",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
@@ -572,7 +572,7 @@
         "imagen": "https://images.unsplash.com/photo-1512813084011-2eb2659174df?auto=format&fit=crop&w=800&q=80"
     },
     {
-        "titulo": "Josué Tacoronte – Guitarrista Flamenco y Clásico",
+        "titulo": "Foro El Obraje",
         "descripcion": "Evento cultural destacado en San Miguel de Allende.",
         "fecha": "Próximamente",
         "mes": "Agenda Cultural",
