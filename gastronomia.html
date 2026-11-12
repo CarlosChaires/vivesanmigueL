@@ -857,32 +857,46 @@
         let currentFilter = 'todos';
         let currentEditingKey = null;
 
-        // Carga inmediata desde localStorage para evitar esperas y sincronización silenciosa en fondo
+        // Carga INSTANTÁNEA desde caché local + sincronización en segundo plano
         function initApp() {
             const localData = localStorage.getItem('sma_restaurants_data');
             if (localData) {
                 try {
                     cloudRestaurantsCache = JSON.parse(localData);
                     renderRestaurants(currentFilter, '');
-                } catch(e) {}
+                } catch(e) {
+                    cloudRestaurantsCache = [];
+                    const container = document.getElementById('restaurantsGridContainer');
+                    if (container) {
+                        container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">Cargando restaurantes...</p>`;
+                    }
+                }
+            } else {
+                const container = document.getElementById('restaurantsGridContainer');
+                if (container) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">Cargando restaurantes...</p>`;
+                }
             }
+            // Sincronización en segundo plano (no bloquea la interfaz)
             fetchRestaurantsFromCloud();
         }
 
         async function fetchRestaurantsFromCloud() {
             const statusEl = document.getElementById('syncStatus');
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Actualizando...`;
+
             try {
-                if (statusEl && cloudRestaurantsCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const response = await fetch(GOOGLE_SCRIPT_URL, { cache: 'no-store' });
                 const cloudData = await response.json();
                 
                 if (Array.isArray(cloudData) && cloudData.length > 0) {
-                    cloudRestaurantsCache = cloudData.map(item => {
+                    const newCache = cloudData.map(item => {
                         let imgs = item.images;
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
                         }
                         if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1555396273-367ea4eb4db5'];
+                        imgs = imgs.filter(i => i && String(i).trim() !== '');
 
                         return {
                             key: item.key || 'rest_' + Math.random().toString(36).substring(2, 7),
@@ -899,20 +913,33 @@
                             images: imgs
                         };
                     });
-                    localStorage.setItem('sma_restaurants_data', JSON.stringify(cloudRestaurantsCache));
-                    renderRestaurants(currentFilter, document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+
+                    // Solo re-renderiza si los datos realmente cambiaron
+                    const oldJson = JSON.stringify(cloudRestaurantsCache);
+                    const newJson = JSON.stringify(newCache);
+                    if (oldJson !== newJson) {
+                        cloudRestaurantsCache = newCache;
+                        localStorage.setItem('sma_restaurants_data', newJson);
+                        renderRestaurants(currentFilter, document.getElementById('searchInput')?.value || '');
+                    }
                 }
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
             } catch (error) {
                 console.warn("Usando respaldo local por error de red:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-wifi"></i> Modo offline`;
             }
         }
 
         function pushDataToGoogleSheets(restaurantsArray) {
+            // Protección: no sobrescribir la nube con un arreglo vacío si ya hay datos
+            if ((!restaurantsArray || restaurantsArray.length === 0) && cloudRestaurantsCache.length > 0) {
+                console.warn("Intento de enviar datos vacíos bloqueado por seguridad.");
+                return;
+            }
+
             cloudRestaurantsCache = [...restaurantsArray];
             localStorage.setItem('sma_restaurants_data', JSON.stringify(cloudRestaurantsCache));
-            renderRestaurants(currentFilter, document.getElementById('searchInput').value);
+            renderRestaurants(currentFilter, document.getElementById('searchInput')?.value || '');
 
             const statusEl = document.getElementById('syncStatus');
             if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
@@ -964,13 +991,16 @@
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('restaurantsGridContainer');
             if (!container) return;
-            container.innerHTML = '';
 
             let filtered = filter === 'todos' ? cloudRestaurantsCache : cloudRestaurantsCache.filter(r => r.type === filter);
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(r => r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q));
+                filtered = filtered.filter(r => 
+                    (r.name && r.name.toLowerCase().includes(q)) || 
+                    (r.type && r.type.toLowerCase().includes(q)) || 
+                    (r.desc && r.desc.toLowerCase().includes(q))
+                );
             }
 
             if (filtered.length === 0) {
@@ -978,7 +1008,10 @@
                 return;
             }
 
-            filtered.forEach(r => {
+            // Construimos todo el HTML de una sola vez (mucho más rápido que += en bucle)
+            let html = '';
+            for (let i = 0; i < filtered.length; i++) {
+                const r = filtered[i];
                 let imgList = r.images;
                 if (typeof imgList === 'string') {
                     try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
@@ -988,10 +1021,10 @@
                 }
 
                 let slidesHtml = '';
-                imgList.forEach((img, idx) => {
-                    const cleanImg = String(img).trim();
-                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${r.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5'"></div>`;
-                });
+                for (let idx = 0; idx < imgList.length; idx++) {
+                    const cleanImg = String(imgList[idx]).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${r.name} foto ${idx+1}" loading="lazy" decoding="async" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5'"></div>`;
+                }
 
                 const webButtonHtml = (r.web && r.web !== '#') ? `
                     <a href="${r.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
@@ -1017,10 +1050,10 @@
                     </a>
                 ` : '';
 
-                container.innerHTML += `
+                html += `
                     <div class="restaurant-card" id="card-${r.key}">
                         <div class="carousel-container">
-                            <span class="type-badge">${r.type}</span>
+                            <span class="type-badge">${r.type || ''}</span>
                             <div class="carousel-slides" id="slides-${r.key}">
                                 ${slidesHtml}
                             </div>
@@ -1031,21 +1064,21 @@
                         </div>
                         <div class="restaurant-body">
                             <div>
-                                <h3 class="restaurant-name">${r.name}</h3>
-                                <p class="restaurant-desc">${r.desc}</p>
+                                <h3 class="restaurant-name">${r.name || ''}</h3>
+                                <p class="restaurant-desc">${r.desc || ''}</p>
                                 <div class="restaurant-meta">
                                     <div class="meta-item">
-                                        <i class="fas fa-phone-alt"></i> <span>${r.phone}</span>
+                                        <i class="fas fa-phone-alt"></i> <span>${r.phone || ''}</span>
                                     </div>
-                                    <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address}</span>
+                                    <a href="${r.maps || '#'}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address || ''}</span>
                                     </a>
                                 </div>
                             </div>
                             <div>
                                 <div class="restaurant-actions">
                                     <div class="action-row">
-                                        <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                        <a href="${r.maps || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action map">
                                             <i class="fas fa-directions"></i> Mapa
                                         </a>
                                         ${webButtonHtml}
@@ -1066,7 +1099,10 @@
                         </div>
                     </div>
                 `;
-            });
+            }
+
+            // Una sola escritura al DOM → mucho más rápido
+            container.innerHTML = html;
         }
 
         const slideIndices = {};
@@ -1362,13 +1398,18 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+            // Menos partículas = página más ligera y fluida (especialmente en móviles)
+            const count = Math.min(Math.floor((width * height) / 22000), 80);
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
         initParticles();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
