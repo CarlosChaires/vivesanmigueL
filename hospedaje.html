@@ -869,25 +869,38 @@
         }
 
         async function initApp() {
-            // 1. Intentar cargar primero del caché local para velocidad inmediata
+            // 1. Carga INSTANTÁNEA desde caché local (no espera nada)
             const localData = localStorage.getItem('sma_hotels_data');
             if (localData) {
                 try {
                     cloudHotelsCache = JSON.parse(localData);
-                } catch(e) {}
+                    renderHotels('');
+                } catch(e) {
+                    cloudHotelsCache = [];
+                    renderHotels('');
+                }
+            } else {
+                // Si no hay caché, mostramos mensaje mientras llega la sincronización
+                const container = document.getElementById('hotelsGridContainer');
+                if (container) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">Cargando hospedajes...</p>`;
+                }
             }
-            renderHotels('');
 
-            // 2. Sincronizar automáticamente con Google Sheets al iniciar para traer la base real
-            await backgroundSync();
+            // 2. Sincronización en segundo plano (NO bloquea la interfaz)
+            // No usamos await → la página ya se ve completa mientras se actualiza
+            backgroundSync();
         }
 
         async function backgroundSync() {
+            const statusEl = document.getElementById('syncStatus');
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Actualizando...`;
+
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const response = await fetch(GOOGLE_SCRIPT_URL, { cache: 'no-store' });
                 const cloudData = await response.json();
                 if (Array.isArray(cloudData) && cloudData.length > 0) {
-                    cloudHotelsCache = cloudData.map(item => {
+                    const newCache = cloudData.map(item => {
                         let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
@@ -910,11 +923,20 @@
                             images: imgs
                         };
                     });
-                    localStorage.setItem('sma_hotels_data', JSON.stringify(cloudHotelsCache));
-                    renderHotels(document.getElementById('searchInput').value);
+
+                    // Solo actualizamos la vista si realmente cambió algo
+                    const oldJson = JSON.stringify(cloudHotelsCache);
+                    const newJson = JSON.stringify(newCache);
+                    if (oldJson !== newJson) {
+                        cloudHotelsCache = newCache;
+                        localStorage.setItem('sma_hotels_data', newJson);
+                        renderHotels(document.getElementById('searchInput')?.value || '');
+                    }
                 }
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
             } catch (err) {
                 console.log("Modo offline o error al conectar con Google Sheets.");
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-wifi"></i> Modo offline`;
             }
         }
 
@@ -923,7 +945,6 @@
             if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
             
             backgroundSync().then(() => {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 alert('¡Sincronización con Google Sheets completada!');
             });
         }
@@ -973,7 +994,6 @@
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('hotelsGridContainer');
             if (!container) return;
-            container.innerHTML = '';
 
             let filtered = cloudHotelsCache;
 
@@ -983,7 +1003,11 @@
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(h => h.name.toLowerCase().includes(q) || h.type.toLowerCase().includes(q) || h.desc.toLowerCase().includes(q));
+                filtered = filtered.filter(h => 
+                    (h.name && h.name.toLowerCase().includes(q)) || 
+                    (h.type && h.type.toLowerCase().includes(q)) || 
+                    (h.desc && h.desc.toLowerCase().includes(q))
+                );
             }
 
             if (filtered.length === 0) {
@@ -991,7 +1015,10 @@
                 return;
             }
 
-            filtered.forEach(h => {
+            // Construimos todo el HTML de una sola vez (mucho más rápido que += en bucle)
+            let html = '';
+            for (let i = 0; i < filtered.length; i++) {
+                const h = filtered[i];
                 let imgList = h.images;
                 if (typeof imgList === 'string') {
                     try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
@@ -1001,10 +1028,10 @@
                 }
 
                 let slidesHtml = '';
-                imgList.forEach((img, idx) => {
-                    const cleanImg = String(img).trim();
-                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${h.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'"></div>`;
-                });
+                for (let idx = 0; idx < imgList.length; idx++) {
+                    const cleanImg = String(imgList[idx]).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${h.name} foto ${idx+1}" loading="lazy" decoding="async" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'"></div>`;
+                }
 
                 const webButtonHtml = (h.web && h.web !== '#') ? `
                     <a href="${h.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
@@ -1024,11 +1051,11 @@
                     </a>
                 ` : '';
 
-                container.innerHTML += `
+                html += `
                     <div class="hotel-card" id="card-${h.key}">
                         <div class="carousel-container">
-                            <span class="type-badge">${h.type}</span>
-                            <span class="price-badge">${h.price}</span>
+                            <span class="type-badge">${h.type || ''}</span>
+                            <span class="price-badge">${h.price || ''}</span>
                             <div class="carousel-slides" id="slides-${h.key}">
                                 ${slidesHtml}
                             </div>
@@ -1039,21 +1066,21 @@
                         </div>
                         <div class="hotel-body">
                             <div>
-                                <h3 class="hotel-name">${h.name}</h3>
-                                <p class="hotel-desc">${h.desc}</p>
+                                <h3 class="hotel-name">${h.name || ''}</h3>
+                                <p class="hotel-desc">${h.desc || ''}</p>
                                 <div class="hotel-meta">
                                     <div class="meta-item">
-                                        <i class="fas fa-phone-alt"></i> <span>${h.phone}</span>
+                                        <i class="fas fa-phone-alt"></i> <span>${h.phone || ''}</span>
                                     </div>
-                                    <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i> <span>${h.address}</span>
+                                    <a href="${h.maps || '#'}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${h.address || ''}</span>
                                     </a>
                                 </div>
                             </div>
                             <div>
                                 <div class="hotel-actions">
                                     <div class="action-row">
-                                        <a href="${h.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                        <a href="${h.maps || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action map">
                                             <i class="fas fa-directions"></i> Mapa
                                         </a>
                                         ${webButtonHtml}
@@ -1073,7 +1100,10 @@
                         </div>
                     </div>
                 `;
-            });
+            }
+
+            // Una sola escritura al DOM → mucho más rápido
+            container.innerHTML = html;
         }
 
         const slideIndices = {};
@@ -1360,14 +1390,18 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+            // Menos partículas = página más ligera y fluida (especialmente en móviles)
+            const count = Math.min(Math.floor((width * height) / 22000), 80);
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
         initParticles();
 
-        cloudHotelsCache = []; // initialized as empty safely
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
