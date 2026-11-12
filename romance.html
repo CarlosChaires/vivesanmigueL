@@ -871,27 +871,40 @@
         let currentEditingKey = null;
         let currentFilter = 'todos';
 
-        // Carga inmediata desde localStorage para evitar esperas y sincronización silenciosa en fondo
+        // Carga INSTANTÁNEA desde caché local + sincronización en segundo plano
         function initApp() {
             const localData = localStorage.getItem('sma_romance_data');
             if (localData) {
                 try {
                     cloudDataCache = JSON.parse(localData);
                     renderRomance(currentFilter, '');
-                } catch(e) {}
+                } catch(e) {
+                    cloudDataCache = [];
+                    const container = document.getElementById('romanceGridContainer');
+                    if (container) {
+                        container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">Cargando registros...</p>`;
+                    }
+                }
+            } else {
+                const container = document.getElementById('romanceGridContainer');
+                if (container) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">Cargando registros...</p>`;
+                }
             }
+            // Sincronización en segundo plano (no bloquea la interfaz)
             fetchDataFromCloud();
         }
 
         async function fetchDataFromCloud() {
             const statusEl = document.getElementById('syncStatus');
+            if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Actualizando...`;
+
             try {
-                if (statusEl && cloudDataCache.length === 0) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const response = await fetch(GOOGLE_SCRIPT_URL, { cache: 'no-store' });
                 const cloudData = await response.json();
                 
                 if (Array.isArray(cloudData) && cloudData.length > 0) {
-                    cloudDataCache = cloudData.map(item => {
+                    const newCache = cloudData.map(item => {
                         let imgs = item.images || item.fotos || [item.foto_1, item.foto_2, item.foto_3];
                         if (typeof imgs === 'string') {
                             try { imgs = JSON.parse(imgs); } catch(e) { imgs = imgs.split(',').map(s => s.trim()); }
@@ -915,20 +928,32 @@
                         };
                     });
 
-                    localStorage.setItem('sma_romance_data', JSON.stringify(cloudDataCache));
-                    renderRomance(currentFilter, document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    // Solo re-renderiza si los datos realmente cambiaron
+                    const oldJson = JSON.stringify(cloudDataCache);
+                    const newJson = JSON.stringify(newCache);
+                    if (oldJson !== newJson) {
+                        cloudDataCache = newCache;
+                        localStorage.setItem('sma_romance_data', newJson);
+                        renderRomance(currentFilter, document.getElementById('searchInput')?.value || '');
+                    }
                 }
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
             } catch (error) {
                 console.warn("Usando respaldo local por error de red:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Sin conexión (Local)`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-wifi"></i> Modo offline`;
             }
         }
 
         function pushDataToGoogleSheets(dataArray) {
+            // Protección: no sobrescribir la nube con un arreglo vacío si ya hay datos
+            if ((!dataArray || dataArray.length === 0) && cloudDataCache.length > 0) {
+                console.warn("Intento de enviar datos vacíos bloqueado por seguridad.");
+                return;
+            }
+
             cloudDataCache = [...dataArray];
             localStorage.setItem('sma_romance_data', JSON.stringify(cloudDataCache));
-            renderRomance(currentFilter, document.getElementById('searchInput').value);
+            renderRomance(currentFilter, document.getElementById('searchInput')?.value || '');
 
             const statusEl = document.getElementById('syncStatus');
             if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando en Sheets...`;
@@ -978,16 +1003,15 @@
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
             const container = document.getElementById('romanceGridContainer');
             if (!container) return;
-            container.innerHTML = '';
 
             let filtered = filter === 'todos' ? cloudDataCache : cloudDataCache.filter(r => r.type === filter);
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
                 filtered = filtered.filter(r => 
-                    r.name.toLowerCase().includes(q) || 
-                    r.type.toLowerCase().includes(q) || 
-                    r.desc.toLowerCase().includes(q)
+                    (r.name && r.name.toLowerCase().includes(q)) || 
+                    (r.type && r.type.toLowerCase().includes(q)) || 
+                    (r.desc && r.desc.toLowerCase().includes(q))
                 );
             }
 
@@ -996,7 +1020,10 @@
                 return;
             }
 
-            filtered.forEach(r => {
+            // Construimos todo el HTML de una sola vez (mucho más rápido que += en bucle)
+            let html = '';
+            for (let i = 0; i < filtered.length; i++) {
+                const r = filtered[i];
                 let imgList = r.images;
                 if (typeof imgList === 'string') {
                     try { imgList = JSON.parse(imgList); } catch(e) { imgList = imgList.split(',').map(s => s.trim()); }
@@ -1006,12 +1033,12 @@
                 }
 
                 let slidesHtml = '';
-                imgList.forEach((img, idx) => {
-                    const cleanImg = String(img).trim();
-                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${r.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552'"></div>`;
-                });
+                for (let idx = 0; idx < imgList.length; idx++) {
+                    const cleanImg = String(imgList[idx]).trim();
+                    slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${r.name} foto ${idx+1}" loading="lazy" decoding="async" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552'"></div>`;
+                }
 
-                const cleanPhone = String(r.phone).replace(/[^0-9+]/g, '');
+                const cleanPhone = String(r.phone || '').replace(/[^0-9+]/g, '');
                 const cleanWa = cleanPhone.replace('+', '');
 
                 const webButtonHtml = (r.web && r.web !== '#') ? `
@@ -1032,11 +1059,11 @@
                     </a>
                 ` : '';
 
-                container.innerHTML += `
+                html += `
                     <div class="romance-card" id="card-${r.key}">
                         <div class="carousel-container">
-                            <span class="type-badge">${r.type}</span>
-                            <span class="price-badge">${r.price}</span>
+                            <span class="type-badge">${r.type || ''}</span>
+                            <span class="price-badge">${r.price || ''}</span>
                             <div class="carousel-slides" id="slides-${r.key}">
                                 ${slidesHtml}
                             </div>
@@ -1047,28 +1074,28 @@
                         </div>
                         <div class="romance-body">
                             <div>
-                                <h3 class="romance-name">${r.name}</h3>
-                                <p class="romance-desc">${r.desc}</p>
+                                <h3 class="romance-name">${r.name || ''}</h3>
+                                <p class="romance-desc">${r.desc || ''}</p>
                                 <div class="romance-meta">
                                     <div class="meta-item">
-                                        <i class="fas fa-phone-alt"></i> <span>${r.phone}</span>
+                                        <i class="fas fa-phone-alt"></i> <span>${r.phone || ''}</span>
                                     </div>
-                                    <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address}</span>
+                                    <a href="${r.maps || '#'}" target="_blank" rel="noopener noreferrer" class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i> <span>${r.address || ''}</span>
                                     </a>
                                 </div>
                             </div>
                             <div>
                                 <div class="romance-actions">
                                     <div class="action-row">
-                                        <a href="${r.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
+                                        <a href="${r.maps || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action map">
                                             <i class="fas fa-directions"></i> Mapa
                                         </a>
                                         ${webButtonHtml}
                                         ${igButtonHtml}
                                         ${fbButtonHtml}
                                     </div>
-                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre:%20${encodeURIComponent(r.name)}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
+                                    <a href="https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre:%20${encodeURIComponent(r.name || '')}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp">
                                         <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
                                     </a>
                                 </div>
@@ -1082,7 +1109,10 @@
                         </div>
                     </div>
                 `;
-            });
+            }
+
+            // Una sola escritura al DOM → mucho más rápido
+            container.innerHTML = html;
         }
 
         const slideIndices = {};
@@ -1355,9 +1385,9 @@
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 let maxDistance = 150;
                 if (distance < maxDistance) {
-                    let file = (maxDistance - distance) / maxDistance;
-                    this.x -= (dx / distance) * file * this.density * 0.4;
-                    this.y -= (dy / distance) * file * this.density * 0.4;
+                    let force = (maxDistance - distance) / maxDistance;
+                    this.x -= (dx / distance) * force * this.density * 0.4;
+                    this.y -= (dy / distance) * force * this.density * 0.4;
                 } else {
                     if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 25;
                     if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 25;
@@ -1377,13 +1407,18 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+            // Menos partículas = página más ligera y fluida (especialmente en móviles)
+            const count = Math.min(Math.floor((width * height) / 22000), 80);
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
         initParticles();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
