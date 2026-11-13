@@ -57,6 +57,38 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* ── Ocultar elementos molestos y barra superior nativa de Google Translate ── */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    .goog-tooltip { display: none !important; }
+    .goog-tooltip:hover { display: none !important; }
+    .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+    .goog-logo-link { display: none !important; }
+    .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
+    .goog-te-gadget span { display: none !important; }
+
+    /* Estilo limpio y minimalista para el selector desplegable de Google */
+    #google_translate_element {
+      display: inline-block;
+    }
+    .goog-te-combo {
+      background: var(--blanco) !important;
+      border: 1px solid var(--borde-fuerte) !important;
+      color: var(--gris-texto) !important;
+      padding: 0.5rem 1rem !important;
+      border-radius: 999px !important;
+      font-size: 0.8rem !important;
+      font-family: inherit !important;
+      cursor: pointer !important;
+      outline: none !important;
+      transition: var(--transicion) !important;
+    }
+    .goog-te-combo:hover, .goog-te-combo:focus {
+      border-color: var(--cantera) !important;
+      color: var(--cantera) !important;
+      background: var(--cantera-soft) !important;
+    }
+
     .container {
       max-width: 1160px;
       margin: 0 auto;
@@ -133,6 +165,7 @@
       text-decoration: none;
       font-weight: 500;
       letter-spacing: 0.01em;
+      font-family: inherit;
     }
 
     .admin-trigger { display: none; }
@@ -243,137 +276,6 @@
       text-align: right;
     }
 
-    .filter-row {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
-    .filter-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--gris-muted);
-      flex-shrink: 0;
-    }
-
-    .filter-scroll {
-      flex: 1;
-      min-width: 0;
-      position: relative;
-    }
-
-    .filter-scroll::before,
-    .filter-scroll::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 28px;
-      z-index: 2;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    .filter-scroll::before {
-      left: 0;
-      background: linear-gradient(to right, rgba(248,245,241,0.95), transparent);
-    }
-
-    .filter-scroll::after {
-      right: 0;
-      background: linear-gradient(to left, rgba(248,245,241,0.95), transparent);
-    }
-
-    .filter-scroll.show-left::before { opacity: 1; }
-    .filter-scroll.show-right::after { opacity: 1; }
-
-    .filter-bar {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 0.4rem;
-      align-items: center;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 0.15rem 0.1rem 0.35rem;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .filter-bar::-webkit-scrollbar { display: none; }
-
-    .filter-btn {
-      background: var(--blanco);
-      border: 1px solid var(--borde-fuerte);
-      color: var(--gris-texto);
-      padding: 0.42rem 0.95rem;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transicion);
-      font-family: inherit;
-      white-space: nowrap;
-      letter-spacing: 0.01em;
-      flex-shrink: 0;
-    }
-
-    .filter-btn:hover {
-      border-color: var(--cantera);
-      color: var(--cantera);
-      background: var(--cantera-soft);
-    }
-
-    .filter-btn.active {
-      background: var(--cantera);
-      border-color: var(--cantera);
-      color: var(--blanco);
-      box-shadow: 0 4px 14px -2px var(--cantera-glow);
-    }
-
-    .filter-btn.active:hover {
-      background: var(--cantera-hover);
-      border-color: var(--cantera-hover);
-      color: var(--blanco);
-    }
-
-    /* Dropdown alternativo cuando hay muchas categorías */
-    .filter-select-wrap {
-      display: none;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .filter-select {
-      width: 100%;
-      max-width: 320px;
-      padding: 0.55rem 2.2rem 0.55rem 1rem;
-      border: 1px solid var(--borde-fuerte);
-      border-radius: 999px;
-      background: var(--blanco);
-      font-family: inherit;
-      font-size: 0.85rem;
-      color: var(--noche);
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e655f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      outline: none;
-      transition: var(--transicion);
-    }
-
-    .filter-select:focus {
-      border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft);
-    }
-
-    .toolbar.many-cats .filter-scroll { display: none; }
-    .toolbar.many-cats .filter-select-wrap { display: block; }
-
     /* ── Grid ── */
     .events-grid {
       display: grid;
@@ -394,6 +296,8 @@
       flex-direction: column;
       position: relative;
       min-width: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .event-card:hover {
@@ -504,7 +408,7 @@
     .btn-card-delete { background: rgba(179, 57, 57, 0.92); color: #fff; }
     .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
 
-    /* ── Cuerpo de tarjeta: lectura mejorada ── */
+    /* ── Cuerpo de tarjeta ── */
     .event-body {
       padding: 1.5rem;
       display: flex;
@@ -525,7 +429,6 @@
       overflow-wrap: anywhere;
     }
 
-    /* Fecha, horario y costo */
     .event-key-info {
       display: flex;
       flex-direction: column;
@@ -552,9 +455,7 @@
       border-radius: 9px;
       letter-spacing: 0;
       line-height: 1.55;
-      white-space: normal;
       overflow-wrap: anywhere;
-      word-break: normal;
     }
 
     .event-key-chip.price {
@@ -574,7 +475,6 @@
       gap: 0.45rem;
       transition: var(--transicion-rapida);
       line-height: 1.6;
-      white-space: normal;
       overflow-wrap: anywhere;
       min-width: 0;
     }
@@ -585,7 +485,6 @@
       text-underline-offset: 2px;
     }
 
-    /* Descripción completa: sin límite de líneas */
     .event-desc {
       display: block;
       width: 100%;
@@ -596,12 +495,7 @@
       flex: 1;
       line-height: 1.85;
       white-space: pre-line;
-      overflow: visible;
-      text-overflow: clip;
-      -webkit-line-clamp: unset;
-      -webkit-box-orient: initial;
       overflow-wrap: anywhere;
-      word-break: normal;
     }
 
     .event-web-link {
@@ -886,18 +780,13 @@
       letter-spacing: 0.12em;
     }
 
-    /* ── Sparkle / Chispitas effect ── */
+    /* ── Sparkle effect ── */
     .sparkle-particle {
       position: fixed;
       pointer-events: none;
       z-index: 9999;
       border-radius: 50%;
       will-change: transform, opacity;
-    }
-
-    .event-card {
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .event-card.sparkle-burst {
@@ -922,38 +811,14 @@
         gap: 1.5rem;
       }
       .event-img-wrapper, .skeleton-img { height: 200px; }
-      .filter-btn { padding: 0.38rem 0.9rem; font-size: 0.74rem; }
-      .filter-scroll { display: none; }
-      .filter-select-wrap { display: block; }
       .modal-box { padding: 1.75rem; border-radius: 20px; }
       .results-count { min-width: auto; text-align: left; }
-
-      .event-body {
-        padding: 1.25rem 1.2rem 1.4rem;
-      }
-
-      .event-name {
-        font-size: 1.25rem;
-        line-height: 1.4;
-      }
-
-      .event-key-info {
-        gap: 0.5rem;
-      }
-
-      .event-key-chip {
-        font-size: 0.82rem;
-        padding: 0.65rem 0.75rem;
-      }
-
-      .event-desc {
-        font-size: 0.9rem;
-        line-height: 1.8;
-      }
-
-      .event-location {
-        font-size: 0.85rem;
-      }
+      .event-body { padding: 1.25rem 1.2rem 1.4rem; }
+      .event-name { font-size: 1.25rem; line-height: 1.4; }
+      .event-key-info { gap: 0.5rem; }
+      .event-key-chip { font-size: 0.82rem; padding: 0.65rem 0.75rem; }
+      .event-desc { font-size: 0.9rem; line-height: 1.8; }
+      .event-location { font-size: 0.85rem; }
     }
 
     @media (max-width: 380px) {
@@ -976,6 +841,9 @@
         </div>
       </div>
       <div class="admin-actions-group">
+        <!-- Selector oficial de Google Translate para traducir absolutamente todo en tiempo real -->
+        <div id="google_translate_element"></div>
+
         <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
@@ -988,10 +856,10 @@
       <div class="toolbar" id="toolbar">
         <div class="search-row">
           <div class="search-box">
-            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar…  (ej. cine, octubre, jazz)" autocomplete="off">
+            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)" autocomplete="off">
             <span class="search-icon">🔍</span>
           </div>
-          <span class="results-count" id="resultsCount"></span>
+          <span class="results-count" id="resultsCount">0 eventos</span>
         </div>
       </div>
     </div>
@@ -1057,6 +925,19 @@
       </form>
     </div>
   </div>
+
+  <!-- Script de inicialización de Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,es',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
     const AUTH_USER = "vivesanmiguel";
@@ -1489,18 +1370,14 @@
       }
     }
 
-    // ── Efecto de chispitas inmersivo al tocar un evento ──
+    // ── Efecto de chispitas inmersivo ──
     function createSparkles(x, y, count) {
       count = count || 18;
-      const colors = [
-        '#c45c4a', '#a84a3a', '#e07a5f', '#c48a1f',
-        '#d4a017', '#e8b84a', '#8f3d28', '#f4a261'
-      ];
+      const colors = ['#c45c4a', '#a84a3a', '#e07a5f', '#c48a1f', '#d4a017', '#e8b84a', '#8f3d28', '#f4a261'];
 
       for (let i = 0; i < count; i++) {
         const particle = document.createElement('div');
         particle.className = 'sparkle-particle';
-
         const size = 3 + Math.random() * 7;
         const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
         const distance = 40 + Math.random() * 90;
@@ -1521,33 +1398,14 @@
         }
 
         document.body.appendChild(particle);
-
         const endX = Math.cos(angle) * distance;
         const endY = Math.sin(angle) * distance - 20 - Math.random() * 30;
 
         const anim = particle.animate([
-          {
-            transform: isStar ? 'translate(0,0) scale(0.3) rotate(45deg)' : 'translate(0,0) scale(0.3)',
-            opacity: 1
-          },
-          {
-            transform: isStar
-              ? 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.2) rotate(45deg)'
-              : 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.15)',
-            opacity: 1,
-            offset: 0.35
-          },
-          {
-            transform: isStar
-              ? 'translate(' + endX + 'px,' + endY + 'px) scale(0) rotate(90deg)'
-              : 'translate(' + endX + 'px,' + endY + 'px) scale(0)',
-            opacity: 0
-          }
-        ], {
-          duration: duration,
-          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-          fill: 'forwards'
-        });
+          { transform: isStar ? 'translate(0,0) scale(0.3) rotate(45deg)' : 'translate(0,0) scale(0.3)', opacity: 1 },
+          { transform: isStar ? 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.2) rotate(45deg)' : 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.15)', opacity: 1, offset: 0.35 },
+          { transform: isStar ? 'translate(' + endX + 'px,' + endY + 'px) scale(0) rotate(90deg)' : 'translate(' + endX + 'px,' + endY + 'px) scale(0)', opacity: 0 }
+        ], { duration: duration, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' });
 
         anim.onfinish = function() { particle.remove(); };
       }
@@ -1555,13 +1413,10 @@
 
     function triggerCardSparkle(e, card) {
       if (e.target.closest('.admin-card-actions') || e.target.closest('a')) return;
-
       const rect = card.getBoundingClientRect();
       const x = e.clientX || (rect.left + rect.width / 2);
       const y = e.clientY || (rect.top + rect.height / 2);
-
       createSparkles(x, y, 20);
-
       card.classList.remove('sparkle-burst');
       void card.offsetWidth;
       card.classList.add('sparkle-burst');
@@ -1572,7 +1427,6 @@
       document.querySelectorAll('.event-card').forEach(function(card) {
         if (card.dataset.sparkleBound) return;
         card.dataset.sparkleBound = '1';
-
         card.addEventListener('pointerdown', function(e) {
           if (e.button !== 0 && e.button !== undefined) return;
           triggerCardSparkle(e, card);
