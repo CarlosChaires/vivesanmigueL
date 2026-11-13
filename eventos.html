@@ -57,6 +57,20 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* ── Bloqueo total de la barra superior intrusiva de Google ── */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; position: static !important; }
+    .goog-tooltip { display: none !important; }
+    .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+    .goog-logo-link { display: none !important; }
+    .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
+    .goog-te-gadget span { display: none !important; }
+
+    /* Ocultar el elemento visual bruto y dejar solo nuestro botón estilizado */
+    #google_translate_element {
+      display: none !important;
+    }
+
     .container {
       max-width: 1160px;
       margin: 0 auto;
@@ -118,7 +132,7 @@
       flex-wrap: wrap;
     }
 
-    .admin-trigger, .btn-home, .lang-toggle-btn {
+    .admin-trigger, .btn-home, .lang-custom-btn {
       background: transparent;
       border: 1px solid var(--borde-fuerte);
       color: var(--gris-texto);
@@ -146,7 +160,7 @@
       box-shadow: 0 4px 14px -2px var(--cantera-glow);
     }
 
-    .admin-trigger:hover, .btn-home:hover, .lang-toggle-btn:hover {
+    .admin-trigger:hover, .btn-home:hover, .lang-custom-btn:hover {
       border-color: var(--cantera);
       color: var(--cantera);
       background: var(--cantera-soft);
@@ -804,19 +818,22 @@
       <div class="brand-container">
         <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="header-title">
-          <span id="headerSubtitle">Patrimonio y Tradición</span>
-          <h1 id="headerMainTitle">Cartelera de Eventos</h1>
+          <span>Patrimonio y Tradición</span>
+          <h1>Cartelera de Eventos</h1>
         </div>
       </div>
       <div class="admin-actions-group">
-        <!-- Botón de idioma elegante y perfectamente integrado a la barra -->
-        <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()">🇬🇧 English</button>
+        <!-- Botón elegante personalizado que activa la traducción nativa invisible de Google -->
+        <button class="lang-custom-btn" id="langCustomBtn" onclick="triggerGoogleTranslate()">🇬🇧 English</button>
 
-        <button class="admin-trigger admin-panel-btn" id="btnAddEvent" onclick="openEventModal()">+ Agregar Evento</button>
-        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home" id="btnHomeText">Volver al Inicio</a>
+        <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
+        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
     </div>
   </header>
+
+  <!-- Elemento oculto requerido por la API de Google Translate -->
+  <div id="google_translate_element"></div>
 
   <!-- Sticky Toolbar -->
   <div class="toolbar-wrapper" id="toolbarWrapper">
@@ -827,7 +844,7 @@
             <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)" autocomplete="off">
             <span class="search-icon">🔍</span>
           </div>
-          <span class="results-count" id="resultsCount"></span>
+          <span class="results-count" id="resultsCount">0 eventos</span>
         </div>
       </div>
     </div>
@@ -845,7 +862,7 @@
 
   <footer>
     <div class="container footer-inner">
-      <div class="footer-brand" id="footerBrand">Vive San Miguel de Allende &copy; 2026</div>
+      <div class="footer-brand">Vive San Miguel de Allende &copy; 2026</div>
       <button class="footer-lock" onclick="openLoginModal()"><span id="lockLabel">Acceso Admin</span></button>
     </div>
   </footer>
@@ -853,11 +870,11 @@
   <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3 id="loginModalTitle">Acceso Restringido</h3>
+      <h3>Acceso Restringido</h3>
       <form onsubmit="handleLogin(event)">
-        <div class="form-group"><label id="labelUser">Usuario</label><input type="text" id="usernameInput" required></div>
-        <div class="form-group"><label id="labelPass">Contraseña</label><input type="password" id="passwordInput" required></div>
-        <button type="submit" id="btnLoginSubmit" class="btn-primary">Ingresar</button>
+        <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
+        <button type="submit" class="btn-primary">Ingresar</button>
       </form>
     </div>
   </div>
@@ -868,31 +885,70 @@
       <h3 id="eventModalTitle">Nuevo Evento</h3>
       <form onsubmit="handleSaveEvent(event)" id="eventForm">
         <input type="hidden" id="editRowIndex" value="">
-        <div class="form-group"><label id="lblEvName">Nombre del Evento</label><input type="text" id="inputName" required></div>
-        <div class="form-group"><label id="lblEvCat">Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
-        <div class="form-group"><label id="lblEvDate">Fecha</label><input type="date" id="inputDate" required></div>
-        <div class="form-group"><label id="lblEvTime">Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
-        <div class="form-group"><label id="lblEvPrice">Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
-        <div class="form-group"><label id="lblEvLoc">Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label id="lblEvWeb">Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https:// o www.ejemplo.com"></div>
+        <div class="form-group"><label>Nombre del Evento</label><input type="text" id="inputName" required></div>
+        <div class="form-group"><label>Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
+        <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
+        <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
+        <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https:// o www.ejemplo.com"></div>
 
         <div class="form-group">
-          <label id="lblEvImg">Imagen del Evento</label>
+          <label>Imagen del Evento</label>
           <div class="file-upload-wrapper">
-            <button type="button" class="btn-upload" id="btnUploadText" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
+            <button type="button" class="btn-upload" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
             <input type="file" id="inputFile" accept="image/*" style="display: none;" onchange="processImageUpload(event)">
             <span id="fileNameDisplay" style="font-size: 0.8rem; color: var(--gris-muted);">Sin archivo</span>
           </div>
-          <div class="divider-text" id="dividerImgUrl">— o ingresa la url —</div>
+          <div class="divider-text">— o ingresa la url —</div>
           <input type="text" id="inputImg" placeholder="https://..." required>
           <img id="imgPreview" style="display:none; width:100%; margin-top:12px; border-radius:12px; max-height: 220px; object-fit: cover;">
         </div>
 
-        <div class="form-group"><label id="lblEvDesc">Descripción</label><textarea id="inputDesc" required></textarea></div>
+        <div class="form-group"><label>Descripción</label><textarea id="inputDesc" required></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
       </form>
     </div>
   </div>
+
+  <!-- Inicializador oculto de Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,es',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    // Función que simula el cambio de idioma mediante el combo interno de Google sin mostrar la barra fea
+    function triggerGoogleTranslate() {
+      var combo = document.querySelector('.goog-te-combo');
+      var btn = document.getElementById('langCustomBtn');
+      
+      if (!combo) {
+        alert('Cargando motor de traducción, por favor intenta de nuevo en un segundo.');
+        return;
+      }
+
+      if (combo.value === 'en') {
+        combo.value = ''; // Regresar a español
+        dispatchEvent(combo);
+        btn.innerHTML = '🇬🇧 English';
+      } else {
+        combo.value = 'en'; // Traducir a inglés
+        dispatchEvent(combo);
+        btn.innerHTML = '🇲🇽 Español';
+      }
+    }
+
+    function dispatchEvent(element) {
+      var event = document.createEvent('HTMLEvents');
+      event.initEvent('change', true, true);
+      element.dispatchEvent(event);
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
     const AUTH_USER = "vivesanmiguel";
@@ -902,187 +958,6 @@
     let globalEvents = [];
     let isEditMode = false;
     let searchQuery = '';
-    let currentLang = localStorage.getItem('sma_lang') || 'es';
-
-    const translations = {
-      es: {
-        subtitle: "Patrimonio y Tradición",
-        title: "Cartelera de Eventos",
-        searchPlaceholder: "Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)",
-        btnAddEvent: "+ Agregar Evento",
-        btnHome: "Volver al Inicio",
-        langBtn: "🇬🇧 English",
-        lockAdmin: "Acceso Admin",
-        closeSession: "Cerrar Sesión",
-        allEvents: "eventos",
-        oneEvent: "1 evento",
-        zeroEvents: "0 eventos",
-        officialWeb: "Sitio Oficial / Boletos ↗",
-        dateToConfirm: "Fecha por confirmar",
-        noEventsSearch: "No hay eventos que coincidan con tu búsqueda.",
-        noEventsActive: "No hay eventos vigentes disponibles por el momento.",
-        loadError: "No se pudieron cargar los eventos en este momento. Intenta de nuevo más tarde.",
-        loginTitle: "Acceso Restringido",
-        userLabel: "Usuario",
-        passLabel: "Contraseña",
-        loginBtn: "Ingresar",
-        newEvTitle: "Nuevo Evento",
-        editEvTitle: "Modificar Evento",
-        lblEvName: "Nombre del Evento",
-        lblEvCat: "Categoría",
-        lblEvDate: "Fecha",
-        lblEvTime: "Horario",
-        lblEvPrice: "Costo / Precio",
-        lblEvLocation: "Ubicación",
-        lblEvWeb: "Sitio Oficial o Boletos (Opcional)",
-        lblEvImg: "Imagen del Evento",
-        btnUpload: "📸 Subir Archivo",
-        noFile: "Sin archivo",
-        dividerUrl: "— o ingresa la url —",
-        lblEvDesc: "Descripción",
-        btnSave: "Guardar en Sistema",
-        btnUpdate: "Actualizar Evento",
-        saving: "Guardando cambios…",
-        publishing: "Publicando evento…",
-        deleteConfirm: "¿Eliminar definitivamente "
-      },
-      en: {
-        subtitle: "Heritage & Tradition",
-        title: "Events Calendar",
-        searchPlaceholder: "Search by type, month, name or location… (e.g. cinema, October, jazz)",
-        btnAddEvent: "+ Add Event",
-        btnHome: "Back to Home",
-        langBtn: "🇲🇽 Español",
-        lockAdmin: "Admin Access",
-        closeSession: "Log Out",
-        allEvents: "events",
-        oneEvent: "1 event",
-        zeroEvents: "0 events",
-        officialWeb: "Official Website / Tickets ↗",
-        dateToConfirm: "Date to be confirmed",
-        noEventsSearch: "No events match your search.",
-        noEventsActive: "No active events available at the moment.",
-        loadError: "Could not load events right now. Please try again later.",
-        loginTitle: "Restricted Access",
-        userLabel: "Username",
-        passLabel: "Password",
-        loginBtn: "Sign In",
-        newEvTitle: "New Event",
-        editEvTitle: "Edit Event",
-        lblEvName: "Event Name",
-        lblEvCat: "Category",
-        lblEvDate: "Date",
-        lblEvTime: "Time",
-        lblEvPrice: "Cost / Price",
-        lblEvLocation: "Location",
-        lblEvWeb: "Official Website or Tickets (Optional)",
-        lblEvImg: "Event Image",
-        btnUpload: "📸 Upload File",
-        noFile: "No file",
-        dividerUrl: "— or enter image url —",
-        lblEvDesc: "Description",
-        btnSave: "Save to System",
-        btnUpdate: "Update Event",
-        saving: "Saving changes…",
-        publishing: "Publishing event…",
-        deleteConfirm: "Permanently delete "
-      }
-    };
-
-    const dynamicEventTranslations = {
-      en: {
-        categories: {
-          "literario": "Literary",
-          "teatro": "Theater",
-          "jazz y blues": "Jazz & Blues",
-          "cultura y tradicion": "Culture & Tradition",
-          "musica": "Music",
-          "arte": "Art",
-          "gastronomia": "Gastronomy"
-        },
-        prices: {
-          "entrada libre": "Free Admission",
-          "consultar taquilla": "Check Box Office"
-        },
-        locations: {
-          "san miguel de allende": "San Miguel de Allende",
-          "biblioteca publica de san miguel de allende": "San Miguel de Allende Public Library"
-        },
-        titles: {
-          "celebracion dia nacional del libro": "National Book Day Celebration",
-          "san miguel playreaders": "San Miguel Playreaders",
-          "32 aniversario del festival internacional de jazz y blues de san miguel (dia 1)": "32nd Anniversary of the San Miguel International Jazz and Blues Festival (Day 1)"
-        },
-        descriptions: {
-          "el dia nacional del libro en méxico se celebra el 12 de noviembre en honor al natalicio de sor juana inés de la cruz, una de las escritoras más importantes de nuestra historia. conocida como la \"décima musa\", su amor por la lectura y el conocimiento sigue inspirando a generaciones. hoy celebramos los libros y el poder de...": "National Book Day in Mexico is celebrated on November 12 in honor of the birth of Sor Juana Inés de la Cruz, one of the most important writers in our history. Known as the \"Tenth Muse,\" her love for reading and knowledge continues to inspire generations. Today we celebrate books and the power of...",
-          "san miguel playreaders - presentado en la biblioteca pública de san miguel de allende.": "San Miguel Playreaders - Presented at the San Miguel de Allende Public Library."
-        }
-      }
-    };
-
-    function translateField(text, type) {
-      if (currentLang !== 'en' || !text) return text;
-      const clean = String(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-      
-      if (type === 'cat' && dynamicEventTranslations.en.categories[clean]) return dynamicEventTranslations.en.categories[clean];
-      if (type === 'price' && dynamicEventTranslations.en.prices[clean]) return dynamicEventTranslations.en.prices[clean];
-      if (type === 'loc' && dynamicEventTranslations.en.locations[clean]) return dynamicEventTranslations.en.locations[clean];
-      if (type === 'title' && dynamicEventTranslations.en.titles[clean]) return dynamicEventTranslations.en.titles[clean];
-      if (type === 'desc' && dynamicEventTranslations.en.descriptions[clean]) return dynamicEventTranslations.en.descriptions[clean];
-      
-      return text;
-    }
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'es' ? 'en' : 'es';
-      localStorage.setItem('sma_lang', currentLang);
-      updateStaticTexts();
-      if (globalEvents.length > 0) {
-        globalEvents.forEach(ev => {
-          ev.date = formatDateToSpanish(ev.rawDate);
-          ev.shortDate = formatDateShort(ev.rawDate);
-          if (ev.time.toLowerCase().includes('todo el dia')) ev.time = currentLang === 'en' ? 'All day' : 'Todo el día';
-        });
-        applyFilters();
-      } else {
-        fetchGoogleSheetData();
-      }
-    }
-
-    function updateStaticTexts() {
-      const t = translations[currentLang];
-      document.getElementById('headerSubtitle').textContent = t.subtitle;
-      document.getElementById('headerMainTitle').textContent = t.title;
-      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-      document.getElementById('btnAddEvent').textContent = t.btnAddEvent;
-      document.getElementById('btnHomeText').textContent = t.btnHome;
-      document.getElementById('langToggleBtn').textContent = t.langBtn;
-      
-      const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
-      document.getElementById('lockLabel').innerText = isLogged ? t.closeSession : t.lockAdmin;
-
-      document.getElementById('loginModalTitle').textContent = t.loginTitle;
-      document.getElementById('labelUser').textContent = t.userLabel;
-      document.getElementById('labelPass').textContent = t.passLabel;
-      document.getElementById('btnLoginSubmit').textContent = t.loginBtn;
-
-      document.getElementById('eventModalTitle').textContent = isEditMode ? t.editEvTitle : t.newEvTitle;
-      document.getElementById('lblEvName').textContent = t.lblEvName;
-      document.getElementById('lblEvCat').textContent = t.lblEvCat;
-      document.getElementById('lblEvDate').textContent = t.lblEvDate;
-      document.getElementById('lblEvTime').textContent = t.lblEvTime;
-      document.getElementById('lblEvPrice').textContent = t.lblEvPrice;
-      document.getElementById('lblEvLoc').textContent = t.lblEvLocation;
-      document.getElementById('lblEvWeb').textContent = t.lblEvWeb;
-      document.getElementById('lblEvImg').textContent = t.lblEvImg;
-      document.getElementById('btnUploadText').textContent = t.btnUpload;
-      if (document.getElementById('fileNameDisplay').textContent === 'Sin archivo' || document.getElementById('fileNameDisplay').textContent === 'No file') {
-        document.getElementById('fileNameDisplay').textContent = t.noFile;
-      }
-      document.getElementById('dividerImgUrl').textContent = t.dividerUrl;
-      document.getElementById('lblEvDesc').textContent = t.lblEvDesc;
-      document.getElementById('submitEventBtn').textContent = isEditMode ? t.btnUpdate : t.btnSave;
-    }
 
     const toolbarWrapper = document.getElementById('toolbarWrapper');
     window.addEventListener('scroll', () => {
@@ -1146,9 +1021,9 @@
     }
 
     function formatDateToSpanish(dateString) {
-      if (!dateString) return translations[currentLang].dateToConfirm;
+      if (!dateString) return 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
-      if (!cleanStr || cleanStr.includes('1899')) return translations[currentLang].dateToConfirm;
+      if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
       try {
         let date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
@@ -1162,9 +1037,8 @@
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return cleanStr;
-        const locale = currentLang === 'en' ? 'en-US' : 'es-ES';
         const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
-        let f = date.toLocaleDateString(locale, opts);
+        let f = date.toLocaleDateString('es-ES', opts);
         return f.charAt(0).toUpperCase() + f.slice(1);
       } catch (e) { return cleanStr; }
     }
@@ -1184,15 +1058,9 @@
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return '';
-        if (currentLang === 'en') {
-          var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-          var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          return days[date.getUTCDay()] + ' ' + months[date.getUTCMonth()] + ' ' + date.getUTCDate();
-        } else {
-          var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-          var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-          return dias[date.getUTCDay()] + ' ' + date.getUTCDate() + ' ' + meses[date.getUTCMonth()];
-        }
+        var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+        return dias[date.getUTCDay()] + ' ' + date.getUTCDate() + ' ' + meses[date.getUTCMonth()];
       } catch (e) { return ''; }
     }
 
@@ -1212,11 +1080,11 @@
 
     function getCategoryClass(cat) {
       const c = (cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      if (c.includes('cultura') || c.includes('tradicion') || c.includes('culture')) return 'cat-cultura';
-      if (c.includes('musica') || c.includes('jazz') || c.includes('concierto') || c.includes('music')) return 'cat-musica';
-      if (c.includes('arte') || c.includes('exposicion') || c.includes('art')) return 'cat-arte';
-      if (c.includes('gastro') || c.includes('comida') || c.includes('vino') || c.includes('food')) return 'cat-gastronomia';
-      if (c.includes('teatro') || c.includes('danza') || c.includes('theater')) return 'cat-teatro';
+      if (c.includes('cultura') || c.includes('tradicion')) return 'cat-cultura';
+      if (c.includes('musica') || c.includes('jazz') || c.includes('concierto')) return 'cat-musica';
+      if (c.includes('arte') || c.includes('exposicion') || c.includes('galeria')) return 'cat-arte';
+      if (c.includes('gastro') || c.includes('comida') || c.includes('vino') || c.includes('culinaria')) return 'cat-gastronomia';
+      if (c.includes('teatro') || c.includes('danza') || c.includes('espectaculo')) return 'cat-teatro';
       return 'cat-general';
     }
 
@@ -1279,7 +1147,7 @@
         applyFilters();
       } catch (error) {
         document.getElementById('eventsContainer').innerHTML = 
-          '<div class="empty-state"><span class="empty-state-icon">📭</span><p>' + translations[currentLang].loadError + '</p></div>';
+          '<div class="empty-state"><span class="empty-state-icon">📭</span><p>No se pudieron cargar los eventos en este momento. Intenta de nuevo más tarde.</p></div>';
       }
     }
 
@@ -1297,11 +1165,9 @@
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return [];
-        var mesesEs = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-        var mesesEn = ['january','february','march','april','may','june','july','august','september','october','november','december'];
-        var mIdx = date.getUTCMonth();
-        var mes = currentLang === 'en' ? mesesEn[mIdx] : mesesEs[mIdx];
-        var num = String(mIdx + 1);
+        var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+        var mes = meses[date.getUTCMonth()];
+        var num = String(date.getUTCMonth() + 1);
         var numPad = num.padStart(2, '0');
         var abbr = mes.substring(0, 3);
         return [mes, abbr, num, numPad];
@@ -1335,26 +1201,26 @@
     function applyFilters() {
       var filtered = getFilteredEvents();
       var countEl = document.getElementById('resultsCount');
-      const t = translations[currentLang];
-      countEl.textContent = filtered.length === 0 ? t.zeroEvents
-        : filtered.length === 1 ? t.oneEvent
-        : filtered.length + ' ' + t.allEvents;
+      countEl.textContent = filtered.length === 0 ? '0 eventos'
+        : filtered.length === 1 ? '1 evento'
+        : filtered.length + ' eventos';
       renderEvents(filtered);
     }
 
     function checkSession() {
       var isLogged = localStorage.getItem('sma_admin_logged') === 'true';
       document.body.classList.toggle('admin-logged', isLogged);
-      document.getElementById('lockLabel').innerText = isLogged ? translations[currentLang].closeSession : translations[currentLang].lockAdmin;
+      document.getElementById('lockLabel').innerText = isLogged ? 'Cerrar Sesión' : 'Acceso Admin';
     }
 
     function renderEvents(eventsToShow) {
       var container = document.getElementById('eventsContainer');
       var list = eventsToShow || globalEvents;
-      const t = translations[currentLang];
 
       if (!list.length) {
-        var msg = searchQuery ? t.noEventsSearch : t.noEventsActive;
+        var msg = searchQuery
+          ? 'No hay eventos que coincidan con tu búsqueda.'
+          : 'No hay eventos vigentes disponibles por el momento.';
         container.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🔎</span><p>' + msg + '</p></div>';
         return;
       }
@@ -1362,36 +1228,30 @@
       var html = '';
       list.forEach(function(ev) {
         var webButton = (ev.link && ev.link.length > 5)
-          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">' + t.officialWeb + '</a>'
+          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">Sitio Oficial / Boletos ↗</a>'
           : '';
         var catClass = getCategoryClass(ev.category);
-
-        var displayName = translateField(ev.name, 'title');
-        var displayCategory = translateField(ev.category, 'cat');
-        var displayPrice = translateField(ev.price, 'price');
-        var displayLocation = translateField(ev.location, 'loc');
-        var displayDesc = translateField(ev.desc, 'desc');
 
         html += 
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
-              '<span class="event-category ' + catClass + '">' + displayCategory + '</span>' +
+              '<span class="event-category ' + catClass + '">' + ev.category + '</span>' +
               '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
                 '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ', \'' + ev.name.replace(/'/g, "\\'") + '\')" title="Eliminar">🗑️</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + displayName + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
+              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
             '</div>' +
             '<div class="event-body">' +
-              '<h3 class="event-name">' + displayName + '</h3>' +
+              '<h3 class="event-name">' + ev.name + '</h3>' +
               '<div class="event-key-info">' +
                 '<span class="event-key-chip">📅 ' + ev.date + '</span>' +
                 '<span class="event-key-chip">🕒 ' + ev.time + '</span>' +
-                '<span class="event-key-chip price">💰 ' + displayPrice + '</span>' +
+                '<span class="event-key-chip price">💰 ' + ev.price + '</span>' +
               '</div>' +
-              '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + displayLocation + '</a>' +
-              '<p class="event-desc">' + displayDesc + '</p>' +
+              '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
+              '<p class="event-desc">' + ev.desc + '</p>' +
               webButton +
             '</div>' +
           '</article>';
@@ -1412,14 +1272,13 @@
     function resetModal() {
       document.getElementById('eventForm').reset();
       document.getElementById('imgPreview').style.display = 'none';
-      document.getElementById('fileNameDisplay').textContent = translations[currentLang].noFile;
+      document.getElementById('fileNameDisplay').textContent = 'Sin archivo';
     }
 
     function openEventModal() {
       isEditMode = false;
-      const t = translations[currentLang];
-      document.getElementById('eventModalTitle').textContent = t.newEvTitle;
-      document.getElementById('submitEventBtn').textContent = t.btnSave;
+      document.getElementById('eventModalTitle').textContent = 'Nuevo Evento';
+      document.getElementById('submitEventBtn').textContent = 'Guardar Evento';
       document.getElementById('editRowIndex').value = '';
       resetModal();
       document.getElementById('eventModal').classList.add('active');
@@ -1430,9 +1289,8 @@
       if (!event) return;
       isEditMode = true;
       resetModal();
-      const t = translations[currentLang];
-      document.getElementById('eventModalTitle').textContent = t.editEvTitle;
-      document.getElementById('submitEventBtn').textContent = t.btnUpdate;
+      document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
+      document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
       document.getElementById('editRowIndex').value = rowIndex;
 
       document.getElementById('inputName').value = event.name || '';
@@ -1459,16 +1317,15 @@
         document.getElementById('loginModal').classList.remove('active');
         checkSession();
       } else {
-        alert(currentLang === 'en' ? 'Incorrect credentials' : 'Credenciales incorrectas');
+        alert('Credenciales incorrectas');
       }
     }
 
     async function handleSaveEvent(e) {
       e.preventDefault();
       var btn = document.getElementById('submitEventBtn');
-      const t = translations[currentLang];
       var originalText = btn.innerText;
-      btn.innerText = isEditMode ? t.saving : t.publishing;
+      btn.innerText = isEditMode ? 'Guardando cambios…' : 'Publicando evento…';
       btn.disabled = true;
 
       var payload = {
@@ -1497,7 +1354,7 @@
           alert('Error: ' + result.message);
         }
       } catch (err) {
-        alert(currentLang === 'en' ? 'Connection error while saving.' : 'Hubo un problema de conexión al guardar.');
+        alert('Hubo un problema de conexión al guardar.');
       } finally {
         btn.innerText = originalText;
         btn.disabled = false;
@@ -1505,8 +1362,7 @@
     }
 
     async function handleDeleteEvent(rowIndex, eventName) {
-      const t = translations[currentLang];
-      if (!confirm(t.deleteConfirm + '"' + eventName + '"?')) return;
+      if (!confirm('¿Eliminar definitivamente "' + eventName + '"?')) return;
       try {
         var response = await fetch(WEB_APP_URL, {
           method: 'POST',
@@ -1521,7 +1377,7 @@
           alert('Error: ' + result.message);
         }
       } catch (err) {
-        alert(currentLang === 'en' ? 'Connection error while deleting.' : 'Fallo de conexión al eliminar.');
+        alert('Fallo de conexión al eliminar.');
       }
     }
 
@@ -1598,7 +1454,6 @@
     };
 
     document.addEventListener('DOMContentLoaded', function() {
-      updateStaticTexts();
       checkSession();
       fetchGoogleSheetData();
     });
