@@ -30,12 +30,12 @@
       --rojo-hover: #8e2b2b;
       --borde: rgba(26, 22, 20, 0.06);
       --borde-fuerte: rgba(26, 22, 20, 0.10);
-      --sombra-card: 0 4px 20px -4px rgba(26, 22, 20, 0.06), 0 1px 3px rgba(26, 22, 20, 0.04);
-      --sombra-hover: 0 24px 48px -12px rgba(26, 22, 20, 0.14), 0 8px 16px -8px rgba(26, 22, 20, 0.08);
+      --sombra-card: 0 4px 24px -6px rgba(26, 22, 20, 0.07), 0 1px 3px rgba(26, 22, 20, 0.03);
+      --sombra-hover: 0 20px 40px -12px rgba(26, 22, 20, 0.12), 0 8px 16px -8px rgba(26, 22, 20, 0.06);
       --sombra-sticky: 0 8px 32px -8px rgba(26, 22, 20, 0.10);
       --transicion: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       --transicion-rapida: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      --radius: 20px;
+      --radius: 18px;
       --radius-sm: 12px;
       --radius-xs: 8px;
     }
@@ -57,7 +57,7 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Bloqueo total de la barra superior intrusiva de Google ── */
+    /* ── Protección fuerte contra Google Translate ── */
     .goog-te-banner-frame.skiptranslate { display: none !important; }
     body { top: 0px !important; position: static !important; }
     .goog-tooltip { display: none !important; }
@@ -65,11 +65,30 @@
     .goog-logo-link { display: none !important; }
     .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
     .goog-te-gadget span { display: none !important; }
+    #google_translate_element { display: none !important; }
 
-    /* Ocultar el elemento visual bruto y dejar solo nuestro botón estilizado */
-    #google_translate_element {
-      display: none !important;
+    /* Evitar que Google Translate inyecte estilos que rompan el diseño */
+    .event-card font,
+    .event-card span,
+    .event-card a,
+    .event-card p,
+    .event-card h3,
+    .event-meta,
+    .event-meta span,
+    .event-location,
+    .event-desc,
+    .event-name,
+    .event-category,
+    .event-date-badge {
+      font-family: inherit !important;
+      line-height: inherit !important;
     }
+
+    /* Mantener colores y pesos aunque Translate envuelva texto */
+    .event-name { font-family: 'Playfair Display', Georgia, serif !important; }
+    .event-location { color: var(--terracota) !important; }
+    .event-desc { color: var(--gris-texto) !important; }
+    .event-meta span { color: inherit !important; }
 
     .container {
       max-width: 1160px;
@@ -262,7 +281,7 @@
     .events-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 2rem;
+      gap: 1.75rem;
       padding-bottom: 1rem;
       align-items: stretch;
     }
@@ -283,14 +302,14 @@
     }
 
     .event-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       box-shadow: var(--sombra-hover);
-      border-color: rgba(196, 92, 74, 0.15);
+      border-color: rgba(196, 92, 74, 0.12);
     }
 
     .event-img-wrapper {
       width: 100%;
-      height: 220px;
+      height: 210px;
       position: relative;
       background: linear-gradient(145deg, #ebe6e0, #f0ebe5);
       overflow: hidden;
@@ -301,7 +320,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(26,22,20,0.18) 0%, transparent 45%);
+      background: linear-gradient(to top, rgba(26,22,20,0.2) 0%, transparent 50%);
       pointer-events: none;
       z-index: 1;
     }
@@ -310,20 +329,20 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .event-card:hover .event-img-wrapper img {
-      transform: scale(1.06);
+      transform: scale(1.05);
     }
 
     .event-category {
       position: absolute;
-      top: 1rem;
-      left: 1rem;
-      padding: 0.3rem 0.85rem;
+      top: 0.9rem;
+      left: 0.9rem;
+      padding: 0.28rem 0.8rem;
       border-radius: 999px;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       text-transform: uppercase;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -334,37 +353,37 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    .cat-cultura { background: rgba(143, 61, 40, 0.88); }
-    .cat-musica { background: rgba(90, 70, 140, 0.88); }
-    .cat-arte { background: rgba(60, 110, 130, 0.88); }
-    .cat-gastronomia { background: rgba(160, 100, 40, 0.88); }
-    .cat-teatro { background: rgba(120, 50, 90, 0.88); }
-    .cat-general { background: rgba(80, 75, 70, 0.88); }
+    .cat-cultura { background: rgba(143, 61, 40, 0.9); }
+    .cat-musica { background: rgba(90, 70, 140, 0.9); }
+    .cat-arte { background: rgba(60, 110, 130, 0.9); }
+    .cat-gastronomia { background: rgba(160, 100, 40, 0.9); }
+    .cat-teatro { background: rgba(120, 50, 90, 0.9); }
+    .cat-general { background: rgba(80, 75, 70, 0.9); }
 
     .event-date-badge {
       position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-      background: rgba(255, 255, 255, 0.96);
+      bottom: 0.9rem;
+      left: 0.9rem;
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: var(--noche);
-      padding: 0.32rem 0.8rem;
-      border-radius: var(--radius-xs);
-      font-size: 0.7rem;
+      padding: 0.28rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.68rem;
       font-weight: 600;
       z-index: 3;
       text-transform: capitalize;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       letter-spacing: 0.01em;
     }
 
     .admin-card-actions {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
+      top: 0.9rem;
+      right: 0.9rem;
       display: none;
-      gap: 0.35rem;
+      gap: 0.3rem;
       z-index: 10;
     }
 
@@ -372,27 +391,27 @@
 
     .btn-card-edit, .btn-card-delete {
       border: none;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: var(--transicion);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-      font-size: 0.85rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+      font-size: 0.8rem;
     }
 
     .btn-card-edit { background: rgba(196, 138, 31, 0.95); color: #fff; }
-    .btn-card-edit:hover { background: #a87618; transform: scale(1.1); }
+    .btn-card-edit:hover { background: #a87618; transform: scale(1.08); }
 
     .btn-card-delete { background: rgba(179, 57, 57, 0.92); color: #fff; }
-    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.1); }
+    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.08); }
 
-    /* ── Cuerpo de tarjeta ── */
+    /* ── Cuerpo de tarjeta (diseño limpio) ── */
     .event-body {
-      padding: 1.5rem;
+      padding: 1.35rem 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -402,61 +421,58 @@
 
     .event-name {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.32rem;
+      font-size: 1.28rem;
       font-weight: 600;
-      margin-bottom: 0.85rem;
-      line-height: 1.4;
+      margin-bottom: 0.7rem;
+      line-height: 1.35;
       color: var(--noche);
       letter-spacing: -0.015em;
       overflow-wrap: anywhere;
     }
 
-    .event-key-info {
+    /* Meta limpia: sin cajas, solo texto + iconos */
+    .event-meta {
       display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.55rem;
-      margin: 0.15rem 0 1rem;
-      width: 100%;
-      min-width: 0;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.15rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.82rem;
+      color: var(--gris-texto);
+      line-height: 1.5;
     }
 
-    .event-key-chip {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.55rem;
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--noche);
-      background: #f5f1ec;
-      padding: 0.65rem 0.8rem;
-      border: 1px solid rgba(26, 22, 20, 0.045);
-      border-radius: 9px;
-      letter-spacing: 0;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
+    .event-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      white-space: nowrap;
     }
 
-    .event-key-chip.price {
-      background: rgba(143, 61, 40, 0.09);
+    .event-meta .meta-sep {
+      color: var(--gris-muted);
+      opacity: 0.55;
+      margin: 0 0.2rem;
+      font-weight: 300;
+      user-select: none;
+    }
+
+    .event-meta .price {
       color: var(--terracota);
-      border-color: rgba(143, 61, 40, 0.08);
+      font-weight: 600;
     }
 
     .event-location {
-      font-size: 0.87rem;
+      font-size: 0.85rem;
       color: var(--terracota);
-      margin-bottom: 0.9rem;
-      font-weight: 600;
+      margin-bottom: 0.85rem;
+      font-weight: 500;
       text-decoration: none;
       display: inline-flex;
       align-items: flex-start;
-      gap: 0.45rem;
+      gap: 0.4rem;
       transition: var(--transicion-rapida);
-      line-height: 1.6;
+      line-height: 1.5;
       overflow-wrap: anywhere;
       min-width: 0;
     }
@@ -471,11 +487,11 @@
       display: block;
       width: 100%;
       min-width: 0;
-      font-size: 0.91rem;
+      font-size: 0.9rem;
       color: var(--gris-texto);
-      margin: 0 0 1.2rem;
+      margin: 0 0 1.15rem;
       flex: 1;
-      line-height: 1.85;
+      line-height: 1.75;
       white-space: pre-line;
       overflow-wrap: anywhere;
     }
@@ -486,9 +502,9 @@
       gap: 0.35rem;
       background: var(--cantera);
       color: var(--blanco);
-      padding: 0.55rem 1rem;
+      padding: 0.5rem 0.95rem;
       border-radius: var(--radius-xs);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-decoration: none;
       font-weight: 600;
       margin-top: auto;
@@ -509,7 +525,7 @@
     .skeleton-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 2rem;
+      gap: 1.75rem;
     }
 
     .skeleton-card {
@@ -521,26 +537,26 @@
     }
 
     .skeleton-img {
-      height: 220px;
+      height: 210px;
       background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
       background-size: 200% 100%;
       animation: shimmer 1.6s ease-in-out infinite;
     }
 
-    .skeleton-body { padding: 1.55rem 1.65rem; }
+    .skeleton-body { padding: 1.4rem; }
 
     .skeleton-line {
-      height: 14px;
-      border-radius: 6px;
+      height: 13px;
+      border-radius: 5px;
       background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
       background-size: 200% 100%;
       animation: shimmer 1.6s ease-in-out infinite;
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.65rem;
     }
 
-    .skeleton-line.title { height: 22px; width: 75%; margin-bottom: 0.9rem; }
-    .skeleton-line.short { width: 45%; }
-    .skeleton-line.medium { width: 90%; }
+    .skeleton-line.title { height: 20px; width: 72%; margin-bottom: 0.85rem; }
+    .skeleton-line.short { width: 42%; }
+    .skeleton-line.medium { width: 88%; }
 
     @keyframes shimmer {
       0% { background-position: 200% 0; }
@@ -641,8 +657,8 @@
       background: var(--blanco);
       width: 100%;
       max-width: 480px;
-      border-radius: 24px;
-      padding: 2.4rem;
+      border-radius: 22px;
+      padding: 2.3rem;
       box-shadow: 0 32px 64px -16px rgba(0,0,0,0.3);
       max-height: 90vh;
       overflow-y: auto;
@@ -659,19 +675,19 @@
 
     .modal-box h3 {
       font-family: 'Playfair Display', Georgia, serif;
-      margin-bottom: 1.4rem;
-      font-size: 1.5rem;
+      margin-bottom: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
 
-    .form-group { margin-bottom: 1.05rem; }
+    .form-group { margin-bottom: 1rem; }
 
     label {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.28rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--gris-muted);
@@ -679,7 +695,7 @@
 
     input, textarea {
       width: 100%;
-      padding: 0.72rem 0.95rem;
+      padding: 0.7rem 0.9rem;
       border: 1px solid var(--borde-fuerte);
       border-radius: var(--radius-sm);
       font-family: inherit;
@@ -703,13 +719,13 @@
       color: var(--blanco);
       border: none;
       width: 100%;
-      padding: 0.95rem;
+      padding: 0.9rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: 0.9rem;
       transition: var(--transicion);
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       font-family: inherit;
       letter-spacing: 0.01em;
       box-shadow: 0 4px 14px -2px var(--cantera-glow);
@@ -738,7 +754,7 @@
       background: var(--gris-suave);
       color: var(--noche);
       border: 1px solid var(--borde-fuerte);
-      padding: 0.55rem 1rem;
+      padding: 0.5rem 0.95rem;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-weight: 600;
@@ -755,7 +771,7 @@
 
     .divider-text {
       text-align: center;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       color: var(--gris-muted);
       margin: 8px 0;
       text-transform: uppercase;
@@ -776,9 +792,9 @@
     }
 
     @keyframes card-pulse {
-      0% { transform: translateY(-6px) scale(1); }
-      40% { transform: translateY(-8px) scale(1.018); }
-      100% { transform: translateY(-6px) scale(1); }
+      0% { transform: translateY(-5px) scale(1); }
+      40% { transform: translateY(-7px) scale(1.015); }
+      100% { transform: translateY(-5px) scale(1); }
     }
 
     /* ── Responsive ── */
@@ -790,24 +806,23 @@
       .toolbar-wrapper { padding: 0.9rem 0; margin-bottom: 1.6rem; }
       .events-grid, .skeleton-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1.4rem;
       }
-      .event-img-wrapper, .skeleton-img { height: 200px; }
-      .modal-box { padding: 1.75rem; border-radius: 20px; }
+      .event-img-wrapper, .skeleton-img { height: 195px; }
+      .modal-box { padding: 1.7rem; border-radius: 18px; }
       .results-count { min-width: auto; text-align: left; }
-      .event-body { padding: 1.25rem 1.2rem 1.4rem; }
-      .event-name { font-size: 1.25rem; line-height: 1.4; }
-      .event-key-info { gap: 0.5rem; }
-      .event-key-chip { font-size: 0.82rem; padding: 0.65rem 0.75rem; }
-      .event-desc { font-size: 0.9rem; line-height: 1.8; }
-      .event-location { font-size: 0.85rem; }
+      .event-body { padding: 1.2rem 1.15rem 1.35rem; }
+      .event-name { font-size: 1.2rem; }
+      .event-meta { font-size: 0.8rem; }
+      .event-desc { font-size: 0.88rem; }
+      .event-location { font-size: 0.83rem; }
     }
 
     @media (max-width: 380px) {
       .container { padding: 0 0.85rem; }
-      .event-body { padding: 1.1rem; }
-      .event-key-chip { font-size: 0.79rem; }
-      .event-name { font-size: 1.17rem; }
+      .event-body { padding: 1.05rem; }
+      .event-name { font-size: 1.15rem; }
+      .event-meta { font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -823,9 +838,7 @@
         </div>
       </div>
       <div class="admin-actions-group">
-        <!-- Botón elegante personalizado que activa la traducción nativa invisible de Google -->
         <button class="lang-custom-btn" id="langCustomBtn" onclick="triggerGoogleTranslate()">🇬🇧 English</button>
-
         <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
       </div>
@@ -921,7 +934,6 @@
       }, 'google_translate_element');
     }
 
-    // Función que simula el cambio de idioma mediante el combo interno de Google sin mostrar la barra fea
     function triggerGoogleTranslate() {
       var combo = document.querySelector('.goog-te-combo');
       var btn = document.getElementById('langCustomBtn');
@@ -932,11 +944,11 @@
       }
 
       if (combo.value === 'en') {
-        combo.value = ''; // Regresar a español
+        combo.value = '';
         dispatchEvent(combo);
         btn.innerHTML = '🇬🇧 English';
       } else {
-        combo.value = 'en'; // Traducir a inglés
+        combo.value = 'en';
         dispatchEvent(combo);
         btn.innerHTML = '🇲🇽 Español';
       }
@@ -1245,10 +1257,12 @@
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + ev.name + '</h3>' +
-              '<div class="event-key-info">' +
-                '<span class="event-key-chip">📅 ' + ev.date + '</span>' +
-                '<span class="event-key-chip">🕒 ' + ev.time + '</span>' +
-                '<span class="event-key-chip price">💰 ' + ev.price + '</span>' +
+              '<div class="event-meta">' +
+                '<span>📅 ' + ev.date + '</span>' +
+                '<span class="meta-sep">·</span>' +
+                '<span>🕒 ' + ev.time + '</span>' +
+                '<span class="meta-sep">·</span>' +
+                '<span class="price">💰 ' + ev.price + '</span>' +
               '</div>' +
               '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
               '<p class="event-desc">' + ev.desc + '</p>' +
