@@ -57,15 +57,65 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Protección fuerte contra Google Translate ── */
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0px !important; position: static !important; }
-    .goog-tooltip { display: none !important; }
-    .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-    .goog-logo-link { display: none !important; }
-    .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
-    .goog-te-gadget span { display: none !important; }
-    #google_translate_element { display: none !important; }
+    /* ── Ocultar completamente la barra de Google Translate ── */
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    iframe.goog-te-banner-frame,
+    .goog-te-balloon-frame,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-tooltip,
+    .goog-te-spinner-pos,
+    .VIpgJd-ZVi9od-ORHb-OEVmcd,
+    .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+    .VIpgJd-ZVi9od-ORHb {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* Forzar que el body no se desplace por la barra de Google */
+    body {
+      top: 0 !important;
+      position: static !important;
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    html {
+      margin-top: 0 !important;
+    }
+
+    /* Ocultar gadget y elementos residuales */
+    .goog-te-gadget,
+    .goog-te-gadget span,
+    .goog-logo-link,
+    .goog-te-gadget .goog-te-combo {
+      display: none !important;
+      visibility: hidden !important;
+      font-size: 0 !important;
+      color: transparent !important;
+    }
+
+    #google_translate_element {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      overflow: hidden !important;
+    }
+
+    /* Quitar el resaltado azul que pone Google al traducir */
+    .goog-text-highlight,
+    font {
+      background-color: transparent !important;
+      background: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
 
     /* Evitar que Google Translate inyecte estilos que rompan el diseño */
     .event-card font,
@@ -934,6 +984,32 @@
       }, 'google_translate_element');
     }
 
+    // Elimina agresivamente la barra de Google Translate si aparece
+    function killGoogleTranslateBar() {
+      // Ocultar iframes y banners
+      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame, .goog-te-balloon-frame, #goog-gt-tt').forEach(function(el) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.height = '0';
+        el.style.width = '0';
+        el.remove();
+      });
+
+      // Clases nuevas que a veces usa Google
+      document.querySelectorAll('[class*="VIpgJd"], [class*="skiptranslate"]').forEach(function(el) {
+        if (el.tagName === 'IFRAME' || el.classList.contains('goog-te-banner-frame') || el.id === 'goog-gt-tt') {
+          el.style.display = 'none';
+          el.remove();
+        }
+      });
+
+      // Forzar body sin desplazamiento
+      document.body.style.top = '0';
+      document.body.style.position = 'static';
+      document.body.style.marginTop = '0';
+      document.documentElement.style.marginTop = '0';
+    }
+
     function triggerGoogleTranslate() {
       var combo = document.querySelector('.goog-te-combo');
       var btn = document.getElementById('langCustomBtn');
@@ -952,6 +1028,12 @@
         dispatchEvent(combo);
         btn.innerHTML = '🇲🇽 Español';
       }
+
+      // Matar la barra varias veces después de traducir (Google la inyecta con delay)
+      setTimeout(killGoogleTranslateBar, 300);
+      setTimeout(killGoogleTranslateBar, 800);
+      setTimeout(killGoogleTranslateBar, 1500);
+      setTimeout(killGoogleTranslateBar, 2500);
     }
 
     function dispatchEvent(element) {
@@ -959,6 +1041,15 @@
       event.initEvent('change', true, true);
       element.dispatchEvent(event);
     }
+
+    // Observador: si Google intenta inyectar la barra, la eliminamos al instante
+    var translateObserver = new MutationObserver(function() {
+      killGoogleTranslateBar();
+    });
+    translateObserver.observe(document.documentElement, { childList: true, subtree: true });
+
+    // Limpieza periódica de seguridad
+    setInterval(killGoogleTranslateBar, 2000);
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
@@ -1470,6 +1561,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       checkSession();
       fetchGoogleSheetData();
+      // Limpiar barra de Google por si acaso
+      setTimeout(killGoogleTranslateBar, 500);
+      setTimeout(killGoogleTranslateBar, 1500);
     });
   </script>
 </body>
