@@ -651,7 +651,6 @@
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
-        // Obtener la fecha actual normalizada a medianoche (00:00:00) para comparar correctamente
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -659,12 +658,12 @@
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
               const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-              return possibleKeys.some(function(pk) { return cleanK.includes(pk); });
+              return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
           };
 
-          const rawDateValue = findKey(['date', 'fecha']);
+          const rawDateValue = findKey(['date (formato yyyy-mm-dd)', 'date', 'fecha']);
           const rawImgValue = findKey(['img', 'imagen']);
           const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
           const rawWebLink = findKey(['web', 'link', 'enlace', 'url']);
@@ -681,7 +680,6 @@
           const descEs = findKey(['desc', 'descripcion']) || 'Sin descripción detallada.';
           const descEn = findKey(['desc_en', 'descen']) || descEs;
 
-          // Parsear la fecha del evento para el filtro de eventos pasados
           let eventDateObj = null;
           if (rawDateValue) {
             const cleanStr = String(rawDateValue).trim();
@@ -695,35 +693,29 @@
 
           return {
             rowIndex: index + 2,
-            name: currentLang === 'en' ? nameEn : nameEs,
             name_es: nameEs,
-            name_en: nameEn,
-            category: currentLang === 'en' ? catEn : catEs,
+            name_en: nameEn || nameEs,
             category_es: catEs,
-            category_en: catEn,
+            category_en: catEn || catEs,
+            price_es: priceEs,
+            price_en: priceEn || priceEs,
+            desc_es: descEs,
+            desc_en: descEn || descEs,
             rawDate: rawDateValue,
             dateObj: eventDateObj,
             date: formatDateToSpanish(rawDateValue),
             shortDate: formatDateShort(rawDateValue),
             time: findKey(['time', 'hora']) || 'Todo el día',
-            price: currentLang === 'en' ? priceEn : priceEs,
-            price_es: priceEs,
-            price_en: priceEn,
             location: locationName,
             mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationName + ', San Miguel de Allende, Gto.'),
             link: sanitizeUrl(rawWebLink),
             img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-            rawImg: rawImgValue,
-            desc: currentLang === 'en' ? descEn : descEs,
-            desc_es: descEs,
-            desc_en: descEn
+            rawImg: rawImgValue
           };
         });
 
-        // Filtrar y omitir eventos cuya fecha ya pasó (permitiendo también los que no tienen fecha válida o son por confirmar)
         globalEvents = mappedEvents.filter(function(ev) {
           if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return true; 
-          // Omitir si la fecha del evento es anterior al día de hoy
           return ev.dateObj >= today;
         });
 
@@ -740,10 +732,10 @@
       if (!searchQuery) return globalEvents;
       var q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
       return globalEvents.filter(function(ev) {
-        var name = (ev.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var name = (currentLang === 'en' ? ev.name_en : ev.name_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var desc = (ev.desc || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var cat = (ev.category || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var desc = (currentLang === 'en' ? ev.desc_en : ev.desc_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var cat = (currentLang === 'en' ? ev.category_en : ev.category_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         return name.includes(q) || loc.includes(q) || desc.includes(q) || cat.includes(q);
       });
     }
@@ -774,6 +766,11 @@
 
       var html = '';
       list.forEach(function(ev) {
+        var currentName = currentLang === 'en' ? ev.name_en : ev.name_es;
+        var currentCat = currentLang === 'en' ? ev.category_en : ev.category_es;
+        var currentPrice = currentLang === 'en' ? ev.price_en : ev.price_es;
+        var currentDesc = currentLang === 'en' ? ev.desc_en : ev.desc_es;
+
         var webButton = (ev.link && ev.link.length > 5)
           ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">' + (currentLang === 'en' ? 'Official Site / Tickets ↗' : 'Sitio Oficial / Boletos ↗') + '</a>'
           : '';
@@ -781,25 +778,25 @@
         html += 
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
-              '<span class="event-category">' + ev.category + '</span>' +
+              '<span class="event-category">' + currentCat + '</span>' +
               '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
                 '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">🗑️</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
+              '<img src="' + ev.img + '" alt="' + currentName + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
             '</div>' +
             '<div class="event-body">' +
-              '<h3 class="event-name">' + ev.name + '</h3>' +
+              '<h3 class="event-name">' + currentName + '</h3>' +
               '<div class="event-meta">' +
                 '<span>📅 ' + ev.date + '</span>' +
                 '<span class="meta-sep">·</span>' +
                 '<span>🕒 ' + ev.time + '</span>' +
                 '<span class="meta-sep">·</span>' +
-                '<span class="price">💰 ' + ev.price + '</span>' +
+                '<span class="price">💰 ' + currentPrice + '</span>' +
               '</div>' +
               '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
-              '<p class="event-desc">' + ev.desc + '</p>' +
+              '<p class="event-desc">' + currentDesc + '</p>' +
               webButton +
             '</div>' +
           '</article>';
