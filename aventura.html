@@ -111,6 +111,32 @@
             letter-spacing: -0.3px;
         }
 
+        .header-actions-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lang-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent-terracotta);
+            color: var(--accent-terracotta);
+        }
+
         .btn-nav-home {
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -188,7 +214,6 @@
             font-weight: 400;
         }
 
-        /* Barra de Búsqueda */
         .search-bar-wrap {
             max-width: 600px;
             margin: 0 auto 3rem auto;
@@ -248,7 +273,6 @@
             border-color: rgba(166, 75, 42, 0.25);
         }
 
-        /* Carrusel de Fotos */
         .carousel-container {
             position: relative;
             height: 220px;
@@ -359,7 +383,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Lista de Actividades Múltiples */
         .activities-list {
             margin-bottom: 1.2rem;
             display: flex;
@@ -714,7 +737,10 @@
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
                 <span class="brand-name">Vive San Miguel</span>
             </a>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+            <div class="header-actions-right">
+                <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">EN</button>
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home" id="navHomeText">Inicio</a>
+            </div>
         </header>
 
         <!-- Admin Bar -->
@@ -729,8 +755,8 @@
 
         <!-- Título de la Sección -->
         <div class="section-header">
-            <h1>Aventura y Experiencias al Aire Libre</h1>
-            <p>Descubre cabalgatas, cañadas, cuatrimotos y expediciones inolvidables en San Miguel de Allende.</p>
+            <h1 id="mainTitle">Aventura y Experiencias al Aire Libre</h1>
+            <p id="mainSubtitle">Descubre cabalgatas, cañadas, cuatrimotos y expediciones inolvidables en San Miguel de Allende.</p>
         </div>
 
         <!-- Barra de Búsqueda -->
@@ -744,7 +770,7 @@
 
         <!-- Footer -->
         <footer>
-            <span>Vive San Miguel — Tu Guía de Confianza</span>
+            <span id="footerText1">Vive San Miguel — Tu Guía de Confianza</span>
             <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
         </footer>
 
@@ -785,16 +811,28 @@
                     <input type="text" id="editName" required>
                 </div>
                 <div class="input-group">
-                    <label>Categoría</label>
-                    <input type="text" id="editType" required placeholder="Ej. Expediciones, Cabalgatas, Ecoturismo...">
+                    <label>Categoría (ES)</label>
+                    <input type="text" id="editType" required placeholder="Ej. Expediciones...">
                 </div>
                 <div class="input-group">
-                    <label>Especialidades (Separadas por comas)</label>
-                    <input type="text" id="editSpecialties" required placeholder="Ej. Cabalgatas, Rapel, Temazcal">
+                    <label>Category (EN)</label>
+                    <input type="text" id="editTypeEn" required placeholder="Ex. Expeditions...">
                 </div>
                 <div class="input-group">
-                    <label>Descripción</label>
+                    <label>Especialidades (ES - separadas por comas)</label>
+                    <input type="text" id="editSpecialties" required placeholder="Ej. Cabalgatas, Rapel">
+                </div>
+                <div class="input-group">
+                    <label>Specialties (EN - comma separated)</label>
+                    <input type="text" id="editSpecialtiesEn" required placeholder="Ex. Horseback Riding, Canyons">
+                </div>
+                <div class="input-group">
+                    <label>Descripción (ES)</label>
                     <textarea id="editDesc" rows="3" required placeholder="Breve descripción..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Description (EN)</label>
+                    <textarea id="editDescEn" rows="3" required placeholder="Short description..."></textarea>
                 </div>
                 <div class="input-group">
                     <label>Teléfono</label>
@@ -821,7 +859,7 @@
                     <input type="text" id="editInstagram" placeholder="Si no tiene, poner #">
                 </div>
 
-                <!-- Gestor Dual de Imágenes (URL o Archivo Local) -->
+                <!-- Gestor Dual de Imágenes -->
                 <div class="input-group">
                     <label>Foto 1 (URL o Subir Archivo)</label>
                     <div class="image-input-box">
@@ -857,16 +895,19 @@
         const AUTH_PASS = "c4rl0s1107";
         
         // URL actualizada con tu nueva implementación de Google Apps Script
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjpihzZKtTC_gNWBZOlLcz-yawPRUZWW7SKDvM2d3bKXzpGLv2ArOU62ejFBbEAQpEHQ/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx24-E9tBBMgNs_dqIVCdzA1unK2mZrUf-td_vpNvDWKEW9TcS3CLRzK42DKZWqVZ-DMQ/exec";
 
         const defaultAdventureData = {
             adventures: [
                 {
-                    key: 'adv_coyote',
+                    key: 'adv_k11f9',
                     name: 'Coyote Canyon',
-                    type: 'Expediciones',
-                    specialties: ['Cabalgatas', 'Cañadas', 'Rapel', 'Temazcal'],
-                    desc: 'Operadora líder en experiencias ecuestres, cañadas profundas y tradiciones culturales inmersivas en el semidesierto.',
+                    type: { es: 'Expediciones', en: 'Expeditions' },
+                    specialties: { es: ['Cabalgatas', 'Cañadas', 'Rapel', 'Temazcal'], en: ['Horseback Riding', 'Canyons', 'Rappelling', 'Temazcal'] },
+                    desc: {
+                        es: 'Operadora líder en experiencias ecuestres, cañadas profundas y tradiciones culturales inmersivas en el semidesierto.',
+                        en: 'Leading operator in equestrian experiences, deep canyons, and immersive cultural traditions in the semi-desert.'
+                    },
                     phone: '+ (415) 154-4193',
                     address: 'Zacateros 54, Zona Centro, 37700 San Miguel de Allende, Gto.',
                     maps: 'https://maps.google.com/?q=Zacateros+54,+Zona+Centro,+37700+San+Miguel+de+Allende,+Gto.',
@@ -875,82 +916,179 @@
                     instagram: '#',
                     whatsapp: 'https://api.whatsapp.com/send?phone=524151144945',
                     images: [
-                        'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
+                        'https://coyotecanyonadventures.com/fotos/almacenfotos_0_1649345486.jpg',
+                        'https://coyotecanyonadventures.com/fotos/almacenfotos_0_1649345067.jpg',
+                        'https://coyotecanyonadventures.com/fotos/almacenfotos_0_1649777962.jpg'
                     ]
                 },
                 {
-                    key: 'adv_parque',
+                    key: 'adv_knktc',
                     name: 'Parque de Aventura',
-                    type: 'Ecoturismo',
-                    specialties: ['Tirolesas', 'Puentes Colgantes', 'Senderismo', 'Vistas Panorámicas'],
-                    desc: 'Parque ecológico con circuito extremo de tirolesas, puentes colgantes sobre cañones y rutas de caminata inolvidables.',
+                    type: { es: 'Ecoturismo', en: 'Ecotourism' },
+                    specialties: { es: ['Tirolesas', 'Puentes Colgantes', 'Senderismo', 'Vistas Panorámicas'], en: ['Ziplines', 'Suspension Bridges', 'Hiking', 'Panoramic Views'] },
+                    desc: {
+                        es: 'Parque ecológico con circuito extremo de tirolesas, puentes colgantes sobre cañones y rutas de caminata inolvidables.',
+                        en: 'Ecological park with an extreme zipline circuit, suspension bridges over canyons, and unforgettable hiking trails.'
+                    },
                     phone: '415 121 2291',
                     address: 'Camino a Alcocer s/n, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Camino+a+Alcocer+s/n,+San+Miguel+de+Allende',
                     web: 'https://www.parquedeaventurasanmiguel.com/',
                     facebook: '#',
                     instagram: '#',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=4151670073&text&type=phone_number&app_absent=0',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=4151670073',
                     images: [
-                        'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80'
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mYTmoyL4GHAo_djRwYmNibwj3ICUA86kKb7VWFs-LQ&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMKQQjRgHCVpir74sJpDmWUO5fOBZsZTpvhQeLeCxZnQ&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWxM0DI71cIwoVRS0WW19e1baXfGj1Th9r3-iNwb2IXA&s=10'
                     ]
                 },
                 {
-                    key: 'adv_atv',
+                    key: 'adv_ftah4',
                     name: 'Atv Extreme Tours',
-                    type: 'Motor Aventura',
-                    specialties: ['Cuatrimotos', 'Vehículos UTV', 'Rutas Off-Road', 'Tours Guiados'],
-                    desc: 'Rutas guiadas todo terreno en cuatrimotos y vehículos UTV explorando presas, caminos rurales y campos abiertos.',
+                    type: { es: 'Motor Aventura', en: 'Motor Adventure' },
+                    specialties: { es: ['Cuatrimotos', 'Vehículos UTV', 'Rutas Off-Road', 'Tours Guiados'], en: ['ATVs', 'UTV Vehicles', 'Off-Road Routes', 'Guided Tours'] },
+                    desc: {
+                        es: 'Rutas guiadas todo terreno en cuatrimotos y vehículos UTV explorando presas, caminos rurales y campos abiertos.',
+                        en: 'Guided all-terrain routes on ATVs and UTV vehicles exploring dams, rural roads, and open fields.'
+                    },
                     phone: '415 196 7971',
                     address: 'Salida a Celaya 49, Zona Centro, 37754 San Miguel de Allende, Gto.',
-                    maps: 'https://www.google.com/maps/place/Atv+Extreme+Tours+San+Miguel+De+Allende',
+                    maps: 'https://www.google.com/maps/place/Atv+Extreme+Tours+San+Miguel+De+Allende/',
                     web: 'https://atvextremetours.com/',
                     facebook: '#',
                     instagram: '#',
-                    whatsapp: 'https://web.whatsapp.com/send?phone=524151967971&text=',
+                    whatsapp: 'https://web.whatsapp.com/send?phone=524151967971',
                     images: [
-                        'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80'
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCwJ1w2m3OtGKFbIx9d-CWNq3Lxx0I8dapFsw-c-ZrhQ&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxOx3AxzUDpXv8o0LgGBq-UIs8fZSIxSddXg3i0Teoxw&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKK42CugqTF69U_RSo3_XfJTdcGiv6_P-tgC5kKc73tA&s=10'
                     ]
                 },
                 {
-                    key: 'adv_xotolar',
+                    key: 'adv_iezwg',
                     name: 'Xotolar',
-                    type: 'Ecoturismo',
-                    specialties: ['Cabalgatas', 'Cascadas', 'Caminata de Montaña', 'Paisajes'],
-                    desc: 'Rancho familiar tradicional especializado en cabalgatas panorámicas y excursiones a cañones y cascadas escondidas.',
+                    type: { es: 'Ecoturismo', en: 'Ecotourism' },
+                    specialties: { es: ['Cabalgatas', 'Cascadas', 'Caminata de Montaña', 'Paisajes'], en: ['Horseback Riding', 'Waterfalls', 'Mountain Hiking', 'Landscapes'] },
+                    desc: {
+                        es: 'Rancho familiar tradicional especializado en cabalgatas panorámicas y excursiones a cañones y cascadas escondidas.',
+                        en: 'Traditional family ranch specialized in scenic horseback riding and excursions to hidden canyons and waterfalls.'
+                    },
                     phone: '(415) 154 6275',
                     address: 'Comunidad de Xotolar, San Miguel de Allende',
                     maps: 'https://maps.google.com/?q=Comunidad+de+Xotolar,+San+Miguel+de+Allende',
                     web: 'https://xotolarranch.com/',
                     facebook: '#',
                     instagram: '#',
-                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151052622&text&type=phone_number&app_absent=0',
+                    whatsapp: 'https://api.whatsapp.com/send/?phone=524151052622',
                     images: [
-                        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1426604966848-d7adac902bff?auto=format&fit=crop&w=800&q=80'
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMnEWnL1nEXU3h79YlluDhoNt9hCL15ixfEQCwnfNNmw&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU6sp_hMx6KosjUywoy86j8CITpiK-fD6zNs0GF1UPoA&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYWibrl8qn6tUBR7IcMq0MDDixO7qD3eijrri5FHdVtw&s=10'
+                    ]
+                },
+                {
+                    key: 'adv_ywibw',
+                    name: 'The Ranch',
+                    type: { es: 'Cabalgatas', en: 'Horseback Riding' },
+                    specialties: { es: ['Paseos al Atardecer', 'Rutas Ecuestres', 'Naturaleza'], en: ['Sunset Rides', 'Equestrian Routes', 'Nature'] },
+                    desc: {
+                        es: 'Centro ecuestre dedicado a excursiones a caballo guiadas y recorridos contemplativos por la naturaleza de la región.',
+                        en: 'Equestrian center dedicated to guided horseback excursions and contemplative nature tours in the region.'
+                    },
+                    phone: '415 156 7110',
+                    address: 'Carretera San Miguel - Dolores Km 8',
+                    maps: 'https://maps.google.com/?q=Carretera+San+Miguel+-+Dolores+Km+8',
+                    web: 'https://theranchsma.com/',
+                    facebook: '#',
+                    instagram: 'https://www.instagram.com/theranchsma',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151567110',
+                    images: [
+                        'https://theranchsma.com/wp-content/uploads/2026/04/TheRanch-KK-water-1024x683.jpg',
+                        'https://theranchsma.com/wp-content/uploads/2026/04/home-trail-400.jpg',
+                        'https://theranchsma.com/wp-content/uploads/2026/04/enhance-ride-01-1920-1024x683.jpg'
+                    ]
+                },
+                {
+                    key: 'adv_oeh1b',
+                    name: 'Via Organica',
+                    type: { es: 'Turismo Sustentable', en: 'Sustainable Tourism' },
+                    specialties: { es: ['Huertos Orgánicos', 'Talleres', 'Senderismo Educativo', 'Catas'], en: ['Organic Gardens', 'Workshops', 'Educational Hiking', 'Tastings'] },
+                    desc: {
+                        es: 'Rancho ecológico y educativo con recorridos por huertos sustentables, talleres de agricultura y tienda de productos orgánicos.',
+                        en: 'Ecological and educational ranch with tours of sustainable gardens, agriculture workshops, and an organic product store.'
+                    },
+                    phone: '415 151 4978',
+                    address: 'San Miguel de Allende',
+                    maps: 'https://share.google/uJbIhetYFHmT858QV',
+                    web: 'https://viaorganica.org/',
+                    facebook: '#',
+                    instagram: 'https://instagram.com',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151514978',
+                    images: [
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvy2eC0Co-NAzQ7GfKrO3uVNIeDRrZi7XxeYpe6ccS0w&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2RfXtniYnEGHWoybRbgknCfnh2J0Eq0kVkI6pgF9cDw&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMwt9f_gKL6eENNN9xT_iMA_IYkErvao3tHBSkDbhCNA&s=10'
+                    ]
+                },
+                {
+                    key: 'adv_i6bpx',
+                    name: 'Zopilote Adventures',
+                    type: { es: 'Expediciones', en: 'Expeditions' },
+                    specialties: { es: ['Atv', 'Cuatrimotos', 'Rutas Extremas'], en: ['ATV', 'Quads', 'Extreme Routes'] },
+                    desc: {
+                        es: 'Especialistas en tours guiados de ciclismo de montaña y caminatas de aventura por zonas agrestes y cañadas.',
+                        en: 'Specialists in guided mountain biking tours and adventure hikes through rugged areas and canyons.'
+                    },
+                    phone: '415 113 0191',
+                    address: 'San Francisco #10, centro, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=San+Francisco+10,+centro,+San+Miguel+de+Allende',
+                    web: '#',
+                    facebook: '#',
+                    instagram: 'https://instagram.com',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151130191',
+                    images: [
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8X4tmeUxYobyNbg_yviBaSp1Aj-M0Bv1y0vGI7Xjejw&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8X4tmeUxYobyNbg_yviBaSp1Aj-M0Bv1y0vGI7Xjejw&s=10',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8X4tmeUxYobyNbg_yviBaSp1Aj-M0Bv1y0vGI7Xjejw&s=10'
+                    ]
+                },
+                {
+                    key: 'adv_9xws2',
+                    name: 'Tres Señores Horses',
+                    type: { es: 'Cabalgatas', en: 'Horseback Riding' },
+                    specialties: { es: ['Cabalgatas Familiares', 'Paseos por Valles'], en: ['Family Rides', 'Valley Tours'] },
+                    desc: {
+                        es: 'Tradición ecuestre y recorridos familiares guiados por jinetes locales a través de hermosos valles y caminos rurales.',
+                        en: 'Equestrian tradition and family tours guided by local riders through beautiful valleys and rural roads.'
+                    },
+                    phone: '415 101 4976',
+                    address: 'Comunidad Los Rodríguez, San Miguel de Allende',
+                    maps: 'https://maps.google.com/?q=Comunidad+Los+Rodriguez,+San+Miguel+de+Allende',
+                    web: '#',
+                    facebook: '#',
+                    instagram: '#',
+                    whatsapp: 'https://api.whatsapp.com/send?phone=524151014976',
+                    images: [
+                        'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/70/d7/bc.jpg',
+                        'https://luxurylatinamerica.com/blog/wp-content/coyote-canyon-top.jpg',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoWLgp6BArJPYsNnNUOIk5RjYQw9koNdfLltzwPWH14Cj1IhTTRUebXFg&s=10'
                     ]
                 }
             ]
         };
 
         function getStoredAdventures() {
-            const data = localStorage.getItem('sma_adventures_data_v9');
+            const data = localStorage.getItem('sma_adventures_data_v12');
             if (!data) {
-                localStorage.setItem('sma_adventures_data_v9', JSON.stringify(defaultAdventureData));
+                localStorage.setItem('sma_adventures_data_v12', JSON.stringify(defaultAdventureData));
                 return defaultAdventureData;
             }
             return JSON.parse(data);
         }
 
         function saveStoredAdventures(data, syncCloud = true) {
-            localStorage.setItem('sma_adventures_data_v9', JSON.stringify(data));
+            localStorage.setItem('sma_adventures_data_v12', JSON.stringify(data));
             renderAdventures(document.getElementById('searchInput').value);
             if (syncCloud) {
                 pushDataToGoogleSheets(data);
@@ -962,9 +1100,12 @@
                 const payload = data.adventures.map(item => ({
                     key: item.key,
                     name: item.name,
-                    type: item.type,
-                    specialties: Array.isArray(item.specialties) ? item.specialties.join(', ') : item.specialties,
-                    desc: item.desc,
+                    type: typeof item.type === 'object' ? item.type.es : item.type,
+                    type_en: typeof item.type === 'object' ? item.type.en : '',
+                    specialties: typeof item.specialties === 'object' && item.specialties.es ? item.specialties.es.join(', ') : item.specialties,
+                    specialties_en: typeof item.specialties === 'object' && item.specialties.en ? item.specialties.en.join(', ') : '',
+                    desc: typeof item.desc === 'object' ? item.desc.es : item.desc,
+                    desc_en: typeof item.desc === 'object' ? item.desc.en : '',
                     phone: item.phone,
                     address: item.address,
                     maps: item.maps,
@@ -989,7 +1130,7 @@
         async function fetchAdventuresFromCloud() {
             const statusEl = document.getElementById('syncStatus');
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
@@ -1002,18 +1143,29 @@
                         }
                         if (!Array.isArray(imgs)) imgs = ['https://images.unsplash.com/photo-1518709268805-4e9042af9f23'];
 
-                        let specs = item.specialties;
-                        if (typeof specs === 'string') {
-                            specs = specs.split(',').map(s => s.trim()).filter(s => s);
-                        }
-                        if (!Array.isArray(specs)) specs = [item.type || 'Aventura'];
+                        let specsEs = item.specialties;
+                        if (typeof specsEs === 'string') specsEs = specsEs.split(',').map(s => s.trim()).filter(s => s);
+                        if (!Array.isArray(specsEs)) specsEs = ['Aventura'];
+
+                        let specsEn = item.specialties_en;
+                        if (typeof specsEn === 'string') specsEn = specsEn.split(',').map(s => s.trim()).filter(s => s);
+                        if (!Array.isArray(specsEn) || specsEn.length === 0) specsEn = specsEs;
 
                         return {
                             key: item.key || 'adv_' + Math.random().toString(36).substring(2, 7),
                             name: item.name || 'Experiencia SMA',
-                            type: item.type || 'Aventura',
-                            specialties: specs,
-                            desc: item.desc || '',
+                            type: {
+                                es: item.type || 'Aventura',
+                                en: item.type_en || item.type || 'Adventure'
+                            },
+                            specialties: {
+                                es: specsEs,
+                                en: specsEn
+                            },
+                            desc: {
+                                es: item.desc || '',
+                                en: item.desc_en || item.desc || ''
+                            },
                             phone: item.phone || '',
                             address: item.address || '',
                             maps: item.maps || '#',
@@ -1026,29 +1178,29 @@
                     });
 
                     const formattedData = { adventures: normalizedAdventures };
-                    localStorage.setItem('sma_adventures_data_v9', JSON.stringify(formattedData));
+                    localStorage.setItem('sma_adventures_data_v12', JSON.stringify(formattedData));
                     renderAdventures(document.getElementById('searchInput').value);
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado con Google Sheets`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
                 }
             } catch (error) {
-                console.warn("No se pudo conectar con la nube, usando caché local:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local (Offline)`;
+                console.warn("Usando caché local:", error);
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Offline`;
             }
         }
 
         async function syncWithGoogleDrive() {
             const statusEl = document.getElementById('syncStatus');
-            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando con Google...`;
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
             try {
                 const data = getStoredAdventures();
                 await pushDataToGoogleSheets(data);
                 setTimeout(() => {
-                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado en Drive & Sheets`;
-                    alert('¡Sincronización con Google Drive y Google Sheets completada exitosamente!');
+                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    alert(currentLang === 'es' ? '¡Sincronización con Google Drive y Sheets completada!' : 'Google Drive & Sheets sync completed!');
                 }, 1000);
             } catch (error) {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error de sincronización`;
-                alert('No se pudo conectar con Google Apps Script. Verifique la URL de su Web App.');
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error`;
+                alert('No se pudo conectar con Google Apps Script.');
             }
         }
 
@@ -1077,16 +1229,17 @@
 
             if (searchQuery && searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(a => 
-                    a.name.toLowerCase().includes(q) || 
-                    a.type.toLowerCase().includes(q) || 
-                    a.desc.toLowerCase().includes(q) ||
-                    (a.specialties && a.specialties.some(s => s.toLowerCase().includes(q)))
-                );
+                filtered = filtered.filter(a => {
+                    const nameMatch = a.name.toLowerCase().includes(q);
+                    const typeMatch = (typeof a.type === 'object' ? (a.type.es + ' ' + a.type.en) : a.type).toLowerCase().includes(q);
+                    const descMatch = (typeof a.desc === 'object' ? (a.desc.es + ' ' + a.desc.en) : a.desc).toLowerCase().includes(q);
+                    const specsMatch = (typeof a.specialties === 'object' ? (a.specialties.es.join(' ') + ' ' + a.specialties.en.join(' ')) : '').toLowerCase().includes(q);
+                    return nameMatch || typeMatch || descMatch || specsMatch;
+                });
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">No se encontraron resultados con esa búsqueda.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">${currentLang === 'es' ? 'No se encontraron resultados.' : 'No results found.'}</p>`;
                 return;
             }
 
@@ -1105,22 +1258,21 @@
                     slidesHtml += `<div class="carousel-slide"><img src="${cleanImg}" alt="${a.name} foto ${idx+1}" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23'"></div>`;
                 });
 
-                let specs = a.specialties;
-                if (typeof specs === 'string') {
-                    specs = specs.split(',').map(s => s.trim()).filter(s => s);
-                }
+                const typeVal = typeof a.type === 'object' ? (a.type[currentLang] || a.type.es) : a.type;
+                const descVal = typeof a.desc === 'object' ? (a.desc[currentLang] || a.desc.es) : a.desc;
+                const specsArr = typeof a.specialties === 'object' ? (a.specialties[currentLang] || a.specialties.es) : (typeof a.specialties === 'string' ? a.specialties.split(',').map(s=>s.trim()) : []);
+
                 let specialtiesHtml = '';
-                if (Array.isArray(specs)) {
-                    specs.forEach(spec => {
+                if (Array.isArray(specsArr)) {
+                    specsArr.forEach(spec => {
                         specialtiesHtml += `<span class="activity-pill">${spec}</span>`;
                     });
                 }
 
-                const primarySpec = (specs && specs.length > 0) ? specs[0] : a.type;
-
+                const primarySpec = (specsArr && specsArr.length > 0) ? specsArr[0] : typeVal;
                 const cleanPhone = String(a.phone || '').replace(/[^0-9+]/g, '');
                 const cleanWa = cleanPhone.replace('+', '');
-                let waLink = a.whatsapp || `https://wa.me/${cleanWa}?text=Hola,%20me%20gustar%C3%ADa%20reservar%20la%20actividad:%20${encodeURIComponent(a.name)}`;
+                let waLink = a.whatsapp || `https://api.whatsapp.com/send?phone=52${cleanWa}&text=${encodeURIComponent(currentLang === 'es' ? 'Hola, me gustaría reservar: ' : 'Hello, I would like to book: ') + a.name}`;
 
                 const webButtonHtml = (a.web && a.web !== '#') ? `
                     <a href="${a.web}" target="_blank" rel="noopener noreferrer" class="btn-action web">
@@ -1140,10 +1292,12 @@
                     </a>
                 ` : '';
 
+                const t = translations[currentLang];
+
                 container.innerHTML += `
                     <div class="adventure-card" id="card-${a.key}">
                         <div class="carousel-container">
-                            <span class="type-badge">${a.type}</span>
+                            <span class="type-badge">${typeVal}</span>
                             <span class="specialties-badge">${primarySpec}</span>
                             <div class="carousel-slides" id="slides-${a.key}">
                                 ${slidesHtml}
@@ -1156,7 +1310,7 @@
                         <div class="adventure-body">
                             <div>
                                 <h3 class="adventure-name">${a.name}</h3>
-                                <p class="adventure-desc">${a.desc}</p>
+                                <p class="adventure-desc">${descVal}</p>
                                 <div class="activities-list">
                                     ${specialtiesHtml}
                                 </div>
@@ -1173,7 +1327,7 @@
                                 <div class="adventure-actions">
                                     <div class="action-row">
                                         <a href="${a.maps}" target="_blank" rel="noopener noreferrer" class="btn-action map">
-                                            <i class="fas fa-directions"></i> Mapa
+                                            <i class="fas fa-directions"></i> ${t.mapBtn}
                                         </a>
                                         ${webButtonHtml}
                                     </div>
@@ -1183,10 +1337,10 @@
                                         </div>
                                     ` : ''}
                                     <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="btn-action whatsapp" style="margin-top: 4px;">
-                                        <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
+                                        <i class="fab fa-whatsapp"></i> ${t.waBtn}
                                     </a>
                                 </div>
-                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditAdventureModal('${a.key}')">✏️ Editar Actividad</button>` : ''}
+                                ${isLogged ? `<button class="btn-admin" style="width:100%; margin-top:10px;" onclick="openEditAdventureModal('${a.key}')">✏️ ${currentLang === 'es' ? 'Editar Actividad' : 'Edit Activity'}</button>` : ''}
                             </div>
                         </div>
                     </div>
@@ -1227,7 +1381,7 @@
 
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                if (confirm(currentLang === 'es' ? '¿Desea cerrar la sesión de administración?' : 'Do you want to log out?')) {
                     logoutAdmin();
                 }
                 return;
@@ -1249,7 +1403,7 @@
                 closeLoginModal();
                 checkSession();
                 renderAdventures(document.getElementById('searchInput').value);
-                alert('¡Sesión iniciada con éxito!');
+                alert(currentLang === 'es' ? '¡Sesión iniciada con éxito!' : 'Successfully logged in!');
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
@@ -1259,7 +1413,7 @@
             localStorage.removeItem('sma_admin_logged');
             checkSession();
             renderAdventures(document.getElementById('searchInput').value);
-            alert('Sesión cerrada.');
+            alert(currentLang === 'es' ? 'Sesión cerrada.' : 'Logged out.');
         }
 
         let currentEditingKey = null;
@@ -1270,13 +1424,21 @@
             currentEditingKey = key;
             document.getElementById('editAdvKey').value = key;
             document.getElementById('editName').value = a.name;
-            document.getElementById('editType').value = a.type;
             
-            let specs = a.specialties;
-            if (Array.isArray(specs)) specs = specs.join(', ');
-            document.getElementById('editSpecialties').value = specs || '';
-            
-            document.getElementById('editDesc').value = a.desc;
+            document.getElementById('editType').value = typeof a.type === 'object' ? a.type.es : a.type;
+            document.getElementById('editTypeEn').value = typeof a.type === 'object' ? a.type.en : '';
+
+            let specsEs = typeof a.specialties === 'object' ? a.specialties.es : a.specialties;
+            if (Array.isArray(specsEs)) specsEs = specsEs.join(', ');
+            document.getElementById('editSpecialties').value = specsEs || '';
+
+            let specsEn = typeof a.specialties === 'object' ? a.specialties.en : '';
+            if (Array.isArray(specsEn)) specsEn = specsEn.join(', ');
+            document.getElementById('editSpecialtiesEn').value = specsEn || '';
+
+            document.getElementById('editDesc').value = typeof a.desc === 'object' ? a.desc.es : a.desc;
+            document.getElementById('editDescEn').value = typeof a.desc === 'object' ? a.desc.en : '';
+
             document.getElementById('editPhone').value = a.phone;
             document.getElementById('editAddress').value = a.address;
             document.getElementById('editMaps').value = a.maps;
@@ -1305,9 +1467,18 @@
             const index = data.adventures.findIndex(el => el.key === currentEditingKey);
             if (index !== -1) {
                 data.adventures[index].name = document.getElementById('editName').value;
-                data.adventures[index].type = document.getElementById('editType').value;
-                data.adventures[index].specialties = document.getElementById('editSpecialties').value.split(',').map(s => s.trim()).filter(s => s);
-                data.adventures[index].desc = document.getElementById('editDesc').value;
+                data.adventures[index].type = {
+                    es: document.getElementById('editType').value,
+                    en: document.getElementById('editTypeEn').value || document.getElementById('editType').value
+                };
+                data.adventures[index].specialties = {
+                    es: document.getElementById('editSpecialties').value.split(',').map(s => s.trim()).filter(s => s),
+                    en: document.getElementById('editSpecialtiesEn').value.split(',').map(s => s.trim()).filter(s => s)
+                };
+                data.adventures[index].desc = {
+                    es: document.getElementById('editDesc').value,
+                    en: document.getElementById('editDescEn').value || document.getElementById('editDesc').value
+                };
                 data.adventures[index].phone = document.getElementById('editPhone').value;
                 data.adventures[index].address = document.getElementById('editAddress').value;
                 data.adventures[index].maps = document.getElementById('editMaps').value;
@@ -1322,7 +1493,7 @@
 
                 saveStoredAdventures(data, true);
                 closeEditModal();
-                alert('¡Actividad y fotografías actualizadas con éxito!');
+                alert(currentLang === 'es' ? '¡Actividad actualizada y sincronizada!' : 'Activity updated and synced!');
             }
         }
 
@@ -1331,9 +1502,12 @@
             const flatData = data.adventures.map(el => ({
                 key: el.key,
                 name: el.name,
-                type: el.type,
-                specialties: Array.isArray(el.specialties) ? el.specialties.join(', ') : el.specialties,
-                desc: el.desc,
+                type: typeof el.type === 'object' ? el.type.es : el.type,
+                type_en: typeof el.type === 'object' ? el.type.en : '',
+                specialties: typeof el.specialties === 'object' && el.specialties.es ? el.specialties.es.join(', ') : el.specialties,
+                specialties_en: typeof el.specialties === 'object' && el.specialties.en ? el.specialties.en.join(', ') : '',
+                desc: typeof el.desc === 'object' ? el.desc.es : el.desc,
+                desc_en: typeof el.desc === 'object' ? el.desc.en : '',
                 phone: el.phone,
                 address: el.address,
                 maps: el.maps,
@@ -1346,7 +1520,7 @@
             const worksheet = XLSX.utils.json_to_sheet(flatData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Aventura");
-            XLSX.writeFile(workbook, "plantilla_aventura_vivesanmiguel.xlsx");
+            XLSX.writeFile(workbook, "plantilla_aventura_bilingue_vivesanmiguel.xlsx");
         }
 
         function handleAdventureExcelUpload(e) {
@@ -1364,13 +1538,21 @@
                         json.forEach((row, idx) => {
                             if (idx < data.adventures.length) {
                                 if (row.name) data.adventures[idx].name = row.name;
-                                if (row.type) data.adventures[idx].type = row.type;
-                                if (row.specialties) {
-                                    data.adventures[idx].specialties = typeof row.specialties === 'string' 
-                                        ? row.specialties.split(',').map(s => s.trim()).filter(s => s) 
-                                        : row.specialties;
-                                }
-                                if (row.desc) data.adventures[idx].desc = row.desc;
+                                data.adventures[idx].type = {
+                                    es: row.type || (typeof data.adventures[idx].type === 'object' ? data.adventures[idx].type.es : data.adventures[idx].type),
+                                    en: row.type_en || row.type || (typeof data.adventures[idx].type === 'object' ? data.adventures[idx].type.en : data.adventures[idx].type)
+                                };
+                                
+                                let specsEs = row.specialties ? (typeof row.specialties === 'string' ? row.specialties.split(',').map(s => s.trim()).filter(s => s) : row.specialties) : (typeof data.adventures[idx].specialties === 'object' ? data.adventures[idx].specialties.es : []);
+                                let specsEn = row.specialties_en ? (typeof row.specialties_en === 'string' ? row.specialties_en.split(',').map(s => s.trim()).filter(s => s) : row.specialties_en) : specsEs;
+
+                                data.adventures[idx].specialties = { es: specsEs, en: specsEn };
+
+                                data.adventures[idx].desc = {
+                                    es: row.desc || (typeof data.adventures[idx].desc === 'object' ? data.adventures[idx].desc.es : data.adventures[idx].desc),
+                                    en: row.desc_en || row.desc || (typeof data.adventures[idx].desc === 'object' ? data.adventures[idx].desc.en : data.adventures[idx].desc)
+                                };
+
                                 if (row.phone) data.adventures[idx].phone = row.phone;
                                 if (row.address) data.adventures[idx].address = row.address;
                                 if (row.maps) data.adventures[idx].maps = row.maps;
@@ -1388,22 +1570,59 @@
                             }
                         });
                         saveStoredAdventures(data, true);
-                        alert('¡Importación masiva completada y sincronizada en la nube!');
+                        alert(currentLang === 'es' ? '¡Importación masiva y sincronización completada!' : 'Bulk import and sync completed!');
                     }
                 } catch (err) {
-                    alert('Error al procesar el archivo Excel.');
+                    alert(currentLang === 'es' ? 'Error al procesar el archivo Excel.' : 'Error processing Excel file.');
                 }
             };
             reader.readAsArrayBuffer(file);
         }
 
+        let currentLang = 'es';
+        const translations = {
+            es: {
+                navHome: 'Inicio',
+                mainTitle: 'Aventura y Experiencias al Aire Libre',
+                mainSubtitle: 'Descubre cabalgatas, cañadas, cuatrimotos y expediciones inolvidables en San Miguel de Allende.',
+                searchPlaceholder: 'Busca por nombre, actividad o categoría...',
+                mapBtn: 'Mapa',
+                waBtn: 'Reservar por WhatsApp',
+                footerText: 'Vive San Miguel — Tu Guía de Confianza',
+                toggleBtn: 'EN'
+            },
+            en: {
+                navHome: 'Home',
+                mainTitle: 'Adventure & Outdoor Experiences',
+                mainSubtitle: 'Discover horseback riding, canyons, ATVs, and unforgettable expeditions in San Miguel de Allende.',
+                searchPlaceholder: 'Search by name, activity, or category...',
+                mapBtn: 'Map',
+                waBtn: 'Book via WhatsApp',
+                footerText: 'Vive San Miguel — Your Trusted Guide',
+                toggleBtn: 'ES'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            const t = translations[currentLang];
+
+            document.getElementById('langToggleBtn').textContent = t.toggleBtn;
+            document.getElementById('navHomeText').textContent = t.navHome;
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('footerText1').textContent = t.footerText;
+
+            renderAdventures(document.getElementById('searchInput').value);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
             renderAdventures(); 
-            fetchAdventuresFromCloud(); // Sincroniza y descarga automáticamente desde Google Sheets al abrir
+            fetchAdventuresFromCloud();
         });
 
-        // Partículas y cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let glowX = mouseX, glowY = mouseY;
@@ -1471,11 +1690,11 @@
             }
         }
 
-        function initParticles() {
+        function initParticlesSafe() {
             particles = [];
-            for (let i = 0; i < (width * height) / 14000; i++) particles.push(new Particle());
+            for (let i = 0; i < 50; i++) particles.push(new Particle());
         }
-        initParticles();
+        initParticlesSafe();
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
@@ -1487,8 +1706,8 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+                    .then(reg => console.log('Service Worker registrado:', reg.scope))
+                    .catch(err => console.log('Error SW:', err));
             });
         }
     </script>
