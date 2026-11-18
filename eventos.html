@@ -19,22 +19,18 @@
       --cantera-soft: rgba(196, 92, 74, 0.08);
       --cantera-glow: rgba(196, 92, 74, 0.22);
       --terracota: #8f3d28;
-      --ocre: #c48a1f;
       --noche: #1a1614;
       --fondo: #f8f5f1;
       --blanco: #ffffff;
       --gris-suave: #f0ebe5;
       --gris-texto: #6e655f;
       --gris-muted: #9a918a;
-      --rojo-alerta: #b33939;
-      --rojo-hover: #8e2b2b;
       --borde: rgba(26, 22, 20, 0.06);
       --borde-fuerte: rgba(26, 22, 20, 0.10);
       --sombra-card: 0 4px 24px -6px rgba(26, 22, 20, 0.07), 0 1px 3px rgba(26, 22, 20, 0.03);
       --sombra-hover: 0 20px 40px -12px rgba(26, 22, 20, 0.12), 0 8px 16px -8px rgba(26, 22, 20, 0.06);
       --sombra-sticky: 0 8px 32px -8px rgba(26, 22, 20, 0.10);
       --transicion: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-      --transicion-rapida: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
       --radius: 18px;
       --radius-sm: 12px;
       --radius-xs: 8px;
@@ -128,7 +124,6 @@
       gap: 0.4rem;
       text-decoration: none;
       font-weight: 500;
-      letter-spacing: 0.01em;
       font-family: inherit;
     }
 
@@ -148,13 +143,6 @@
       background: var(--cantera-soft);
     }
 
-    body.admin-logged .admin-panel-btn:hover {
-      background: var(--cantera-hover);
-      color: var(--blanco);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px -2px var(--cantera-glow);
-    }
-
     /* ── Sticky Toolbar ── */
     .toolbar-wrapper {
       position: sticky;
@@ -162,14 +150,10 @@
       z-index: 100;
       background: rgba(248, 245, 241, 0.92);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--borde);
       padding: 1.1rem 0;
       margin-bottom: 2.25rem;
-      transition: box-shadow 0.35s ease;
     }
-
-    .toolbar-wrapper.scrolled { box-shadow: var(--sombra-sticky); }
 
     .toolbar {
       display: none;
@@ -201,14 +185,13 @@
       font-family: inherit;
       font-size: 0.9rem;
       color: var(--noche);
-      transition: var(--transicion);
       outline: none;
       box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
 
     .search-box input:focus {
       border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft), 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 0 0 4px var(--cantera-soft);
     }
 
     .search-icon {
@@ -218,7 +201,6 @@
       transform: translateY(-50%);
       color: var(--gris-muted);
       font-size: 0.95rem;
-      pointer-events: none;
     }
 
     .results-count {
@@ -226,7 +208,6 @@
       color: var(--gris-muted);
       white-space: nowrap;
       font-weight: 500;
-      letter-spacing: 0.02em;
       min-width: 5.5rem;
       text-align: right;
     }
@@ -288,16 +269,10 @@
       letter-spacing: 0.05em;
       z-index: 3;
       color: #fff;
+      background: rgba(143, 61, 40, 0.9);
       backdrop-filter: blur(8px);
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-
-    .cat-cultura { background: rgba(143, 61, 40, 0.9); }
-    .cat-musica { background: rgba(90, 70, 140, 0.9); }
-    .cat-arte { background: rgba(60, 110, 130, 0.9); }
-    .cat-gastronomia { background: rgba(160, 100, 40, 0.9); }
-    .cat-teatro { background: rgba(120, 50, 90, 0.9); }
-    .cat-general { background: rgba(80, 75, 70, 0.9); }
 
     .event-date-badge {
       position: absolute;
@@ -548,9 +523,9 @@
     <div class="modal-box">
       <h3 id="loginModalTitle">Acceso Restringido</h3>
       <form onsubmit="handleLogin(event)">
-        <div class="form-group"><label id="userLabel">Usuario</label><input type="text" id="usernameInput" required></div>
-        <div class="form-group"><label id="passLabel">Contraseña</label><input type="password" id="passwordInput" required></div>
-        <button type="submit" class="btn-primary" id="loginBtnText">Ingresar</button>
+        <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
+        <button type="submit" class="btn-primary">Ingresar</button>
       </form>
     </div>
   </div>
@@ -582,7 +557,6 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    // Tu nueva URL de Apps Script desplegada
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxg8Ki50OCVoCoHakFGo3tBw0Y9fFxZFnEqM2yw5RO5OAUnwleCDh5C9DItMdkUsWLn/exec";
 
     let globalEvents = [];
@@ -598,14 +572,14 @@
         btn.innerHTML = '🇲🇽 Español';
         document.getElementById('subHeaderTitle').textContent = 'Heritage & Tradition';
         document.getElementById('mainHeaderTitle').textContent = 'Events Calendar';
-        document.getElementById('searchInput').placeholder = 'Search by type, month, name or venue... (e.g. jazz, october)';
+        document.getElementById('searchInput').placeholder = 'Search by type, month, name or venue...';
         document.getElementById('lockLabel').textContent = 'Admin Access';
         document.getElementById('btnHomeText').textContent = 'Back to Home';
       } else {
         btn.innerHTML = '🇬🇧 English';
         document.getElementById('subHeaderTitle').textContent = 'Patrimonio y Tradición';
         document.getElementById('mainHeaderTitle').textContent = 'Cartelera de Eventos';
-        document.getElementById('searchInput').placeholder = 'Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)';
+        document.getElementById('searchInput').placeholder = 'Buscar por tipo, mes, nombre o lugar…';
         document.getElementById('lockLabel').textContent = 'Acceso Admin';
         document.getElementById('btnHomeText').textContent = 'Volver al Inicio';
       }
@@ -666,10 +640,11 @@
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
         globalEvents = data.map(function(item, index) {
+          // Buscador flexible de claves para ignorar espacios y paréntesis en el Sheet
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
               const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-              return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
+              return possibleKeys.some(function(pk) { return cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
           };
@@ -679,18 +654,17 @@
           const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
           const rawWebLink = findKey(['web', 'link', 'enlace', 'url']);
 
-          // Campos bilingües con respaldo automático (fallback)
           const nameEs = findKey(['name', 'nombre']) || 'Evento';
-          const nameEn = findKey(['name_en', 'name en']) || nameEs;
+          const nameEn = findKey(['name_en', 'nameen']) || nameEs;
 
           const catEs = findKey(['category', 'categoria']) || 'General';
-          const catEn = findKey(['category_en', 'category en']) || catEs;
+          const catEn = findKey(['category_en', 'categoryen']) || catEs;
 
           const priceEs = findKey(['price', 'costo']) || 'Entrada Libre';
-          const priceEn = findKey(['price_en', 'price en']) || priceEs;
+          const priceEn = findKey(['price_en', 'priceen']) || priceEs;
 
           const descEs = findKey(['desc', 'descripcion']) || 'Sin descripción detallada.';
-          const descEn = findKey(['desc_en', 'desc en']) || descEs;
+          const descEn = findKey(['desc_en', 'descen']) || descEs;
 
           return {
             rowIndex: index + 2,
@@ -721,8 +695,9 @@
         document.getElementById('toolbar').classList.add('visible');
         applyFilters();
       } catch (error) {
+        console.error(error);
         document.getElementById('eventsContainer').innerHTML = 
-          '<div class="empty-state"><p>No se pudieron cargar los eventos. Intenta de nuevo más tarde.</p></div>';
+          '<div class="empty-state"><p>No se pudieron cargar los eventos. Verifica tu conexión o el Web App de Google Sheets.</p></div>';
       }
     }
 
@@ -771,13 +746,13 @@
         html += 
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
-              '<span class="event-category cat-general">' + ev.category + '</span>' +
+              '<span class="event-category">' + ev.category + '</span>' +
               '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
                 '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">🗑️</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy">' +
+              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + ev.name + '</h3>' +
