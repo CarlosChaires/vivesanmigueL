@@ -557,7 +557,6 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    // Tu URL definitiva de Apps Script actualizada
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzj6-t98RwaKVfTlGCINHXg3-o168xxvVmVllq7RyxZaiCm_crsoTQ1Oj3A6LqFpO3S/exec";
 
     let globalEvents = [];
@@ -652,7 +651,11 @@
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
-        globalEvents = data.map(function(item, index) {
+        // Obtener la fecha actual normalizada a medianoche (00:00:00) para comparar correctamente
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const mappedEvents = data.map(function(item, index) {
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
               const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -678,6 +681,18 @@
           const descEs = findKey(['desc', 'descripcion']) || 'Sin descripción detallada.';
           const descEn = findKey(['desc_en', 'descen']) || descEs;
 
+          // Parsear la fecha del evento para el filtro de eventos pasados
+          let eventDateObj = null;
+          if (rawDateValue) {
+            const cleanStr = String(rawDateValue).trim();
+            if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+              const p = cleanStr.split('-');
+              eventDateObj = new Date(+p[0], +p[1] - 1, +p[2]);
+            } else {
+              eventDateObj = new Date(cleanStr);
+            }
+          }
+
           return {
             rowIndex: index + 2,
             name: currentLang === 'en' ? nameEn : nameEs,
@@ -687,6 +702,7 @@
             category_es: catEs,
             category_en: catEn,
             rawDate: rawDateValue,
+            dateObj: eventDateObj,
             date: formatDateToSpanish(rawDateValue),
             shortDate: formatDateShort(rawDateValue),
             time: findKey(['time', 'hora']) || 'Todo el día',
@@ -702,6 +718,13 @@
             desc_es: descEs,
             desc_en: descEn
           };
+        });
+
+        // Filtrar y omitir eventos cuya fecha ya pasó (permitiendo también los que no tienen fecha válida o son por confirmar)
+        globalEvents = mappedEvents.filter(function(ev) {
+          if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return true; 
+          // Omitir si la fecha del evento es anterior al día de hoy
+          return ev.dateObj >= today;
         });
 
         document.getElementById('toolbar').classList.add('visible');
@@ -745,7 +768,7 @@
       var list = eventsToShow || globalEvents;
 
       if (!list.length) {
-        container.innerHTML = '<div class="empty-state"><p>' + (currentLang === 'en' ? 'No events found.' : 'No hay eventos disponibles.') + '</p></div>';
+        container.innerHTML = '<div class="empty-state"><p>' + (currentLang === 'en' ? 'No upcoming events found.' : 'No hay próximos eventos disponibles.') + '</p></div>';
         return;
       }
 
