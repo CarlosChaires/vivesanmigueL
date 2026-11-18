@@ -115,6 +115,26 @@ nav {
   gap: 12px;
 }
 
+.lang-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--stone);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn:hover {
+  border-color: var(--cantera);
+  color: var(--cantera);
+  transform: translateY(-2px);
+}
+
 .nav-back {
   display: inline-flex;
   align-items: center;
@@ -496,14 +516,15 @@ nav {
 
 <div class="wrap">
 
-  <!-- Navegación con Logo Oficial y Redes -->
+  <!-- Navegación con Logo Oficial, Idioma y Redes -->
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
       <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
-      <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
+      <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">EN</button>
+      <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back" id="navHomeText">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Inicio
       </a>
@@ -517,13 +538,13 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">UNESCO · Patrimonio de la Humanidad</div>
-      <h1>Santuario de Jesús Nazareno de Atotonilco</h1>
-      <p class="hero-sub">Conocido como la Capilla Sixtina de América. Un templo barroco del siglo XVIII donde arte, fe e historia de la Independencia se entrelazan.</p>
+      <div class="eyebrow" id="heroEyebrow">UNESCO · Patrimonio de la Humanidad</div>
+      <h1 id="heroTitle">Santuario de Jesús Nazareno de Atotonilco</h1>
+      <p class="hero-sub" id="heroSub">Conocido como la Capilla Sixtina de América. Un templo barroco del siglo XVIII donde arte, fe e historia de la Independencia se entrelazan.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Entrada libre</strong></span>
-        <span class="pill">Diario · 10:00–18:00</span>
-        <span class="pill">~14 km de SMA</span>
+        <span class="pill" id="pill1"><strong>Entrada libre</strong></span>
+        <span class="pill" id="pill2">Diario · 10:00–18:00</span>
+        <span class="pill" id="pill3">~14 km de SMA</span>
       </div>
     </div>
     <div class="hero-visual">
@@ -531,12 +552,12 @@ nav {
         <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-13.png?w=800" alt="Santuario de Atotonilco">
         <div class="hero-badge">
           <div>
-            <span>Declarado UNESCO</span>
-            <strong>2008</strong>
+            <span id="badgeSub1">Declarado UNESCO</span>
+            <strong id="badgeMain1">2008</strong>
           </div>
           <div style="text-align:right">
-            <span>Atotonilco</span>
-            <strong style="font-size:0.95rem">Guanajuato</strong>
+            <span id="badgeSub2">Atotonilco</span>
+            <strong style="font-size:0.95rem" id="badgeMain2">Guanajuato</strong>
           </div>
         </div>
       </div>
@@ -545,43 +566,43 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">La Capilla Sixtina mexicana</div>
-    <h2>Una joya del barroco novohispano</h2>
-    <p class="prose">El <strong>Santuario de Jesús Nazareno de Atotonilco</strong> es una joya arquitectónica y un lugar de gran importancia histórica y religiosa. Su belleza y significado lo llevaron a ser declarado <strong>Patrimonio de la Humanidad por la UNESCO</strong> en 2008, junto con la villa de San Miguel de Allende.</p>
-    <p class="prose">Ubicado a unos 14 kilómetros del centro de San Miguel, este impresionante templo barroco fue construido en el siglo XVIII por el padre <strong>Luis Felipe Neri de Alfaro</strong>, inspirado en el Santo Sepulcro de Jerusalén. Sus muros y techos están cubiertos de murales que narran la Pasión de Cristo de manera vívida y emotiva.</p>
+    <div class="section-label" id="labelIntroSub">La Capilla Sixtina mexicana</div>
+    <h2 id="introTitle">Una joya del barroco novohispano</h2>
+    <p class="prose" id="introText1">El <strong>Santuario de Jesús Nazareno de Atotonilco</strong> es una joya arquitectónica y un lugar de gran importancia histórica y religiosa. Su belleza y significado lo llevaron a ser declarado <strong>Patrimonio de la Humanidad por la UNESCO</strong> en 2008, junto con la villa de San Miguel de Allende.</p>
+    <p class="prose" id="introText2">Ubicado a unos 14 kilómetros del centro de San Miguel, este impresionante templo barroco fue construido en el siglo XVIII por el padre <strong>Luis Felipe Neri de Alfaro</strong>, inspirado en el Santo Sepulcro de Jerusalén. Sus muros y techos están cubiertos de murales que narran la Pasión de Cristo de manera vívida y emotiva.</p>
   </section>
 
   <!-- RECORRIDO -->
   <section class="section reveal">
-    <div class="section-label">Qué ver</div>
-    <h2>Un recorrido por el santuario</h2>
+    <div class="section-label" id="labelRecorridoSub">Qué ver</div>
+    <h2 id="recorridoTitle">Un recorrido por el santuario</h2>
     <div class="features">
       <div class="feature">
         <div class="feature-dot"></div>
         <div>
-          <h4>El atrio</h4>
-          <p>Espacio amplio rodeado de árboles y jardines. Ideal para reflexionar y conectar con el entorno.</p>
+          <h4 id="feat1Title">El atrio</h4>
+          <p id="feat1Desc">Espacio amplio rodeado de árboles y jardines. Ideal para reflexionar y conectar con el entorno.</p>
         </div>
       </div>
       <div class="feature">
         <div class="feature-dot"></div>
         <div>
-          <h4>La iglesia</h4>
-          <p>Muros cubiertos de murales de la vida de Jesús. El altar mayor es una obra maestra del barroco con tallas doradas.</p>
+          <h4 id="feat2Title">La iglesia</h4>
+          <p id="feat2Desc">Muros cubiertos de murales de la vida de Jesús. El altar mayor es una obra maestra del barroco con tallas doradas.</p>
         </div>
       </div>
       <div class="feature">
         <div class="feature-dot"></div>
         <div>
-          <h4>Las capillas</h4>
-          <p>Varias capillas laterales dedicadas a distintos santos y misterios, cada una con altares ricamente decorados.</p>
+          <h4 id="feat3Title">Las capillas</h4>
+          <p id="feat3Desc">Varias capillas laterales dedicadas a distintos santos y misterios, cada una con altares ricamente decorados.</p>
         </div>
       </div>
       <div class="feature">
         <div class="feature-dot"></div>
         <div>
-          <h4>El museo</h4>
-          <p>Colección de objetos religiosos y obras de arte que ilustran la historia del lugar y la devoción popular.</p>
+          <h4 id="feat4Title">El museo</h4>
+          <p id="feat4Desc">Colección de objetos religiosos y obras de arte que ilustran la historia del lugar y la devoción popular.</p>
         </div>
       </div>
     </div>
@@ -589,20 +610,20 @@ nav {
 
   <!-- HISTORIA -->
   <section class="section reveal">
-    <div class="section-label">Historia viva</div>
-    <h2>Independencia y peregrinación</h2>
-    <p class="prose">Fue aquí donde el cura <strong>Miguel Hidalgo</strong> tomó un estandarte con la imagen de la Virgen de Guadalupe como bandera del ejército insurgente durante la Guerra de Independencia. El santuario es también un importante centro de peregrinación: miles de personas visitan cada año, especialmente en Semana Santa, para participar en procesiones y retiros espirituales.</p>
+    <div class="section-label" id="labelHistorySub">Historia viva</div>
+    <h2 id="historyTitle">Independencia y peregrinación</h2>
+    <p class="prose" id="historyText">Fue aquí donde el cura <strong>Miguel Hidalgo</strong> tomó un estandarte con la imagen de la Virgen de Guadalupe como bandera del ejército insurgente durante la Guerra de Independencia. El santuario es también un importante centro de peregrinación: miles de personas visitan cada año, especialmente en Semana Santa, para participar en procesiones y retiros espirituales.</p>
   </section>
 
   <!-- CARDS: Horarios / Recomendaciones / Tip -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Todo lo que necesitas saber</h2>
+    <div class="section-label" id="labelPlanSub">Planifica tu visita</div>
+    <h2 id="planTitle">Todo lo que necesitas saber</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🕐</div>
-        <h3>Horarios</h3>
-        <ul>
+        <h3 id="card1Title">Horarios</h3>
+        <ul id="card1List">
           <li><strong>Lunes a viernes:</strong> 10:00 – 18:00 hrs</li>
           <li><strong>Sábado y domingo:</strong> 10:00 – 19:00 hrs</li>
           <li><strong>Entrada:</strong> Libre (donación voluntaria)</li>
@@ -611,8 +632,8 @@ nav {
       </div>
       <div class="card">
         <div class="card-icon">✨</div>
-        <h3>Recomendaciones</h3>
-        <ul>
+        <h3 id="card2Title">Recomendaciones</h3>
+        <ul id="card2List">
           <li>Visita entre semana para menos afluencia</li>
           <li>Reserva 60–90 minutos para el recorrido</li>
           <li>Viste con respeto (es un lugar de culto)</li>
@@ -621,9 +642,9 @@ nav {
       </div>
       <div class="card">
         <div class="card-icon">📍</div>
-        <h3>Cómo llegar & tip</h3>
-        <p style="margin-bottom:10px"><strong>Calle Principal s/n</strong>, Atotonilco, Gto. ~14 km de San Miguel.</p>
-        <p style="font-size:0.88rem; color: var(--cantera);"><strong>Tip:</strong> Toma el camión local desde Calzada de la Luz o un taxi. La mejor luz para los murales es por la mañana.</p>
+        <h3 id="card3Title">Cómo llegar & tip</h3>
+        <p style="margin-bottom:10px" id="card3Addr"><strong>Calle Principal s/n</strong>, Atotonilco, Gto. ~14 km de San Miguel.</p>
+        <p style="font-size:0.88rem; color: var(--cantera);" id="card3Tip"><strong>Tip:</strong> Toma el camión local desde Calzada de la Luz o un taxi. La mejor luz para los murales es por la mañana.</p>
       </div>
     </div>
   </section>
@@ -631,10 +652,10 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+      <h3 id="highlightTitle">¿Listo para descubrir más?</h3>
+      <p id="highlightDesc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
     </div>
-    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
+    <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary" id="highlightBtn">
       Ver catálogo
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -642,23 +663,23 @@ nav {
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce el santuario</h2>
+    <div class="section-label" id="labelVideoSub">Experiencia visual</div>
+    <h2 id="videoTitle">Conoce el santuario</h2>
     <div class="media-block">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/iwV8_J7W3_c" allowfullscreen title="Video Santuario de Atotonilco"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>Gobierno de la Gente</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por la arquitectura, los murales y el legado espiritual de este templo barroco.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p id="videoCredit">Video cortesía de <strong>Gobierno de la Gente</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" id="videoSub">Un recorrido por la arquitectura, los murales y el legado espiritual de este templo barroco.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" id="videoBtn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a> · UNESCO</p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Patrimonio de la Humanidad</p>
+    <p id="footerSource">Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a> · UNESCO</p>
+    <p style="margin-top:6px; opacity:0.7" id="footerSub">Vive San Miguel · Patrimonio de la Humanidad</p>
   </footer>
 
 </div>
@@ -674,6 +695,193 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(el => observer.observe(el));
+
+// Sistema Bilingüe (Español / Inglés)
+let currentLang = 'es';
+
+const translations = {
+  es: {
+    langBtn: 'EN',
+    navHome: 'Inicio',
+    heroEyebrow: 'UNESCO · Patrimonio de la Humanidad',
+    heroTitle: 'Santuario de Jesús Nazareno de Atotonilco',
+    heroSub: 'Conocido como la Capilla Sixtina de América. Un templo barroco del siglo XVIII donde arte, fe e historia de la Independencia se entrelazan.',
+    pill1: 'Entrada libre',
+    pill2: 'Diario · 10:00–18:00',
+    pill3: '~14 km de SMA',
+    badgeSub1: 'Declarado UNESCO',
+    badgeMain1: '2008',
+    badgeSub2: 'Atotonilco',
+    badgeMain2: 'Guanajuato',
+    labelIntroSub: 'La Capilla Sixtina mexicana',
+    introTitle: 'Una joya del barroco novohispano',
+    introText1: 'El <strong>Santuario de Jesús Nazareno de Atotonilco</strong> es una joya arquitectónica y un lugar de gran importancia histórica y religiosa. Su belleza y significado lo llevaron a ser declarado <strong>Patrimonio de la Humanidad por la UNESCO</strong> en 2008, junto con la villa de San Miguel de Allende.',
+    introText2: 'Ubicado a unos 14 kilómetros del centro de San Miguel, este impresionante templo barroco fue construido en el siglo XVIII por el padre <strong>Luis Felipe Neri de Alfaro</strong>, inspirado en el Santo Sepulcro de Jerusalén. Sus muros y techos están cubiertos de murales que narran la Pasión de Cristo de manera vívida y emotiva.',
+    labelRecorridoSub: 'Qué ver',
+    recorridoTitle: 'Un recorrido por el santuario',
+    feat1Title: 'El atrio',
+    feat1Desc: 'Espacio amplio rodeado de árboles y jardines. Ideal para reflexionar y conectar con el entorno.',
+    feat2Title: 'La iglesia',
+    feat2Desc: 'Muros cubiertos de murales de la vida de Jesús. El altar mayor es una obra maestra del barroco con tallas doradas.',
+    feat3Title: 'Las capillas',
+    feat3Desc: 'Varias capillas laterales dedicadas a distintos santos y misterios, cada una con altares ricamente decorados.',
+    feat4Title: 'El museo',
+    feat4Desc: 'Colección de objetos religiosos y obras de arte que ilustran la historia del lugar y la devoción popular.',
+    labelHistorySub: 'Historia viva',
+    historyTitle: 'Independencia y peregrinación',
+    historyText: 'Fue aquí donde el cura <strong>Miguel Hidalgo</strong> tomó un estandarte con la imagen de la Virgen de Guadalupe como bandera del ejército insurgente durante la Guerra de Independencia. El santuario es también un importante centro de peregrinación: miles de personas visitan cada año, especialmente en Semana Santa, para participar en procesiones y retiros espirituales.',
+    labelPlanSub: 'Planifica tu visita',
+    planTitle: 'Todo lo que necesitas saber',
+    card1Title: 'Horarios',
+    card1List: `
+      <li><strong>Lunes a viernes:</strong> 10:00 – 18:00 hrs</li>
+      <li><strong>Sábado y domingo:</strong> 10:00 – 19:00 hrs</li>
+      <li><strong>Entrada:</strong> Libre (donación voluntaria)</li>
+      <li><strong>Misas:</strong> Varias al día (verificar)</li>
+    `,
+    card2Title: 'Recomendaciones',
+    card2List: `
+      <li>Visita entre semana para menos afluencia</li>
+      <li>Reserva 60–90 minutos para el recorrido</li>
+      <li>Viste con respeto (es un lugar de culto)</li>
+      <li>No uses flash al fotografiar los murales</li>
+    `,
+    card3Title: 'Cómo llegar & tip',
+    card3Addr: '<strong>Calle Principal s/n</strong>, Atotonilco, Gto. ~14 km de San Miguel.',
+    card3Tip: '<strong>Tip:</strong> Toma el camión local desde Calzada de la Luz o un taxi. La mejor luz para los murales es por la mañana.',
+    highlightTitle: '¿Listo para descubrir más?',
+    highlightDesc: 'Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.',
+    highlightBtn: 'Ver catálogo',
+    labelVideoSub: 'Experiencia visual',
+    videoTitle: 'Conoce el santuario',
+    videoCredit: 'Video cortesía de <strong>Gobierno de la Gente</strong>',
+    videoSub: 'Un recorrido por la arquitectura, los murales y el legado espiritual de este templo barroco.',
+    videoBtn: 'Más sitios →',
+    footerSource: 'Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a> · UNESCO',
+    footerSub: 'Vive San Miguel · Patrimonio de la Humanidad'
+  },
+  en: {
+    langBtn: 'ES',
+    navHome: 'Home',
+    heroEyebrow: 'UNESCO · World Heritage Site',
+    heroTitle: 'Santuario de Atotonilco',
+    heroSub: 'Known as the Sistine Chapel of America. An 18th-century Baroque temple where art, faith, and independence history intertwine.',
+    pill1: 'Free admission',
+    pill2: 'Daily · 10:00–18:00',
+    pill3: '~14 km from SMA',
+    badgeSub1: 'UNESCO Declared',
+    badgeMain1: '2008',
+    badgeSub2: 'Atotonilco',
+    badgeMain2: 'Guanajuato',
+    labelIntroSub: 'The Mexican Sistine Chapel',
+    introTitle: 'A Jewel of New Spanish Baroque',
+    introText1: 'The <strong>Santuario de Atotonilco</strong> is an architectural jewel and a site of immense historical and religious importance. Its beauty and significance led to its declaration as a <strong>UNESCO World Heritage Site</strong> in 2008, alongside the town of San Miguel de Allende.',
+    introText2: 'Located about 14 kilometers from downtown San Miguel, this stunning Baroque temple was built in the 18th century by Father <strong>Luis Felipe Neri de Alfaro</strong>, inspired by the Holy Sepulchre in Jerusalem. Its walls and ceilings are covered with vivid murals depicting the Passion of Christ.',
+    labelRecorridoSub: 'What to See',
+    recorridoTitle: 'A Tour of the Sanctuary',
+    feat1Title: 'The Atrium',
+    feat1Desc: 'Wide open space surrounded by trees and gardens. Ideal for reflection and connecting with the surroundings.',
+    feat2Title: 'The Church',
+    feat2Desc: 'Walls covered with murals of the life of Jesus. The main altar is a Baroque masterpiece featuring golden carvings.',
+    feat3Title: 'The Chapels',
+    feat3Desc: 'Several side chapels dedicated to various saints and mysteries, each with richly decorated altars.',
+    feat4Title: 'The Museum',
+    feat4Desc: 'A collection of religious artifacts and artworks illustrating the history of the site and popular devotion.',
+    labelHistorySub: 'Living History',
+    historyTitle: 'Independence and Pilgrimage',
+    historyText: 'It was here that Priest <strong>Miguel Hidalgo</strong> took a standard bearing the image of the Virgin of Guadalupe as the banner for the insurgent army during the Independence War. The sanctuary is also an important pilgrimage center: thousands visit every year, especially during Holy Week, to take part in processions and spiritual retreats.',
+    labelPlanSub: 'Plan Your Visit',
+    planTitle: 'Everything You Need to Know',
+    card1Title: 'Hours',
+    card1List: `
+      <li><strong>Monday to Friday:</strong> 10:00 – 18:00 hrs</li>
+      <li><strong>Saturday and Sunday:</strong> 10:00 – 19:00 hrs</li>
+      <li><strong>Admission:</strong> Free (voluntary donation)</li>
+      <li><strong>Masses:</strong> Several daily (verify)</li>
+    `,
+    card2Title: 'Recommendations',
+    card2List: `
+      <li>Visit on weekdays for smaller crowds</li>
+      <li>Allow 60–90 minutes for the tour</li>
+      <li>Dress respectfully (it is a place of worship)</li>
+      <li>No flash photography allowed on the murals</li>
+    `,
+    card3Title: 'Getting There & Tip',
+    card3Addr: '<strong>Calle Principal s/n</strong>, Atotonilco, Gto. ~14 km from San Miguel.',
+    card3Tip: '<strong>Tip:</strong> Take the local bus from Calzada de la Luz or a taxi. Morning light is best for viewing the murals.',
+    highlightTitle: 'Ready to Discover More?',
+    highlightDesc: 'Explore the complete catalog of places of interest in San Miguel de Allende and build your own cultural itinerary.',
+    highlightBtn: 'View catalog',
+    labelVideoSub: 'Visual Experience',
+    videoTitle: 'Explore the Sanctuary',
+    videoCredit: 'Video courtesy of <strong>Gobierno de la Gente</strong>',
+    videoSub: 'A journey through the architecture, murals, and spiritual legacy of this Baroque temple.',
+    videoBtn: 'More places →',
+    footerSource: 'Source & info: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a> · UNESCO',
+    footerSub: 'Vive San Miguel · World Heritage'
+  }
+};
+
+function toggleLanguage() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  const t = translations[currentLang];
+
+  document.getElementById('langToggleBtn').textContent = t.langBtn;
+  document.getElementById('navHomeText').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>${t.navHome}`;
+  document.getElementById('heroEyebrow').textContent = t.heroEyebrow;
+  document.getElementById('heroTitle').textContent = t.heroTitle;
+  document.getElementById('heroSub').textContent = t.heroSub;
+  document.getElementById('pill1').innerHTML = `<strong>${t.pill1}</strong>`;
+  document.getElementById('pill2').textContent = t.pill2;
+  document.getElementById('pill3').textContent = t.pill3;
+  document.getElementById('badgeSub1').textContent = t.badgeSub1;
+  document.getElementById('badgeMain1').textContent = t.badgeMain1;
+  document.getElementById('badgeSub2').textContent = t.badgeSub2;
+  document.getElementById('badgeMain2').textContent = t.badgeMain2;
+
+  document.getElementById('labelIntroSub').textContent = t.labelIntroSub;
+  document.getElementById('introTitle').textContent = t.introTitle;
+  document.getElementById('introText1').innerHTML = t.introText1;
+  document.getElementById('introText2').innerHTML = t.introText2;
+
+  document.getElementById('labelRecorridoSub').textContent = t.labelRecorridoSub;
+  document.getElementById('recorridoTitle').textContent = t.recorridoTitle;
+  document.getElementById('feat1Title').textContent = t.feat1Title;
+  document.getElementById('feat1Desc').textContent = t.feat1Desc;
+  document.getElementById('feat2Title').textContent = t.feat2Title;
+  document.getElementById('feat2Desc').textContent = t.feat2Desc;
+  document.getElementById('feat3Title').textContent = t.feat3Title;
+  document.getElementById('feat3Desc').textContent = t.feat3Desc;
+  document.getElementById('feat4Title').textContent = t.feat4Title;
+  document.getElementById('feat4Desc').textContent = t.feat4Desc;
+
+  document.getElementById('labelHistorySub').textContent = t.labelHistorySub;
+  document.getElementById('historyTitle').textContent = t.historyTitle;
+  document.getElementById('historyText').innerHTML = t.historyText;
+
+  document.getElementById('labelPlanSub').textContent = t.labelPlanSub;
+  document.getElementById('planTitle').textContent = t.planTitle;
+  document.getElementById('card1Title').textContent = t.card1Title;
+  document.getElementById('card1List').innerHTML = t.card1List;
+  document.getElementById('card2Title').textContent = t.card2Title;
+  document.getElementById('card2List').innerHTML = t.card2List;
+  document.getElementById('card3Title').textContent = t.card3Title;
+  document.getElementById('card3Addr').innerHTML = t.card3Addr;
+  document.getElementById('card3Tip').innerHTML = t.card3Tip;
+
+  document.getElementById('highlightTitle').textContent = t.highlightTitle;
+  document.getElementById('highlightDesc').textContent = t.highlightDesc;
+  document.getElementById('highlightBtn').innerHTML = `${t.highlightBtn}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+
+  document.getElementById('labelVideoSub').textContent = t.labelVideoSub;
+  document.getElementById('videoTitle').textContent = t.videoTitle;
+  document.getElementById('videoCredit').innerHTML = t.videoCredit;
+  document.getElementById('videoSub').textContent = t.videoSub;
+  document.getElementById('videoBtn').textContent = t.videoBtn;
+
+  document.getElementById('footerSource').innerHTML = t.footerSource;
+  document.getElementById('footerSub').textContent = t.footerSub;
+}
 
 // Registro del Service Worker para funcionamiento sin conexión (PWA)
 if ('serviceWorker' in navigator) {
