@@ -557,7 +557,8 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxg8Ki50OCVoCoHakFGo3tBw0Y9fFxZFnEqM2yw5RO5OAUnwleCDh5C9DItMdkUsWLn/exec";
+    // Tu URL definitiva de Apps Script actualizada
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzj6-t98RwaKVfTlGCINHXg3-o168xxvVmVllq7RyxZaiCm_crsoTQ1Oj3A6LqFpO3S/exec";
 
     let globalEvents = [];
     let isEditMode = false;
@@ -592,6 +593,18 @@
       if (clean === '' || clean.toLowerCase() === 'nan' || clean.length < 4) return '';
       if (!/^https?:\/\//i.test(clean)) clean = 'https://' + clean;
       try { new URL(clean); return clean; } catch (e) { return ''; }
+    }
+
+    function parseCloudImageUrl(url) {
+      if (!url) return '';
+      let cleanUrl = String(url).trim();
+      if (cleanUrl.includes('drive.google.com')) {
+        let fileId = '';
+        if (cleanUrl.includes('/file/d/')) fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
+        else if (cleanUrl.includes('id=')) fileId = new URLSearchParams(cleanUrl.split('?')[1]).get('id');
+        if (fileId) return 'https://lh3.googleusercontent.com/d/' + fileId + '=s800';
+      }
+      return cleanUrl;
     }
 
     function formatDateToSpanish(dateString) {
@@ -640,7 +653,6 @@
         if (!Array.isArray(data) || data.length === 0) throw new Error('Sin datos');
 
         globalEvents = data.map(function(item, index) {
-          // Buscador flexible de claves para ignorar espacios y paréntesis en el Sheet
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
               const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -684,7 +696,7 @@
             location: locationName,
             mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationName + ', San Miguel de Allende, Gto.'),
             link: sanitizeUrl(rawWebLink),
-            img: rawImgValue || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             rawImg: rawImgValue,
             desc: currentLang === 'en' ? descEn : descEs,
             desc_es: descEs,
