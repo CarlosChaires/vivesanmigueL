@@ -41,102 +41,17 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--fondo);
       color: var(--noche);
       line-height: 1.65;
-      padding: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
-
-    /* ── Ocultar solo la barra visual de Google Translate (sin romper la traducción) ── */
-    .goog-te-banner-frame,
-    .goog-te-banner-frame.skiptranslate,
-    iframe.goog-te-banner-frame,
-    .goog-te-balloon-frame,
-    #goog-gt-tt,
-    .goog-tooltip,
-    .goog-te-spinner-pos {
-      display: none !important;
-      visibility: hidden !important;
-      height: 0 !important;
-      width: 0 !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
-    /* Forzar que el body no se desplace por la barra de Google */
-    body {
-      top: 0 !important;
-      position: static !important;
-      margin-top: 0 !important;
-      padding-top: 0 !important;
-    }
-
-    html {
-      margin-top: 0 !important;
-    }
-
-    /* Ocultar el contenedor visual del gadget, pero dejar vivo el select interno */
-    #google_translate_element {
-      position: absolute !important;
-      left: -9999px !important;
-      top: -9999px !important;
-      width: 1px !important;
-      height: 1px !important;
-      overflow: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
-    .goog-te-gadget {
-      font-size: 0 !important;
-      color: transparent !important;
-    }
-
-    .goog-te-gadget span,
-    .goog-logo-link {
-      display: none !important;
-    }
-
-    /* Quitar el resaltado azul que pone Google al traducir */
-    .goog-text-highlight {
-      background-color: transparent !important;
-      background: none !important;
-      box-shadow: none !important;
-      border: none !important;
-    }
-
-    /* Evitar que Google Translate inyecte estilos que rompan el diseño */
-    .event-card font,
-    .event-card span,
-    .event-card a,
-    .event-card p,
-    .event-card h3,
-    .event-meta,
-    .event-meta span,
-    .event-location,
-    .event-desc,
-    .event-name,
-    .event-category,
-    .event-date-badge {
-      font-family: inherit !important;
-      line-height: inherit !important;
-    }
-
-    /* Mantener colores y pesos aunque Translate envuelva texto */
-    .event-name { font-family: 'Playfair Display', Georgia, serif !important; }
-    .event-location { color: var(--terracota) !important; }
-    .event-desc { color: var(--gris-texto) !important; }
-    .event-meta span { color: inherit !important; }
 
     .container {
       max-width: 1160px;
@@ -254,9 +169,7 @@
       transition: box-shadow 0.35s ease;
     }
 
-    .toolbar-wrapper.scrolled {
-      box-shadow: var(--sombra-sticky);
-    }
+    .toolbar-wrapper.scrolled { box-shadow: var(--sombra-sticky); }
 
     .toolbar {
       display: none;
@@ -293,8 +206,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
 
-    .search-box input::placeholder { color: var(--gris-muted); }
-
     .search-box input:focus {
       border-color: var(--cantera);
       box-shadow: 0 0 0 4px var(--cantera-soft), 0 2px 8px rgba(0,0,0,0.04);
@@ -308,11 +219,6 @@
       color: var(--gris-muted);
       font-size: 0.95rem;
       pointer-events: none;
-      transition: var(--transicion-rapida);
-    }
-
-    .search-box:focus-within .search-icon {
-      color: var(--cantera);
     }
 
     .results-count {
@@ -331,7 +237,6 @@
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
       gap: 1.75rem;
       padding-bottom: 1rem;
-      align-items: stretch;
     }
 
     .event-card {
@@ -344,9 +249,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      min-width: 0;
       cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .event-card:hover {
@@ -364,15 +267,6 @@
       flex-shrink: 0;
     }
 
-    .event-img-wrapper::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(26,22,20,0.2) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
     .event-img-wrapper img {
       width: 100%;
       height: 100%;
@@ -380,9 +274,7 @@
       transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .event-card:hover .event-img-wrapper img {
-      transform: scale(1.05);
-    }
+    .event-card:hover .event-img-wrapper img { transform: scale(1.05); }
 
     .event-category {
       position: absolute;
@@ -397,7 +289,6 @@
       z-index: 3;
       color: #fff;
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
@@ -414,16 +305,13 @@
       left: 0.9rem;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       color: var(--noche);
       padding: 0.28rem 0.75rem;
       border-radius: 6px;
       font-size: 0.68rem;
       font-weight: 600;
       z-index: 3;
-      text-transform: capitalize;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      letter-spacing: 0.01em;
     }
 
     .admin-card-actions {
@@ -452,19 +340,13 @@
     }
 
     .btn-card-edit { background: rgba(196, 138, 31, 0.95); color: #fff; }
-    .btn-card-edit:hover { background: #a87618; transform: scale(1.08); }
-
     .btn-card-delete { background: rgba(179, 57, 57, 0.92); color: #fff; }
-    .btn-card-delete:hover { background: var(--rojo-hover); transform: scale(1.08); }
 
-    /* ── Cuerpo de tarjeta (diseño limpio) ── */
     .event-body {
       padding: 1.35rem 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
       flex: 1;
-      gap: 0;
-      min-width: 0;
     }
 
     .event-name {
@@ -474,11 +356,8 @@
       margin-bottom: 0.7rem;
       line-height: 1.35;
       color: var(--noche);
-      letter-spacing: -0.015em;
-      overflow-wrap: anywhere;
     }
 
-    /* Meta limpia: sin cajas, solo texto + iconos */
     .event-meta {
       display: flex;
       flex-wrap: wrap;
@@ -487,28 +366,11 @@
       margin-bottom: 0.85rem;
       font-size: 0.82rem;
       color: var(--gris-texto);
-      line-height: 1.5;
     }
 
-    .event-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.28rem;
-      white-space: nowrap;
-    }
-
-    .event-meta .meta-sep {
-      color: var(--gris-muted);
-      opacity: 0.55;
-      margin: 0 0.2rem;
-      font-weight: 300;
-      user-select: none;
-    }
-
-    .event-meta .price {
-      color: var(--terracota);
-      font-weight: 600;
-    }
+    .event-meta span { display: inline-flex; align-items: center; gap: 0.28rem; }
+    .event-meta .meta-sep { color: var(--gris-muted); opacity: 0.55; margin: 0 0.2rem; }
+    .event-meta .price { color: var(--terracota); font-weight: 600; }
 
     .event-location {
       font-size: 0.85rem;
@@ -519,29 +381,15 @@
       display: inline-flex;
       align-items: flex-start;
       gap: 0.4rem;
-      transition: var(--transicion-rapida);
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-      min-width: 0;
-    }
-
-    .event-location:hover {
-      color: var(--cantera);
-      text-decoration: underline;
-      text-underline-offset: 2px;
     }
 
     .event-desc {
-      display: block;
-      width: 100%;
-      min-width: 0;
       font-size: 0.9rem;
       color: var(--gris-texto);
       margin: 0 0 1.15rem;
       flex: 1;
       line-height: 1.75;
       white-space: pre-line;
-      overflow-wrap: anywhere;
     }
 
     .event-web-link {
@@ -556,136 +404,49 @@
       text-decoration: none;
       font-weight: 600;
       margin-top: auto;
-      transition: var(--transicion);
       width: fit-content;
-      max-width: 100%;
-      letter-spacing: 0.01em;
       box-shadow: 0 3px 10px -2px var(--cantera-glow);
     }
 
-    .event-web-link:hover {
-      background: var(--cantera-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 5px 14px -2px var(--cantera-glow);
-    }
-
-    /* ── Skeleton Loading ── */
+    /* ── Skeleton & Empty States ── */
     .skeleton-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
       gap: 1.75rem;
     }
+    .skeleton-card { background: var(--blanco); border-radius: var(--radius); height: 380px; border: 1px solid var(--borde); }
+    .empty-state { text-align: center; padding: 5rem 2rem; color: var(--gris-texto); }
 
-    .skeleton-card {
-      background: var(--blanco);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--borde);
-      box-shadow: var(--sombra-card);
-    }
-
-    .skeleton-img {
-      height: 210px;
-      background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.6s ease-in-out infinite;
-    }
-
-    .skeleton-body { padding: 1.4rem; }
-
-    .skeleton-line {
-      height: 13px;
-      border-radius: 5px;
-      background: linear-gradient(90deg, #ebe6e0 25%, #f3efe9 50%, #ebe6e0 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.6s ease-in-out infinite;
-      margin-bottom: 0.65rem;
-    }
-
-    .skeleton-line.title { height: 20px; width: 72%; margin-bottom: 0.85rem; }
-    .skeleton-line.short { width: 42%; }
-    .skeleton-line.medium { width: 88%; }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    /* ── Empty State ── */
-    .empty-state {
-      text-align: center;
-      padding: 5rem 2rem;
-      color: var(--gris-texto);
-    }
-
-    .empty-state-icon {
-      font-size: 2.6rem;
-      margin-bottom: 1rem;
-      opacity: 0.45;
-      display: block;
-    }
-
-    .empty-state p {
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--gris-muted);
-      max-width: 360px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* ── Footer ── */
+    /* ── Footer & Modals ── */
     footer {
       margin-top: auto;
       border-top: 1px solid var(--borde);
       padding: 1.75rem 0;
       background: var(--fondo);
     }
-
     .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.8rem;
       color: var(--gris-muted);
-      flex-wrap: wrap;
-      gap: 1rem;
     }
-
-    .footer-brand {
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
     .footer-lock {
       background: none;
       border: 1px solid transparent;
       color: var(--gris-muted);
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
       padding: 0.4rem 0.85rem;
-      font-size: 0.8rem;
-      font-family: inherit;
       border-radius: 999px;
-      transition: var(--transicion);
-      font-weight: 500;
+      font-family: inherit;
     }
+    .footer-lock:hover { color: var(--cantera); background: var(--cantera-soft); }
 
-    .footer-lock:hover {
-      color: var(--cantera);
-      background: var(--cantera-soft);
-      border-color: rgba(196, 92, 74, 0.15);
-    }
-
-    /* ── Modals ── */
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(26, 22, 20, 0.55);
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -693,14 +454,9 @@
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.35s ease;
     }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-box {
       background: var(--blanco);
       width: 100%;
@@ -710,37 +466,9 @@
       box-shadow: 0 32px 64px -16px rgba(0,0,0,0.3);
       max-height: 90vh;
       overflow-y: auto;
-      transform: translateY(12px) scale(0.98);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
-
-    .modal-overlay.active .modal-box {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal-box::-webkit-scrollbar { width: 5px; }
-    .modal-box::-webkit-scrollbar-thumb { background: #ddd8d2; border-radius: 4px; }
-
-    .modal-box h3 {
-      font-family: 'Playfair Display', Georgia, serif;
-      margin-bottom: 1.35rem;
-      font-size: 1.45rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
     .form-group { margin-bottom: 1rem; }
-
-    label {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-bottom: 0.28rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--gris-muted);
-    }
-
+    label { display: block; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.28rem; text-transform: uppercase; color: var(--gris-muted); }
     input, textarea {
       width: 100%;
       padding: 0.7rem 0.9rem;
@@ -748,20 +476,9 @@
       border-radius: var(--radius-sm);
       font-family: inherit;
       background: var(--fondo);
-      font-size: 0.9rem;
-      transition: var(--transicion);
-      outline: none;
       color: var(--noche);
+      outline: none;
     }
-
-    input:focus, textarea:focus {
-      border-color: var(--cantera);
-      box-shadow: 0 0 0 4px var(--cantera-soft);
-      background: var(--blanco);
-    }
-
-    textarea { resize: vertical; height: 85px; }
-
     .btn-primary {
       background: var(--cantera);
       color: var(--blanco);
@@ -772,105 +489,6 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: 0.9rem;
-      transition: var(--transicion);
-      font-size: 0.93rem;
-      font-family: inherit;
-      letter-spacing: 0.01em;
-      box-shadow: 0 4px 14px -2px var(--cantera-glow);
-    }
-
-    .btn-primary:hover {
-      background: var(--cantera-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px -2px var(--cantera-glow);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .file-upload-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 0.5rem;
-    }
-
-    .btn-upload {
-      background: var(--gris-suave);
-      color: var(--noche);
-      border: 1px solid var(--borde-fuerte);
-      padding: 0.5rem 0.95rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-weight: 600;
-      transition: var(--transicion);
-      font-size: 0.8rem;
-      font-family: inherit;
-    }
-
-    .btn-upload:hover {
-      background: var(--cantera);
-      color: var(--blanco);
-      border-color: var(--cantera);
-    }
-
-    .divider-text {
-      text-align: center;
-      font-size: 0.66rem;
-      color: var(--gris-muted);
-      margin: 8px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    /* ── Sparkle effect ── */
-    .sparkle-particle {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      border-radius: 50%;
-      will-change: transform, opacity;
-    }
-
-    .event-card.sparkle-burst {
-      animation: card-pulse 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    @keyframes card-pulse {
-      0% { transform: translateY(-5px) scale(1); }
-      40% { transform: translateY(-7px) scale(1.015); }
-      100% { transform: translateY(-5px) scale(1); }
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 680px) {
-      .container { padding: 0 1.1rem; }
-      .site-header { padding: 1.6rem 0 1.3rem; }
-      .brand-logo { height: 46px; }
-      .header-title h1 { font-size: 1.55rem; }
-      .toolbar-wrapper { padding: 0.9rem 0; margin-bottom: 1.6rem; }
-      .events-grid, .skeleton-grid {
-        grid-template-columns: 1fr;
-        gap: 1.4rem;
-      }
-      .event-img-wrapper, .skeleton-img { height: 195px; }
-      .modal-box { padding: 1.7rem; border-radius: 18px; }
-      .results-count { min-width: auto; text-align: left; }
-      .event-body { padding: 1.2rem 1.15rem 1.35rem; }
-      .event-name { font-size: 1.2rem; }
-      .event-meta { font-size: 0.8rem; }
-      .event-desc { font-size: 0.88rem; }
-      .event-location { font-size: 0.83rem; }
-    }
-
-    @media (max-width: 380px) {
-      .container { padding: 0 0.85rem; }
-      .event-body { padding: 1.05rem; }
-      .event-name { font-size: 1.15rem; }
-      .event-meta { font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -881,20 +499,17 @@
       <div class="brand-container">
         <img src="https://lh3.googleusercontent.com/d/1xeRKNH0R1dq7dfin7Jcmshb1j9SLEHOA=s800" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="header-title">
-          <span>Patrimonio y Tradición</span>
-          <h1>Cartelera de Eventos</h1>
+          <span id="subHeaderTitle">Patrimonio y Tradición</span>
+          <h1 id="mainHeaderTitle">Cartelera de Eventos</h1>
         </div>
       </div>
       <div class="admin-actions-group">
-        <button class="lang-custom-btn" id="langCustomBtn" onclick="triggerGoogleTranslate()">🇬🇧 English</button>
+        <button class="lang-custom-btn" id="langCustomBtn" onclick="toggleLanguage()">🇬🇧 English</button>
         <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
-        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home">Volver al Inicio</a>
+        <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home" id="btnHomeText">Volver al Inicio</a>
       </div>
     </div>
   </header>
-
-  <!-- Elemento oculto requerido por la API de Google Translate -->
-  <div id="google_translate_element"></div>
 
   <!-- Sticky Toolbar -->
   <div class="toolbar-wrapper" id="toolbarWrapper">
@@ -914,9 +529,9 @@
   <main class="container" style="flex: 1; padding-bottom: 3rem;">
     <div id="eventsContainer">
       <div class="skeleton-grid" id="skeletonLoader">
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
       </div>
     </div>
   </main>
@@ -931,11 +546,11 @@
   <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3>Acceso Restringido</h3>
+      <h3 id="loginModalTitle">Acceso Restringido</h3>
       <form onsubmit="handleLogin(event)">
-        <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
-        <button type="submit" class="btn-primary">Ingresar</button>
+        <div class="form-group"><label id="userLabel">Usuario</label><input type="text" id="usernameInput" required></div>
+        <div class="form-group"><label id="passLabel">Contraseña</label><input type="password" id="passwordInput" required></div>
+        <button type="submit" class="btn-primary" id="loginBtnText">Ingresar</button>
       </form>
     </div>
   </div>
@@ -946,210 +561,81 @@
       <h3 id="eventModalTitle">Nuevo Evento</h3>
       <form onsubmit="handleSaveEvent(event)" id="eventForm">
         <input type="hidden" id="editRowIndex" value="">
-        <div class="form-group"><label>Nombre del Evento</label><input type="text" id="inputName" required></div>
-        <div class="form-group"><label>Categoría</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
+        <div class="form-group"><label>Nombre del Evento (Español)</label><input type="text" id="inputName" required></div>
+        <div class="form-group"><label>Nombre del Evento (Inglés / Name EN)</label><input type="text" id="inputNameEn"></div>
+        <div class="form-group"><label>Categoría (Español)</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
+        <div class="form-group"><label>Categoría (Inglés / Category EN)</label><input type="text" id="inputCategoryEn"></div>
         <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
         <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
-        <div class="form-group"><label>Costo / Precio</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Costo / Precio (Español)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
+        <div class="form-group"><label>Costo / Precio (Inglés / Price EN)</label><input type="text" id="inputPriceEn" placeholder="Free Event"></div>
         <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
-        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb" placeholder="https:// o www.ejemplo.com"></div>
-
-        <div class="form-group">
-          <label>Imagen del Evento</label>
-          <div class="file-upload-wrapper">
-            <button type="button" class="btn-upload" onclick="document.getElementById('inputFile').click()">📸 Subir Archivo</button>
-            <input type="file" id="inputFile" accept="image/*" style="display: none;" onchange="processImageUpload(event)">
-            <span id="fileNameDisplay" style="font-size: 0.8rem; color: var(--gris-muted);">Sin archivo</span>
-          </div>
-          <div class="divider-text">— o ingresa la url —</div>
-          <input type="text" id="inputImg" placeholder="https://..." required>
-          <img id="imgPreview" style="display:none; width:100%; margin-top:12px; border-radius:12px; max-height: 220px; object-fit: cover;">
-        </div>
-
-        <div class="form-group"><label>Descripción</label><textarea id="inputDesc" required></textarea></div>
+        <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb"></div>
+        <div class="form-group"><label>Imagen (URL)</label><input type="text" id="inputImg" required></div>
+        <div class="form-group"><label>Descripción (Español)</label><textarea id="inputDesc" required></textarea></div>
+        <div class="form-group"><label>Descripción (Inglés / Desc EN)</label><textarea id="inputDescEn"></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
       </form>
     </div>
   </div>
 
-  <!-- Inicializador oculto de Google Translate -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,es',
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-
-    // Solo oculta la barra visual, sin tocar el motor de traducción
-    function killGoogleTranslateBar() {
-      var selectors = [
-        'iframe.goog-te-banner-frame',
-        '.goog-te-banner-frame',
-        '.goog-te-balloon-frame',
-        '#goog-gt-tt'
-      ];
-
-      selectors.forEach(function(sel) {
-        document.querySelectorAll(sel).forEach(function(el) {
-          el.style.setProperty('display', 'none', 'important');
-          el.style.setProperty('visibility', 'hidden', 'important');
-          el.style.setProperty('height', '0', 'important');
-          el.style.setProperty('width', '0', 'important');
-          el.style.setProperty('opacity', '0', 'important');
-          el.style.setProperty('pointer-events', 'none', 'important');
-        });
-      });
-
-      // Forzar body sin desplazamiento
-      document.body.style.setProperty('top', '0', 'important');
-      document.body.style.setProperty('position', 'static', 'important');
-      document.body.style.setProperty('margin-top', '0', 'important');
-      document.documentElement.style.setProperty('margin-top', '0', 'important');
-    }
-
-    function triggerGoogleTranslate() {
-      var combo = document.querySelector('.goog-te-combo');
-      var btn = document.getElementById('langCustomBtn');
-      
-      if (!combo) {
-        alert('Cargando motor de traducción, por favor intenta de nuevo en un segundo.');
-        return;
-      }
-
-      if (combo.value === 'en') {
-        combo.value = '';
-        dispatchEvent(combo);
-        btn.innerHTML = '🇬🇧 English';
-      } else {
-        combo.value = 'en';
-        dispatchEvent(combo);
-        btn.innerHTML = '🇲🇽 Español';
-      }
-
-      // Ocultar la barra varias veces después de traducir
-      setTimeout(killGoogleTranslateBar, 400);
-      setTimeout(killGoogleTranslateBar, 1000);
-      setTimeout(killGoogleTranslateBar, 2000);
-    }
-
-    function dispatchEvent(element) {
-      var event = document.createEvent('HTMLEvents');
-      event.initEvent('change', true, true);
-      element.dispatchEvent(event);
-    }
-
-    // Observador ligero: solo actúa sobre la barra, no borra nada del motor
-    var translateObserver = new MutationObserver(function(mutations) {
-      var needsKill = false;
-      mutations.forEach(function(m) {
-        m.addedNodes.forEach(function(node) {
-          if (node.nodeType === 1) {
-            if (node.classList && (node.classList.contains('goog-te-banner-frame') || node.id === 'goog-gt-tt')) {
-              needsKill = true;
-            }
-            if (node.tagName === 'IFRAME' && node.className && node.className.indexOf('goog-te-banner') !== -1) {
-              needsKill = true;
-            }
-          }
-        });
-      });
-      if (needsKill) killGoogleTranslateBar();
-    });
-    translateObserver.observe(document.documentElement, { childList: true, subtree: true });
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJA0jgInoZS3hrtKhCAG-NlsQWOxNJnRe_Drnk6Lz_gzaFmsiFDHxBL9XKprTnvClr/exec";
+    // Tu nueva URL de Apps Script desplegada
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxg8Ki50OCVoCoHakFGo3tBw0Y9fFxZFnEqM2yw5RO5OAUnwleCDh5C9DItMdkUsWLn/exec";
 
     let globalEvents = [];
     let isEditMode = false;
     let searchQuery = '';
+    let currentLang = 'es';
 
-    const toolbarWrapper = document.getElementById('toolbarWrapper');
-    window.addEventListener('scroll', () => {
-      toolbarWrapper.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
+    function toggleLanguage() {
+      currentLang = currentLang === 'es' ? 'en' : 'es';
+      const btn = document.getElementById('langCustomBtn');
+      
+      if (currentLang === 'en') {
+        btn.innerHTML = '🇲🇽 Español';
+        document.getElementById('subHeaderTitle').textContent = 'Heritage & Tradition';
+        document.getElementById('mainHeaderTitle').textContent = 'Events Calendar';
+        document.getElementById('searchInput').placeholder = 'Search by type, month, name or venue... (e.g. jazz, october)';
+        document.getElementById('lockLabel').textContent = 'Admin Access';
+        document.getElementById('btnHomeText').textContent = 'Back to Home';
+      } else {
+        btn.innerHTML = '🇬🇧 English';
+        document.getElementById('subHeaderTitle').textContent = 'Patrimonio y Tradición';
+        document.getElementById('mainHeaderTitle').textContent = 'Cartelera de Eventos';
+        document.getElementById('searchInput').placeholder = 'Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)';
+        document.getElementById('lockLabel').textContent = 'Acceso Admin';
+        document.getElementById('btnHomeText').textContent = 'Volver al Inicio';
+      }
+      applyFilters();
+    }
 
     function sanitizeUrl(url) {
       if (!url) return '';
       let clean = String(url).trim();
-      if (clean === '' || clean.toLowerCase() === 'nan' || clean.toLowerCase() === 'undefined' || clean.length < 4) return '';
+      if (clean === '' || clean.toLowerCase() === 'nan' || clean.length < 4) return '';
       if (!/^https?:\/\//i.test(clean)) clean = 'https://' + clean;
       try { new URL(clean); return clean; } catch (e) { return ''; }
     }
 
-    function processImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      document.getElementById('fileNameDisplay').textContent = file.name;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const MAX = 1000;
-          let w = img.width, h = img.height;
-          if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
-          else { if (h > MAX) { w *= MAX / h; h = MAX; } }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          document.getElementById('inputImg').value = dataUrl;
-          const preview = document.getElementById('imgPreview');
-          preview.src = dataUrl;
-          preview.style.display = 'block';
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    document.getElementById('inputImg').addEventListener('input', function(e) {
-      const preview = document.getElementById('imgPreview');
-      if (e.target.value && !e.target.value.startsWith('data:image')) {
-        preview.src = parseCloudImageUrl(e.target.value);
-        preview.style.display = 'block';
-      } else if (!e.target.value) {
-        preview.style.display = 'none';
-      }
-    });
-
-    function parseCloudImageUrl(url) {
-      if (!url) return '';
-      let cleanUrl = String(url).trim();
-      if (cleanUrl.includes('drive.google.com')) {
-        let fileId = '';
-        if (cleanUrl.includes('/file/d/')) fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
-        else if (cleanUrl.includes('id=')) fileId = new URLSearchParams(cleanUrl.split('?')[1]).get('id');
-        if (fileId) return 'https://lh3.googleusercontent.com/d/' + fileId + '=s800';
-      }
-      return cleanUrl;
-    }
-
     function formatDateToSpanish(dateString) {
-      if (!dateString) return 'Fecha por confirmar';
+      if (!dateString) return currentLang === 'en' ? 'Date to be confirmed' : 'Fecha por confirmar';
       const cleanStr = String(dateString).trim();
-      if (!cleanStr || cleanStr.includes('1899')) return 'Fecha por confirmar';
+      if (!cleanStr || cleanStr.includes('1899')) return currentLang === 'en' ? 'Date to be confirmed' : 'Fecha por confirmar';
       try {
         let date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
           const p = cleanStr.split('-');
           date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (cleanStr.includes('T') && cleanStr.includes('Z')) {
-          date = new Date(cleanStr);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
         } else {
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return cleanStr;
+        const locale = currentLang === 'en' ? 'en-US' : 'es-ES';
         const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
-        let f = date.toLocaleDateString('es-ES', opts);
+        let f = date.toLocaleDateString(locale, opts);
         return f.charAt(0).toUpperCase() + f.slice(1);
       } catch (e) { return cleanStr; }
     }
@@ -1157,46 +643,19 @@
     function formatDateShort(dateString) {
       if (!dateString) return '';
       var cleanStr = String(dateString).trim();
-      if (!cleanStr || cleanStr.includes('1899')) return '';
       try {
         var date;
         if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
           var p = cleanStr.split('-');
           date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
         } else {
           date = new Date(cleanStr);
         }
         if (isNaN(date.getTime())) return '';
-        var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-        var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+        var dias = currentLang === 'en' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        var meses = currentLang === 'en' ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
         return dias[date.getUTCDay()] + ' ' + date.getUTCDate() + ' ' + meses[date.getUTCMonth()];
       } catch (e) { return ''; }
-    }
-
-    function toDateInputValue(rawDate) {
-      if (!rawDate) return '';
-      const cleanStr = String(rawDate).trim();
-      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) return cleanStr;
-      try {
-        let date;
-        if (cleanStr.includes('T')) date = new Date(cleanStr);
-        else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        else date = new Date(cleanStr);
-        if (isNaN(date.getTime())) return '';
-        return date.getUTCFullYear() + '-' + String(date.getUTCMonth()+1).padStart(2,'0') + '-' + String(date.getUTCDate()).padStart(2,'0');
-      } catch (e) { return ''; }
-    }
-
-    function getCategoryClass(cat) {
-      const c = (cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      if (c.includes('cultura') || c.includes('tradicion')) return 'cat-cultura';
-      if (c.includes('musica') || c.includes('jazz') || c.includes('concierto')) return 'cat-musica';
-      if (c.includes('arte') || c.includes('exposicion') || c.includes('galeria')) return 'cat-arte';
-      if (c.includes('gastro') || c.includes('comida') || c.includes('vino') || c.includes('culinaria')) return 'cat-gastronomia';
-      if (c.includes('teatro') || c.includes('danza') || c.includes('espectaculo')) return 'cat-teatro';
-      return 'cat-general';
     }
 
     async function fetchGoogleSheetData() {
@@ -1210,79 +669,61 @@
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
               const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-              return possibleKeys.some(function(pk) { return cleanK.includes(pk); });
+              return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
           };
+
           const rawDateValue = findKey(['date', 'fecha']);
           const rawImgValue = findKey(['img', 'imagen']);
           const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
           const rawWebLink = findKey(['web', 'link', 'enlace', 'url']);
 
+          // Campos bilingües con respaldo automático (fallback)
+          const nameEs = findKey(['name', 'nombre']) || 'Evento';
+          const nameEn = findKey(['name_en', 'name en']) || nameEs;
+
+          const catEs = findKey(['category', 'categoria']) || 'General';
+          const catEn = findKey(['category_en', 'category en']) || catEs;
+
+          const priceEs = findKey(['price', 'costo']) || 'Entrada Libre';
+          const priceEn = findKey(['price_en', 'price en']) || priceEs;
+
+          const descEs = findKey(['desc', 'descripcion']) || 'Sin descripción detallada.';
+          const descEn = findKey(['desc_en', 'desc en']) || descEs;
+
           return {
             rowIndex: index + 2,
-            name: findKey(['name', 'nombre']) || 'Evento',
-            category: findKey(['category', 'categoria']) || 'General',
+            name: currentLang === 'en' ? nameEn : nameEs,
+            name_es: nameEs,
+            name_en: nameEn,
+            category: currentLang === 'en' ? catEn : catEs,
+            category_es: catEs,
+            category_en: catEn,
             rawDate: rawDateValue,
             date: formatDateToSpanish(rawDateValue),
             shortDate: formatDateShort(rawDateValue),
             time: findKey(['time', 'hora']) || 'Todo el día',
-            price: findKey(['price', 'costo']) || 'Entrada Libre',
+            price: currentLang === 'en' ? priceEn : priceEs,
+            price_es: priceEs,
+            price_en: priceEn,
             location: locationName,
             mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationName + ', San Miguel de Allende, Gto.'),
             link: sanitizeUrl(rawWebLink),
-            img: parseCloudImageUrl(rawImgValue) || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+            img: rawImgValue || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
             rawImg: rawImgValue,
-            desc: findKey(['desc', 'descripcion']) || 'Sin descripción detallada.'
+            desc: currentLang === 'en' ? descEn : descEs,
+            desc_es: descEs,
+            desc_en: descEn
           };
         });
-
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        var activeEvents = globalEvents.filter(function(ev) {
-          if (!ev.rawDate) return true;
-          try {
-            var eventDate = /^\d{4}-\d{2}-\d{2}$/.test(ev.rawDate)
-              ? new Date(ev.rawDate.split('-')[0], ev.rawDate.split('-')[1] - 1, ev.rawDate.split('-')[2])
-              : new Date(ev.rawDate);
-            if (isNaN(eventDate.getTime())) return true;
-            eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today;
-          } catch (e) { return true; }
-        });
-        activeEvents.sort(function(a, b) {
-          return (!a.rawDate ? 1 : !b.rawDate ? -1 : new Date(a.rawDate) - new Date(b.rawDate));
-        });
-        globalEvents = activeEvents;
 
         document.getElementById('toolbar').classList.add('visible');
         applyFilters();
       } catch (error) {
         document.getElementById('eventsContainer').innerHTML = 
-          '<div class="empty-state"><span class="empty-state-icon">📭</span><p>No se pudieron cargar los eventos en este momento. Intenta de nuevo más tarde.</p></div>';
+          '<div class="empty-state"><p>No se pudieron cargar los eventos. Intenta de nuevo más tarde.</p></div>';
       }
-    }
-
-    function getMonthNames(rawDate) {
-      if (!rawDate) return [];
-      var cleanStr = String(rawDate).trim();
-      try {
-        var date;
-        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-          var p = cleanStr.split('-');
-          date = new Date(+p[0], +p[1] - 1, +p[2]);
-        } else if (!isNaN(cleanStr) && Number(cleanStr) > 30000) {
-          date = new Date((Number(cleanStr) - 25569) * 86400 * 1000);
-        } else {
-          date = new Date(cleanStr);
-        }
-        if (isNaN(date.getTime())) return [];
-        var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-        var mes = meses[date.getUTCMonth()];
-        var num = String(date.getUTCMonth() + 1);
-        var numPad = num.padStart(2, '0');
-        var abbr = mes.substring(0, 3);
-        return [mes, abbr, num, numPad];
-      } catch (e) { return []; }
     }
 
     function getFilteredEvents() {
@@ -1293,35 +734,23 @@
         var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         var desc = (ev.desc || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         var cat = (ev.category || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var dateStr = (ev.date || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var months = getMonthNames(ev.rawDate);
-        var monthHit = months.some(function(m) {
-          return m.normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q) || q.includes(m.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-        });
-        return (
-          name.includes(q) ||
-          loc.includes(q) ||
-          desc.includes(q) ||
-          cat.includes(q) ||
-          dateStr.includes(q) ||
-          monthHit
-        );
+        return name.includes(q) || loc.includes(q) || desc.includes(q) || cat.includes(q);
       });
     }
 
     function applyFilters() {
       var filtered = getFilteredEvents();
       var countEl = document.getElementById('resultsCount');
-      countEl.textContent = filtered.length === 0 ? '0 eventos'
-        : filtered.length === 1 ? '1 evento'
-        : filtered.length + ' eventos';
+      countEl.textContent = filtered.length === 0 ? (currentLang === 'en' ? '0 events' : '0 eventos')
+        : filtered.length === 1 ? (currentLang === 'en' ? '1 event' : '1 evento')
+        : filtered.length + (currentLang === 'en' ? ' events' : ' eventos');
       renderEvents(filtered);
     }
 
     function checkSession() {
       var isLogged = localStorage.getItem('sma_admin_logged') === 'true';
       document.body.classList.toggle('admin-logged', isLogged);
-      document.getElementById('lockLabel').innerText = isLogged ? 'Cerrar Sesión' : 'Acceso Admin';
+      document.getElementById('lockLabel').innerText = isLogged ? (currentLang === 'en' ? 'Log out' : 'Cerrar Sesión') : (currentLang === 'en' ? 'Admin Access' : 'Acceso Admin');
     }
 
     function renderEvents(eventsToShow) {
@@ -1329,30 +758,26 @@
       var list = eventsToShow || globalEvents;
 
       if (!list.length) {
-        var msg = searchQuery
-          ? 'No hay eventos que coincidan con tu búsqueda.'
-          : 'No hay eventos vigentes disponibles por el momento.';
-        container.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🔎</span><p>' + msg + '</p></div>';
+        container.innerHTML = '<div class="empty-state"><p>' + (currentLang === 'en' ? 'No events found.' : 'No hay eventos disponibles.') + '</p></div>';
         return;
       }
 
       var html = '';
       list.forEach(function(ev) {
         var webButton = (ev.link && ev.link.length > 5)
-          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">Sitio Oficial / Boletos ↗</a>'
+          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">' + (currentLang === 'en' ? 'Official Site / Tickets ↗' : 'Sitio Oficial / Boletos ↗') + '</a>'
           : '';
-        var catClass = getCategoryClass(ev.category);
 
         html += 
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
-              '<span class="event-category ' + catClass + '">' + ev.category + '</span>' +
+              '<span class="event-category cat-general">' + ev.category + '</span>' +
               '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
-                '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ', \'' + ev.name.replace(/'/g, "\\'") + '\')" title="Eliminar">🗑️</button>' +
+                '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">🗑️</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
+              '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy">' +
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + ev.name + '</h3>' +
@@ -1370,7 +795,6 @@
           '</article>';
       });
       container.innerHTML = '<div class="events-grid">' + html + '</div>';
-      attachSparkleListeners();
     }
 
     function openLoginModal() {
@@ -1382,18 +806,12 @@
       }
     }
 
-    function resetModal() {
-      document.getElementById('eventForm').reset();
-      document.getElementById('imgPreview').style.display = 'none';
-      document.getElementById('fileNameDisplay').textContent = 'Sin archivo';
-    }
-
     function openEventModal() {
       isEditMode = false;
       document.getElementById('eventModalTitle').textContent = 'Nuevo Evento';
       document.getElementById('submitEventBtn').textContent = 'Guardar Evento';
       document.getElementById('editRowIndex').value = '';
-      resetModal();
+      document.getElementById('eventForm').reset();
       document.getElementById('eventModal').classList.add('active');
     }
 
@@ -1401,24 +819,23 @@
       var event = globalEvents.find(function(ev) { return ev.rowIndex === rowIndex; });
       if (!event) return;
       isEditMode = true;
-      resetModal();
       document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
       document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
       document.getElementById('editRowIndex').value = rowIndex;
 
-      document.getElementById('inputName').value = event.name || '';
-      document.getElementById('inputCategory').value = event.category || '';
-      document.getElementById('inputDate').value = toDateInputValue(event.rawDate);
+      document.getElementById('inputName').value = event.name_es || '';
+      document.getElementById('inputNameEn').value = event.name_en || '';
+      document.getElementById('inputCategory').value = event.category_es || '';
+      document.getElementById('inputCategoryEn').value = event.category_en || '';
+      document.getElementById('inputDate').value = event.rawDate || '';
       document.getElementById('inputTime').value = event.time || '';
-      document.getElementById('inputPrice').value = event.price || '';
+      document.getElementById('inputPrice').value = event.price_es || '';
+      document.getElementById('inputPriceEn').value = event.price_en || '';
       document.getElementById('inputLocation').value = event.location || '';
       document.getElementById('inputWeb').value = event.link || '';
-      document.getElementById('inputImg').value = event.rawImg || event.img || '';
-      if (event.rawImg || event.img) {
-        document.getElementById('imgPreview').src = parseCloudImageUrl(event.rawImg || event.img);
-        document.getElementById('imgPreview').style.display = 'block';
-      }
-      document.getElementById('inputDesc').value = event.desc || '';
+      document.getElementById('inputImg').value = event.rawImg || '';
+      document.getElementById('inputDesc').value = event.desc_es || '';
+      document.getElementById('inputDescEn').value = event.desc_en || '';
       document.getElementById('eventModal').classList.add('active');
     }
 
@@ -1437,21 +854,23 @@
     async function handleSaveEvent(e) {
       e.preventDefault();
       var btn = document.getElementById('submitEventBtn');
-      var originalText = btn.innerText;
-      btn.innerText = isEditMode ? 'Guardando cambios…' : 'Publicando evento…';
       btn.disabled = true;
 
       var payload = {
         action: isEditMode ? 'update' : 'add',
         name: document.getElementById('inputName').value,
+        name_en: document.getElementById('inputNameEn').value,
         category: document.getElementById('inputCategory').value,
+        category_en: document.getElementById('inputCategoryEn').value,
         date: document.getElementById('inputDate').value,
         time: document.getElementById('inputTime').value,
         price: document.getElementById('inputPrice').value,
+        price_en: document.getElementById('inputPriceEn').value,
         location: document.getElementById('inputLocation').value,
         link: sanitizeUrl(document.getElementById('inputWeb').value),
         img: document.getElementById('inputImg').value,
-        desc: document.getElementById('inputDesc').value
+        desc: document.getElementById('inputDesc').value,
+        desc_en: document.getElementById('inputDescEn').value
       };
       if (isEditMode) payload.rowIndex = parseInt(document.getElementById('editRowIndex').value, 10);
 
@@ -1460,22 +879,19 @@
         var result = await response.json();
         if (result.status === 'success') {
           document.getElementById('eventModal').classList.remove('active');
-          searchQuery = '';
-          document.getElementById('searchInput').value = '';
           fetchGoogleSheetData();
         } else {
           alert('Error: ' + result.message);
         }
       } catch (err) {
-        alert('Hubo un problema de conexión al guardar.');
+        alert('Problema de conexión al guardar.');
       } finally {
-        btn.innerText = originalText;
         btn.disabled = false;
       }
     }
 
-    async function handleDeleteEvent(rowIndex, eventName) {
-      if (!confirm('¿Eliminar definitivamente "' + eventName + '"?')) return;
+    async function handleDeleteEvent(rowIndex) {
+      if (!confirm('¿Eliminar este evento?')) return;
       try {
         var response = await fetch(WEB_APP_URL, {
           method: 'POST',
@@ -1483,8 +899,6 @@
         });
         var result = await response.json();
         if (result.status === 'success') {
-          searchQuery = '';
-          document.getElementById('searchInput').value = '';
           fetchGoogleSheetData();
         } else {
           alert('Error: ' + result.message);
@@ -1492,69 +906,6 @@
       } catch (err) {
         alert('Fallo de conexión al eliminar.');
       }
-    }
-
-    function createSparkles(x, y, count) {
-      count = count || 18;
-      const colors = ['#c45c4a', '#a84a3a', '#e07a5f', '#c48a1f', '#d4a017', '#e8b84a', '#8f3d28', '#f4a261'];
-
-      for (let i = 0; i < count; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'sparkle-particle';
-        const size = 3 + Math.random() * 7;
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
-        const distance = 40 + Math.random() * 90;
-        const duration = 550 + Math.random() * 450;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const isStar = Math.random() > 0.55;
-
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        particle.style.background = color;
-        particle.style.boxShadow = '0 0 ' + (size * 2.5) + 'px ' + color + ', 0 0 ' + (size * 5) + 'px ' + color;
-
-        if (isStar) {
-          particle.style.borderRadius = '2px';
-          particle.style.transform = 'rotate(45deg)';
-        }
-
-        document.body.appendChild(particle);
-        const endX = Math.cos(angle) * distance;
-        const endY = Math.sin(angle) * distance - 20 - Math.random() * 30;
-
-        const anim = particle.animate([
-          { transform: isStar ? 'translate(0,0) scale(0.3) rotate(45deg)' : 'translate(0,0) scale(0.3)', opacity: 1 },
-          { transform: isStar ? 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.2) rotate(45deg)' : 'translate(' + (endX * 0.6) + 'px,' + (endY * 0.5) + 'px) scale(1.15)', opacity: 1, offset: 0.35 },
-          { transform: isStar ? 'translate(' + endX + 'px,' + endY + 'px) scale(0) rotate(90deg)' : 'translate(' + endX + 'px,' + endY + 'px) scale(0)', opacity: 0 }
-        ], { duration: duration, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' });
-
-        anim.onfinish = function() { particle.remove(); };
-      }
-    }
-
-    function triggerCardSparkle(e, card) {
-      if (e.target.closest('.admin-card-actions') || e.target.closest('a')) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX || (rect.left + rect.width / 2);
-      const y = e.clientY || (rect.top + rect.height / 2);
-      createSparkles(x, y, 20);
-      card.classList.remove('sparkle-burst');
-      void card.offsetWidth;
-      card.classList.add('sparkle-burst');
-      setTimeout(function() { card.classList.remove('sparkle-burst'); }, 500);
-    }
-
-    function attachSparkleListeners() {
-      document.querySelectorAll('.event-card').forEach(function(card) {
-        if (card.dataset.sparkleBound) return;
-        card.dataset.sparkleBound = '1';
-        card.addEventListener('pointerdown', function(e) {
-          if (e.button !== 0 && e.button !== undefined) return;
-          triggerCardSparkle(e, card);
-        });
-      });
     }
 
     document.getElementById('searchInput').addEventListener('input', function(e) {
@@ -1569,7 +920,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       checkSession();
       fetchGoogleSheetData();
-      setTimeout(killGoogleTranslateBar, 800);
     });
   </script>
 </body>
