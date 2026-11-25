@@ -454,6 +454,21 @@
       color: var(--noche);
       outline: none;
     }
+    .img-upload-box {
+      background: var(--fondo);
+      border: 1px dashed var(--borde-fuerte);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .img-upload-divider {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--gris-muted);
+      font-weight: 600;
+    }
     .btn-primary {
       background: var(--cantera);
       color: var(--blanco);
@@ -464,6 +479,10 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: 0.9rem;
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -533,7 +552,7 @@
   <!-- Modal Agregar / Editar Evento -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box">
-      <h3 id="eventModalTitle">Nuevo Evento</h3>
+      <h3 id="eventModalTitle" style="margin-bottom: 1rem;">Nuevo Evento</h3>
       <form onsubmit="handleSaveEvent(event)" id="eventForm">
         <input type="hidden" id="editRowIndex" value="">
         <div class="form-group"><label>Nombre del Evento (Español)</label><input type="text" id="inputName" required></div>
@@ -541,12 +560,21 @@
         <div class="form-group"><label>Categoría (Español)</label><input type="text" id="inputCategory" placeholder="Cultura y Tradición" required></div>
         <div class="form-group"><label>Categoría (Inglés / Category EN)</label><input type="text" id="inputCategoryEn"></div>
         <div class="form-group"><label>Fecha</label><input type="date" id="inputDate" required></div>
-        <div class="form-group"><label>Horario</label><input type="text" id="inputTime" placeholder="17:00 hrs" required></div>
+        <div class="form-group"><label>Horario</label><input type="time" id="inputTime" required></div>
         <div class="form-group"><label>Costo / Precio (Español)</label><input type="text" id="inputPrice" placeholder="Entrada Libre" required></div>
         <div class="form-group"><label>Costo / Precio (Inglés / Price EN)</label><input type="text" id="inputPriceEn" placeholder="Free Event"></div>
         <div class="form-group"><label>Ubicación</label><input type="text" id="inputLocation" placeholder="Explanada del Jardín" required></div>
         <div class="form-group"><label>Sitio Oficial o Boletos (Opcional)</label><input type="text" id="inputWeb"></div>
-        <div class="form-group"><label>Imagen (URL)</label><input type="text" id="inputImg" required></div>
+
+        <div class="form-group">
+          <label>Imagen del Evento (Subir a Drive o Pegar Link)</label>
+          <div class="img-upload-box">
+            <input type="file" id="inputImgFile" accept="image/*" style="background: var(--blanco); padding: 0.45rem;">
+            <div class="img-upload-divider">— O PEGA UN ENLACE DIRECTO —</div>
+            <input type="text" id="inputImg" placeholder="https://...">
+          </div>
+        </div>
+
         <div class="form-group"><label>Descripción (Español)</label><textarea id="inputDesc" required></textarea></div>
         <div class="form-group"><label>Descripción (Inglés / Desc EN)</label><textarea id="inputDescEn"></textarea></div>
         <button type="submit" id="submitEventBtn" class="btn-primary">Guardar en Sistema</button>
@@ -557,7 +585,7 @@
   <script>
     const AUTH_USER = "vivesanmiguel";
     const AUTH_PASS = "c4rl0s1107";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzj6-t98RwaKVfTlGCINHXg3-o168xxvVmVllq7RyxZaiCm_crsoTQ1Oj3A6LqFpO3S/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6-BX3TRw7LsLnHnSCQDdidTVLBaWUHFP32EYNu9WFtBKy9cF1913Tld6abPoEPohi/exec";
 
     let globalEvents = [];
     let isEditMode = false;
@@ -604,6 +632,24 @@
         if (fileId) return 'https://lh3.googleusercontent.com/d/' + fileId + '=s800';
       }
       return cleanUrl;
+    }
+
+    function formatCleanTime(rawTime) {
+      if (!rawTime) return currentLang === 'en' ? 'All day' : 'Todo el día';
+      let str = String(rawTime).trim();
+      if (str.includes('1899-12-30') || (str.includes('T') && str.endsWith('Z'))) {
+        let d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          let hh = String(d.getHours()).padStart(2, '0');
+          let mm = String(d.getMinutes()).padStart(2, '0');
+          return hh + ':' + mm;
+        }
+      }
+      let match = str.match(/(\d{1,2}):(\d{2})/);
+      if (match) {
+        return match[1].padStart(2, '0') + ':' + match[2];
+      }
+      return str;
     }
 
     function formatDateToSpanish(dateString) {
@@ -657,7 +703,7 @@
         const mappedEvents = data.map(function(item, index) {
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
-              const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+              const cleanK = k.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
               return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
@@ -691,6 +737,9 @@
             }
           }
 
+          const rawTimeValue = findKey(['time', 'hora']);
+          const cleanHHMM = formatCleanTime(rawTimeValue);
+
           return {
             rowIndex: index + 2,
             name_es: nameEs,
@@ -705,7 +754,8 @@
             dateObj: eventDateObj,
             date: formatDateToSpanish(rawDateValue),
             shortDate: formatDateShort(rawDateValue),
-            time: findKey(['time', 'hora']) || 'Todo el día',
+            rawTimeHHMM: /^\d{2}:\d{2}$/.test(cleanHHMM) ? cleanHHMM : '',
+            time: /^\d{2}:\d{2}$/.test(cleanHHMM) ? cleanHHMM + ' hrs' : cleanHHMM,
             location: locationName,
             mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationName + ', San Miguel de Allende, Gto.'),
             link: sanitizeUrl(rawWebLink),
@@ -730,12 +780,12 @@
 
     function getFilteredEvents() {
       if (!searchQuery) return globalEvents;
-      var q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+      var q = searchQuery.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
       return globalEvents.filter(function(ev) {
-        var name = (currentLang === 'en' ? ev.name_en : ev.name_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var desc = (currentLang === 'en' ? ev.desc_en : ev.desc_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        var cat = (currentLang === 'en' ? ev.category_en : ev.category_es).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        var name = (currentLang === 'en' ? ev.name_en : ev.name_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var desc = (currentLang === 'en' ? ev.desc_en : ev.desc_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var cat = (currentLang === 'en' ? ev.category_en : ev.category_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
         return name.includes(q) || loc.includes(q) || desc.includes(q) || cat.includes(q);
       });
     }
@@ -784,7 +834,7 @@
                 '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
                 '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">🗑️</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + currentName + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
+              '<img src="' + ev.img + '" alt="' + currentName + '" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">' +
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + currentName + '</h3>' +
@@ -829,13 +879,14 @@
       document.getElementById('eventModalTitle').textContent = 'Modificar Evento';
       document.getElementById('submitEventBtn').textContent = 'Actualizar Evento';
       document.getElementById('editRowIndex').value = rowIndex;
+      document.getElementById('inputImgFile').value = '';
 
       document.getElementById('inputName').value = event.name_es || '';
       document.getElementById('inputNameEn').value = event.name_en || '';
       document.getElementById('inputCategory').value = event.category_es || '';
       document.getElementById('inputCategoryEn').value = event.category_en || '';
-      document.getElementById('inputDate').value = event.rawDate || '';
-      document.getElementById('inputTime').value = event.time || '';
+      document.getElementById('inputDate').value = event.rawDate ? event.rawDate.split('T')[0] : '';
+      document.getElementById('inputTime').value = event.rawTimeHHMM || '';
       document.getElementById('inputPrice').value = event.price_es || '';
       document.getElementById('inputPriceEn').value = event.price_en || '';
       document.getElementById('inputLocation').value = event.location || '';
@@ -858,10 +909,40 @@
       }
     }
 
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
     async function handleSaveEvent(e) {
       e.preventDefault();
       var btn = document.getElementById('submitEventBtn');
+      var originalBtnText = btn.textContent;
+      var fileInput = document.getElementById('inputImgFile');
+      var urlInputVal = document.getElementById('inputImg').value.trim();
+
+      if (fileInput.files.length === 0 && !urlInputVal) {
+        alert('Por favor sube una imagen o pega un enlace.');
+        return;
+      }
+
       btn.disabled = true;
+      btn.textContent = 'Subiendo y guardando...';
+
+      var imgBase64 = '';
+      var imgName = '';
+      if (fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        imgName = Date.now() + '_' + file.name;
+        imgBase64 = await fileToBase64(file);
+      }
+
+      var rawTime = document.getElementById('inputTime').value;
+      var formattedTime = rawTime ? rawTime + ' hrs' : '';
 
       var payload = {
         action: isEditMode ? 'update' : 'add',
@@ -870,12 +951,14 @@
         category: document.getElementById('inputCategory').value,
         category_en: document.getElementById('inputCategoryEn').value,
         date: document.getElementById('inputDate').value,
-        time: document.getElementById('inputTime').value,
+        time: formattedTime,
         price: document.getElementById('inputPrice').value,
         price_en: document.getElementById('inputPriceEn').value,
         location: document.getElementById('inputLocation').value,
         link: sanitizeUrl(document.getElementById('inputWeb').value),
-        img: document.getElementById('inputImg').value,
+        img: urlInputVal,
+        imgBase64: imgBase64,
+        imgName: imgName,
         desc: document.getElementById('inputDesc').value,
         desc_en: document.getElementById('inputDescEn').value
       };
@@ -894,6 +977,7 @@
         alert('Problema de conexión al guardar.');
       } finally {
         btn.disabled = false;
+        btn.textContent = originalBtnText;
       }
     }
 
