@@ -56,7 +56,6 @@
       padding: 0 1.5rem;
     }
 
-    /* ── Header ── */
     .site-header {
       padding: 2.25rem 0 1.75rem;
       border-bottom: 1px solid var(--borde);
@@ -143,7 +142,6 @@
       background: var(--cantera-soft);
     }
 
-    /* ── Sticky Toolbar ── */
     .toolbar-wrapper {
       position: sticky;
       top: 0;
@@ -212,7 +210,6 @@
       text-align: right;
     }
 
-    /* ── Grid ── */
     .events-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
@@ -383,7 +380,6 @@
       box-shadow: 0 3px 10px -2px var(--cantera-glow);
     }
 
-    /* ── Skeleton & Empty States ── */
     .skeleton-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
@@ -392,7 +388,6 @@
     .skeleton-card { background: var(--blanco); border-radius: var(--radius); height: 380px; border: 1px solid var(--borde); }
     .empty-state { text-align: center; padding: 5rem 2rem; color: var(--gris-texto); }
 
-    /* ── Footer & Modals ── */
     footer {
       margin-top: auto;
       border-top: 1px solid var(--borde);
@@ -480,6 +475,33 @@
       cursor: pointer;
       margin-top: 0.9rem;
     }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.15rem;
+    }
+    .modal-close-x {
+      background: var(--gris-suave);
+      border: 1px solid var(--borde-fuerte);
+      color: var(--noche);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transicion);
+      font-family: inherit;
+    }
+    .modal-close-x:hover {
+      background: var(--cantera);
+      color: var(--blanco);
+      border-color: var(--cantera);
+    }
     .btn-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -498,21 +520,20 @@
         </div>
       </div>
       <div class="admin-actions-group">
-        <button class="lang-custom-btn" id="langCustomBtn" onclick="toggleLanguage()">🇬🇧 English</button>
+        <button class="lang-custom-btn" id="langCustomBtn" onclick="toggleLanguage()">English</button>
         <button class="admin-trigger admin-panel-btn" onclick="openEventModal()">+ Agregar Evento</button>
         <a href="https://carloschaires.github.io/vivesanmigueL/menu" class="btn-home" id="btnHomeText">Volver al Inicio</a>
       </div>
     </div>
   </header>
 
-  <!-- Sticky Toolbar -->
   <div class="toolbar-wrapper" id="toolbarWrapper">
     <div class="container">
       <div class="toolbar" id="toolbar">
         <div class="search-row">
           <div class="search-box">
-            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar… (ej. cine, octubre, jazz)" autocomplete="off">
-            <span class="search-icon">🔍</span>
+            <input type="search" id="searchInput" placeholder="Buscar por tipo, mes, nombre o lugar (ej. cine, octubre, jazz)" autocomplete="off">
+            <span class="search-icon">Buscar</span>
           </div>
           <span class="results-count" id="resultsCount">0 eventos</span>
         </div>
@@ -537,10 +558,12 @@
     </div>
   </footer>
 
-  <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3 id="loginModalTitle">Acceso Restringido</h3>
+      <div class="modal-header">
+        <h3 id="loginModalTitle">Acceso Restringido</h3>
+        <button type="button" class="modal-close-x" onclick="closeLoginModal()" aria-label="Cerrar">&times;</button>
+      </div>
       <form onsubmit="handleLogin(event)">
         <div class="form-group"><label>Usuario</label><input type="text" id="usernameInput" required></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="passwordInput" required></div>
@@ -549,10 +572,12 @@
     </div>
   </div>
 
-  <!-- Modal Agregar / Editar Evento -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box">
-      <h3 id="eventModalTitle" style="margin-bottom: 1rem;">Nuevo Evento</h3>
+      <div class="modal-header">
+        <h3 id="eventModalTitle">Nuevo Evento</h3>
+        <button type="button" class="modal-close-x" onclick="closeEventModal()" aria-label="Cerrar">&times;</button>
+      </div>
       <form onsubmit="handleSaveEvent(event)" id="eventForm">
         <input type="hidden" id="editRowIndex" value="">
         <div class="form-group"><label>Nombre del Evento (Español)</label><input type="text" id="inputName" required></div>
@@ -570,7 +595,7 @@
           <label>Imagen del Evento (Subir a Drive o Pegar Link)</label>
           <div class="img-upload-box">
             <input type="file" id="inputImgFile" accept="image/*" style="background: var(--blanco); padding: 0.45rem;">
-            <div class="img-upload-divider">— O PEGA UN ENLACE DIRECTO —</div>
+            <div class="img-upload-divider">O PEGA UN ENLACE DIRECTO</div>
             <input type="text" id="inputImg" placeholder="https://...">
           </div>
         </div>
@@ -595,19 +620,19 @@
     function toggleLanguage() {
       currentLang = currentLang === 'es' ? 'en' : 'es';
       const btn = document.getElementById('langCustomBtn');
-      
+
       if (currentLang === 'en') {
-        btn.innerHTML = '🇲🇽 Español';
+        btn.innerHTML = 'Español';
         document.getElementById('subHeaderTitle').textContent = 'Heritage & Tradition';
         document.getElementById('mainHeaderTitle').textContent = 'Events Calendar';
         document.getElementById('searchInput').placeholder = 'Search by type, month, name or venue...';
         document.getElementById('lockLabel').textContent = 'Admin Access';
         document.getElementById('btnHomeText').textContent = 'Back to Home';
       } else {
-        btn.innerHTML = '🇬🇧 English';
+        btn.innerHTML = 'English';
         document.getElementById('subHeaderTitle').textContent = 'Patrimonio y Tradición';
         document.getElementById('mainHeaderTitle').textContent = 'Cartelera de Eventos';
-        document.getElementById('searchInput').placeholder = 'Buscar por tipo, mes, nombre o lugar…';
+        document.getElementById('searchInput').placeholder = 'Buscar por tipo, mes, nombre o lugar';
         document.getElementById('lockLabel').textContent = 'Acceso Admin';
         document.getElementById('btnHomeText').textContent = 'Volver al Inicio';
       }
@@ -690,6 +715,10 @@
       } catch (e) { return ''; }
     }
 
+    function normalizeSearchText(text) {
+      return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
     async function fetchGoogleSheetData() {
       try {
         const response = await fetch(WEB_APP_URL);
@@ -703,7 +732,7 @@
         const mappedEvents = data.map(function(item, index) {
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
-              const cleanK = k.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+              const cleanK = normalizeSearchText(k).trim();
               return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
@@ -765,7 +794,7 @@
         });
 
         globalEvents = mappedEvents.filter(function(ev) {
-          if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return true; 
+          if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return true;
           return ev.dateObj >= today;
         });
 
@@ -773,19 +802,19 @@
         applyFilters();
       } catch (error) {
         console.error(error);
-        document.getElementById('eventsContainer').innerHTML = 
+        document.getElementById('eventsContainer').innerHTML =
           '<div class="empty-state"><p>No se pudieron cargar los eventos. Verifica tu conexión o el Web App de Google Sheets.</p></div>';
       }
     }
 
     function getFilteredEvents() {
       if (!searchQuery) return globalEvents;
-      var q = searchQuery.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+      var q = normalizeSearchText(searchQuery).trim();
       return globalEvents.filter(function(ev) {
-        var name = (currentLang === 'en' ? ev.name_en : ev.name_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        var loc = (ev.location || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        var desc = (currentLang === 'en' ? ev.desc_en : ev.desc_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        var cat = (currentLang === 'en' ? ev.category_en : ev.category_es).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var name = normalizeSearchText(currentLang === 'en' ? ev.name_en : ev.name_es);
+        var loc = normalizeSearchText(ev.location || '');
+        var desc = normalizeSearchText(currentLang === 'en' ? ev.desc_en : ev.desc_es);
+        var cat = normalizeSearchText(currentLang === 'en' ? ev.category_en : ev.category_es);
         return name.includes(q) || loc.includes(q) || desc.includes(q) || cat.includes(q);
       });
     }
@@ -822,30 +851,30 @@
         var currentDesc = currentLang === 'en' ? ev.desc_en : ev.desc_es;
 
         var webButton = (ev.link && ev.link.length > 5)
-          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">' + (currentLang === 'en' ? 'Official Site / Tickets ↗' : 'Sitio Oficial / Boletos ↗') + '</a>'
+          ? '<a href="' + ev.link + '" target="_blank" rel="noopener" class="event-web-link">' + (currentLang === 'en' ? 'Official Site / Tickets' : 'Sitio Oficial / Boletos') + '</a>'
           : '';
 
-        html += 
+        html +=
           '<article class="event-card">' +
             '<div class="event-img-wrapper">' +
               '<span class="event-category">' + currentCat + '</span>' +
               '<span class="event-date-badge">' + (ev.shortDate || ev.date) + '</span>' +
               '<div class="admin-card-actions">' +
-                '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">✏️</button>' +
-                '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">🗑️</button>' +
+                '<button class="btn-card-edit" onclick="openEditModal(' + ev.rowIndex + ')" title="Editar">Editar</button>' +
+                '<button class="btn-card-delete" onclick="handleDeleteEvent(' + ev.rowIndex + ')" title="Eliminar">Borrar</button>' +
               '</div>' +
-              '<img src="' + ev.img + '" alt="' + currentName + '" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'">' +
+              '<img src="' + ev.img + '" alt="' + currentName + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80\'">' +
             '</div>' +
             '<div class="event-body">' +
               '<h3 class="event-name">' + currentName + '</h3>' +
               '<div class="event-meta">' +
-                '<span>📅 ' + ev.date + '</span>' +
+                '<span>' + ev.date + '</span>' +
                 '<span class="meta-sep">·</span>' +
-                '<span>🕒 ' + ev.time + '</span>' +
+                '<span>' + ev.time + '</span>' +
                 '<span class="meta-sep">·</span>' +
-                '<span class="price">💰 ' + currentPrice + '</span>' +
+                '<span class="price">' + currentPrice + '</span>' +
               '</div>' +
-              '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">📍 ' + ev.location + '</a>' +
+              '<a href="' + ev.mapsUrl + '" target="_blank" rel="noopener" class="event-location">' + ev.location + '</a>' +
               '<p class="event-desc">' + currentDesc + '</p>' +
               webButton +
             '</div>' +
@@ -853,6 +882,21 @@
       });
       container.innerHTML = '<div class="events-grid">' + html + '</div>';
     }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function closeEventModal() {
+      document.getElementById('eventModal').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLoginModal();
+        closeEventModal();
+      }
+    });
 
     function openLoginModal() {
       if (localStorage.getItem('sma_admin_logged') === 'true') {
