@@ -98,6 +98,7 @@
             align-items: center;
             border-bottom: 1px solid var(--line);
             position: relative;
+            gap: 12px;
         }
 
         .brand {
@@ -132,6 +133,44 @@
             font-weight: 600;
             color: var(--gold);
             margin-top: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255,253,249,.72);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 3px;
+            backdrop-filter: blur(12px);
+        }
+
+        .lang-btn {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--terracotta);
+            color: #fff;
+        }
+
+        .lang-btn:not(.active):hover {
+            color: var(--ink);
         }
 
         .btn-nav-home {
@@ -616,7 +655,9 @@
 
         .modal-content {
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
             background: var(--paper);
             border: 1px solid var(--line);
             border-radius: 28px;
@@ -726,6 +767,7 @@
             header { min-height: 74px; }
             .brand-name { font-size: 1.25rem; }
             .brand-logo { width: 40px; height: 40px; }
+            .btn-nav-home { padding: 9px 14px; font-size: .66rem; }
             .hero { padding: 55px 0 55px; gap: 35px; }
             .hero h1 { font-size: 4.2rem; letter-spacing: -1.5px; }
             .hero-frame { height: 360px; }
@@ -751,31 +793,37 @@
                 <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" class="brand-logo" onerror="this.style.display='none'">
                 <span class="brand-name">Vive San Miguel</span>
             </a>
-            <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home">Inicio</a>
+            <div class="header-actions">
+                <div class="lang-switch" role="group" aria-label="Language switcher">
+                    <button type="button" class="lang-btn active" id="btnLangEs" onclick="setLanguage('es')">ES</button>
+                    <button type="button" class="lang-btn" id="btnLangEn" onclick="setLanguage('en')">EN</button>
+                </div>
+                <a href="https://carloschaires.github.io/vivesanmigueL/" class="btn-nav-home" id="navHomeBtn">Inicio</a>
+            </div>
         </header>
 
         <!-- Admin Bar -->
         <div class="admin-bar" id="adminControls">
-            <button class="btn-admin" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
-            <button class="btn-admin" onclick="downloadTemplate()">📥 Descargar Plantilla</button>
-            <button class="btn-admin" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
+            <button class="btn-admin" id="btnSyncDrive" onclick="syncWithGoogleDrive()" style="background: rgba(52, 168, 83, 0.1); color: #34A853; border-color: rgba(52, 168, 83, 0.3);">☁️ Sincronizar Google Drive</button>
+            <button class="btn-admin" id="btnDownloadTpl" onclick="downloadTemplate()">📥 Descargar Plantilla</button>
+            <button class="btn-admin" id="btnUploadExcel" onclick="document.getElementById('excelFileInput').click()">📂 Subir Masivo Excel</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none" onchange="handleExcelUpload(event)">
             <span class="sync-status" id="syncStatus"><i class="fas fa-check-circle"></i> Sincronizado</span>
-            <button class="btn-admin" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
+            <button class="btn-admin" id="btnLogout" onclick="logoutAdmin()" style="border-color: #c0392b; color: #c0392b;">Cerrar Sesión</button>
         </div>
 
         <!-- Hero -->
         <section class="hero">
             <div class="hero-copy-wrap">
-                <div class="eyebrow">Guía curada · San Miguel de Allende</div>
-                <h1>Vive la ciudad.<br><em>Siente su historia.</em></h1>
-                <p class="hero-copy">
+                <div class="eyebrow" id="heroEyebrow">Guía curada · San Miguel de Allende</div>
+                <h1 id="heroTitle">Vive la ciudad.<br><em>Siente su historia.</em></h1>
+                <p class="hero-copy" id="heroCopy">
                     Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel
                     un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.
                 </p>
                 <div class="hero-actions">
-                    <a class="hero-btn primary" href="#explora">Explorar la guía <span>↓</span></a>
-                    <a class="hero-btn secondary" href="https://carloschaires.github.io/vivesanmigueL/mapa">Abrir mapa <span>↗</span></a>
+                    <a class="hero-btn primary" id="heroBtnExplore" href="#explora">Explorar la guía <span>↓</span></a>
+                    <a class="hero-btn secondary" id="heroBtnMap" href="https://carloschaires.github.io/vivesanmigueL/mapa">Abrir mapa <span>↗</span></a>
                 </div>
             </div>
 
@@ -783,7 +831,7 @@
                 <div class="hero-frame">
                     <img src="https://lh3.googleusercontent.com/d/1AKcaDSy6SKFTH0xeDOE7_PopsfWRrzOe=w1200" alt="San Miguel de Allende">
                     <div class="hero-caption">
-                        <span>Patrimonio · Cultura · Experiencias</span>
+                        <span id="heroCaptionSub">Patrimonio · Cultura · Experiencias</span>
                         <strong>San Miguel de Allende</strong>
                     </div>
                 </div>
@@ -793,9 +841,9 @@
         <!-- Guía Esencial -->
         <section id="explora" class="reveal">
             <div class="section-header">
-                <div class="section-kicker">La ciudad, a tu manera</div>
-                <h1>Explora San Miguel</h1>
-                <p>Selecciona una categoría y encuentra todo lo que necesitas para crear tu propio recorrido.</p>
+                <div class="section-kicker" id="mainKicker">La ciudad, a tu manera</div>
+                <h1 id="mainHeading">Explora San Miguel</h1>
+                <p id="mainSub">Selecciona una categoría y encuentra todo lo que necesitas para crear tu propio recorrido.</p>
             </div>
             <div class="cards-grid" id="mainGridContainer"></div>
         </section>
@@ -803,25 +851,25 @@
         <!-- Estadía y Sabor -->
         <section class="section-wrapper reveal">
             <div class="section-header" style="margin-bottom: 30px;">
-                <div class="section-kicker">Momentos para recordar</div>
-                <h2>Estadía y experiencias</h2>
-                <p>Hospedaje, gastronomía, aventura, romance y escapadas alrededor de San Miguel.</p>
+                <div class="section-kicker" id="secKicker">Momentos para recordar</div>
+                <h2 id="secHeading">Estadía y experiencias</h2>
+                <p id="secSub">Hospedaje, gastronomía, aventura, romance y escapadas alrededor de San Miguel.</p>
             </div>
             <div class="cards-grid" id="secondaryGridContainer" style="margin-bottom: 0;"></div>
         </section>
 
         <!-- Redes Sociales -->
         <section class="social-box reveal">
-            <div class="section-kicker">La comunidad</div>
-            <h3>Comunidad Vive San Miguel</h3>
-            <p>Inspírate, comparte y sigue descubriendo la ciudad.</p>
+            <div class="section-kicker" id="socialKicker">La comunidad</div>
+            <h3 id="socialHeading">Comunidad Vive San Miguel</h3>
+            <p id="socialSub">Inspírate, comparte y sigue descubriendo la ciudad.</p>
             <div class="social-group" id="socialButtonsContainer"></div>
         </section>
 
         <!-- Footer -->
         <footer>
             <span class="footer-brand">Vive San Miguel</span>
-            <span>Guía de confianza · San Miguel de Allende</span>
+            <span id="footerTagline">Guía de confianza · San Miguel de Allende</span>
             <button class="admin-trigger" onclick="openLoginModal()">🔒 Admin</button>
         </footer>
 
@@ -831,20 +879,20 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
             <div class="modal-top">
-                <h3>Acceso Restringido</h3>
+                <h3 id="loginModalTitle">Acceso Restringido</h3>
                 <button class="close-btn" onclick="closeLoginModal()">&times;</button>
             </div>
             <form onsubmit="handleLogin(event)">
                 <div class="input-group">
-                    <label>Usuario</label>
+                    <label id="lblUsername">Usuario</label>
                     <input type="text" id="usernameInput" required placeholder="Usuario">
                 </div>
                 <div class="input-group">
-                    <label>Contraseña</label>
+                    <label id="lblPassword">Contraseña</label>
                     <input type="password" id="passwordInput" required placeholder="Contraseña">
                 </div>
                 <div class="error-message" id="loginError">Credenciales incorrectas. Intente nuevamente.</div>
-                <button type="submit" class="btn-modal-save">Ingresar</button>
+                <button type="submit" class="btn-modal-save" id="btnLoginSubmit">Ingresar</button>
             </form>
         </div>
     </div>
@@ -858,22 +906,30 @@
             <form onsubmit="saveEditedItem(event)">
                 <input type="hidden" id="editItemKey">
                 <div class="input-group">
-                    <label>Título</label>
+                    <label id="lblEditTitle">Título (Español)</label>
                     <input type="text" id="editTitle" required>
                 </div>
                 <div class="input-group">
-                    <label>Descripción</label>
-                    <textarea id="editDesc" rows="3" required></textarea>
+                    <label id="lblEditTitleEn">Título (Inglés)</label>
+                    <input type="text" id="editTitleEn" required>
                 </div>
                 <div class="input-group">
-                    <label>Enlace (URL)</label>
+                    <label id="lblEditDesc">Descripción (Español)</label>
+                    <textarea id="editDesc" rows="2" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label id="lblEditDescEn">Descripción (Inglés)</label>
+                    <textarea id="editDescEn" rows="2" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label id="lblEditLink">Enlace (URL)</label>
                     <input type="text" id="editLink" required>
                 </div>
                 <div class="input-group">
-                    <label>Imagen (URL)</label>
+                    <label id="lblEditImg">Imagen (URL)</label>
                     <input type="text" id="editImg" required>
                 </div>
-                <button type="submit" class="btn-modal-save">Guardar Cambios</button>
+                <button type="submit" class="btn-modal-save" id="btnEditSave">Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -885,47 +941,146 @@
         // Enlace de Google Apps Script integrado
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwafYiisd5AJLQmdZcdHs5agreLvjUZGcpGSh8Jhwb4-bEJWl5YfKm8B1GnhgoGKcT2IQ/exec";
 
+        const uiTranslations = {
+            es: {
+                pageTitle: "Vive San Miguel | Guía Turística Oficial",
+                navHome: "Inicio",
+                syncDrive: "☁️ Sincronizar Google Drive",
+                downloadTpl: "📥 Descargar Plantilla",
+                uploadExcel: "📂 Subir Masivo Excel",
+                synced: "Sincronizado",
+                syncing: "Sincronizando...",
+                localMode: "Modo Local",
+                syncError: "Error",
+                logout: "Cerrar Sesión",
+                heroEyebrow: "Guía curada · San Miguel de Allende",
+                heroTitle: "Vive la ciudad.<br><em>Siente su historia.</em>",
+                heroCopy: "Una selección de lugares, experiencias, cultura y rincones que hacen de San Miguel un destino para recordar. Explora a tu ritmo y descubre lo extraordinario en lo cotidiano.",
+                heroBtnExplore: "Explorar la guía <span>↓</span>",
+                heroBtnMap: "Abrir mapa <span>↗</span>",
+                heroCaptionSub: "Patrimonio · Cultura · Experiencias",
+                mainKicker: "La ciudad, a tu manera",
+                mainHeading: "Explora San Miguel",
+                mainSub: "Selecciona una categoría y encuentra todo lo que necesitas para crear tu propio recorrido.",
+                secKicker: "Momentos para recordar",
+                secHeading: "Estadía y experiencias",
+                secSub: "Hospedaje, gastronomía, aventura, romance y escapadas alrededor de San Miguel.",
+                socialKicker: "La comunidad",
+                socialHeading: "Comunidad Vive San Miguel",
+                socialSub: "Inspírate, comparte y sigue descubriendo la ciudad.",
+                footerTagline: "Guía de confianza · San Miguel de Allende",
+                editCardBtn: "✏️ Editar Tarjeta",
+                loginModalTitle: "Acceso Restringido",
+                lblUsername: "Usuario",
+                lblPassword: "Contraseña",
+                loginError: "Credenciales incorrectas. Intente nuevamente.",
+                btnLoginSubmit: "Ingresar",
+                lblEditTitle: "Título (Español)",
+                lblEditTitleEn: "Título (Inglés)",
+                lblEditDesc: "Descripción (Español)",
+                lblEditDescEn: "Descripción (Inglés)",
+                lblEditLink: "Enlace (URL)",
+                lblEditImg: "Imagen (URL)",
+                btnEditSave: "Guardar Cambios"
+            },
+            en: {
+                pageTitle: "Vive San Miguel | Official Tourist Guide",
+                navHome: "Home",
+                syncDrive: "☁️ Sync Google Drive",
+                downloadTpl: "📥 Download Template",
+                uploadExcel: "📂 Bulk Excel Upload",
+                synced: "Synced",
+                syncing: "Syncing...",
+                localMode: "Local Mode",
+                syncError: "Error",
+                logout: "Log Out",
+                heroEyebrow: "Curated Guide · San Miguel de Allende",
+                heroTitle: "Live the city.<br><em>Feel its history.</em>",
+                heroCopy: "A curated selection of places, experiences, culture, and hidden corners that make San Miguel an unforgettable destination. Explore at your own pace and discover the extraordinary in the everyday.",
+                heroBtnExplore: "Explore the guide <span>↓</span>",
+                heroBtnMap: "Open map <span>↗</span>",
+                heroCaptionSub: "Heritage · Culture · Experiences",
+                mainKicker: "The city, your way",
+                mainHeading: "Explore San Miguel",
+                mainSub: "Select a category and find everything you need to craft your own itinerary.",
+                secKicker: "Moments to remember",
+                secHeading: "Stays & Experiences",
+                secSub: "Accommodations, gastronomy, adventure, romance, and getaways around San Miguel.",
+                socialKicker: "The community",
+                socialHeading: "Vive San Miguel Community",
+                socialSub: "Get inspired, share, and keep discovering the city.",
+                footerTagline: "Trusted Guide · San Miguel de Allende",
+                editCardBtn: "✏️ Edit Card",
+                loginModalTitle: "Restricted Access",
+                lblUsername: "Username",
+                lblPassword: "Password",
+                loginError: "Invalid credentials. Please try again.",
+                btnLoginSubmit: "Sign In",
+                lblEditTitle: "Title (Spanish)",
+                lblEditTitleEn: "Title (English)",
+                lblEditDesc: "Description (Spanish)",
+                lblEditDescEn: "Description (English)",
+                lblEditLink: "Link (URL)",
+                lblEditImg: "Image (URL)",
+                btnEditSave: "Save Changes"
+            }
+        };
+
+        let currentLang = localStorage.getItem('sma_lang') || 'es';
+
         const defaultSiteData = {
             mainItems: [
                 {
                     key: 'item_eventos',
                     title: 'Eventos',
+                    title_en: 'Events',
                     desc: 'Disfruta de una agenda dinámica llena de festivales tradicionales, música y eventos culturales de talla internacional.',
+                    desc_en: 'Enjoy a dynamic calendar filled with traditional festivals, live music, and world-class cultural events.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/eventos',
                     img: 'https://lh3.googleusercontent.com/d/1JghuH6aVQlOb3Y8sqSdS3zPmzwSIk1qk=w1000'
                 },
                 {
                     key: 'item_historia',
                     title: 'Ecos del pasado',
+                    title_en: 'Echoes of the Past',
                     desc: 'Retrocede en el tiempo y explora las raíces profundas de esta hermosa ciudad Patrimonio de la Humanidad.',
+                    desc_en: 'Step back in time and explore the deep historical roots of this beautiful UNESCO World Heritage city.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/historia',
                     img: 'https://lh3.googleusercontent.com/d/1HfJgLNg4GlYA4V8fVKc7H_5MJjnWkV_r=w1000'
                 },
                 {
                     key: 'item_sitios',
                     title: 'Sitios de interés',
+                    title_en: 'Landmarks & Sights',
                     desc: 'Un recorrido visual por los puntos más emblemáticos y encantadores de esta icónica ciudad.',
+                    desc_en: 'A visual journey through the most iconic landmarks and charming spots across this historic city.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres',
                     img: 'https://lh3.googleusercontent.com/d/1OWagt27i8P-TQGeMBOaNQwID1OZ3_IaQ=w1000'
                 },
                 {
                     key: 'item_guias',
                     title: 'Guías Turísticos',
+                    title_en: 'Tour Guides',
                     desc: 'Conecta con guías certificados y expertos locales para descubrir las mejores historias y rincones ocultos.',
+                    desc_en: 'Connect with certified tour guides and local experts to uncover the best stories and hidden gems.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/guiasdeturistas',
                     img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_rutas',
                     title: 'Rutas temáticas',
+                    title_en: 'Themed Routes',
                     desc: 'Olvídate de la planificación tradicional y descubre experiencias únicas diseñadas especialmente para ti.',
+                    desc_en: 'Forget traditional planning and discover unique themed routes designed especially for you.',
                     link: 'https://viveturuta.blog/',
                     img: 'https://lh3.googleusercontent.com/d/1bX3EILR65PQn-1tEG9MWJbTmfTqjIZ6M=w1000'
                 },
                 {
                     key: 'item_blog',
                     title: 'Blog y Programas',
+                    title_en: 'Blog & Shows',
                     desc: 'Artículos exclusivos, crónicas culturales y especiales multimedia para vivir San Miguel desde una perspectiva íntima.',
+                    desc_en: 'Exclusive articles, cultural chronicles, and multimedia specials to experience San Miguel from an insider perspective.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/blog',
                     img: 'https://images.pexels.com/photos/29837348/pexels-photo-29837348.jpeg'
                 }
@@ -934,35 +1089,45 @@
                 {
                     key: 'item_hospedaje',
                     title: 'Hospedaje',
+                    title_en: 'Accommodations',
                     desc: 'Encuentra hoteles históricos, haciendas y estancias con vistas privilegiadas a la Parroquia.',
+                    desc_en: 'Find boutique historic hotels, haciendas, and stays with privileged views of La Parroquia.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/hospedaje',
                     img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_gastronomia',
                     title: 'Gastronomía',
+                    title_en: 'Gastronomy',
                     desc: 'Deleita tu paladar en alta cocina internacional, restaurantes de autor y emblemáticas terrazas.',
+                    desc_en: 'Delight your palate with international fine dining, signature restaurants, and iconic rooftop terraces.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/gastronomia',
                     img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_aventura',
                     title: 'Aventura',
+                    title_en: 'Adventure',
                     desc: 'Vuelos en globo aerostático al amanecer, recorridos en cuatrimotos y experiencias al aire libre.',
+                    desc_en: 'Sunrise hot-air balloon flights, ATV off-road tours, and unforgettable outdoor experiences.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/aventura',
                     img: 'https://images.pexels.com/photos/17629311/pexels-photo-17629311.jpeg'
                 },
                 {
                     key: 'item_romance',
                     title: 'Romance',
+                    title_en: 'Romance',
                     desc: 'Callejones iluminados con faroles, cenas privadas y el escenario perfecto para parejas y bodas.',
+                    desc_en: 'Lantern-lit cobblestone alleys, private dinners, and the perfect setting for couples and destination weddings.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/romance',
                     img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     key: 'item_vinedos',
                     title: 'Viñedos',
+                    title_en: 'Vineyards',
                     desc: 'Descubre los viñedos locales y la gran pasión invertida en la producción de excelentes vinos de altura.',
+                    desc_en: 'Discover local vineyards and the craftsmanship behind San Miguel’s acclaimed high-altitude wines.',
                     link: 'https://carloschaires.github.io/vivesanmigueL/viñedos',
                     img: 'https://lh3.googleusercontent.com/d/1BODFYKZzDOMN7cwmIN_aqzED5tkqzfTn=w1000'
                 }
@@ -983,13 +1148,37 @@
             ]
         };
 
+        function mergeWithDefaults(parsed) {
+            const mergeList = (storedList, defaultList) => {
+                if (!Array.isArray(storedList) || storedList.length === 0) return defaultList;
+                return storedList.map((item, i) => {
+                    const def = defaultList.find(d => d.key === item.key) || defaultList[i] || {};
+                    return {
+                        ...def,
+                        ...item,
+                        title_en: item.title_en || def.title_en || item.title,
+                        desc_en: item.desc_en || def.desc_en || item.desc
+                    };
+                });
+            };
+            return {
+                mainItems: mergeList(parsed.mainItems, defaultSiteData.mainItems),
+                secondaryItems: mergeList(parsed.secondaryItems, defaultSiteData.secondaryItems),
+                socialItems: parsed.socialItems || defaultSiteData.socialItems
+            };
+        }
+
         function getStoredData() {
-            const data = localStorage.getItem('sma_site_data_v2');
-            if (!data) {
+            const raw = localStorage.getItem('sma_site_data_v2');
+            if (!raw) {
                 localStorage.setItem('sma_site_data_v2', JSON.stringify(defaultSiteData));
                 return defaultSiteData;
             }
-            return JSON.parse(data);
+            try {
+                return mergeWithDefaults(JSON.parse(raw));
+            } catch (e) {
+                return defaultSiteData;
+            }
         }
 
         function saveStoredData(data, syncCloud = true) {
@@ -1000,12 +1189,70 @@
             }
         }
 
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('sma_lang', lang);
+            document.documentElement.lang = lang;
+
+            document.getElementById('btnLangEs').classList.toggle('active', lang === 'es');
+            document.getElementById('btnLangEn').classList.toggle('active', lang === 'en');
+
+            const t = uiTranslations[lang];
+            document.title = t.pageTitle;
+            document.getElementById('navHomeBtn').textContent = t.navHome;
+            document.getElementById('btnSyncDrive').textContent = t.syncDrive;
+            document.getElementById('btnDownloadTpl').textContent = t.downloadTpl;
+            document.getElementById('btnUploadExcel').textContent = t.uploadExcel;
+            document.getElementById('btnLogout').textContent = t.logout;
+
+            document.getElementById('heroEyebrow').textContent = t.heroEyebrow;
+            document.getElementById('heroTitle').innerHTML = t.heroTitle;
+            document.getElementById('heroCopy').textContent = t.heroCopy;
+            document.getElementById('heroBtnExplore').innerHTML = t.heroBtnExplore;
+            document.getElementById('heroBtnMap').innerHTML = t.heroBtnMap;
+            document.getElementById('heroCaptionSub').textContent = t.heroCaptionSub;
+
+            document.getElementById('mainKicker').textContent = t.mainKicker;
+            document.getElementById('mainHeading').textContent = t.mainHeading;
+            document.getElementById('mainSub').textContent = t.mainSub;
+
+            document.getElementById('secKicker').textContent = t.secKicker;
+            document.getElementById('secHeading').textContent = t.secHeading;
+            document.getElementById('secSub').textContent = t.secSub;
+
+            document.getElementById('socialKicker').textContent = t.socialKicker;
+            document.getElementById('socialHeading').textContent = t.socialHeading;
+            document.getElementById('socialSub').textContent = t.socialSub;
+
+            document.getElementById('footerTagline').textContent = t.footerTagline;
+
+            document.getElementById('loginModalTitle').textContent = t.loginModalTitle;
+            document.getElementById('lblUsername').textContent = t.lblUsername;
+            document.getElementById('usernameInput').placeholder = t.lblUsername;
+            document.getElementById('lblPassword').textContent = t.lblPassword;
+            document.getElementById('passwordInput').placeholder = t.lblPassword;
+            document.getElementById('loginError').textContent = t.loginError;
+            document.getElementById('btnLoginSubmit').textContent = t.btnLoginSubmit;
+
+            document.getElementById('lblEditTitle').textContent = t.lblEditTitle;
+            document.getElementById('lblEditTitleEn').textContent = t.lblEditTitleEn;
+            document.getElementById('lblEditDesc').textContent = t.lblEditDesc;
+            document.getElementById('lblEditDescEn').textContent = t.lblEditDescEn;
+            document.getElementById('lblEditLink').textContent = t.lblEditLink;
+            document.getElementById('lblEditImg').textContent = t.lblEditImg;
+            document.getElementById('btnEditSave').textContent = t.btnEditSave;
+
+            renderSite();
+        }
+
         async function pushDataToGoogleSheets(data) {
             try {
                 const payload = [...data.mainItems, ...data.secondaryItems].map(item => ({
                     key: item.key,
                     titulo: item.title,
+                    titulo_en: item.title_en || item.title,
                     descripcion: item.desc,
+                    descripcion_en: item.desc_en || item.desc,
                     enlace: item.link,
                     imagen_url: item.img
                 }));
@@ -1023,22 +1270,27 @@
 
         async function fetchMenuFromCloud() {
             const statusEl = document.getElementById('syncStatus');
+            const t = uiTranslations[currentLang];
             try {
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t.syncing}`;
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const cloudData = await response.json();
                 
                 if (Array.isArray(cloudData) && cloudData.length > 0) {
                     const main = [];
                     const secondary = [];
+                    const allDefaults = [...defaultSiteData.mainItems, ...defaultSiteData.secondaryItems];
                     
                     cloudData.forEach((row, idx) => {
+                        const def = allDefaults.find(d => d.key === row.key) || allDefaults[idx] || {};
                         const item = {
-                            key: row.key || 'item_' + idx,
-                            title: row.titulo || 'Sección',
-                            desc: row.descripcion || '',
-                            link: row.enlace || '#',
-                            img: row.imagen_url || ''
+                            key: row.key || def.key || 'item_' + idx,
+                            title: row.titulo || def.title || 'Sección',
+                            title_en: row.titulo_en || def.title_en || row.titulo || 'Section',
+                            desc: row.descripcion || def.desc || '',
+                            desc_en: row.descripcion_en || def.desc_en || row.descripcion || '',
+                            link: row.enlace || def.link || '#',
+                            img: row.imagen_url || def.img || ''
                         };
                         if (idx < 6) {
                             main.push(item);
@@ -1053,27 +1305,28 @@
 
                     localStorage.setItem('sma_site_data_v2', JSON.stringify(currentData));
                     renderSite();
-                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
+                    if (statusEl) statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${uiTranslations[currentLang].synced}`;
                 }
             } catch (error) {
                 console.warn("Modo local activo:", error);
-                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> Modo Local`;
+                if (statusEl) statusEl.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#e67e22;"></i> ${uiTranslations[currentLang].localMode}`;
             }
         }
 
         async function syncWithGoogleDrive() {
             const statusEl = document.getElementById('syncStatus');
-            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sincronizando...`;
+            const t = uiTranslations[currentLang];
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t.syncing}`;
             try {
                 const data = getStoredData();
                 await pushDataToGoogleSheets(data);
                 setTimeout(() => {
-                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
-                    alert('¡Sincronización con Google Sheets completada exitosamente!');
+                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${uiTranslations[currentLang].synced}`;
+                    alert(currentLang === 'en' ? 'Sync with Google Sheets completed successfully!' : '¡Sincronización con Google Sheets completada exitosamente!');
                 }, 1000);
             } catch (error) {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> Error`;
-                alert('No se pudo conectar con Google Apps Script.');
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#c0392b;"></i> ${uiTranslations[currentLang].syncError}`;
+                alert(currentLang === 'en' ? 'Could not connect to Google Apps Script.' : 'No se pudo conectar con Google Apps Script.');
             }
         }
 
@@ -1090,48 +1343,46 @@
         function renderSite() {
             const data = getStoredData();
             const isLogged = localStorage.getItem('sma_admin_logged') === 'true';
+            const t = uiTranslations[currentLang];
 
-            const mainContainer = document.getElementById('mainGridContainer');
-            mainContainer.innerHTML = '';
-            data.mainItems.forEach(item => {
-                mainContainer.innerHTML += `
-                    <div class="card-item">
-                        <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <a href="${item.link}" class="card-link-title">
-                                    ${item.title} <span>→</span>
-                                </a>
-                                <p>${item.desc}</p>
+            const renderCards = (items, containerId, catName, fallbackImg) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                items.forEach(item => {
+                    const displayTitle = currentLang === 'en' ? (item.title_en || item.title) : item.title;
+                    const displayDesc = currentLang === 'en' ? (item.desc_en || item.desc) : item.desc;
+                    container.innerHTML += `
+                        <div class="card-item">
+                            <div class="card-image">
+                                <img src="${item.img}" alt="${displayTitle}" onerror="this.src='${fallbackImg}'">
                             </div>
-                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('mainItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
+                            <div class="card-body">
+                                <div>
+                                    <a href="${item.link}" class="card-link-title">
+                                        ${displayTitle} <span>→</span>
+                                    </a>
+                                    <p>${displayDesc}</p>
+                                </div>
+                                ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('${catName}', '${item.key}')">${t.editCardBtn}</button>` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            };
 
-            const secContainer = document.getElementById('secondaryGridContainer');
-            secContainer.innerHTML = '';
-            data.secondaryItems.forEach(item => {
-                secContainer.innerHTML += `
-                    <div class="card-item">
-                        <div class="card-image">
-                            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <a href="${item.link}" class="card-link-title">
-                                    ${item.title} <span>→</span>
-                                </a>
-                                <p>${item.desc}</p>
-                            </div>
-                            ${isLogged ? `<button class="btn-admin" style="margin-top:10px;" onclick="openEditModal('secondaryItems', '${item.key}')">✏️ Editar Tarjeta</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
+            renderCards(
+                data.mainItems,
+                'mainGridContainer',
+                'mainItems',
+                'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=80'
+            );
+
+            renderCards(
+                data.secondaryItems,
+                'secondaryGridContainer',
+                'secondaryItems',
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
+            );
 
             const socialContainer = document.getElementById('socialButtonsContainer');
             socialContainer.innerHTML = '';
@@ -1146,7 +1397,8 @@
 
         function openLoginModal() {
             if (localStorage.getItem('sma_admin_logged') === 'true') {
-                if (confirm("¿Desea cerrar la sesión de administración?")) {
+                const msg = currentLang === 'en' ? "Do you want to log out of the admin session?" : "¿Desea cerrar la sesión de administración?";
+                if (confirm(msg)) {
                     logoutAdmin();
                 }
                 return;
@@ -1168,7 +1420,7 @@
                 closeLoginModal();
                 checkSession();
                 renderSite();
-                alert('¡Sesión iniciada con éxito!');
+                alert(currentLang === 'en' ? 'Signed in successfully!' : '¡Sesión iniciada con éxito!');
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
@@ -1178,7 +1430,7 @@
             localStorage.removeItem('sma_admin_logged');
             checkSession();
             renderSite();
-            alert('Sesión cerrada.');
+            alert(currentLang === 'en' ? 'Logged out.' : 'Sesión cerrada.');
         }
 
         let currentCat = null, currentKey = null;
@@ -1188,9 +1440,12 @@
             if (!item) return;
             currentCat = category;
             currentKey = key;
-            document.getElementById('editModalTitle').innerText = `Editar: ${item.title}`;
+            const displayTitle = currentLang === 'en' ? (item.title_en || item.title) : item.title;
+            document.getElementById('editModalTitle').innerText = (currentLang === 'en' ? 'Edit: ' : 'Editar: ') + displayTitle;
             document.getElementById('editTitle').value = item.title;
+            document.getElementById('editTitleEn').value = item.title_en || item.title;
             document.getElementById('editDesc').value = item.desc;
+            document.getElementById('editDescEn').value = item.desc_en || item.desc;
             document.getElementById('editLink').value = item.link;
             document.getElementById('editImg').value = item.img;
             document.getElementById('editModal').classList.add('active');
@@ -1207,12 +1462,14 @@
             const index = list.findIndex(el => el.key === currentKey);
             if (index !== -1) {
                 list[index].title = document.getElementById('editTitle').value;
+                list[index].title_en = document.getElementById('editTitleEn').value;
                 list[index].desc = document.getElementById('editDesc').value;
+                list[index].desc_en = document.getElementById('editDescEn').value;
                 list[index].link = document.getElementById('editLink').value;
                 list[index].img = document.getElementById('editImg').value;
                 saveStoredData(data, true);
                 closeEditModal();
-                alert('¡Actualizado y sincronizado en la nube!');
+                alert(currentLang === 'en' ? 'Updated and synced to the cloud!' : '¡Actualizado y sincronizado en la nube!');
             }
         }
 
@@ -1221,7 +1478,9 @@
             const flatData = [...data.mainItems, ...data.secondaryItems].map(el => ({
                 key: el.key,
                 titulo: el.title,
+                titulo_en: el.title_en || el.title,
                 descripcion: el.desc,
+                descripcion_en: el.desc_en || el.desc,
                 enlace: el.link,
                 imagen_url: el.img
             }));
@@ -1248,16 +1507,18 @@
                             let targetIdx = idx < data.mainItems.length ? idx : idx - data.mainItems.length;
                             if (targetList[targetIdx]) {
                                 if (row.titulo) targetList[targetIdx].title = row.titulo;
+                                if (row.titulo_en) targetList[targetIdx].title_en = row.titulo_en;
                                 if (row.descripcion) targetList[targetIdx].desc = row.descripcion;
+                                if (row.descripcion_en) targetList[targetIdx].desc_en = row.descripcion_en;
                                 if (row.enlace) targetList[targetIdx].link = row.enlace;
                                 if (row.imagen_url) targetList[targetIdx].img = row.imagen_url;
                             }
                         });
                         saveStoredData(data, true);
-                        alert('¡Importación masiva completada y sincronizada en Google Sheets!');
+                        alert(currentLang === 'en' ? 'Bulk import completed and synced to Google Sheets!' : '¡Importación masiva completada y sincronizada en Google Sheets!');
                     }
                 } catch (err) {
-                    alert('Error al procesar el archivo Excel.');
+                    alert(currentLang === 'en' ? 'Error processing Excel file.' : 'Error al procesar el archivo Excel.');
                 }
             };
             reader.readAsArrayBuffer(file);
@@ -1265,7 +1526,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkSession();
-            renderSite();
+            setLanguage(currentLang);
             fetchMenuFromCloud();
         });
 
