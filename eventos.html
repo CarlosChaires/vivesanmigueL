@@ -38,7 +38,7 @@
       --radius-xs: 10px;
       --header-bg: linear-gradient(180deg, #faf7f3 0%, #f6f2ed 100%);
       --toolbar-bg: rgba(246, 242, 237, 0.86);
-      --particle-color: rgba(196, 92, 74, 0.22);
+      --particle-color: rgba(196, 92, 74, 0.65);
       --overlay-strong: rgba(26, 22, 20, 0.58);
       --modal-bg: #ffffff;
     }
@@ -63,7 +63,7 @@
       --sombra-hover: 0 28px 56px -16px rgba(0, 0, 0, 0.55), 0 12px 24px -10px rgba(0, 0, 0, 0.35);
       --header-bg: linear-gradient(180deg, #1a1714 0%, #141210 100%);
       --toolbar-bg: rgba(20, 18, 16, 0.88);
-      --particle-color: rgba(224, 122, 104, 0.28);
+      --particle-color: rgba(224, 122, 104, 0.70);
       --overlay-strong: rgba(0, 0, 0, 0.72);
       --modal-bg: #1e1b18;
     }
@@ -92,7 +92,7 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.7;
+      opacity: 1;
     }
 
     .container {
@@ -163,7 +163,7 @@
       flex-wrap: wrap;
     }
 
-    .admin-trigger, .btn-home, .lang-custom-btn, .theme-toggle {
+    .admin-trigger, .btn-home, .lang-custom-btn {
       background: transparent;
       border: 1px solid var(--borde-fuerte);
       color: var(--gris-texto);
@@ -180,13 +180,30 @@
       font-family: inherit;
     }
 
+    /* Botón modo oscuro minimalista */
     .theme-toggle {
-      width: 42px;
-      height: 42px;
+      background: transparent;
+      border: none;
+      color: var(--gris-muted);
+      width: 38px;
+      height: 38px;
       padding: 0;
-      justify-content: center;
-      font-size: 1.15rem;
       border-radius: 50%;
+      font-size: 1.05rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+      font-family: inherit;
+      opacity: 0.75;
+    }
+
+    .theme-toggle:hover {
+      color: var(--noche);
+      background: var(--cantera-soft);
+      opacity: 1;
+      transform: scale(1.08);
     }
 
     .admin-trigger { display: none; }
@@ -199,7 +216,7 @@
       box-shadow: 0 5px 18px -3px var(--cantera-glow);
     }
 
-    .admin-trigger:hover, .btn-home:hover, .lang-custom-btn:hover, .theme-toggle:hover {
+    .admin-trigger:hover, .btn-home:hover, .lang-custom-btn:hover {
       border-color: var(--cantera);
       color: var(--cantera);
       background: var(--cantera-soft);
@@ -958,7 +975,7 @@
       setTheme(current === 'dark' ? 'light' : 'dark');
     }
 
-    /* ── Particles System (lightweight + immersive) ── */
+    /* ── Particles System (lightweight + immersive, follow cursor) ── */
     class ParticleSystem {
       constructor() {
         this.canvas = document.getElementById('particles-canvas');
@@ -983,13 +1000,14 @@
       resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        this.count = Math.min(55, Math.floor((this.canvas.width * this.canvas.height) / 28000));
+        // más partículas para que se noten bien
+        this.count = Math.min(90, Math.floor((this.canvas.width * this.canvas.height) / 18000));
         if (this.particles.length !== this.count) this.init();
       }
 
       updateColor() {
         const style = getComputedStyle(document.documentElement);
-        this.color = style.getPropertyValue('--particle-color').trim() || 'rgba(196, 92, 74, 0.25)';
+        this.color = style.getPropertyValue('--particle-color').trim() || 'rgba(196, 92, 74, 0.65)';
       }
 
       init() {
@@ -999,10 +1017,11 @@
           this.particles.push({
             x: Math.random() * this.canvas.width,
             y: Math.random() * this.canvas.height,
-            size: Math.random() * 2.2 + 0.6,
-            speedX: (Math.random() - 0.5) * 0.35,
-            speedY: (Math.random() - 0.5) * 0.35,
-            opacity: Math.random() * 0.5 + 0.15
+            size: Math.random() * 3.2 + 1.2,   // más grandes
+            speedX: (Math.random() - 0.5) * 0.32,
+            speedY: (Math.random() - 0.5) * 0.32,
+            opacity: Math.random() * 0.35 + 0.45, // más opacas
+            pull: 0.014 + Math.random() * 0.012
           });
         }
       }
@@ -1010,23 +1029,29 @@
       animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.particles.forEach((p, i) => {
+          // movimiento base suave
           p.x += p.speedX;
           p.y += p.speedY;
 
+          // seguir al puntero de forma sutil pero perceptible
           if (this.mouse.x != null) {
             const dx = this.mouse.x - p.x;
             const dy = this.mouse.y - p.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 140) {
-              p.x -= dx * 0.008;
-              p.y -= dy * 0.008;
+
+            // radio amplio: las partículas cercanas se acercan suavemente
+            if (dist < 220 && dist > 8) {
+              const force = (1 - dist / 220) * p.pull;
+              p.x += dx * force;
+              p.y += dy * force;
             }
           }
 
-          if (p.x < 0) p.x = this.canvas.width;
-          if (p.x > this.canvas.width) p.x = 0;
-          if (p.y < 0) p.y = this.canvas.height;
-          if (p.y > this.canvas.height) p.y = 0;
+          // wrap suave
+          if (p.x < -10) p.x = this.canvas.width + 10;
+          if (p.x > this.canvas.width + 10) p.x = -10;
+          if (p.y < -10) p.y = this.canvas.height + 10;
+          if (p.y > this.canvas.height + 10) p.y = -10;
 
           this.ctx.beginPath();
           this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -1035,16 +1060,17 @@
           this.ctx.fill();
           this.ctx.globalAlpha = 1;
 
+          // conexiones visibles pero suaves
           for (let j = i + 1; j < this.particles.length; j++) {
             const p2 = this.particles[j];
             const dx = p.x - p2.x;
             const dy = p.y - p2.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 110) {
+            if (dist < 130) {
               this.ctx.beginPath();
               this.ctx.strokeStyle = this.color;
-              this.ctx.globalAlpha = (1 - dist / 110) * 0.18;
-              this.ctx.lineWidth = 0.6;
+              this.ctx.globalAlpha = (1 - dist / 130) * 0.28;
+              this.ctx.lineWidth = 0.7;
               this.ctx.moveTo(p.x, p.y);
               this.ctx.lineTo(p2.x, p2.y);
               this.ctx.stroke();
