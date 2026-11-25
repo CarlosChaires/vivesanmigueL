@@ -738,7 +738,7 @@
         const mappedEvents = data.map(function(item, index) {
           const findKey = function(possibleKeys) {
             const found = Object.keys(item).find(function(k) {
-              const cleanK = k.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+              const cleanK = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
               return possibleKeys.some(function(pk) { return cleanK === pk || cleanK.includes(pk); });
             });
             return found ? String(item[found] || '').trim() : '';
@@ -749,8 +749,10 @@
           const locationName = findKey(['location', 'lugar']) || 'San Miguel de Allende';
           const rawWebLink = findKey(['web', 'link', 'enlace', 'url']);
 
-          const nameEs = findKey(['name', 'nombre']) || 'Evento';
-          const nameEn = findKey(['name_en', 'nameen']) || nameEs;
+          const rawNameEs = findKey(['name', 'nombre']);
+          const rawNameEn = findKey(['name_en', 'nameen']);
+          const nameEs = rawNameEs;
+          const nameEn = rawNameEn || rawNameEs;
 
           const catEs = findKey(['category', 'categoria']) || 'General';
           const catEn = findKey(['category_en', 'categoryen']) || catEs;
@@ -762,13 +764,21 @@
           const descEn = findKey(['desc_en', 'descen']) || descEs;
 
           let eventDateObj = null;
+          let normalizedDateStr = '';
           if (rawDateValue) {
             const cleanStr = String(rawDateValue).trim();
-            if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-              const p = cleanStr.split('-');
-              eventDateObj = new Date(+p[0], +p[1] - 1, +p[2]);
+            const isoMatch = cleanStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (isoMatch) {
+              normalizedDateStr = isoMatch[1] + '-' + isoMatch[2] + '-' + isoMatch[3];
+              eventDateObj = new Date(+isoMatch[1], +isoMatch[2] - 1, +isoMatch[3]);
             } else {
-              eventDateObj = new Date(cleanStr);
+              const parsed = new Date(cleanStr);
+              if (!isNaN(parsed.getTime()) && parsed.getFullYear() >= 2000) {
+                eventDateObj = new Date(parsed.getUTCFullYear(), parsed.getUTCMonth(), parsed.getUTCDate());
+                normalizedDateStr = parsed.getUTCFullYear() + '-' +
+                  String(parsed.getUTCMonth() + 1).padStart(2, '0') + '-' +
+                  String(parsed.getUTCDate()).padStart(2, '0');
+              }
             }
           }
 
@@ -778,17 +788,17 @@
           return {
             rowIndex: index + 2,
             name_es: nameEs,
-            name_en: nameEn || nameEs,
+            name_en: nameEn,
             category_es: catEs,
-            category_en: catEn || catEs,
+            category_en: catEn,
             price_es: priceEs,
-            price_en: priceEn || priceEs,
+            price_en: priceEn,
             desc_es: descEs,
-            desc_en: descEn || descEs,
-            rawDate: rawDateValue,
+            desc_en: descEn,
+            rawDate: normalizedDateStr || rawDateValue,
             dateObj: eventDateObj,
-            date: formatDateToSpanish(rawDateValue),
-            shortDate: formatDateShort(rawDateValue),
+            date: formatDateToSpanish(normalizedDateStr || rawDateValue),
+            shortDate: formatDateShort(normalizedDateStr || rawDateValue),
             rawTimeHHMM: /^\d{2}:\d{2}$/.test(cleanHHMM) ? cleanHHMM : '',
             time: /^\d{2}:\d{2}$/.test(cleanHHMM) ? cleanHHMM + ' hrs' : cleanHHMM,
             location: locationName,
@@ -799,17 +809,28 @@
           };
         });
 
-        globalEvents = mappedEvents
+        var filteredEvents = mappedEvents
           .filter(function(ev) {
-            if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return true; 
+            if (!ev.name_es || ev.name_es.toLowerCase() === 'nan' || ev.name_es.toLowerCase() === 'evento') return false;
+            if (!ev.dateObj || isNaN(ev.dateObj.getTime())) return false;
             return ev.dateObj >= today;
           })
           .sort(function(a, b) {
-            var timeA = (a.dateObj && !isNaN(a.dateObj.getTime())) ? a.dateObj.getTime() : Number.MAX_SAFE_INTEGER;
-            var timeB = (b.dateObj && !isNaN(b.dateObj.getTime())) ? b.dateObj.getTime() : Number.MAX_SAFE_INTEGER;
-            if (timeA !== timeB) return timeA - timeB;
+            var diff = a.dateObj.getTime() - b.dateObj.getTime();
+            if (diff !== 0) return diff;
             return (a.rawTimeHHMM || '99:99').localeCompare(b.rawTimeHHMM || '99:99');
           });
+
+        var seenEvents = {};
+        globalEvents = filteredEvents.filter(function(ev) {
+          var normName = ev.name_es.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+          var normDate = (ev.rawDate || '').toString().split('T')[0].trim();
+          var normTime = (ev.rawTimeHHMM || '').trim();
+          var key = normName + '|' + normDate + '|' + normTime;
+          if (seenEvents[key]) return false;
+          seenEvents[key] = true;
+          return true;
+        });
 
         document.getElementById('toolbar').classList.add('visible');
         applyFilters();
