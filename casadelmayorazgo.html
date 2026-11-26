@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Casa del Mayorazgo de la Canal · Vive San Miguel</title>
+<title data-i18n="page_title">Casa del Mayorazgo de la Canal · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -11,7 +11,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400,500,600,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --cantera: #8c533e;
@@ -116,6 +116,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .nav-back {
@@ -140,6 +141,34 @@ nav {
   transform: translateY(-2px);
 }
 .nav-back svg { width: 14px; height: 14px; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
@@ -511,14 +540,18 @@ nav {
   <!-- Navegación -->
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TK">TK</a>
@@ -529,26 +562,26 @@ nav {
   <!-- Hero -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">San Miguel de Allende · Patrimonio</div>
-      <h1>Casa del Mayorazgo de la Canal</h1>
-      <p class="hero-sub">Uno de los edificios más distinguidos de la arquitectura civil novohispana. Testimonio vivo de la historia y el arte colonial en el corazón de la ciudad.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">San Miguel de Allende · Patrimonio</div>
+      <h1 data-i18n="hero_title">Casa del Mayorazgo de la Canal</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Uno de los edificios más distinguidos de la arquitectura civil novohispana. Testimonio vivo de la historia y el arte colonial en el corazón de la ciudad.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Entrada libre</strong></span>
-        <span class="pill">Mar–Dom · 10:00–18:00</span>
-        <span class="pill">Sin mascotas</span>
+        <span class="pill"><strong data-i18n="pill_admission">Entrada libre</strong></span>
+        <span class="pill" data-i18n="pill_hours">Mar–Dom · 10:00–18:00</span>
+        <span class="pill" data-i18n="pill_pets">Sin mascotas</span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image.png?w=1024" alt="Casa del Mayorazgo de la Canal" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Casa de Cultura</span>
-            <strong>Citibanamex</strong>
+            <span data-i18n="badge_center_label">Casa de Cultura</span>
+            <strong data-i18n="badge_center_val">Citibanamex</strong>
           </div>
           <div style="text-align:right">
-            <span>Calle Canal 4</span>
-            <strong style="font-size:0.9rem">Centro Histórico</strong>
+            <span data-i18n="badge_addr_label">Calle Canal 4</span>
+            <strong style="font-size:0.9rem" data-i18n="badge_zone_val">Centro Histórico</strong>
           </div>
         </div>
       </div>
@@ -557,66 +590,66 @@ nav {
 
   <!-- Introducción -->
   <section class="section reveal">
-    <div class="section-label">Historia viva</div>
-    <h2>Una mansión que define una época</h2>
-    <p class="prose"><strong>La Casa del Mayorazgo de la Canal</strong> es un hito arquitectónico e histórico en San Miguel de Allende. Su fachada barroca y su opulencia original reflejan el esplendor de una de las familias más poderosas del periodo virreinal.</p>
-    <p class="prose">Actualmente restaurada y abierta al público como sede cultural, la mansión resguarda trabajos excepcionales de herrería forjada, cantería y ebanistería colonial que continúan cautivando a visitantes de todo el mundo.</p>
+    <div class="section-label" data-i18n="intro_label">Historia viva</div>
+    <h2 data-i18n="intro_title">Una mansión que define una época</h2>
+    <p class="prose" data-i18n-html="intro_p1"><strong>La Casa del Mayorazgo de la Canal</strong> es un hito arquitectónico e histórico en San Miguel de Allende. Su fachada barroca y su opulencia original reflejan el esplendor de una de las familias más poderosas del periodo virreinal.</p>
+    <p class="prose" data-i18n="intro_p2">Actualmente restaurada y abierta al público como sede cultural, la mansión resguarda trabajos excepcionales de herrería forjada, cantería y ebanistería colonial que continúan cautivando a visitantes de todo el mundo.</p>
   </section>
 
   <!-- Línea del tiempo -->
   <section class="section reveal">
-    <div class="section-label">Evolución histórica</div>
-    <h2>De residencia noble a centro cultural</h2>
+    <div class="section-label" data-i18n="timeline_label">Evolución histórica</div>
+    <h2 data-i18n="timeline_title">De residencia noble a centro cultural</h2>
     <div class="timeline">
       <div class="timeline-item">
-        <h3>Siglo XVIII — Fundación</h3>
-        <p>Construcción impulsada por la influyente familia de la Canal, combinando el barroco novohispano con finos detalles ornamentales.</p>
+        <h3 data-i18n="tl_18c_title">Siglo XVIII — Fundación</h3>
+        <p data-i18n="tl_18c_desc">Construcción impulsada por la influyente familia de la Canal, combinando el barroco novohispano con finos detalles ornamentales.</p>
       </div>
       <div class="timeline-item">
-        <h3>Siglo XIX — Protagonismo histórico</h3>
-        <p>Testigo clave de los movimientos sociales y de independencia que transformaron el rumbo de la nación mexicana.</p>
+        <h3 data-i18n="tl_19c_title">Siglo XIX — Protagonismo histórico</h3>
+        <p data-i18n="tl_19c_desc">Testigo clave de los movimientos sociales y de independencia que transformaron el rumbo de la nación mexicana.</p>
       </div>
       <div class="timeline-item">
-        <h3>1981 — Rescate patrimonial</h3>
-        <p>El Banco Nacional de México adquiere e inicia un riguroso proceso de restauración arquitectónica para devolverle su esplendor original.</p>
+        <h3 data-i18n="tl_1981_title">1981 — Rescate patrimonial</h3>
+        <p data-i18n="tl_1981_desc">El Banco Nacional de México adquiere e inicia un riguroso proceso de restauración arquitectónica para devolverle su esplendor original.</p>
       </div>
       <div class="timeline-item">
-        <h3>Actualidad — Casa de Cultura</h3>
-        <p>Funciona como un vibrante espacio para exposiciones de arte, muestras temporales y divulgación cultural abierta a la comunidad.</p>
+        <h3 data-i18n="tl_now_title">Actualidad — Casa de Cultura</h3>
+        <p data-i18n="tl_now_desc">Funciona como un vibrante espacio para exposiciones de arte, muestras temporales y divulgación cultural abierta a la comunidad.</p>
       </div>
     </div>
   </section>
 
   <!-- Bloque de tarjetas (Información práctica) -->
   <section class="section reveal">
-    <div class="section-label">Guía del visitante</div>
-    <h2>Planifica tu recorrido</h2>
+    <div class="section-label" data-i18n="info_label">Guía del visitante</div>
+    <h2 data-i18n="info_title">Planifica tu recorrido</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🕐</div>
-        <h3>Horarios & Acceso</h3>
+        <h3 data-i18n="card_hours_title">Horarios & Acceso</h3>
         <ul>
-          <li><strong>Martes a domingo:</strong> 10:00 – 18:00 hrs</li>
-          <li><strong>Lunes:</strong> Cerrado por mantenimiento</li>
-          <li><strong>Admisión:</strong> Totalmente gratuita</li>
-          <li><strong>Visitas guiadas:</strong> Disponibles en acceso</li>
+          <li data-i18n-html="card_hours_1"><strong>Martes a domingo:</strong> 10:00 – 18:00 hrs</li>
+          <li data-i18n-html="card_hours_2"><strong>Lunes:</strong> Cerrado por mantenimiento</li>
+          <li data-i18n-html="card_hours_3"><strong>Admisión:</strong> Totalmente gratuita</li>
+          <li data-i18n-html="card_hours_4"><strong>Visitas guiadas:</strong> Disponibles en acceso</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">📌</div>
-        <h3>Normas del Recinto</h3>
+        <h3 data-i18n="card_rules_title">Normas del Recinto</h3>
         <ul>
-          <li><strong>Acceso sin mascotas</strong> (por conservación patrimonial)</li>
-          <li>Fotografía sin flash permitida en áreas comunes</li>
-          <li>Se recomienda un tiempo estimado de 60 a 90 minutos</li>
-          <li>Consulta cartelera de exposiciones temporales</li>
+          <li data-i18n-html="card_rules_1"><strong>Acceso sin mascotas</strong> (por conservación patrimonial)</li>
+          <li data-i18n="card_rules_2">Fotografía sin flash permitida en áreas comunes</li>
+          <li data-i18n="card_rules_3">Se recomienda un tiempo estimado de 60 a 90 minutos</li>
+          <li data-i18n="card_rules_4">Consulta cartelera de exposiciones temporales</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">📍</div>
-        <h3>Ubicación & Tips</h3>
-        <p style="margin-bottom: 10px;"><strong>Calle Canal 4</strong>, Centro Histórico, C.P. 37700, San Miguel de Allende, Gto.</p>
-        <p style="font-size: 0.88rem; color: var(--cantera);"><strong>Tip de viajero:</strong> Visita el portal de arcos frente al Jardín Principal a media mañana para obtener la mejor iluminación fotográfica.</p>
+        <h3 data-i18n="card_loc_title">Ubicación & Tips</h3>
+        <p style="margin-bottom: 10px;" data-i18n-html="card_loc_addr"><strong>Calle Canal 4</strong>, Centro Histórico, C.P. 37700, San Miguel de Allende, Gto.</p>
+        <p style="font-size: 0.88rem; color: var(--cantera);" data-i18n-html="card_loc_tip"><strong>Tip de viajero:</strong> Visita el portal de arcos frente al Jardín Principal a media mañana para obtener la mejor iluminación fotográfica.</p>
       </div>
     </div>
   </section>
@@ -624,40 +657,198 @@ nav {
   <!-- CTA Banner -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Buscas más experiencias en San Miguel?</h3>
-      <p>Descubre el catálogo completo de monumentos, museos y rutas culturales recomendadas.</p>
+      <h3 data-i18n="highlight_title">¿Buscas más experiencias en San Miguel?</h3>
+      <p data-i18n="highlight_desc">Descubre el catálogo completo de monumentos, museos y rutas culturales recomendadas.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver Catálogo
+      <span data-i18n="highlight_btn">Ver Catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- Video interactivo -->
   <section class="section reveal">
-    <div class="section-label">Recorrido audiovisual</div>
-    <h2>Explora el interior</h2>
+    <div class="section-label" data-i18n="video_label">Recorrido audiovisual</div>
+    <h2 data-i18n="video_title">Explora el interior</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/5baVB-eJceo" allowfullscreen title="Video Casa del Mayorazgo de la Canal"></iframe>
+        <iframe src="https://www.youtube.com/embed/5baVB-eJceo" allowfullscreen title="Video Casa del Mayorazgo de la Canal" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>Fomento Cultural Banamex, A.C.</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Una mirada íntima a los patios interiores, arquerías y salones históricos de esta joya virreinal.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios de interés →</a>
+        <p data-i18n-html="video_p1">Video cortesía de <strong>Fomento Cultural Banamex, A.C.</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Una mirada íntima a los patios interiores, arquerías y salones históricos de esta joya virreinal.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios de interés →</a>
       </div>
     </div>
   </section>
 
   <!-- Créditos -->
   <footer class="credits reveal">
-    <p>Información e investigación histórica: <a href="https://sic.gob.mx/ficha.php?table=museo&table_id=192" target="_blank">Sistema de Información Cultural (SIC)</a> · Citibanamex</p>
-    <p style="margin-top:6px; opacity: 0.7;">Vive San Miguel · Patrimonio Cultural de la Humanidad</p>
+    <p><span data-i18n="credits_source">Información e investigación histórica:</span> <a href="https://sic.gob.mx/ficha.php?table=museo&table_id=192" target="_blank" data-i18n="credits_sic">Sistema de Información Cultural (SIC)</a> · Citibanamex</p>
+    <p style="margin-top:6px; opacity: 0.7;" data-i18n="credits_sub">Vive San Miguel · Patrimonio Cultural de la Humanidad</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Casa del Mayorazgo de la Canal · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "San Miguel de Allende · Patrimonio",
+    hero_title: "Casa del Mayorazgo de la Canal",
+    hero_sub: "Uno de los edificios más distinguidos de la arquitectura civil novohispana. Testimonio vivo de la historia y el arte colonial en el corazón de la ciudad.",
+    pill_admission: "Entrada libre",
+    pill_hours: "Mar–Dom · 10:00–18:00",
+    pill_pets: "Sin mascotas",
+    hero_img_alt: "Casa del Mayorazgo de la Canal",
+    badge_center_label: "Casa de Cultura",
+    badge_center_val: "Citibanamex",
+    badge_addr_label: "Calle Canal 4",
+    badge_zone_val: "Centro Histórico",
+    intro_label: "Historia viva",
+    intro_title: "Una mansión que define una época",
+    intro_p1: "<strong>La Casa del Mayorazgo de la Canal</strong> es un hito arquitectónico e histórico en San Miguel de Allende. Su fachada barroca y su opulencia original reflejan el esplendor de una de las familias más poderosas del periodo virreinal.",
+    intro_p2: "Actualmente restaurada y abierta al público como sede cultural, la mansión resguarda trabajos excepcionales de herrería forjada, cantería y ebanistería colonial que continúan cautivando a visitantes de todo el mundo.",
+    timeline_label: "Evolución histórica",
+    timeline_title: "De residencia noble a centro cultural",
+    tl_18c_title: "Siglo XVIII — Fundación",
+    tl_18c_desc: "Construcción impulsada por la influyente familia de la Canal, combinando el barroco novohispano con finos detalles ornamentales.",
+    tl_19c_title: "Siglo XIX — Protagonismo histórico",
+    tl_19c_desc: "Testigo clave de los movimientos sociales y de independencia que transformaron el rumbo de la nación mexicana.",
+    tl_1981_title: "1981 — Rescate patrimonial",
+    tl_1981_desc: "El Banco Nacional de México adquiere e inicia un riguroso proceso de restauración arquitectónica para devolverle su esplendor original.",
+    tl_now_title: "Actualidad — Casa de Cultura",
+    tl_now_desc: "Funciona como un vibrante espacio para exposiciones de arte, muestras temporales y divulgación cultural abierta a la comunidad.",
+    info_label: "Guía del visitante",
+    info_title: "Planifica tu recorrido",
+    card_hours_title: "Horarios & Acceso",
+    card_hours_1: "<strong>Martes a domingo:</strong> 10:00 – 18:00 hrs",
+    card_hours_2: "<strong>Lunes:</strong> Cerrado por mantenimiento",
+    card_hours_3: "<strong>Admisión:</strong> Totalmente gratuita",
+    card_hours_4: "<strong>Visitas guiadas:</strong> Disponibles en acceso",
+    card_rules_title: "Normas del Recinto",
+    card_rules_1: "<strong>Acceso sin mascotas</strong> (por conservación patrimonial)",
+    card_rules_2: "Fotografía sin flash permitida en áreas comunes",
+    card_rules_3: "Se recomienda un tiempo estimado de 60 a 90 minutos",
+    card_rules_4: "Consulta cartelera de exposiciones temporales",
+    card_loc_title: "Ubicación & Tips",
+    card_loc_addr: "<strong>Calle Canal 4</strong>, Centro Histórico, C.P. 37700, San Miguel de Allende, Gto.",
+    card_loc_tip: "<strong>Tip de viajero:</strong> Visita el portal de arcos frente al Jardín Principal a media mañana para obtener la mejor iluminación fotográfica.",
+    highlight_title: "¿Buscas más experiencias en San Miguel?",
+    highlight_desc: "Descubre el catálogo completo de monumentos, museos y rutas culturales recomendadas.",
+    highlight_btn: "Ver Catálogo",
+    video_label: "Recorrido audiovisual",
+    video_title: "Explora el interior",
+    video_iframe_title: "Video Casa del Mayorazgo de la Canal",
+    video_p1: "Video cortesía de <strong>Fomento Cultural Banamex, A.C.</strong>",
+    video_p2: "Una mirada íntima a los patios interiores, arquerías y salones históricos de esta joya virreinal.",
+    video_btn: "Más sitios de interés →",
+    credits_source: "Información e investigación histórica:",
+    credits_sic: "Sistema de Información Cultural (SIC)",
+    credits_sub: "Vive San Miguel · Patrimonio Cultural de la Humanidad"
+  },
+  en: {
+    page_title: "Casa del Mayorazgo de la Canal · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "San Miguel de Allende · Heritage",
+    hero_title: "Casa del Mayorazgo de la Canal",
+    hero_sub: "One of the most distinguished examples of New Spain civil architecture. A living testament to colonial history and art in the heart of the city.",
+    pill_admission: "Free admission",
+    pill_hours: "Tue–Sun · 10:00–18:00",
+    pill_pets: "No pets",
+    hero_img_alt: "Casa del Mayorazgo de la Canal",
+    badge_center_label: "Cultural Center",
+    badge_center_val: "Citibanamex",
+    badge_addr_label: "4 Canal Street",
+    badge_zone_val: "Historic Center",
+    intro_label: "Living History",
+    intro_title: "A Mansion That Defines an Era",
+    intro_p1: "<strong>Casa del Mayorazgo de la Canal</strong> is an architectural and historical landmark in San Miguel de Allende. Its Baroque facade and original grandeur reflect the splendor of one of the most influential families of the viceregal period.",
+    intro_p2: "Restored and open to the public as a cultural venue, the mansion preserves remarkable wrought ironwork, stonework, and colonial cabinetry that continue to captivate visitors from around the world.",
+    timeline_label: "Historical Evolution",
+    timeline_title: "From Noble Residence to Cultural Center",
+    tl_18c_title: "18th Century — Founding",
+    tl_18c_desc: "Built by the influential de la Canal family, blending New Spain Baroque elements with fine ornamental details.",
+    tl_19c_title: "19th Century — Historical Role",
+    tl_19c_desc: "A key witness to the social and independence movements that shaped the course of the Mexican nation.",
+    tl_1981_title: "1981 — Heritage Restoration",
+    tl_1981_desc: "Banco Nacional de México acquires the property and begins a thorough architectural restoration to recover its original splendor.",
+    tl_now_title: "Today — Cultural Center",
+    tl_now_desc: "Operates as a lively space for art exhibitions, temporary shows, and community cultural outreach.",
+    info_label: "Visitor Guide",
+    info_title: "Plan Your Visit",
+    card_hours_title: "Hours & Admission",
+    card_hours_1: "<strong>Tuesday to Sunday:</strong> 10:00 am – 6:00 pm",
+    card_hours_2: "<strong>Monday:</strong> Closed for maintenance",
+    card_hours_3: "<strong>Admission:</strong> Completely free",
+    card_hours_4: "<strong>Guided tours:</strong> Available at the entrance",
+    card_rules_title: "Venue Rules",
+    card_rules_1: "<strong>No pets allowed</strong> (for heritage preservation)",
+    card_rules_2: "Flash-free photography permitted in common areas",
+    card_rules_3: "Estimated visit time of 60 to 90 minutes recommended",
+    card_rules_4: "Check the schedule for temporary exhibitions",
+    card_loc_title: "Location & Tips",
+    card_loc_addr: "<strong>4 Canal Street</strong>, Historic Center, ZIP 37700, San Miguel de Allende, Gto.",
+    card_loc_tip: "<strong>Traveler tip:</strong> Visit the arched arcade across from the Jardín Principal mid-morning for the best lighting for photos.",
+    highlight_title: "Looking for More Experiences in San Miguel?",
+    highlight_desc: "Explore the full catalog of monuments, museums, and recommended cultural routes.",
+    highlight_btn: "View Catalog",
+    video_label: "Audiovisual Tour",
+    video_title: "Explore the Interior",
+    video_iframe_title: "Casa del Mayorazgo de la Canal Video",
+    video_p1: "Video courtesy of <strong>Fomento Cultural Banamex, A.C.</strong>",
+    video_p2: "An intimate look inside the courtyards, arcades, and historic halls of this viceregal landmark.",
+    video_btn: "More points of interest →",
+    credits_source: "Historical information & research:",
+    credits_sic: "Cultural Information System (SIC)",
+    credits_sub: "Vive San Miguel · World Heritage Site"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 /* Animación de revelado al hacer scroll */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
