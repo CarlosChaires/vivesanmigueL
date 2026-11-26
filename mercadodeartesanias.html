@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mercado Ignacio Ramírez · Vive San Miguel</title>
+<title data-i18n="page_title">Mercado Ignacio Ramírez · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -113,6 +113,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .nav-back {
@@ -133,6 +134,34 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
@@ -323,7 +352,13 @@ nav {
   gap: 20px;
   margin-top: 36px;
 }
-@media (max-width: 780px) { .cards { grid-template-columns: 1fr; } }
+.cards.two-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 780px) {
+  .cards,
+  .cards.two-cols { grid-template-columns: 1fr; }
+}
 
 .card {
   background: var(--surface);
@@ -494,14 +529,18 @@ nav {
   <!-- Navegación con Logo Oficial y Redes -->
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -512,25 +551,25 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">Tradición · Cultura · Tradición Local</div>
-      <h1>Mercado Ignacio Ramírez</h1>
-      <p class="hero-sub">El corazón comercial y tradicional de San Miguel de Allende. Un espacio lleno de color, flores, antojitos típicos y artesanías mexicanas.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">Tradición · Cultura · Tradición Local</div>
+      <h1 data-i18n="hero_title">Mercado Ignacio Ramírez</h1>
+      <p class="hero-sub" data-i18n="hero_sub">El corazón comercial y tradicional de San Miguel de Allende. Un espacio lleno de color, flores, antojitos típicos y artesanías mexicanas.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Mercado Local: 08:00–18:00</strong></span>
-        <span class="pill"><strong>Artesanías: 10:00–18:00</strong></span>
+        <span class="pill"><strong data-i18n="pill_market">Mercado Local: 08:00–18:00</strong></span>
+        <span class="pill"><strong data-i18n="pill_crafts">Artesanías: 10:00–18:00</strong></span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-6.png?w=1024" alt="Mercado Ignacio Ramírez" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Fundado en</span>
+            <span data-i18n="badge_founded_label">Fundado en</span>
             <strong>1889</strong>
           </div>
           <div style="text-align:right">
-            <span>Centro Histórico</span>
-            <strong style="font-size:0.95rem">San Miguel</strong>
+            <span data-i18n="badge_zone_label">Centro Histórico</span>
+            <strong style="font-size:0.95rem" data-i18n="badge_city_val">San Miguel</strong>
           </div>
         </div>
       </div>
@@ -539,88 +578,88 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">Tradición viva</div>
-    <h2>El corazón cotidiano de la ciudad</h2>
-    <p class="prose">El <strong>Mercado Ignacio Ramírez</strong> es un punto de encuentro indispensable para conocer la esencia más genuina de San Miguel de Allende, combinando el abasto diario de los hogares con la riqueza artesanal de la región.</p>
+    <div class="section-label" data-i18n="intro_label">Tradición viva</div>
+    <h2 data-i18n="intro_title">El corazón cotidiano de la ciudad</h2>
+    <p class="prose" data-i18n-html="intro_p1">El <strong>Mercado Ignacio Ramírez</strong> es un punto de encuentro indispensable para conocer la esencia más genuina de San Miguel de Allende, combinando el abasto diario de los hogares con la riqueza artesanal de la región.</p>
   </section>
 
   <!-- POR QUÉ VISITARLO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia única</div>
-    <h2>¿Por qué visitarlo?</h2>
-    <div class="cards" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="section-label" data-i18n="why_label">Experiencia única</div>
+    <h2 data-i18n="why_title">¿Por qué visitarlo?</h2>
+    <div class="cards two-cols">
       <div class="card">
         <div class="card-icon">🌮</div>
-        <h3>Autenticidad y sabor</h3>
-        <p>Es el lugar perfecto para probar los sabores tradicionales de la cocina mexicana en sus fondas y puestos de antojitos frescos preparados al momento.</p>
+        <h3 data-i18n="why_card1_title">Autenticidad y sabor</h3>
+        <p data-i18n="why_card1_desc">Es el lugar perfecto para probar los sabores tradicionales de la cocina mexicana en sus fondas y puestos de antojitos frescos preparados al momento.</p>
       </div>
       <div class="card">
         <div class="card-icon">🎨</div>
-        <h3>Cultura y artesanía</h3>
-        <p>Reúne en un solo lugar la identidad folclórica del municipio, permitiéndote adquirir piezas únicas de cerámica, textiles y recuerdos hechos a mano.</p>
+        <h3 data-i18n="why_card2_title">Cultura y artesanía</h3>
+        <p data-i18n="why_card2_desc">Reúne en un solo lugar la identidad folclórica del municipio, permitiéndote adquirir piezas únicas de cerámica, textiles y recuerdos hechos a mano.</p>
       </div>
     </div>
   </section>
 
   <!-- DÓNDE ESTÁ -->
   <section class="section reveal">
-    <div class="section-label">Ubicación</div>
-    <h2>¿Dónde está y cómo llegar?</h2>
-    <p class="prose">El mercado se ubica en plena <strong>Zona Centro de San Miguel de Allende</strong>, a pocos minutos caminando desde el Jardín Principal y el Templo de San Francisco, lo que lo convierte en una parada accesible y obligatoria durante tu recorrido por el centro histórico.</p>
+    <div class="section-label" data-i18n="loc_label">Ubicación</div>
+    <h2 data-i18n="loc_title">¿Dónde está y cómo llegar?</h2>
+    <p class="prose" data-i18n-html="loc_p1">El mercado se ubica en plena <strong>Zona Centro de San Miguel de Allende</strong>, a pocos minutos caminando desde el Jardín Principal y el Templo de San Francisco, lo que lo convierte en una parada accesible y obligatoria durante tu recorrido por el centro histórico.</p>
   </section>
 
   <!-- LÍNEA DEL TIEMPO -->
   <section class="section reveal">
-    <div class="section-label">Evolución histórica</div>
-    <h2>Hitos en la historia del mercado</h2>
+    <div class="section-label" data-i18n="timeline_label">Evolución histórica</div>
+    <h2 data-i18n="timeline_title">Hitos en la historia del mercado</h2>
     <div class="timeline">
       <div class="timeline-item">
-        <h3>1889 — Inauguración oficial</h3>
-        <p>Abre sus puertas por primera vez como un centro de abastos estratégico para el municipio, consolidando el comercio local.</p>
+        <h3 data-i18n="tl_1889_title">1889 — Inauguración oficial</h3>
+        <p data-i18n="tl_1889_desc">Abre sus puertas por primera vez como un centro de abastos estratégico para el municipio, consolidando el comercio local.</p>
       </div>
       <div class="timeline-item">
-        <h3>Siglo XX — Crecimiento y Socialización</h3>
-        <p>Se afianza como el punto neurálgico de la vida social de los habitantes, integrando gradualmente la oferta de productos típicos y de temporada.</p>
+        <h3 data-i18n="tl_20c_title">Siglo XX — Crecimiento y Socialización</h3>
+        <p data-i18n="tl_20c_desc">Se afianza como el punto neurálgico de la vida social de los habitantes, integrando gradualmente la oferta de productos típicos y de temporada.</p>
       </div>
       <div class="timeline-item">
-        <h3>Remodelaciones y Adaptaciones</h3>
-        <p>El espacio recibe diversas modernizaciones para optimizar la seguridad y la comodidad tanto de los locatarios como de los visitantes.</p>
+        <h3 data-i18n="tl_remod_title">Remodelaciones y Adaptaciones</h3>
+        <p data-i18n="tl_remod_desc">El espacio recibe diversas modernizaciones para optimizar la seguridad y la comodidad tanto de los locatarios como de los visitantes.</p>
       </div>
       <div class="timeline-item">
-        <h3>Actualidad — Fusión de Sabores y Arte</h3>
-        <p>Opera con sus secciones integradas de abastos y artesanías, ofreciendo una experiencia auténtica y colorida en el corazón de la ciudad.</p>
+        <h3 data-i18n="tl_now_title">Actualidad — Fusión de Sabores y Arte</h3>
+        <p data-i18n="tl_now_desc">Opera con sus secciones integradas de abastos y artesanías, ofreciendo una experiencia auténtica y colorida en el corazón de la ciudad.</p>
       </div>
     </div>
   </section>
 
   <!-- CARDS: Horarios y Tips -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Información práctica y recomendaciones</h2>
+    <div class="section-label" data-i18n="info_label">Planifica tu visita</div>
+    <h2 data-i18n="info_title">Información práctica y recomendaciones</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🕐</div>
-        <h3>Horarios & Zonas</h3>
+        <h3 data-i18n="card_hours_title">Horarios & Zonas</h3>
         <ul>
-          <li><strong>Mercado local (abastos):</strong> 08:00 – 18:00 hrs</li>
-          <li><strong>Zona de artesanías:</strong> 10:00 – 18:00 hrs</li>
-          <li><strong>Ambiente:</strong> Las mañanas son ideales para encontrar mayor frescura y tranquilidad</li>
+          <li data-i18n-html="card_hours_1"><strong>Mercado local (abastos):</strong> 08:00 – 18:00 hrs</li>
+          <li data-i18n-html="card_hours_2"><strong>Zona de artesanías:</strong> 10:00 – 18:00 hrs</li>
+          <li data-i18n-html="card_hours_3"><strong>Ambiente:</strong> Las mañanas son ideales para encontrar mayor frescura y tranquilidad</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">✨</div>
-        <h3>Tips para el Viajero</h3>
+        <h3 data-i18n="card_tips_title">Tips para el Viajero</h3>
         <ul>
-          <li><strong>Gastronomía:</strong> No dejes de visitar las fondas interiores para probar los platillos típicos caseros</li>
-          <li><strong>Efectivo:</strong> Es fundamental llevar efectivo, ya que la mayoría de los puestos tradicionales no aceptan tarjetas</li>
-          <li><strong>Ubicación:</strong> Situado a pocos pasos de las calles principales del Centro Histórico</li>
+          <li data-i18n-html="card_tips_1"><strong>Gastronomía:</strong> No dejes de visitar las fondas interiores para probar los platillos típicos caseros</li>
+          <li data-i18n-html="card_tips_2"><strong>Efectivo:</strong> Es fundamental llevar efectivo, ya que la mayoría de los puestos tradicionales no aceptan tarjetas</li>
+          <li data-i18n-html="card_tips_3"><strong>Ubicación:</strong> Situado a pocos pasos de las calles principales del Centro Histórico</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">📍</div>
-        <h3>Ubicación & Detalle</h3>
-        <p style="margin-bottom:10px"><strong>Zona Centro</strong>, San Miguel de Allende, Gto.</p>
-        <p style="font-size:0.88rem; color: var(--cantera);"><strong>Tip:</strong> El área de artesanías es perfecta para comprar recuerdos y textiles elaborados por manos mexicanas.</p>
+        <h3 data-i18n="card_loc_title">Ubicación & Detalle</h3>
+        <p style="margin-bottom:10px" data-i18n-html="card_loc_addr"><strong>Zona Centro</strong>, San Miguel de Allende, Gto.</p>
+        <p style="font-size:0.88rem; color: var(--cantera);" data-i18n-html="card_loc_tip"><strong>Tip:</strong> El área de artesanías es perfecta para comprar recuerdos y textiles elaborados por manos mexicanas.</p>
       </div>
     </div>
   </section>
@@ -628,39 +667,203 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+      <h3 data-i18n="highlight_title">¿Listo para descubrir más?</h3>
+      <p data-i18n="highlight_desc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
+      <span data-i18n="highlight_btn">Ver catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce el mercado</h2>
+    <div class="section-label" data-i18n="video_label">Experiencia visual</div>
+    <h2 data-i18n="video_title">Conoce el mercado</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/4B2eCfMcG_A" allowfullscreen title="Video Mercado Ignacio Ramírez"></iframe>
+        <iframe src="https://www.youtube.com/embed/4B2eCfMcG_A" allowfullscreen title="Video Mercado Ignacio Ramírez" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>Vámonos de Fuga</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por los pasillos, los aromas y los colores de este icónico mercado.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p data-i18n-html="video_p1">Video cortesía de <strong>Vámonos de Fuga</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Un recorrido por los pasillos, los aromas y los colores de este icónico mercado.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Tradición y Cultura</p>
+    <p><span data-i18n="credits_source">Fuente e información:</span> <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7" data-i18n="credits_sub">Vive San Miguel · Tradición y Cultura</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Mercado Ignacio Ramírez · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "Tradición · Cultura · Tradición Local",
+    hero_title: "Mercado Ignacio Ramírez",
+    hero_sub: "El corazón comercial y tradicional de San Miguel de Allende. Un espacio lleno de color, flores, antojitos típicos y artesanías mexicanas.",
+    pill_market: "Mercado Local: 08:00–18:00",
+    pill_crafts: "Artesanías: 10:00–18:00",
+    hero_img_alt: "Mercado Ignacio Ramírez",
+    badge_founded_label: "Fundado en",
+    badge_zone_label: "Centro Histórico",
+    badge_city_val: "San Miguel",
+    intro_label: "Tradición viva",
+    intro_title: "El corazón cotidiano de la ciudad",
+    intro_p1: "El <strong>Mercado Ignacio Ramírez</strong> es un punto de encuentro indispensable para conocer la esencia más genuina de San Miguel de Allende, combinando el abasto diario de los hogares con la riqueza artesanal de la región.",
+    why_label: "Experiencia única",
+    why_title: "¿Por qué visitarlo?",
+    why_card1_title: "Autenticidad y sabor",
+    why_card1_desc: "Es el lugar perfecto para probar los sabores tradicionales de la cocina mexicana en sus fondas y puestos de antojitos frescos preparados al momento.",
+    why_card2_title: "Cultura y artesanía",
+    why_card2_desc: "Reúne en un solo lugar la identidad folclórica del municipio, permitiéndote adquirir piezas únicas de cerámica, textiles y recuerdos hechos a mano.",
+    loc_label: "Ubicación",
+    loc_title: "¿Dónde está y cómo llegar?",
+    loc_p1: "El mercado se ubica en plena <strong>Zona Centro de San Miguel de Allende</strong>, a pocos minutos caminando desde el Jardín Principal y el Templo de San Francisco, lo que lo convierte en una parada accesible y obligatoria durante tu recorrido por el centro histórico.",
+    timeline_label: "Evolución histórica",
+    timeline_title: "Hitos en la historia del mercado",
+    tl_1889_title: "1889 — Inauguración oficial",
+    tl_1889_desc: "Abre sus puertas por primera vez como un centro de abastos estratégico para el municipio, consolidando el comercio local.",
+    tl_20c_title: "Siglo XX — Crecimiento y Socialización",
+    tl_20c_desc: "Se afianza como el punto neurálgico de la vida social de los habitantes, integrando gradualmente la oferta de productos típicos y de temporada.",
+    tl_remod_title: "Remodelaciones y Adaptaciones",
+    tl_remod_desc: "El espacio recibe diversas modernizaciones para optimizar la seguridad y la comodidad tanto de los locatarios como de los visitantes.",
+    tl_now_title: "Actualidad — Fusión de Sabores y Arte",
+    tl_now_desc: "Opera con sus secciones integradas de abastos y artesanías, ofreciendo una experiencia auténtica y colorida en el corazón de la ciudad.",
+    info_label: "Planifica tu visita",
+    info_title: "Información práctica y recomendaciones",
+    card_hours_title: "Horarios & Zonas",
+    card_hours_1: "<strong>Mercado local (abastos):</strong> 08:00 – 18:00 hrs",
+    card_hours_2: "<strong>Zona de artesanías:</strong> 10:00 – 18:00 hrs",
+    card_hours_3: "<strong>Ambiente:</strong> Las mañanas son ideales para encontrar mayor frescura y tranquilidad",
+    card_tips_title: "Tips para el Viajero",
+    card_tips_1: "<strong>Gastronomía:</strong> No dejes de visitar las fondas interiores para probar los platillos típicos caseros",
+    card_tips_2: "<strong>Efectivo:</strong> Es fundamental llevar efectivo, ya que la mayoría de los puestos tradicionales no aceptan tarjetas",
+    card_tips_3: "<strong>Ubicación:</strong> Situado a pocos pasos de las calles principales del Centro Histórico",
+    card_loc_title: "Ubicación & Detalle",
+    card_loc_addr: "<strong>Zona Centro</strong>, San Miguel de Allende, Gto.",
+    card_loc_tip: "<strong>Tip:</strong> El área de artesanías es perfecta para comprar recuerdos y textiles elaborados por manos mexicanas.",
+    highlight_title: "¿Listo para descubrir más?",
+    highlight_desc: "Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.",
+    highlight_btn: "Ver catálogo",
+    video_label: "Experiencia visual",
+    video_title: "Conoce el mercado",
+    video_iframe_title: "Video Mercado Ignacio Ramírez",
+    video_p1: "Video cortesía de <strong>Vámonos de Fuga</strong>",
+    video_p2: "Un recorrido por los pasillos, los aromas y los colores de este icónico mercado.",
+    video_btn: "Más sitios →",
+    credits_source: "Fuente e información:",
+    credits_sub: "Vive San Miguel · Tradición y Cultura"
+  },
+  en: {
+    page_title: "Ignacio Ramírez Market · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "Tradition · Culture · Local Heritage",
+    hero_title: "Mercado Ignacio Ramírez",
+    hero_sub: "The traditional commercial heart of San Miguel de Allende. A lively spot filled with color, flowers, street food, and Mexican crafts.",
+    pill_market: "Local Market: 08:00–18:00",
+    pill_crafts: "Crafts Area: 10:00–18:00",
+    hero_img_alt: "Mercado Ignacio Ramírez",
+    badge_founded_label: "Founded in",
+    badge_zone_label: "Historic Center",
+    badge_city_val: "San Miguel",
+    intro_label: "Living Tradition",
+    intro_title: "The Daily Heart of the City",
+    intro_p1: "<strong>Mercado Ignacio Ramírez</strong> is a must-visit spot to experience the most authentic side of San Miguel de Allende, bringing together everyday household groceries and the region's artisan heritage.",
+    why_label: "Unique Experience",
+    why_title: "Why Visit?",
+    why_card1_title: "Authenticity & Flavor",
+    why_card1_desc: "An ideal place to taste traditional Mexican cooking in its indoor eateries (fondas) and fresh street-food stalls made to order.",
+    why_card2_title: "Culture & Crafts",
+    why_card2_desc: "Brings local folk identity together under one roof, letting you shop for one-of-a-kind ceramics, textiles, and handmade keepsakes.",
+    loc_label: "Location",
+    loc_title: "Where It Is & How to Get There",
+    loc_p1: "The market sits right in the <strong>Centro neighborhood of San Miguel de Allende</strong>, just a short walk from Jardín Principal and San Francisco Church, making it an easy, essential stop while exploring downtown.",
+    timeline_label: "Historical Evolution",
+    timeline_title: "Milestones in the Market's History",
+    tl_1889_title: "1889 — Official Opening",
+    tl_1889_desc: "Opens its doors for the first time as a key supply hub for the municipality, strengthening local trade.",
+    tl_20c_title: "20th Century — Growth & Community Life",
+    tl_20c_desc: "Becomes a central gathering point for local social life, gradually expanding its selection of regional and seasonal goods.",
+    tl_remod_title: "Renovations & Upgrades",
+    tl_remod_desc: "The building undergoes several upgrades to improve safety and comfort for both vendors and visitors.",
+    tl_now_title: "Today — Flavors & Craftsmanship Together",
+    tl_now_desc: "Operates with integrated grocery and craft sections, offering an authentic, colorful experience in the heart of town.",
+    info_label: "Plan Your Visit",
+    info_title: "Practical Info & Recommendations",
+    card_hours_title: "Hours & Sections",
+    card_hours_1: "<strong>Local market (groceries):</strong> 08:00 – 18:00",
+    card_hours_2: "<strong>Crafts section:</strong> 10:00 – 18:00",
+    card_hours_3: "<strong>Atmosphere:</strong> Mornings are great for fresh produce and a calmer pace",
+    card_tips_title: "Traveler Tips",
+    card_tips_1: "<strong>Food:</strong> Don't miss the indoor fondas for classic home-style dishes",
+    card_tips_2: "<strong>Cash:</strong> Bring cash, as most traditional stalls do not take cards",
+    card_tips_3: "<strong>Location:</strong> Just a few steps from the main streets of the Historic Center",
+    card_loc_title: "Location & Detail",
+    card_loc_addr: "<strong>Centro</strong>, San Miguel de Allende, Gto.",
+    card_loc_tip: "<strong>Tip:</strong> The crafts section is great for picking up souvenirs and textiles made by Mexican artisans.",
+    highlight_title: "Ready to Discover More?",
+    highlight_desc: "Explore the full catalog of points of interest in San Miguel de Allende and build your own cultural route.",
+    highlight_btn: "View catalog",
+    video_label: "Visual Experience",
+    video_title: "Explore the Market",
+    video_iframe_title: "Mercado Ignacio Ramírez Video",
+    video_p1: "Video courtesy of <strong>Vámonos de Fuga</strong>",
+    video_p2: "A walk through the aisles, aromas, and colors of this iconic market.",
+    video_btn: "More places →",
+    credits_source: "Source & information:",
+    credits_sub: "Vive San Miguel · Tradition & Culture"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
