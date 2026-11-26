@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instituto Allende · Vive San Miguel</title>
+    <title data-i18n="page_title">Instituto Allende · Vive San Miguel</title>
 
     <!-- PWA Manifest & Theme -->
     <link rel="manifest" href="manifest.json">
@@ -110,6 +110,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .nav-back {
   display: inline-flex;
@@ -129,6 +130,33 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px;
@@ -493,14 +521,18 @@ nav {
 
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -511,26 +543,26 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">Educación · Arte · Historia</div>
-      <h1>Instituto Allende</h1>
-      <p class="hero-sub">Faro histórico de la educación artística en San Miguel de Allende. Un espacio de inspiración fundado en el siglo XX en un antiguo edificio colonial.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">Educación · Arte · Historia</div>
+      <h1 data-i18n="hero_title">Instituto Allende</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Faro histórico de la educación artística en San Miguel de Allende. Un espacio de inspiración fundado en el siglo XX en un antiguo edificio colonial.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Centro Cultural</strong></span>
-        <span class="pill">Diario · 10:00–18:00</span>
-        <span class="pill">Arte e Historia</span>
+        <span class="pill"><strong data-i18n="pill_center">Centro Cultural</strong></span>
+        <span class="pill" data-i18n="pill_hours">Diario · 10:00–18:00</span>
+        <span class="pill" data-i18n="pill_topic">Arte e Historia</span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://lh3.googleusercontent.com/grass-cs/ACvplmMYYwkXjP5a2GPBId0T0XIInl5lS5MnVmCx3yfs5dpKx3TiN6NTPqGyPVHKTquzHG9MNmgdhjpRQ8FIqBKMNYR3rYM-jdcziAkF5CrOiAj3PMfeR8PUFzl6xoQAMEt7KD5kvWM=s680-w680-h510-rw" alt="Instituto Allende">
+        <img src="https://lh3.googleusercontent.com/grass-cs/ACvplmMYYwkXjP5a2GPBId0T0XIInl5lS5MnVmCx3yfs5dpKx3TiN6NTPqGyPVHKTquzHG9MNmgdhjpRQ8FIqBKMNYR3rYM-jdcziAkF5CrOiAj3PMfeR8PUFzl6xoQAMEt7KD5kvWM=s680-w680-h510-rw" alt="Instituto Allende" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Fundado en</span>
+            <span data-i18n="badge_founded_label">Fundado en</span>
             <strong>1950</strong>
           </div>
           <div style="text-align:right">
-            <span>San Miguel de</span>
-            <strong style="font-size:0.95rem">Allende</strong>
+            <span data-i18n="badge_city_top">San Miguel de</span>
+            <strong style="font-size:0.95rem" data-i18n="badge_city_bot">Allende</strong>
           </div>
         </div>
       </div>
@@ -539,64 +571,64 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">Orígenes</div>
-    <h2>Un nuevo capítulo para San Miguel</h2>
-    <p class="prose">San Miguel de Allende fue fundada en 1542, alcanzó su apogeo en el siglo XVIII y atravesó una grave crisis económica con el estallido de la Guerra de la Independencia a principios del siglo XIX. Los ricos se mudaron a otra parte y el destino del pueblo se hundió en la incertidumbre.</p>
-    <p class="prose">Animado por los intelectuales Alfonso Reyes y José Vasconcelos, el diplomático y artista peruano Felipe Cossío del Pomar visitó San Miguel en 1927. Enamorado de la calidad de la luz, fundó la primera escuela de bellas artes, dando paso a una nueva era cultural.</p>
+    <div class="section-label" data-i18n="intro_label">Orígenes</div>
+    <h2 data-i18n="intro_title">Un nuevo capítulo para San Miguel</h2>
+    <p class="prose" data-i18n="intro_p1">San Miguel de Allende fue fundada en 1542, alcanzó su apogeo en el siglo XVIII y atravesó una grave crisis económica con el estallido de la Guerra de la Independencia a principios del siglo XIX. Los ricos se mudaron a otra parte y el destino del pueblo se hundió en la incertidumbre.</p>
+    <p class="prose" data-i18n="intro_p2">Animado por los intelectuales Alfonso Reyes y José Vasconcelos, el diplomático y artista peruano Felipe Cossío del Pomar visitó San Miguel en 1927. Enamorado de la calidad de la luz, fundó la primera escuela de bellas artes, dando paso a una nueva era cultural.</p>
   </section>
 
   <!-- LÍNEA DEL TIEMPO -->
   <section class="section reveal">
-    <div class="section-label">Evolución histórica</div>
-    <h2>De la fundación al prestigio internacional</h2>
+    <div class="section-label" data-i18n="timeline_label">Evolución histórica</div>
+    <h2 data-i18n="timeline_title">De la fundación al prestigio internacional</h2>
     <div class="timeline">
       <div class="timeline-item">
-        <h3>1927 — El descubrimiento</h3>
-        <p>Felipe Cossío del Pomar llega a San Miguel cautivado por su luz y conceptualiza un espacio dedicado a las bellas artes en un antiguo convento.</p>
+        <h3 data-i18n="tl_1927_title">1927 — El descubrimiento</h3>
+        <p data-i18n="tl_1927_desc">Felipe Cossío del Pomar llega a San Miguel cautivado por su luz y conceptualiza un espacio dedicado a las bellas artes en un antiguo convento.</p>
       </div>
       <div class="timeline-item">
-        <h3>Años de Reconstrucción</h3>
-        <p>Tras una ausencia temporal, Cossío encuentra el proyecto en ruinas y decide emprender un ambicioso plan para crear una escuela de arte de categoría mundial.</p>
+        <h3 data-i18n="tl_recon_title">Años de Reconstrucción</h3>
+        <p data-i18n="tl_recon_desc">Tras una ausencia temporal, Cossío encuentra el proyecto en ruinas y decide emprender un ambicioso plan para crear una escuela de arte de categoría mundial.</p>
       </div>
       <div class="timeline-item">
-        <h3>1950 — Fundación del Instituto Allende</h3>
-        <p>Con un nuevo equipo conformado por Stirling Dickinson, Enrique Fernández Martínez y Nell Harris, se funda formalmente el Instituto Allende.</p>
+        <h3 data-i18n="tl_1950_title">1950 — Fundación del Instituto Allende</h3>
+        <p data-i18n="tl_1950_desc">Con un nuevo equipo conformado por Stirling Dickinson, Enrique Fernández Martínez y Nell Harris, se funda formalmente el Instituto Allende.</p>
       </div>
       <div class="timeline-item">
-        <h3>Actualidad — Legado vivo</h3>
-        <p>Preservando la visión de sus fundadores bajo la guía de figuras como Rodolfo Fernández, sigue siendo un pilar histórico y educativo fundamental.</p>
+        <h3 data-i18n="tl_now_title">Actualidad — Legado vivo</h3>
+        <p data-i18n="tl_now_desc">Preservando la visión de sus fundadores bajo la guía de figuras como Rodolfo Fernández, sigue siendo un pilar histórico y educativo fundamental.</p>
       </div>
     </div>
   </section>
 
   <!-- CARDS: Horarios, Recomendaciones y Ubicación -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Información práctica y recomendaciones</h2>
+    <div class="section-label" data-i18n="info_label">Planifica tu visita</div>
+    <h2 data-i18n="info_title">Información práctica y recomendaciones</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🕐</div>
-        <h3>Horarios & Acceso</h3>
+        <h3 data-i18n="card_hours_title">Horarios & Acceso</h3>
         <ul>
-          <li><strong>Horario general:</strong> Todos los días de 10:00 a 18:00 hrs</li>
-          <li><strong>Recorridos:</strong> Ideal para explorar patios coloniales, murales y exposiciones temporales</li>
-          <li><strong>Ambiente:</strong> Espacio tranquilo propicio para la contemplación artística</li>
+          <li data-i18n-html="card_hours_1"><strong>Horario general:</strong> Todos los días de 10:00 a 18:00 hrs</li>
+          <li data-i18n-html="card_hours_2"><strong>Recorridos:</strong> Ideal para explorar patios coloniales, murales y exposiciones temporales</li>
+          <li data-i18n-html="card_hours_3"><strong>Ambiente:</strong> Espacio tranquilo propicio para la contemplación artística</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">💡</div>
-        <h3>Tips para el Viajero</h3>
+        <h3 data-i18n="card_tips_title">Tips para el Viajero</h3>
         <ul>
-          <li><strong>Fotografía:</strong> Los pasillos y arquerías interiores ofrecen perspectivas arquitectónicas únicas</li>
-          <li><strong>Exposiciones:</strong> Consulta las muestras temporales vigentes al llegar</li>
-          <li><strong>Cercanía:</strong> Ubicado a muy pocos minutos caminando desde el Jardín Principal</li>
+          <li data-i18n-html="card_tips_1"><strong>Fotografía:</strong> Los pasillos y arquerías interiores ofrecen perspectivas arquitectónicas únicas</li>
+          <li data-i18n-html="card_tips_2"><strong>Exposiciones:</strong> Consulta las muestras temporales vigentes al llegar</li>
+          <li data-i18n-html="card_tips_3"><strong>Cercanía:</strong> Ubicado a muy pocos minutos caminando desde el Jardín Principal</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">📍</div>
-        <h3>Ubicación & Web</h3>
-        <p style="margin-bottom:8px"><strong>Sitio oficial:</strong> <a href="https://www.instituto-allende.edu.mx" target="_blank">instituto-allende.edu.mx</a></p>
-        <p style="font-size:0.88rem; color: var(--cantera);"><strong>Ubicación:</strong> Ancha de San Antonio 20, Zona Centro, San Miguel de Allende, Gto.</p>
+        <h3 data-i18n="card_loc_title">Ubicación & Web</h3>
+        <p style="margin-bottom:8px" data-i18n-html="card_loc_web"><strong>Sitio oficial:</strong> <a href="https://www.instituto-allende.edu.mx" target="_blank">instituto-allende.edu.mx</a></p>
+        <p style="font-size:0.88rem; color: var(--cantera);" data-i18n-html="card_loc_addr"><strong>Ubicación:</strong> Ancha de San Antonio 20, Zona Centro, San Miguel de Allende, Gto.</p>
       </div>
     </div>
   </section>
@@ -604,39 +636,191 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+      <h3 data-i18n="highlight_title">¿Listo para descubrir más?</h3>
+      <p data-i18n="highlight_desc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
+      <span data-i18n="highlight_btn">Ver catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce el Instituto Allende</h2>
+    <div class="section-label" data-i18n="video_label">Experiencia visual</div>
+    <h2 data-i18n="video_title">Conoce el Instituto Allende</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/G0Yb21mqBQU" allowfullscreen title="Video Instituto Allende"></iframe>
+        <iframe src="https://www.youtube.com/embed/G0Yb21mqBQU" allowfullscreen title="Video Instituto Allende" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>Portal SMA</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por la historia, los patios y el legado cultural de este instituto.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p data-i18n-html="video_p1">Video cortesía de <strong>Portal SMA</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Un recorrido por la historia, los patios y el legado cultural de este instituto.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente e información oficial: <a href="https://www.instituto-allende.edu.mx/historia" target="_blank">Instituto Allende / Vive San Miguel de Allende</a></p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Historia y Cultura</p>
+    <p><span data-i18n="credits_source">Fuente e información oficial:</span> <a href="https://www.instituto-allende.edu.mx/historia" target="_blank" data-i18n="credits_link">Instituto Allende / Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7" data-i18n="credits_sub">Vive San Miguel · Historia y Cultura</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Instituto Allende · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "Educación · Arte · Historia",
+    hero_title: "Instituto Allende",
+    hero_sub: "Faro histórico de la educación artística en San Miguel de Allende. Un espacio de inspiración fundado en el siglo XX en un antiguo edificio colonial.",
+    pill_center: "Centro Cultural",
+    pill_hours: "Diario · 10:00–18:00",
+    pill_topic: "Arte e Historia",
+    hero_img_alt: "Instituto Allende",
+    badge_founded_label: "Fundado en",
+    badge_city_top: "San Miguel de",
+    badge_city_bot: "Allende",
+    intro_label: "Orígenes",
+    intro_title: "Un nuevo capítulo para San Miguel",
+    intro_p1: "San Miguel de Allende fue fundada en 1542, alcanzó su apogeo en el siglo XVIII y atravesó una grave crisis económica con el estallido de la Guerra de la Independencia a principios del siglo XIX. Los ricos se mudaron a otra parte y el destino del pueblo se hundió en la incertidumbre.",
+    intro_p2: "Animado por los intelectuales Alfonso Reyes y José Vasconcelos, el diplomático y artista peruano Felipe Cossío del Pomar visitó San Miguel en 1927. Enamorado de la calidad de la luz, fundó la primera escuela de bellas artes, dando paso a una nueva era cultural.",
+    timeline_label: "Evolución histórica",
+    timeline_title: "De la fundación al prestigio internacional",
+    tl_1927_title: "1927 — El descubrimiento",
+    tl_1927_desc: "Felipe Cossío del Pomar llega a San Miguel cautivado por su luz y conceptualiza un espacio dedicado a las bellas artes en un antiguo convento.",
+    tl_recon_title: "Años de Reconstrucción",
+    tl_recon_desc: "Tras una ausencia temporal, Cossío encuentra el proyecto en ruinas y decide emprender un ambicioso plan para crear una escuela de arte de categoría mundial.",
+    tl_1950_title: "1950 — Fundación del Instituto Allende",
+    tl_1950_desc: "Con un nuevo equipo conformado por Stirling Dickinson, Enrique Fernández Martínez y Nell Harris, se funda formalmente el Instituto Allende.",
+    tl_now_title: "Actualidad — Legado vivo",
+    tl_now_desc: "Preservando la visión de sus fundadores bajo la guía de figuras como Rodolfo Fernández, sigue siendo un pilar histórico y educativo fundamental.",
+    info_label: "Planifica tu visita",
+    info_title: "Información práctica y recomendaciones",
+    card_hours_title: "Horarios & Acceso",
+    card_hours_1: "<strong>Horario general:</strong> Todos los días de 10:00 a 18:00 hrs",
+    card_hours_2: "<strong>Recorridos:</strong> Ideal para explorar patios coloniales, murales y exposiciones temporales",
+    card_hours_3: "<strong>Ambiente:</strong> Espacio tranquilo propicio para la contemplación artística",
+    card_tips_title: "Tips para el Viajero",
+    card_tips_1: "<strong>Fotografía:</strong> Los pasillos y arquerías interiores ofrecen perspectivas arquitectónicas únicas",
+    card_tips_2: "<strong>Exposiciones:</strong> Consulta las muestras temporales vigentes al llegar",
+    card_tips_3: "<strong>Cercanía:</strong> Ubicado a muy pocos minutos caminando desde el Jardín Principal",
+    card_loc_title: "Ubicación & Web",
+    card_loc_web: "<strong>Sitio oficial:</strong> <a href=\"https://www.instituto-allende.edu.mx\" target=\"_blank\">instituto-allende.edu.mx</a>",
+    card_loc_addr: "<strong>Ubicación:</strong> Ancha de San Antonio 20, Zona Centro, San Miguel de Allende, Gto.",
+    highlight_title: "¿Listo para descubrir más?",
+    highlight_desc: "Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.",
+    highlight_btn: "Ver catálogo",
+    video_label: "Experiencia visual",
+    video_title: "Conoce el Instituto Allende",
+    video_iframe_title: "Video Instituto Allende",
+    video_p1: "Video cortesía de <strong>Portal SMA</strong>",
+    video_p2: "Un recorrido por la historia, los patios y el legado cultural de este instituto.",
+    video_btn: "Más sitios →",
+    credits_source: "Fuente e información oficial:",
+    credits_link: "Instituto Allende / Vive San Miguel de Allende",
+    credits_sub: "Vive San Miguel · Historia y Cultura"
+  },
+  en: {
+    page_title: "Instituto Allende · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "Education · Art · History",
+    hero_title: "Instituto Allende",
+    hero_sub: "A historic beacon of art education in San Miguel de Allende. A place of inspiration founded in the 20th century inside a former colonial building.",
+    pill_center: "Cultural Center",
+    pill_hours: "Daily · 10:00–18:00",
+    pill_topic: "Art & History",
+    hero_img_alt: "Instituto Allende",
+    badge_founded_label: "Founded in",
+    badge_city_top: "San Miguel de",
+    badge_city_bot: "Allende",
+    intro_label: "Origins",
+    intro_title: "A New Chapter for San Miguel",
+    intro_p1: "San Miguel de Allende was founded in 1542, reached its peak in the 18th century, and went through a severe economic downturn when the War of Independence broke out in the early 19th century. Wealthy families moved away and the town's future fell into uncertainty.",
+    intro_p2: "Encouraged by intellectuals Alfonso Reyes and José Vasconcelos, Peruvian diplomat and artist Felipe Cossío del Pomar visited San Miguel in 1927. Captivated by the quality of the light, he founded the first fine arts school, ushering in a new cultural era.",
+    timeline_label: "Historical Evolution",
+    timeline_title: "From Founding to International Prestige",
+    tl_1927_title: "1927 — The Discovery",
+    tl_1927_desc: "Felipe Cossío del Pomar arrives in San Miguel drawn by its light and envisions a fine arts space inside a former convent.",
+    tl_recon_title: "Years of Reconstruction",
+    tl_recon_desc: "After a temporary absence, Cossío finds the project in ruins and sets out on an ambitious plan to build a world-class art school.",
+    tl_1950_title: "1950 — Founding of Instituto Allende",
+    tl_1950_desc: "Alongside a new team—Stirling Dickinson, Enrique Fernández Martínez, and Nell Harris—Instituto Allende is formally established.",
+    tl_now_title: "Today — Living Legacy",
+    tl_now_desc: "Preserving its founders' vision under leaders such as Rodolfo Fernández, it remains a cornerstone of local history and arts education.",
+    info_label: "Plan Your Visit",
+    info_title: "Practical Info & Recommendations",
+    card_hours_title: "Hours & Access",
+    card_hours_1: "<strong>General hours:</strong> Daily from 10:00 am to 6:00 pm",
+    card_hours_2: "<strong>Visits:</strong> Great for exploring colonial courtyards, murals, and temporary exhibitions",
+    card_hours_3: "<strong>Atmosphere:</strong> A peaceful setting well suited for artistic contemplation",
+    card_tips_title: "Traveler Tips",
+    card_tips_1: "<strong>Photography:</strong> Inner corridors and arcades offer distinctive architectural angles",
+    card_tips_2: "<strong>Exhibitions:</strong> Check current temporary shows when you arrive",
+    card_tips_3: "<strong>Proximity:</strong> Just a short walk from Jardín Principal",
+    card_loc_title: "Location & Website",
+    card_loc_web: "<strong>Official website:</strong> <a href=\"https://www.instituto-allende.edu.mx\" target=\"_blank\">instituto-allende.edu.mx</a>",
+    card_loc_addr: "<strong>Location:</strong> 20 Ancha de San Antonio, Centro, San Miguel de Allende, Gto.",
+    highlight_title: "Ready to Discover More?",
+    highlight_desc: "Explore the full catalog of points of interest in San Miguel de Allende and build your own cultural route.",
+    highlight_btn: "View catalog",
+    video_label: "Visual Experience",
+    video_title: "Discover Instituto Allende",
+    video_iframe_title: "Instituto Allende Video",
+    video_p1: "Video courtesy of <strong>Portal SMA</strong>",
+    video_p2: "A look at the history, courtyards, and cultural legacy of this institute.",
+    video_btn: "More places →",
+    credits_source: "Official source & information:",
+    credits_link: "Instituto Allende / Vive San Miguel de Allende",
+    credits_sub: "Vive San Miguel · History & Culture"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
