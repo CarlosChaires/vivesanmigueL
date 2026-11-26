@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Univerciudad UG: Casa El Nigromante · Vive San Miguel</title>
+<title data-i18n="page_title">Univerciudad UG: Casa El Nigromante · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -110,6 +110,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .nav-back {
   display: inline-flex;
@@ -129,6 +130,33 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px;
@@ -526,14 +554,18 @@ nav {
 
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -544,26 +576,26 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">Universidad · Cultura · Historia</div>
-      <h1>Univerciudad UG: Casa El Nigromante</h1>
-      <p class="hero-sub">El hogar natal de Ignacio Ramírez "El Nigromante". Un espacio universitario de arte, exposiciones y pensamiento humanista en el corazón de San Miguel.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">Universidad · Cultura · Historia</div>
+      <h1 data-i18n="hero_title">Univerciudad UG: Casa El Nigromante</h1>
+      <p class="hero-sub" data-i18n="hero_sub">El hogar natal de Ignacio Ramírez "El Nigromante". Un espacio universitario de arte, exposiciones y pensamiento humanista en el corazón de San Miguel.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Espacio Cultural</strong></span>
-        <span class="pill">Universidad de Guanajuato</span>
-        <span class="pill">Centro Histórico</span>
+        <span class="pill"><strong data-i18n="pill_space">Espacio Cultural</strong></span>
+        <span class="pill" data-i18n="pill_ug">Universidad de Guanajuato</span>
+        <span class="pill" data-i18n="pill_zone">Centro Histórico</span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Univerciudad UG Casa El Nigromante">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-11.png?w=835" alt="Univerciudad UG Casa El Nigromante" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Casa Natal del Insigne</span>
-            <strong>Siglo XIX</strong>
+            <span data-i18n="badge_birth_label">Casa Natal del Insigne</span>
+            <strong data-i18n="badge_birth_val">Siglo XIX</strong>
           </div>
           <div style="text-align:right">
-            <span>Cultura UG</span>
-            <strong style="font-size:0.95rem">Centro</strong>
+            <span data-i18n="badge_ug_label">Cultura UG</span>
+            <strong style="font-size:0.95rem" data-i18n="badge_ug_val">Centro</strong>
           </div>
         </div>
       </div>
@@ -572,67 +604,67 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">Patrimonio vivo</div>
-    <h2>Cultura y legado liberal en San Miguel</h2>
-    <p class="prose">La <strong>Univerciudad UG: Casa El Nigromante</strong> es un espacio cultural de gran relevancia ubicado en la casa natal de <strong>Ignacio Ramírez "El Nigromante"</strong>, una de las plumas y figuras más lúcidas y radicales del liberalismo y el periodismo en México.</p>
-    <p class="prose">Como parte de los proyectos de extensión de la Universidad de Guanajuato (UG), este recinto vincula a la comunidad con el arte contemporáneo, la formación académica y la difusión del pensamiento crítico a través de talleres y exposiciones temporales.</p>
+    <div class="section-label" data-i18n="intro_label">Patrimonio vivo</div>
+    <h2 data-i18n="intro_title">Cultura y legado liberal en San Miguel</h2>
+    <p class="prose" data-i18n-html="intro_p1">La <strong>Univerciudad UG: Casa El Nigromante</strong> es un espacio cultural de gran relevancia ubicado en la casa natal de <strong>Ignacio Ramírez "El Nigromante"</strong>, una de las plumas y figuras más lúcidas y radicales del liberalismo y el periodismo en México.</p>
+    <p class="prose" data-i18n="intro_p2">Como parte de los proyectos de extensión de la Universidad de Guanajuato (UG), este recinto vincula a la comunidad con el arte contemporáneo, la formación académica y la difusión del pensamiento crítico a través de talleres y exposiciones temporales.</p>
   </section>
 
   <!-- POR QUÉ VISITAR -->
   <section class="section reveal">
     <div class="why-visit-box">
-      <h3>¿Por qué visitar la Casa El Nigromante?</h3>
-      <p>Es un sitio imperdible porque une la memoria histórica de uno de los intelectuales más importantes de la Reforma con la vitalidad de la vida universitaria actual. Visitarlo te permite adentrarte en los muros donde nació Ignacio Ramírez, al tiempo que disfrutas de una agenda artística dinámica y de gran calidad en un ambiente arquitectónico colonial excepcional.</p>
+      <h3 data-i18n="why_title">¿Por qué visitar la Casa El Nigromante?</h3>
+      <p data-i18n="why_p1">Es un sitio imperdible porque une la memoria histórica de uno de los intelectuales más importantes de la Reforma con la vitalidad de la vida universitaria actual. Visitarlo te permite adentrarte en los muros donde nació Ignacio Ramírez, al tiempo que disfrutas de una agenda artística dinámica y de gran calidad en un ambiente arquitectónico colonial excepcional.</p>
     </div>
   </section>
 
   <!-- QUÉ ENCONTRARÁS + CONSEJOS + LÍNEA DEL TIEMPO -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Todo lo que necesitas saber</h2>
+    <div class="section-label" data-i18n="info_label">Planifica tu visita</div>
+    <h2 data-i18n="info_title">Todo lo que necesitas saber</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🎨</div>
-        <h3>Qué encontrarás</h3>
+        <h3 data-i18n="card_find_title">Qué encontrarás</h3>
         <ul>
-          <li>Exposiciones temporales de plástica y fotografía</li>
-          <li>Talleres de formación artística y literaria</li>
-          <li>Conferencias magistrales y eventos editoriales</li>
-          <li>Un entorno arquitectónico de gran valor histórico</li>
+          <li data-i18n="card_find_1">Exposiciones temporales de plástica y fotografía</li>
+          <li data-i18n="card_find_2">Talleres de formación artística y literaria</li>
+          <li data-i18n="card_find_3">Conferencias magistrales y eventos editoriales</li>
+          <li data-i18n="card_find_4">Un entorno arquitectónico de gran valor histórico</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">💡</div>
-        <h3>Consejos útiles</h3>
+        <h3 data-i18n="card_tips_title">Consejos útiles</h3>
         <ul>
-          <li>Consulta la cartelera vigente de eventos de la UG antes de asistir</li>
-          <li>Disfruta el recorrido con calma para apreciar las muestras artísticas</li>
-          <li>Ideal para combinar con una caminata cultural por el centro</li>
+          <li data-i18n="card_tips_1">Consulta la cartelera vigente de eventos de la UG antes de asistir</li>
+          <li data-i18n="card_tips_2">Disfruta el recorrido con calma para apreciar las muestras artísticas</li>
+          <li data-i18n="card_tips_3">Ideal para combinar con una caminata cultural por el centro</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">✨</div>
-        <h3>Tip de guía</h3>
-        <p>Acércate al personal del recinto; suelen brindar excelentes detalles sobre el activismo y la obra literaria de Ignacio Ramírez que enriquecerán por completo tu visita.</p>
+        <h3 data-i18n="card_guide_title">Tip de guía</h3>
+        <p data-i18n="card_guide_text">Acércate al personal del recinto; suelen brindar excelentes detalles sobre el activismo y la obra literaria de Ignacio Ramírez que enriquecerán por completo tu visita.</p>
       </div>
     </div>
 
     <!-- LÍNEA DEL TIEMPO -->
     <div class="timeline-block">
-      <div class="section-label" style="margin-bottom:8px">Evolución histórica</div>
-      <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--stone); margin-bottom:16px;">Hitos del Recinto</h3>
+      <div class="section-label" style="margin-bottom:8px" data-i18n="timeline_label">Evolución histórica</div>
+      <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--stone); margin-bottom:16px;" data-i18n="timeline_title">Hitos del Recinto</h3>
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-year">1818</div>
-          <div class="timeline-text">Nace en esta finca urbana Ignacio Ramírez "El Nigromante", destacado escritor, poeta, abogado y político liberal mexicano.</div>
+          <div class="timeline-text" data-i18n="tl_1818">Nace en esta finca urbana Ignacio Ramírez "El Nigromante", destacado escritor, poeta, abogado y político liberal mexicano.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-year">Época Contemporánea</div>
-          <div class="timeline-text">El inmueble es rescatado y acondicionado bajo el esquema institucional de "Univerciudad" por la Universidad de Guanajuato.</div>
+          <div class="timeline-year" data-i18n="tl_contemp_year">Época Contemporánea</div>
+          <div class="timeline-text" data-i18n="tl_contemp_text">El inmueble es rescatado y acondicionado bajo el esquema institucional de "Univerciudad" por la Universidad de Guanajuato.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-year">Actualidad</div>
-          <div class="timeline-text">Funciona como un punto de encuentro dinámico dedicado a la difusión artística, talleres comunitarios y eventos académicos.</div>
+          <div class="timeline-year" data-i18n="tl_now_year">Actualidad</div>
+          <div class="timeline-text" data-i18n="tl_now_text">Funciona como un punto de encuentro dinámico dedicado a la difusión artística, talleres comunitarios y eventos académicos.</div>
         </div>
       </div>
     </div>
@@ -641,39 +673,191 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.</p>
+      <h3 data-i18n="highlight_title">¿Listo para descubrir más?</h3>
+      <p data-i18n="highlight_desc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
+      <span data-i18n="highlight_btn">Ver catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce Casa El Nigromante</h2>
+    <div class="section-label" data-i18n="video_label">Experiencia visual</div>
+    <h2 data-i18n="video_title">Conoce Casa El Nigromante</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/I9lA28W0cAY" allowfullscreen title="Video Univerciudad UG Casa El Nigromante"></iframe>
+        <iframe src="https://www.youtube.com/embed/I9lA28W0cAY" allowfullscreen title="Video Univerciudad UG Casa El Nigromante" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>SQ Radio San Miguel</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Una mirada a las actividades culturales y al significado de este espacio para la Universidad de Guanajuato.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p data-i18n-html="video_p1">Video cortesía de <strong>SQ Radio San Miguel</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Una mirada a las actividades culturales y al significado de este espacio para la Universidad de Guanajuato.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente e información: <a href="http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante" target="_blank">Universidad de Guanajuato</a></p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Arte y patrimonio universitario</p>
+    <p><span data-i18n="credits_source">Fuente e información:</span> <a href="http://www.cultura.ugto.mx/eventos/univerciudad-ug-casa-el-nigromante" target="_blank" data-i18n="credits_ug">Universidad de Guanajuato</a></p>
+    <p style="margin-top:6px; opacity:0.7" data-i18n="credits_sub">Vive San Miguel · Arte y patrimonio universitario</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Univerciudad UG: Casa El Nigromante · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "Universidad · Cultura · Historia",
+    hero_title: "Univerciudad UG: Casa El Nigromante",
+    hero_sub: "El hogar natal de Ignacio Ramírez \"El Nigromante\". Un espacio universitario de arte, exposiciones y pensamiento humanista en el corazón de San Miguel.",
+    pill_space: "Espacio Cultural",
+    pill_ug: "Universidad de Guanajuato",
+    pill_zone: "Centro Histórico",
+    hero_img_alt: "Univerciudad UG Casa El Nigromante",
+    badge_birth_label: "Casa Natal del Insigne",
+    badge_birth_val: "Siglo XIX",
+    badge_ug_label: "Cultura UG",
+    badge_ug_val: "Centro",
+    intro_label: "Patrimonio vivo",
+    intro_title: "Cultura y legado liberal en San Miguel",
+    intro_p1: "La <strong>Univerciudad UG: Casa El Nigromante</strong> es un espacio cultural de gran relevancia ubicado en la casa natal de <strong>Ignacio Ramírez \"El Nigromante\"</strong>, una de las plumas y figuras más lúcidas y radicales del liberalismo y el periodismo en México.",
+    intro_p2: "Como parte de los proyectos de extensión de la Universidad de Guanajuato (UG), este recinto vincula a la comunidad con el arte contemporáneo, la formación académica y la difusión del pensamiento crítico a través de talleres y exposiciones temporales.",
+    why_title: "¿Por qué visitar la Casa El Nigromante?",
+    why_p1: "Es un sitio imperdible porque une la memoria histórica de uno de los intelectuales más importantes de la Reforma con la vitalidad de la vida universitaria actual. Visitarlo te permite adentrarte en los muros donde nació Ignacio Ramírez, al tiempo que disfrutas de una agenda artística dinámica y de gran calidad en un ambiente arquitectónico colonial excepcional.",
+    info_label: "Planifica tu visita",
+    info_title: "Todo lo que necesitas saber",
+    card_find_title: "Qué encontrarás",
+    card_find_1: "Exposiciones temporales de plástica y fotografía",
+    card_find_2: "Talleres de formación artística y literaria",
+    card_find_3: "Conferencias magistrales y eventos editoriales",
+    card_find_4: "Un entorno arquitectónico de gran valor histórico",
+    card_tips_title: "Consejos útiles",
+    card_tips_1: "Consulta la cartelera vigente de eventos de la UG antes de asistir",
+    card_tips_2: "Disfruta el recorrido con calma para apreciar las muestras artísticas",
+    card_tips_3: "Ideal para combinar con una caminata cultural por el centro",
+    card_guide_title: "Tip de guía",
+    card_guide_text: "Acércate al personal del recinto; suelen brindar excelentes detalles sobre el activismo y la obra literaria de Ignacio Ramírez que enriquecerán por completo tu visita.",
+    timeline_label: "Evolución histórica",
+    timeline_title: "Hitos del Recinto",
+    tl_1818: "Nace en esta finca urbana Ignacio Ramírez \"El Nigromante\", destacado escritor, poeta, abogado y político liberal mexicano.",
+    tl_contemp_year: "Época Contemporánea",
+    tl_contemp_text: "El inmueble es rescatado y acondicionado bajo el esquema institucional de \"Univerciudad\" por la Universidad de Guanajuato.",
+    tl_now_year: "Actualidad",
+    tl_now_text: "Funciona como un punto de encuentro dinámico dedicado a la difusión artística, talleres comunitarios y eventos académicos.",
+    highlight_title: "¿Listo para descubrir más?",
+    highlight_desc: "Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.",
+    highlight_btn: "Ver catálogo",
+    video_label: "Experiencia visual",
+    video_title: "Conoce Casa El Nigromante",
+    video_iframe_title: "Video Univerciudad UG Casa El Nigromante",
+    video_p1: "Video cortesía de <strong>SQ Radio San Miguel</strong>",
+    video_p2: "Una mirada a las actividades culturales y al significado de este espacio para la Universidad de Guanajuato.",
+    video_btn: "Más sitios →",
+    credits_source: "Fuente e información:",
+    credits_ug: "Universidad de Guanajuato",
+    credits_sub: "Vive San Miguel · Arte y patrimonio universitario"
+  },
+  en: {
+    page_title: "Univerciudad UG: Casa El Nigromante · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "University · Culture · History",
+    hero_title: "Univerciudad UG: Casa El Nigromante",
+    hero_sub: "The birthplace of Ignacio Ramírez \"El Nigromante.\" A university space for art, exhibitions, and humanist thought in the heart of San Miguel.",
+    pill_space: "Cultural Space",
+    pill_ug: "University of Guanajuato",
+    pill_zone: "Historic Center",
+    hero_img_alt: "Univerciudad UG Casa El Nigromante",
+    badge_birth_label: "Birthplace of the Scholar",
+    badge_birth_val: "19th Century",
+    badge_ug_label: "UG Culture",
+    badge_ug_val: "Downtown",
+    intro_label: "Living Heritage",
+    intro_title: "Culture and Liberal Legacy in San Miguel",
+    intro_p1: "<strong>Univerciudad UG: Casa El Nigromante</strong> is a prominent cultural venue located in the birthplace of <strong>Ignacio Ramírez \"El Nigromante,\"</strong> one of the sharpest and most influential writers and figures of liberalism and journalism in Mexico.",
+    intro_p2: "As part of the University of Guanajuato's (UG) outreach initiatives, this venue connects the community with contemporary art, academic learning, and critical thought through workshops and temporary exhibitions.",
+    why_title: "Why Visit Casa El Nigromante?",
+    why_p1: "It is a must-visit spot because it brings together the historical memory of one of the Reform era's key intellectuals and the energy of today's university life. Visiting lets you step inside the walls where Ignacio Ramírez was born while enjoying a dynamic, high-caliber arts calendar in an exceptional colonial setting.",
+    info_label: "Plan Your Visit",
+    info_title: "Everything You Need to Know",
+    card_find_title: "What You'll Find",
+    card_find_1: "Temporary visual arts and photography exhibitions",
+    card_find_2: "Artistic and literary workshops",
+    card_find_3: "Keynote lectures and book/editorial events",
+    card_find_4: "An architectural setting of strong historical value",
+    card_tips_title: "Helpful Tips",
+    card_tips_1: "Check UG's current event calendar before your visit",
+    card_tips_2: "Take your time exploring the exhibitions at a relaxed pace",
+    card_tips_3: "Great to combine with a cultural walk around downtown",
+    card_guide_title: "Guide Tip",
+    card_guide_text: "Chat with the venue staff; they often share great insights into Ignacio Ramírez's activism and literary work that will enrich your visit.",
+    timeline_label: "Historical Evolution",
+    timeline_title: "Venue Milestones",
+    tl_1818: "Ignacio Ramírez \"El Nigromante\"—renowned Mexican writer, poet, lawyer, and liberal politician—is born in this property.",
+    tl_contemp_year: "Contemporary Era",
+    tl_contemp_text: "The University of Guanajuato restores and adapts the building under its institutional \"Univerciudad\" model.",
+    tl_now_year: "Today",
+    tl_now_text: "Operates as a lively hub for arts outreach, community workshops, and academic events.",
+    highlight_title: "Ready to Discover More?",
+    highlight_desc: "Explore the full catalog of points of interest in San Miguel de Allende and build your own route.",
+    highlight_btn: "View catalog",
+    video_label: "Visual Experience",
+    video_title: "Discover Casa El Nigromante",
+    video_iframe_title: "Univerciudad UG Casa El Nigromante Video",
+    video_p1: "Video courtesy of <strong>SQ Radio San Miguel</strong>",
+    video_p2: "A look at the cultural programming and what this space represents for the University of Guanajuato.",
+    video_btn: "More places →",
+    credits_source: "Source & information:",
+    credits_ug: "University of Guanajuato",
+    credits_sub: "Vive San Miguel · University art & heritage"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
