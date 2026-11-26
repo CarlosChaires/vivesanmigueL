@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Centro Cultural El Nigromante · Vive San Miguel</title>
+<title data-i18n="page_title">Centro Cultural El Nigromante · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -110,6 +110,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .nav-back {
   display: inline-flex;
@@ -129,6 +130,33 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px;
@@ -522,14 +550,18 @@ nav {
 
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -540,26 +572,26 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">INBA · Arte y Cultura</div>
-      <h1>Centro Cultural Ignacio Ramírez “El Nigromante”</h1>
-      <p class="hero-sub">Uno de los espacios fundamentales del quehacer artístico de San Miguel. Exposiciones, talleres y murales históricos en un antiguo convento del siglo XVIII.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">INBA · Arte y Cultura</div>
+      <h1 data-i18n="hero_title">Centro Cultural Ignacio Ramírez “El Nigromante”</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Uno de los espacios fundamentales del quehacer artístico de San Miguel. Exposiciones, talleres y murales históricos en un antiguo convento del siglo XVIII.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Entrada libre</strong></span>
-        <span class="pill">Mar–Dom · 10:00–18:00</span>
-        <span class="pill">Lunes cerrado</span>
+        <span class="pill"><strong data-i18n="pill_admission">Entrada libre</strong></span>
+        <span class="pill" data-i18n="pill_hours">Mar–Dom · 10:00–18:00</span>
+        <span class="pill" data-i18n="pill_closed">Lunes cerrado</span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-1.png?w=1024" alt="Centro Cultural El Nigromante">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-1.png?w=1024" alt="Centro Cultural El Nigromante" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Instituto Nacional</span>
-            <strong>de Bellas Artes</strong>
+            <span data-i18n="badge_inst_label">Instituto Nacional</span>
+            <strong data-i18n="badge_inst_val">de Bellas Artes</strong>
           </div>
           <div style="text-align:right">
-            <span>Hernández Macías 75</span>
-            <strong style="font-size:0.95rem">Centro</strong>
+            <span data-i18n="badge_addr_label">Hernández Macías 75</span>
+            <strong style="font-size:0.95rem" data-i18n="badge_zone_val">Centro</strong>
           </div>
         </div>
       </div>
@@ -568,90 +600,90 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">Espacio de creación</div>
-    <h2>Un faro cultural de San Miguel</h2>
-    <p class="prose">San Miguel de Allende atrae a creadores de todo el mundo. En este contexto, el <strong>Centro Cultural Ignacio Ramírez “El Nigromante”</strong> del Instituto Nacional de Bellas Artes es uno de los espacios fundamentales del quehacer artístico de la región y ha formado a varias generaciones de artistas.</p>
+    <div class="section-label" data-i18n="intro_label">Espacio de creación</div>
+    <h2 data-i18n="intro_title">Un faro cultural de San Miguel</h2>
+    <p class="prose" data-i18n-html="intro_p1">San Miguel de Allende atrae a creadores de todo el mundo. En este contexto, el <strong>Centro Cultural Ignacio Ramírez “El Nigromante”</strong> del Instituto Nacional de Bellas Artes es uno de los espacios fundamentales del quehacer artístico de la región y ha formado a varias generaciones de artistas.</p>
   </section>
 
   <!-- HISTORIA -->
   <section class="section reveal">
-    <div class="section-label">Línea del tiempo</div>
-    <h2>Del convento al centro cultural</h2>
+    <div class="section-label" data-i18n="timeline_label">Línea del tiempo</div>
+    <h2 data-i18n="timeline_title">Del convento al centro cultural</h2>
     <div class="timeline">
       <div class="timeline-item">
-        <h3>1755–1765 — Construcción</h3>
-        <p>Se construye como Convento Real de la Concepción (conocido como “Las Monjas”). Fundado por Sor María Josefa Lina de la Canal y Hervás. Arquitecto: Francisco Martínez Gudiño.</p>
+        <h3 data-i18n="tl_1755_title">1755–1765 — Construcción</h3>
+        <p data-i18n="tl_1755_desc">Se construye como Convento Real de la Concepción (conocido como “Las Monjas”). Fundado por Sor María Josefa Lina de la Canal y Hervás. Arquitecto: Francisco Martínez Gudiño.</p>
       </div>
       <div class="timeline-item">
-        <h3>Siglo XIX — Colegio y Reforma</h3>
-        <p>Funcionó como convento hasta la Reforma. Luego fue Colegio de Primaria y, en 1912, colegio para señoritas dirigido por monjas españolas.</p>
+        <h3 data-i18n="tl_19c_title">Siglo XIX — Colegio y Reforma</h3>
+        <p data-i18n="tl_19c_desc">Funcionó como convento hasta la Reforma. Luego fue Colegio de Primaria y, en 1912, colegio para señoritas dirigido por monjas españolas.</p>
       </div>
       <div class="timeline-item">
-        <h3>1914–1936 — Cuartel</h3>
-        <p>Durante la Revolución se ocupó como cuartel militar.</p>
+        <h3 data-i18n="tl_1914_title">1914–1936 — Cuartel</h3>
+        <p data-i18n="tl_1914_desc">Durante la Revolución se ocupó como cuartel militar.</p>
       </div>
       <div class="timeline-item">
-        <h3>1938–1962 — Escuela de Bellas Artes</h3>
-        <p>Felipe Cossío del Pomar funda la Escuela Universitaria de Bellas Artes. En 1961 se reconstruye y adapta. En agosto de 1962 se inaugura como Centro Cultural “El Nigromante”.</p>
+        <h3 data-i18n="tl_1938_title">1938–1962 — Escuela de Bellas Artes</h3>
+        <p data-i18n="tl_1938_desc">Felipe Cossío del Pomar funda la Escuela Universitaria de Bellas Artes. En 1961 se reconstruye y adapta. En agosto de 1962 se inaugura como Centro Cultural “El Nigromante”.</p>
       </div>
     </div>
   </section>
 
   <!-- MURALES -->
   <section class="section reveal">
-    <div class="section-label">Patrimonio artístico</div>
-    <h2>Los murales del edificio</h2>
+    <div class="section-label" data-i18n="murals_label">Patrimonio artístico</div>
+    <h2 data-i18n="murals_title">Los murales del edificio</h2>
     <div class="murales">
       <div class="mural-item">
-        <h4>Las Lavanderas</h4>
-        <p>Eleanor Cohen, 1941. Admirado por Gabriela Mistral mientras la artista lo pintaba en el claustro.</p>
+        <h4 data-i18n="mural_1_title">Las Lavanderas</h4>
+        <p data-i18n="mural_1_desc">Eleanor Cohen, 1941. Admirado por Gabriela Mistral mientras la artista lo pintaba en el claustro.</p>
       </div>
       <div class="mural-item">
-        <h4>Mural Siqueiros</h4>
-        <p>David Alfaro Siqueiros, 1948. “Vida y Obra del Generalísimo don Ignacio de Allende”. Inconcluso.</p>
+        <h4 data-i18n="mural_2_title">Mural Siqueiros</h4>
+        <p data-i18n="mural_2_desc">David Alfaro Siqueiros, 1948. “Vida y Obra del Generalísimo don Ignacio de Allende”. Inconcluso.</p>
       </div>
       <div class="mural-item">
-        <h4>El Fanatismo del Pueblo</h4>
-        <p>Pedro Martínez, 1939. También conocido como “La Caza del Vampiro”.</p>
+        <h4 data-i18n="mural_3_title">El Fanatismo del Pueblo</h4>
+        <p data-i18n="mural_3_desc">Pedro Martínez, 1939. También conocido como “La Caza del Vampiro”.</p>
       </div>
       <div class="mural-item">
-        <h4>Los Tejedores · La Cantina</h4>
-        <p>Pedro Martínez, 1940–1941. Junto con “Guanajuato Almacigo de Patriotas”.</p>
+        <h4 data-i18n="mural_4_title">Los Tejedores · La Cantina</h4>
+        <p data-i18n="mural_4_desc">Pedro Martínez, 1940–1941. Junto con “Guanajuato Almacigo de Patriotas”.</p>
       </div>
     </div>
   </section>
 
   <!-- ACTIVIDADES + HORARIOS -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Todo lo que necesitas saber</h2>
+    <div class="section-label" data-i18n="info_label">Planifica tu visita</div>
+    <h2 data-i18n="info_title">Todo lo que necesitas saber</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">🕐</div>
-        <h3>Horarios</h3>
+        <h3 data-i18n="card_hours_title">Horarios</h3>
         <ul>
-          <li><strong>Martes a domingo:</strong> 10:00 – 18:00 hrs</li>
-          <li><strong>Lunes:</strong> Cerrado</li>
-          <li><strong>Entrada:</strong> Libre / Gratuita</li>
-          <li style="font-size:0.82rem; opacity:0.7;">Horarios sujetos a cambios</li>
+          <li data-i18n-html="card_hours_1"><strong>Martes a domingo:</strong> 10:00 – 18:00 hrs</li>
+          <li data-i18n-html="card_hours_2"><strong>Lunes:</strong> Cerrado</li>
+          <li data-i18n-html="card_hours_3"><strong>Entrada:</strong> Libre / Gratuita</li>
+          <li style="font-size:0.82rem; opacity:0.7;" data-i18n="card_hours_4">Horarios sujetos a cambios</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">🎨</div>
-        <h3>Qué encontrarás</h3>
+        <h3 data-i18n="card_find_title">Qué encontrarás</h3>
         <ul>
-          <li>3 salas de exposiciones</li>
-          <li>Talleres de arte y artesanías</li>
-          <li>Clases de música y ballet</li>
-          <li>Conciertos y conferencias</li>
-          <li>Murales históricos</li>
+          <li data-i18n="card_find_1">3 salas de exposiciones</li>
+          <li data-i18n="card_find_2">Talleres de arte y artesanías</li>
+          <li data-i18n="card_find_3">Clases de música y ballet</li>
+          <li data-i18n="card_find_4">Conciertos y conferencias</li>
+          <li data-i18n="card_find_5">Murales históricos</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">📍</div>
-        <h3>Ubicación & tip</h3>
-        <p style="margin-bottom:10px"><strong>Dr. Hernández Macías 75</strong><br>Centro, San Miguel de Allende</p>
-        <p style="font-size:0.88rem; color:var(--cantera);"><strong>Tip:</strong> No te pierdas el mural de Siqueiros y “Las Lavanderas” de Eleanor Cohen. Ideal para combinar con un paseo por el Centro.</p>
+        <h3 data-i18n="card_loc_title">Ubicación & tip</h3>
+        <p style="margin-bottom:10px" data-i18n-html="card_loc_addr"><strong>Dr. Hernández Macías 75</strong><br>Centro, San Miguel de Allende</p>
+        <p style="font-size:0.88rem; color:var(--cantera);" data-i18n-html="card_loc_tip"><strong>Tip:</strong> No te pierdas el mural de Siqueiros y “Las Lavanderas” de Eleanor Cohen. Ideal para combinar con un paseo por el Centro.</p>
       </div>
     </div>
   </section>
@@ -659,39 +691,217 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
+      <h3 data-i18n="highlight_title">¿Listo para descubrir más?</h3>
+      <p data-i18n="highlight_desc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
+      <span data-i18n="highlight_btn">Ver catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Conoce el centro</h2>
+    <div class="section-label" data-i18n="video_label">Experiencia visual</div>
+    <h2 data-i18n="video_title">Conoce el centro</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/q_5EiihBsW0" allowfullscreen title="Video Centro Cultural El Nigromante"></iframe>
+        <iframe src="https://www.youtube.com/embed/q_5EiihBsW0" allowfullscreen title="Video Centro Cultural El Nigromante" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Video cortesía de <strong>TV LIBERTAD MX</strong></p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Un recorrido por este espacio clave del arte y la cultura en San Miguel de Allende.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p data-i18n-html="video_p1">Video cortesía de <strong>TV LIBERTAD MX</strong></p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Un recorrido por este espacio clave del arte y la cultura en San Miguel de Allende.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente: <a href="https://lugares.inah.gob.mx/es/node/4519" target="_blank">INAH / Vive San Miguel de Allende</a></p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Patrimonio de la Humanidad</p>
+    <p><span data-i18n="credits_source">Fuente:</span> <a href="https://lugares.inah.gob.mx/es/node/4519" target="_blank" data-i18n="credits_link">INAH / Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7" data-i18n="credits_sub">Vive San Miguel · Patrimonio de la Humanidad</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Centro Cultural El Nigromante · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "INBA · Arte y Cultura",
+    hero_title: "Centro Cultural Ignacio Ramírez “El Nigromante”",
+    hero_sub: "Uno de los espacios fundamentales del quehacer artístico de San Miguel. Exposiciones, talleres y murales históricos en un antiguo convento del siglo XVIII.",
+    pill_admission: "Entrada libre",
+    pill_hours: "Mar–Dom · 10:00–18:00",
+    pill_closed: "Lunes cerrado",
+    hero_img_alt: "Centro Cultural El Nigromante",
+    badge_inst_label: "Instituto Nacional",
+    badge_inst_val: "de Bellas Artes",
+    badge_addr_label: "Hernández Macías 75",
+    badge_zone_val: "Centro",
+    intro_label: "Espacio de creación",
+    intro_title: "Un faro cultural de San Miguel",
+    intro_p1: "San Miguel de Allende atrae a creadores de todo el mundo. En este contexto, el <strong>Centro Cultural Ignacio Ramírez “El Nigromante”</strong> del Instituto Nacional de Bellas Artes es uno de los espacios fundamentales del quehacer artístico de la región y ha formado a varias generaciones de artistas.",
+    timeline_label: "Línea del tiempo",
+    timeline_title: "Del convento al centro cultural",
+    tl_1755_title: "1755–1765 — Construcción",
+    tl_1755_desc: "Se construye como Convento Real de la Concepción (conocido como “Las Monjas”). Fundado por Sor María Josefa Lina de la Canal y Hervás. Arquitecto: Francisco Martínez Gudiño.",
+    tl_19c_title: "Siglo XIX — Colegio y Reforma",
+    tl_19c_desc: "Funcionó como convento hasta la Reforma. Luego fue Colegio de Primaria y, en 1912, colegio para señoritas dirigido por monjas españolas.",
+    tl_1914_title: "1914–1936 — Cuartel",
+    tl_1914_desc: "Durante la Revolución se ocupó como cuartel militar.",
+    tl_1938_title: "1938–1962 — Escuela de Bellas Artes",
+    tl_1938_desc: "Felipe Cossío del Pomar funda la Escuela Universitaria de Bellas Artes. En 1961 se reconstruye y adapta. En agosto de 1962 se inaugura como Centro Cultural “El Nigromante”.",
+    murals_label: "Patrimonio artístico",
+    murals_title: "Los murales del edificio",
+    mural_1_title: "Las Lavanderas",
+    mural_1_desc: "Eleanor Cohen, 1941. Admirado por Gabriela Mistral mientras la artista lo pintaba en el claustro.",
+    mural_2_title: "Mural Siqueiros",
+    mural_2_desc: "David Alfaro Siqueiros, 1948. “Vida y Obra del Generalísimo don Ignacio de Allende”. Inconcluso.",
+    mural_3_title: "El Fanatismo del Pueblo",
+    mural_3_desc: "Pedro Martínez, 1939. También conocido como “La Caza del Vampiro”.",
+    mural_4_title: "Los Tejedores · La Cantina",
+    mural_4_desc: "Pedro Martínez, 1940–1941. Junto con “Guanajuato Almacigo de Patriotas”.",
+    info_label: "Planifica tu visita",
+    info_title: "Todo lo que necesitas saber",
+    card_hours_title: "Horarios",
+    card_hours_1: "<strong>Martes a domingo:</strong> 10:00 – 18:00 hrs",
+    card_hours_2: "<strong>Lunes:</strong> Cerrado",
+    card_hours_3: "<strong>Entrada:</strong> Libre / Gratuita",
+    card_hours_4: "Horarios sujetos a cambios",
+    card_find_title: "Qué encontrarás",
+    card_find_1: "3 salas de exposiciones",
+    card_find_2: "Talleres de arte y artesanías",
+    card_find_3: "Clases de música y ballet",
+    card_find_4: "Conciertos y conferencias",
+    card_find_5: "Murales históricos",
+    card_loc_title: "Ubicación & tip",
+    card_loc_addr: "<strong>Dr. Hernández Macías 75</strong><br>Centro, San Miguel de Allende",
+    card_loc_tip: "<strong>Tip:</strong> No te pierdas el mural de Siqueiros y “Las Lavanderas” de Eleanor Cohen. Ideal para combinar con un paseo por el Centro.",
+    highlight_title: "¿Listo para descubrir más?",
+    highlight_desc: "Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta cultural.",
+    highlight_btn: "Ver catálogo",
+    video_label: "Experiencia visual",
+    video_title: "Conoce el centro",
+    video_iframe_title: "Video Centro Cultural El Nigromante",
+    video_p1: "Video cortesía de <strong>TV LIBERTAD MX</strong>",
+    video_p2: "Un recorrido por este espacio clave del arte y la cultura en San Miguel de Allende.",
+    video_btn: "Más sitios →",
+    credits_source: "Fuente:",
+    credits_link: "INAH / Vive San Miguel de Allende",
+    credits_sub: "Vive San Miguel · Patrimonio de la Humanidad"
+  },
+  en: {
+    page_title: "El Nigromante Cultural Center · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "INBA · Art & Culture",
+    hero_title: "Ignacio Ramírez “El Nigromante” Cultural Center",
+    hero_sub: "One of the cornerstones of San Miguel's artistic life. Exhibitions, workshops, and historic murals inside a former 18th-century convent.",
+    pill_admission: "Free admission",
+    pill_hours: "Tue–Sun · 10:00–18:00",
+    pill_closed: "Closed Mondays",
+    hero_img_alt: "El Nigromante Cultural Center",
+    badge_inst_label: "National Institute",
+    badge_inst_val: "of Fine Arts",
+    badge_addr_label: "75 Hernández Macías",
+    badge_zone_val: "Downtown",
+    intro_label: "Creative Space",
+    intro_title: "A Cultural Beacon of San Miguel",
+    intro_p1: "San Miguel de Allende draws creators from around the world. Within this vibrant scene, the <strong>Ignacio Ramírez “El Nigromante” Cultural Center</strong> of the National Institute of Fine Arts stands out as a vital hub for the region's artistic life and has trained generations of artists.",
+    timeline_label: "Timeline",
+    timeline_title: "From Convent to Cultural Center",
+    tl_1755_title: "1755–1765 — Construction",
+    tl_1755_desc: "Built as the Royal Convent of the Conception (known as “Las Monjas”). Founded by Sor María Josefa Lina de la Canal y Hervás. Architect: Francisco Martínez Gudiño.",
+    tl_19c_title: "19th Century — School & Reform",
+    tl_19c_desc: "Served as a convent until the Reform era. Later became a primary school and, in 1912, a girls' school run by Spanish nuns.",
+    tl_1914_title: "1914–1936 — Barracks",
+    tl_1914_desc: "Used as military barracks during the Mexican Revolution.",
+    tl_1938_title: "1938–1962 — School of Fine Arts",
+    tl_1938_desc: "Felipe Cossío del Pomar founds the University School of Fine Arts. Rebuilt and adapted in 1961, and inaugurated in August 1962 as the “El Nigromante” Cultural Center.",
+    murals_label: "Artistic Heritage",
+    murals_title: "Murals Inside the Building",
+    mural_1_title: "Las Lavanderas (The Washerwomen)",
+    mural_1_desc: "Eleanor Cohen, 1941. Admired by Gabriela Mistral while the artist painted it in the cloister.",
+    mural_2_title: "Siqueiros Mural",
+    mural_2_desc: "David Alfaro Siqueiros, 1948. “Life and Work of Generalísimo Don Ignacio de Allende.” Unfinished.",
+    mural_3_title: "El Fanatismo del Pueblo",
+    mural_3_desc: "Pedro Martínez, 1939. Also known as “The Vampire Hunt.”",
+    mural_4_title: "Los Tejedores · La Cantina",
+    mural_4_desc: "Pedro Martínez, 1940–1941. Along with “Guanajuato Almacigo de Patriotas.”",
+    info_label: "Plan Your Visit",
+    info_title: "Everything You Need to Know",
+    card_hours_title: "Hours",
+    card_hours_1: "<strong>Tuesday to Sunday:</strong> 10:00 am – 6:00 pm",
+    card_hours_2: "<strong>Monday:</strong> Closed",
+    card_hours_3: "<strong>Admission:</strong> Free",
+    card_hours_4: "Hours subject to change",
+    card_find_title: "What You'll Find",
+    card_find_1: "3 exhibition galleries",
+    card_find_2: "Art and craft workshops",
+    card_find_3: "Music and ballet classes",
+    card_find_4: "Concerts and lectures",
+    card_find_5: "Historic murals",
+    card_loc_title: "Location & Tip",
+    card_loc_addr: "<strong>75 Dr. Hernández Macías</strong><br>Centro, San Miguel de Allende",
+    card_loc_tip: "<strong>Tip:</strong> Don't miss the Siqueiros mural and Eleanor Cohen's “Las Lavanderas.” Great to pair with a stroll around Downtown.",
+    highlight_title: "Ready to Discover More?",
+    highlight_desc: "Explore the full catalog of points of interest in San Miguel de Allende and build your own cultural route.",
+    highlight_btn: "View catalog",
+    video_label: "Visual Experience",
+    video_title: "Explore the Center",
+    video_iframe_title: "El Nigromante Cultural Center Video",
+    video_p1: "Video courtesy of <strong>TV LIBERTAD MX</strong>",
+    video_p2: "A look inside this key space for art and culture in San Miguel de Allende.",
+    video_btn: "More places →",
+    credits_source: "Source:",
+    credits_link: "INAH / Vive San Miguel de Allende",
+    credits_sub: "Vive San Miguel · World Heritage Site"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
