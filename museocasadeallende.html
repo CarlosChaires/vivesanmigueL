@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Museo Casa de Allende · Vive San Miguel</title>
+<title data-i18n="page_title">Museo Casa de Allende · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -110,6 +110,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .nav-back {
   display: inline-flex;
@@ -129,6 +130,33 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--cantera);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 83, 62, 0.25);
+}
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px;
@@ -526,14 +554,18 @@ nav {
 
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -544,26 +576,26 @@ nav {
   <!-- HERO -->
   <header class="hero reveal">
     <div class="hero-text">
-      <div class="eyebrow">Museo · Historia · Independencia</div>
-      <h1>Museo Casa de Allende</h1>
-      <p class="hero-sub">El hogar de nacimiento de Ignacio Allende. Una joya arquitectónica del siglo XVIII que resguarda la memoria histórica y la lucha independentista de San Miguel.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">Museo · Historia · Independencia</div>
+      <h1 data-i18n="hero_title">Museo Casa de Allende</h1>
+      <p class="hero-sub" data-i18n="hero_sub">El hogar de nacimiento de Ignacio Allende. Una joya arquitectónica del siglo XVIII que resguarda la memoria histórica y la lucha independentista de San Miguel.</p>
       <div class="hero-meta">
-        <span class="pill"><strong>Martes a Domingo</strong></span>
-        <span class="pill">9:00 am – 5:00 pm</span>
-        <span class="pill">Centro Histórico</span>
+        <span class="pill"><strong data-i18n="pill_days">Martes a Domingo</strong></span>
+        <span class="pill" data-i18n="pill_hours">9:00 am – 5:00 pm</span>
+        <span class="pill" data-i18n="pill_zone">Centro Histórico</span>
       </div>
     </div>
     <div class="hero-visual">
       <div class="hero-frame">
-        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende">
+        <img src="https://vivemigueldeallende.wordpress.com/wp-content/uploads/2024/10/image-19.png?w=1024" alt="Museo Casa de Allende" data-i18n-alt="hero_img_alt">
         <div class="hero-badge">
           <div>
-            <span>Arquitectura barroca</span>
-            <strong>Siglo XVIII</strong>
+            <span data-i18n="badge_arch_label">Arquitectura barroca</span>
+            <strong data-i18n="badge_arch_val">Siglo XVIII</strong>
           </div>
           <div style="text-align:right">
-            <span>Cuna del Héroe</span>
-            <strong style="font-size:0.95rem">Centro</strong>
+            <span data-i18n="badge_hero_label">Cuna del Héroe</span>
+            <strong style="font-size:0.95rem" data-i18n="badge_hero_val">Centro</strong>
           </div>
         </div>
       </div>
@@ -572,74 +604,74 @@ nav {
 
   <!-- INTRO -->
   <section class="section reveal">
-    <div class="section-label">Legado e Historia</div>
-    <h2>Una joya barroca y neoclásica</h2>
-    <p class="prose">El <strong>Museo Histórico de San Miguel de Allende</strong> ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.</p>
-    <p class="prose">Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen. El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia.</p>
+    <div class="section-label" data-i18n="intro_label">Legado e Historia</div>
+    <h2 data-i18n="intro_title">Una joya barroca y neoclásica</h2>
+    <p class="prose" data-i18n-html="intro_p1">El <strong>Museo Histórico de San Miguel de Allende</strong> ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.</p>
+    <p class="prose" data-i18n="intro_p2">Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen. El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia.</p>
   </section>
 
   <!-- POR QUÉ VISITAR -->
   <section class="section reveal">
     <div class="why-visit-box">
-      <h3>¿Por qué visitar el Museo Casa de Allende?</h3>
-      <p>Es una parada imperdible porque te permite caminar literalmente por los pasillos donde creció uno de los máximos héroes de la Independencia de México, comprendiendo de cerca el contexto social, político y militar de aquella época.</p>
-      <p>Además, su impresionante acervo de más de 1,000 piezas originales —que van desde arte sacro y mobiliario de época hasta vestigios prehispánicos de la región— ofrece una ventana fascinante tanto al pasado colonial de San Miguel como a las raíces mesoamericanas del Bajío.</p>
+      <h3 data-i18n="why_title">¿Por qué visitar el Museo Casa de Allende?</h3>
+      <p data-i18n="why_p1">Es una parada imperdible porque te permite caminar literalmente por los pasillos donde creció uno de los máximos héroes de la Independencia de México, comprendiendo de cerca el contexto social, político y militar de aquella época.</p>
+      <p data-i18n="why_p2">Además, su impresionante acervo de más de 1,000 piezas originales —que van desde arte sacro y mobiliario de época hasta vestigios prehispánicos de la región— ofrece una ventana fascinante tanto al pasado colonial de San Miguel como a las raíces mesoamericanas del Bajío.</p>
     </div>
   </section>
 
   <!-- INFORMACIÓN PRÁCTICA + RECOMENDACIONES -->
   <section class="section reveal">
-    <div class="section-label">Planifica tu visita</div>
-    <h2>Todo lo que necesitas saber</h2>
+    <div class="section-label" data-i18n="info_label">Planifica tu visita</div>
+    <h2 data-i18n="info_title">Todo lo que necesitas saber</h2>
     <div class="cards">
       <div class="card">
         <div class="card-icon">⏰</div>
-        <h3>Horarios</h3>
+        <h3 data-i18n="card_hours_title">Horarios</h3>
         <ul>
-          <li>Martes a Domingo: 9:00 am – 5:00 pm</li>
-          <li><strong>Lunes:</strong> Cerrado</li>
+          <li data-i18n="card_hours_1">Martes a Domingo: 9:00 am – 5:00 pm</li>
+          <li data-i18n-html="card_hours_2"><strong>Lunes:</strong> Cerrado</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">🎟️</div>
-        <h3>Costos y Accesos</h3>
+        <h3 data-i18n="card_cost_title">Costos y Accesos</h3>
         <ul>
-          <li><strong>Entrada General:</strong> $75 MXN</li>
-          <li>Entrada libre para menores de 13 años, estudiantes y maestros con credencial vigente.</li>
-          <li>Domingos entrada gratuita para nacionales.</li>
+          <li data-i18n-html="card_cost_1"><strong>Entrada General:</strong> $75 MXN</li>
+          <li data-i18n="card_cost_2">Entrada libre para menores de 13 años, estudiantes y maestros con credencial vigente.</li>
+          <li data-i18n="card_cost_3">Domingos entrada gratuita para nacionales.</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-icon">✨</div>
-        <h3>Recomendaciones</h3>
+        <h3 data-i18n="card_tips_title">Recomendaciones</h3>
         <ul>
-          <li>Dedica al menos 1 hora y media para recorrerlo con calma.</li>
-          <li>Usa calzado cómodo para caminar por los patios empedrados.</li>
-          <li>Combina tu visita con un recorrido por el cercano Jardín Principal.</li>
+          <li data-i18n="card_tips_1">Dedica al menos 1 hora y media para recorrerlo con calma.</li>
+          <li data-i18n="card_tips_2">Usa calzado cómodo para caminar por los patios empedrados.</li>
+          <li data-i18n="card_tips_3">Combina tu visita con un recorrido por el cercano Jardín Principal.</li>
         </ul>
       </div>
     </div>
 
     <!-- LÍNEA DEL TIEMPO -->
     <div class="timeline-block">
-      <div class="section-label" style="margin-bottom:8px">Evolución histórica</div>
-      <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--stone); margin-bottom:16px;">Hitos del Inmueble</h3>
+      <div class="section-label" style="margin-bottom:8px" data-i18n="timeline_label">Evolución histórica</div>
+      <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--stone); margin-bottom:16px;" data-i18n="timeline_title">Hitos del Inmueble</h3>
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-year">1769</div>
-          <div class="timeline-text">Domingo Narciso de Allende manda a construir la casa como regalo de bodas para su esposa María Ana Unzaga.</div>
+          <div class="timeline-text" data-i18n="tl_1769">Domingo Narciso de Allende manda a construir la casa como regalo de bodas para su esposa María Ana Unzaga.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-year">Siglo XIX</div>
-          <div class="timeline-text">La casa es confiscada por el gobierno virreinal durante la Guerra de Independencia y posteriormente devuelta a particulares.</div>
+          <div class="timeline-year" data-i18n="tl_19c_year">Siglo XIX</div>
+          <div class="timeline-text" data-i18n="tl_19c_text">La casa es confiscada por el gobierno virreinal durante la Guerra de Independencia y posteriormente devuelta a particulares.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-year">1984 – 1990</div>
-          <div class="timeline-text">El gobierno del estado la cede al INAH y abre oficialmente sus puertas como Museo Histórico.</div>
+          <div class="timeline-text" data-i18n="tl_1984">El gobierno del estado la cede al INAH y abre oficialmente sus puertas como Museo Histórico.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-year">2008</div>
-          <div class="timeline-text">Se realiza una importante restauración arquitectónica y museográfica integral del recinto.</div>
+          <div class="timeline-text" data-i18n="tl_2008">Se realiza una importante restauración arquitectónica y museográfica integral del recinto.</div>
         </div>
       </div>
     </div>
@@ -648,39 +680,191 @@ nav {
   <!-- HIGHLIGHT -->
   <div class="highlight reveal">
     <div>
-      <h3>¿Listo para descubrir más?</h3>
-      <p>Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.</p>
+      <h3 data-i18n="highlight_title">¿Listo para descubrir más?</h3>
+      <p data-i18n="highlight_desc">Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.</p>
     </div>
     <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-primary">
-      Ver catálogo
+      <span data-i18n="highlight_btn">Ver catálogo</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <!-- VIDEO -->
   <section class="section reveal">
-    <div class="section-label">Experiencia visual</div>
-    <h2>Recorrido en Video</h2>
+    <div class="section-label" data-i18n="video_label">Experiencia visual</div>
+    <h2 data-i18n="video_title">Recorrido en Video</h2>
     <div class="media-block">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/w0oIMTXLuZk" allowfullscreen title="Video Museo Casa de Allende"></iframe>
+        <iframe src="https://www.youtube.com/embed/w0oIMTXLuZk" allowfullscreen title="Video Museo Casa de Allende" data-i18n-title="video_iframe_title"></iframe>
       </div>
       <div class="cta-side">
-        <p>Sumérgete visualmente en los pasillos y salas de esta joya histórica.</p>
-        <p style="font-size:0.9rem; color: var(--stone-muted);">Una mirada al legado de Ignacio Allende en el corazón de Guanajuato.</p>
-        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline">Más sitios →</a>
+        <p data-i18n="video_p1">Sumérgete visualmente en los pasillos y salas de esta joya histórica.</p>
+        <p style="font-size:0.9rem; color: var(--stone-muted);" data-i18n="video_p2">Una mirada al legado de Ignacio Allende en el corazón de Guanajuato.</p>
+        <a href="https://carloschaires.github.io/vivesanmigueL/sitiosdeinteres.html" class="btn-outline" data-i18n="video_btn">Más sitios →</a>
       </div>
     </div>
   </section>
 
   <footer class="credits reveal">
-    <p>Fuente e información: <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
-    <p style="margin-top:6px; opacity:0.7">Vive San Miguel · Museos e historia</p>
+    <p><span data-i18n="credits_source">Fuente e información:</span> <a href="https://vivemigueldeallende.wordpress.com/" target="_blank">Vive San Miguel de Allende</a></p>
+    <p style="margin-top:6px; opacity:0.7" data-i18n="credits_sub">Vive San Miguel · Museos e historia</p>
   </footer>
 
 </div>
 
 <script>
+const translations = {
+  es: {
+    page_title: "Museo Casa de Allende · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    hero_eyebrow: "Museo · Historia · Independencia",
+    hero_title: "Museo Casa de Allende",
+    hero_sub: "El hogar de nacimiento de Ignacio Allende. Una joya arquitectónica del siglo XVIII que resguarda la memoria histórica y la lucha independentista de San Miguel.",
+    pill_days: "Martes a Domingo",
+    pill_hours: "9:00 am – 5:00 pm",
+    pill_zone: "Centro Histórico",
+    hero_img_alt: "Museo Casa de Allende",
+    badge_arch_label: "Arquitectura barroca",
+    badge_arch_val: "Siglo XVIII",
+    badge_hero_label: "Cuna del Héroe",
+    badge_hero_val: "Centro",
+    intro_label: "Legado e Historia",
+    intro_title: "Una joya barroca y neoclásica",
+    intro_p1: "El <strong>Museo Histórico de San Miguel de Allende</strong> ocupa una casa habitación del siglo XVIII, cuya arquitectura es una bien lograda fusión de dos estilos: el barroco y el neoclásico, elementos que se destacan principalmente en la fachada y la arquería del patio principal. El inmueble fue habitado por Ignacio Allende y funciona como museo desde 1990.",
+    intro_p2: "Con un acervo histórico, etnográfico y arqueológico, el museo aborda la importancia de las culturas mesoamericanas y de la región, como la de Chupícuaro, especialmente las que se asentaron en las márgenes del río La Laja y la cañada de La Virgen. El recorrido abarca desde la historia de la fundación de la Villa de San Miguel el Grande, en el siglo XVI, hasta la conformación del ejército en Nueva España, en el XVIII, y el inicio de la guerra de Independencia.",
+    why_title: "¿Por qué visitar el Museo Casa de Allende?",
+    why_p1: "Es una parada imperdible porque te permite caminar literalmente por los pasillos donde creció uno de los máximos héroes de la Independencia de México, comprendiendo de cerca el contexto social, político y militar de aquella época.",
+    why_p2: "Además, su impresionante acervo de más de 1,000 piezas originales —que van desde arte sacro y mobiliario de época hasta vestigios prehispánicos de la región— ofrece una ventana fascinante tanto al pasado colonial de San Miguel como a las raíces mesoamericanas del Bajío.",
+    info_label: "Planifica tu visita",
+    info_title: "Todo lo que necesitas saber",
+    card_hours_title: "Horarios",
+    card_hours_1: "Martes a Domingo: 9:00 am – 5:00 pm",
+    card_hours_2: "<strong>Lunes:</strong> Cerrado",
+    card_cost_title: "Costos y Accesos",
+    card_cost_1: "<strong>Entrada General:</strong> $75 MXN",
+    card_cost_2: "Entrada libre para menores de 13 años, estudiantes y maestros con credencial vigente.",
+    card_cost_3: "Domingos entrada gratuita para nacionales.",
+    card_tips_title: "Recomendaciones",
+    card_tips_1: "Dedica al menos 1 hora y media para recorrerlo con calma.",
+    card_tips_2: "Usa calzado cómodo para caminar por los patios empedrados.",
+    card_tips_3: "Combina tu visita con un recorrido por el cercano Jardín Principal.",
+    timeline_label: "Evolución histórica",
+    timeline_title: "Hitos del Inmueble",
+    tl_1769: "Domingo Narciso de Allende manda a construir la casa como regalo de bodas para su esposa María Ana Unzaga.",
+    tl_19c_year: "Siglo XIX",
+    tl_19c_text: "La casa es confiscada por el gobierno virreinal durante la Guerra de Independencia y posteriormente devuelta a particulares.",
+    tl_1984: "El gobierno del estado la cede al INAH y abre oficialmente sus puertas como Museo Histórico.",
+    tl_2008: "Se realiza una importante restauración arquitectónica y museográfica integral del recinto.",
+    highlight_title: "¿Listo para descubrir más?",
+    highlight_desc: "Explora el catálogo completo de sitios de interés en San Miguel de Allende y arma tu propia ruta.",
+    highlight_btn: "Ver catálogo",
+    video_label: "Experiencia visual",
+    video_title: "Recorrido en Video",
+    video_iframe_title: "Video Museo Casa de Allende",
+    video_p1: "Sumérgete visualmente en los pasillos y salas de esta joya histórica.",
+    video_p2: "Una mirada al legado de Ignacio Allende en el corazón de Guanajuato.",
+    video_btn: "Más sitios →",
+    credits_source: "Fuente e información:",
+    credits_sub: "Vive San Miguel · Museos e historia"
+  },
+  en: {
+    page_title: "Casa de Allende Museum · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    hero_eyebrow: "Museum · History · Independence",
+    hero_title: "Casa de Allende Museum",
+    hero_sub: "The birthplace of Ignacio Allende. An 18th-century architectural gem preserving San Miguel's historical memory and independence struggle.",
+    pill_days: "Tuesday to Sunday",
+    pill_hours: "9:00 am – 5:00 pm",
+    pill_zone: "Historic Center",
+    hero_img_alt: "Casa de Allende Museum",
+    badge_arch_label: "Baroque architecture",
+    badge_arch_val: "18th Century",
+    badge_hero_label: "Hero's Birthplace",
+    badge_hero_val: "Downtown",
+    intro_label: "Legacy & History",
+    intro_title: "A Baroque and Neoclassical Gem",
+    intro_p1: "The <strong>Historical Museum of San Miguel de Allende</strong> is housed in an 18th-century residence whose architecture blends two styles—Baroque and Neoclassical—most notably on the facade and the arches of the main courtyard. Ignacio Allende lived here, and the building has operated as a museum since 1990.",
+    intro_p2: "With historical, ethnographic, and archaeological collections, the museum highlights Mesoamerican and regional cultures such as Chupícuaro, particularly settlements along the La Laja River and Cañada de La Virgen. The tour spans from the founding of the Villa de San Miguel el Grande in the 16th century to the formation of the New Spain army in the 18th century and the outbreak of the War of Independence.",
+    why_title: "Why Visit the Casa de Allende Museum?",
+    why_p1: "It is an unmissable stop because it lets you walk through the very halls where one of Mexico's foremost Independence heroes grew up, gaining a close look at the social, political, and military context of the era.",
+    why_p2: "Its remarkable collection of more than 1,000 original pieces—ranging from sacred art and period furniture to pre-Hispanic artifacts from the region—offers a window into both San Miguel's colonial past and the Mesoamerican roots of the Bajío.",
+    info_label: "Plan Your Visit",
+    info_title: "Everything You Need to Know",
+    card_hours_title: "Hours",
+    card_hours_1: "Tuesday to Sunday: 9:00 am – 5:00 pm",
+    card_hours_2: "<strong>Monday:</strong> Closed",
+    card_cost_title: "Admission & Access",
+    card_cost_1: "<strong>General Admission:</strong> $75 MXN",
+    card_cost_2: "Free admission for children under 13, and students and teachers with valid ID.",
+    card_cost_3: "Free admission for Mexican nationals on Sundays.",
+    card_tips_title: "Tips",
+    card_tips_1: "Set aside at least 1.5 hours to explore at a relaxed pace.",
+    card_tips_2: "Wear comfortable shoes for walking across cobblestone courtyards.",
+    card_tips_3: "Pair your visit with a stroll around the nearby Jardín Principal.",
+    timeline_label: "Historical Evolution",
+    timeline_title: "Building Milestones",
+    tl_1769: "Domingo Narciso de Allende commissions the house as a wedding gift for his wife, María Ana Unzaga.",
+    tl_19c_year: "19th Century",
+    tl_19c_text: "The property is seized by the viceregal government during the War of Independence and later returned to private owners.",
+    tl_1984: "The state government transfers it to INAH, and it officially opens as a Historical Museum.",
+    tl_2008: "A major comprehensive architectural and museographic restoration of the building takes place.",
+    highlight_title: "Ready to Discover More?",
+    highlight_desc: "Explore the full catalog of points of interest in San Miguel de Allende and build your own route.",
+    highlight_btn: "View catalog",
+    video_label: "Visual Experience",
+    video_title: "Video Tour",
+    video_iframe_title: "Casa de Allende Museum Video",
+    video_p1: "Take a visual walk through the corridors and galleries of this historic landmark.",
+    video_p2: "A look into Ignacio Allende's legacy in the heart of Guanajuato.",
+    video_btn: "More places →",
+    credits_source: "Source & information:",
+    credits_sub: "Vive San Miguel · Museums & history"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const key = el.getAttribute("data-i18n-html");
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
