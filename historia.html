@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Historia · Vive San Miguel</title>
+<title data-i18n="page_title">Historia · Vive San Miguel</title>
 
 <!-- PWA Manifest & Theme -->
 <link rel="manifest" href="manifest.json">
@@ -65,7 +65,7 @@ nav {
 .brand-logo-link:hover { border-color: var(--rose); transform: translateY(-2px); }
 .brand-logo-link img { height: 36px; width: auto; object-fit: contain; }
 .brand-logo-link span { font-size: 0.85rem; font-weight: 700; color: var(--stone); }
-.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .nav-back {
   display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600;
   letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone); text-decoration: none;
@@ -73,6 +73,21 @@ nav {
 }
 .nav-back:hover { background: var(--stone); color: #fff; transform: translateY(-2px); }
 .nav-back svg { width: 14px; height: 14px; }
+.lang-switch {
+  display: inline-flex; align-items: center; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 100px; padding: 3px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+.lang-btn {
+  border: 0; background: transparent; color: var(--stone-muted);
+  font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; padding: 7px 13px; border-radius: 100px;
+  cursor: pointer; transition: all 0.25s ease;
+}
+.lang-btn.active {
+  background: var(--rose); color: #fff;
+  box-shadow: 0 4px 12px rgba(201, 123, 123, 0.28);
+}
 .nav-socials { display: flex; gap: 8px; }
 .nav-social {
   width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
@@ -305,14 +320,18 @@ nav {
 <div class="wrap">
   <nav>
     <a href="https://carloschaires.github.io/vivesanmigueL/" class="brand-logo-link">
-      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" onerror="this.style.display='none'">
+      <img src="https://lh3.googleusercontent.com/d/1xW3HCK3utNSpM81IAiX-i1UzezDr-cXz" alt="Logo Vive San Miguel" data-i18n-alt="logo_alt" onerror="this.style.display='none'">
       <span>Vive San Miguel</span>
     </a>
     <div class="nav-actions">
       <a href="https://carloschaires.github.io/vivesanmigueL/" class="nav-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Inicio
+        <span data-i18n="nav_home">Inicio</span>
       </a>
+      <div class="lang-switch" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
       <div class="nav-socials">
         <a href="https://www.instagram.com/sanmiigueldeallende?igsh=MXd1dW5menJ0ajJ3dQ==" target="_blank" class="nav-social ig" title="Instagram">IG</a>
         <a href="https://www.tiktok.com/@vivesanmiguel.com?is_from_webapp=1&sender_device=pc" target="_blank" class="nav-social tk" title="TikTok">TikTok</a>
@@ -321,35 +340,36 @@ nav {
   </nav>
 
   <div class="library-cta reveal">
-    <h2>Biblioteca Virtual de San Miguel de Allende</h2>
-    <p>Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio.</p>
+    <h2 data-i18n="library_title">Biblioteca Virtual de San Miguel de Allende</h2>
+    <p data-i18n="library_desc">Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio.</p>
     <a href="http://sanmigueldeallende.gob.mx/noticia/librossanmiguel" target="_blank" rel="noopener" class="btn-library">
-      Conocer Biblioteca Virtual
+      <span data-i18n="library_btn">Conocer Biblioteca Virtual</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <section class="book-section reveal">
-    <h2>Libro Digital Interactivo</h2>
-    <p>Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende.</p>
+    <h2 data-i18n="book_title">Libro Digital Interactivo</h2>
+    <p data-i18n="book_desc">Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende.</p>
 
     <div class="pdf-viewer" id="pdfViewer">
       <iframe
         id="pdfFrame"
         title="Libro San Miguel de Allende"
+        data-i18n-title="book_iframe_title"
         src="https://docs.google.com/gview?url=https%3A%2F%2Fcultura.guanajuato.gob.mx%2Fwp-content%2Fuploads%2F2017%2F06%2FSan-Miguel-de-Allende.pdf&embedded=true"
         allowfullscreen
         loading="lazy"
       ></iframe>
       <div class="pdf-fallback" id="pdfFallback">
-        <p style="margin-bottom:14px; font-size: 1.05rem;">El visor requiere una acción directa debido a políticas del servidor externo:</p>
-        <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" style="font-size: 1.1rem; padding: 10px 20px; background: var(--rose); color: #fff; border-radius: 100px; text-decoration: none;">Abrir / Descargar Libro en PDF</a>
+        <p style="margin-bottom:14px; font-size: 1.05rem;" data-i18n="pdf_fallback_msg">El visor requiere una acción directa debido a políticas del servidor externo:</p>
+        <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" style="font-size: 1.1rem; padding: 10px 20px; background: var(--rose); color: #fff; border-radius: 100px; text-decoration: none;" data-i18n="pdf_fallback_cta">Abrir / Descargar Libro en PDF</a>
       </div>
     </div>
 
     <div class="book-actions">
       <a href="https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/San-Miguel-de-Allende.pdf" target="_blank" rel="noopener" class="btn-book btn-book-full">
-        Abrir PDF completo
+        <span data-i18n="open_pdf_btn">Abrir PDF completo</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
       </a>
     </div>
@@ -357,41 +377,158 @@ nav {
 
   <article class="history reveal">
     <header class="history-header">
-      <span class="history-tag">San Miguel de Allende · Joya Colonial</span>
-      <h1 class="history-title">Historia de San Miguel de Allende</h1>
-      <p class="history-subtitle">Fragua de la Independencia Nacional y cuna de hombres ilustres</p>
+      <span class="history-tag" data-i18n="history_tag">San Miguel de Allende · Joya Colonial</span>
+      <h1 class="history-title" data-i18n="history_title">Historia de San Miguel de Allende</h1>
+      <p class="history-subtitle" data-i18n="history_subtitle">Fragua de la Independencia Nacional y cuna de hombres ilustres</p>
     </header>
     <div class="history-body">
-      <p>San Miguel de Allende, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad.</p>
-      <p>San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial.</p>
-      <p>El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español.</p>
-      <p>Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza.</p>
-      <p>Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias.</p>
-      <p>También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos.</p>
-      <h2>Cronología histórica — El primer San Miguel, el San Miguel de los Chichimecas</h2>
-      <p>Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas.</p>
-      <p>Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos.</p>
-      <p>Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.</p>
-      <p>Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.</p>
-      <p>Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.</p>
-      <p>Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 sus población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.</p>
-      <h2>El segundo San Miguel, San Miguel el Grande</h2>
-      <p>La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.</p>
-      <p>El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.</p>
-      <h2>El tercer San Miguel, San Miguel de Allende</h2>
-      <p>En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina.</p>
-      <p>No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel.</p>
-      <p>A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende.</p>
-      <p>El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos).</p>
-      <p>En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial.</p>
+      <p data-i18n="p1">San Miguel de Allende, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad.</p>
+      <p data-i18n="p2">San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial.</p>
+      <p data-i18n="p3">El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español.</p>
+      <p data-i18n="p4">Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza.</p>
+      <p data-i18n="p5">Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias.</p>
+      <p data-i18n="p6">También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos.</p>
+      <h2 data-i18n="h2_1">Cronología histórica — El primer San Miguel, el San Miguel de los Chichimecas</h2>
+      <p data-i18n="p7">Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas.</p>
+      <p data-i18n="p8">Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos.</p>
+      <p data-i18n="p9">Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.</p>
+      <p data-i18n="p10">Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.</p>
+      <p data-i18n="p11">Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole "Villa" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.</p>
+      <p data-i18n="p12">Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 sus población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.</p>
+      <h2 data-i18n="h2_2">El segundo San Miguel, San Miguel el Grande</h2>
+      <p data-i18n="p13">La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.</p>
+      <p data-i18n="p14">El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.</p>
+      <h2 data-i18n="h2_3">El tercer San Miguel, San Miguel de Allende</h2>
+      <p data-i18n="p15">En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina.</p>
+      <p data-i18n="p16">No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel.</p>
+      <p data-i18n="p17">A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende.</p>
+      <p data-i18n="p18">El mismo caso del Centro Cultural Ignacio Ramírez "El Nigromante", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos).</p>
+      <p data-i18n="p19">En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial.</p>
     </div>
   </article>
 
   <footer class="credits reveal">
-    <p>Vive San Miguel · Historia y patrimonio</p>
+    <p data-i18n="credits">Vive San Miguel · Historia y patrimonio</p>
   </footer>
 </div>
 <script>
+const translations = {
+  es: {
+    page_title: "Historia · Vive San Miguel",
+    logo_alt: "Logo Vive San Miguel",
+    nav_home: "Inicio",
+    library_title: "Biblioteca Virtual de San Miguel de Allende",
+    library_desc: "Acervo bibliográfico oficial, publicaciones históricas y documentos literarios del municipio.",
+    library_btn: "Conocer Biblioteca Virtual",
+    book_title: "Libro Digital Interactivo",
+    book_desc: "Edición digital oficial sobre la historia y tradiciones de San Miguel de Allende.",
+    book_iframe_title: "Libro San Miguel de Allende",
+    pdf_fallback_msg: "El visor requiere una acción directa debido a políticas del servidor externo:",
+    pdf_fallback_cta: "Abrir / Descargar Libro en PDF",
+    open_pdf_btn: "Abrir PDF completo",
+    history_tag: "San Miguel de Allende · Joya Colonial",
+    history_title: "Historia de San Miguel de Allende",
+    history_subtitle: "Fragua de la Independencia Nacional y cuna de hombres ilustres",
+    p1: "San Miguel de Allende, joya colonial y ciudad patrimonio de la humanidad, tiene una historia fascinante que se remonta a la época prehispánica. Su nombre actual es un homenaje a Ignacio Allende, uno de los líderes de la Guerra de Independencia de México, oriundo de esta ciudad.",
+    p2: "San Miguel de Allende “El Corazón de México” ubicado al norte del hermoso Estado de Guanajuato, considerado Fragua de la Independencia Nacional y cuna de hombres ilustres, joya colonial que se distingue por la calidez y generosidad de su gente, su riqueza histórica, cultural, gastronómica y arquitectónica que ha deslumbrado a cientos de personas a través de los años, lo ha convertido en uno de los lugares más reconocidos a nivel mundial.",
+    p3: "El reconocimiento obtenido de Patrimonio de la Humanidad en 2008 por la UNESCO, Villa Protectora de San Miguel y su Santuario de Jesús Nazareno de Atotonilco, comunidad rural sanmiguelense a 15 minutos orientación norte, sobre la carretera a Dolores Hidalgo, dicho lugar es considerado uno de los santuarios más bellos de todo México, e incluso conocedores la llaman “Capilla Sixtina de América”, obra majestuosa atribuida al Reverendo padre Luis Felipe Neri de Alfaro, y ejecutada por el importante impulsor de arte religioso y artista plástico Antonio Martínez de Poca Sangre de origen criollo, oriundo de la ciudad de Querétaro, dicho personaje plasmó en sus paredes la Pasión de Cristo y enriqueció con poemas del Padre Alfaro. Esta obra artística y arquitectónica también fue testigo del paso del glorioso Ejercito Insurgente, abanderado por el hijo prodigo de esta ciudad Don Ignacio de Allende y Unzaga, promotor de esta importante gesta heroica y el cura Don Miguel Hidalgo y Costilla, tomaron un lienzo con la imagen de la santísima Virgen de Guadalupe con el que harían el estandarte insurgente, símbolo que motivó al pueblo a luchar contra el yugo español.",
+    p4: "Además, esta zona es importante por sus balnearios de agua termal, sin duda el lugar perfecto para lograr un estado de relajación, paz y convivencia con la naturaleza.",
+    p5: "Una de las múltiples distinciones con las que cuenta este destino, es que durante todo el año se llevan a cabo Festivales Culturales y Gastronómicos, que son reconocidos a nivel mundial por la calidad con la que se desarrollan, además de festejar con júbilo las tradiciones y festividades populares, otro atractivo importante de nuestra población, ya que el fervor de su gente impresiona a propios y extraños. Entre las más importantes se encuentran: Fiesta a San Miguel Arcángel, Santo Patrono de la ciudad – Festividad en honor a la Santa Cruz – El Señor de la Conquista – Convite de Locos – Día de Muertos – Festividad de la Santísima Virgen de Loreto y Fiestas Patrias.",
+    p6: "También no podemos pasar por alto que mucha gente ha quedado fascinada por el buen sabor y diversidad de estilos culinarios que han acrecentado la fama de nuestro destino. Al pasear por sus empedradas y pintorescas calles podemos encontrar restaurantes con gran variedad de platillos, tanto nacionales como internacionales, criolla-cajun, fusión, productos del mar, entre otros, todos con una alta calidad gastronómica que darán gusto hasta los paladares más exigentes, ya que contamos con chefs reconocidos a nivel nacional e internacional, que han quedado enamorados y han tomado como residencia esta magnífica ciudad. Como complemento no puede faltar un exquisito postre o un digestivo que podrá deleitar admirando el atardecer, o los bellos edificios de la ciudad en alguno de los restaurantes que cuentan con terraza, de igual forma, la vida nocturna ofrece una gran variedad de oferta para todos los gustos.",
+    h2_1: "Cronología histórica — El primer San Miguel, el San Miguel de los Chichimecas",
+    p7: "Hay indicios de que los primeros colonizadores llegaron a San Miguel de Allende hace unos 2000 años y que prosperaron en la agricultura. Sin embargo, hace aproximadamente mil años, abandonaron sus colonias dejándolas en manos de tribus nómadas de cazadores-recolectores, conocidos como chichimecas. Una de sus tribus, los copuces, tenían la fama de ser muy violentos, aún entre los aguerridos aztecas.",
+    p8: "Los españoles también evitaban encontrarse con estas tribus hasta que el descubrimiento de plata en Guanajuato y Zacatecas los forzó a encontrar una ruta desde las minas, a través de tierras chichimecas a la ciudad de México. Empezaron mandando a un fraile franciscano, Fray Juan de San Miguel, para convertir y pacificar a los nativos.",
+    p9: "Esto no fue tarea fácil, sin embargo, para 1542 había logrado construir una iglesia (San Miguel Arcángel) y establecer una misión que él llamó San Miguel de los Chichimecas.",
+    p10: "Su éxito duró poco, en 1551 los copuces invadieron la misión y el sucesor de Fray Juan, Fray Bernardo de Cossin, cambió la colonia a un lugar más defendible a unos kilómetros de distancia (ahora la ubicación del actual San Miguel de Allende)... Al realizar una expedición tierra adentro, en la cual se cuenta llevaban unos perros Xoloitzcuintles quienes se perdieron y en su encuentro descubrieron una rica zona de manantiales y una perfecta zona estratégica para asentamiento, a este lugar se le llamo Itzquinapan en lengua Nahuatl que significa Agua de Perros o Charco de Perros.",
+    p11: "Pero las cosas no fueron fáciles hasta 1555 cuando los españoles fortificaron el lugar, llamándole \"Villa\" y emprendieron su repoblación; especialmente por medio de los soldados. Le dieron a este lugar el nombre de Villa de San Miguel el Grande y, por muchas razones, éste iba a ser el momento crucial.",
+    p12: "Durante los siguientes 250 años, el pueblo se convirtió en un centro floreciente de producción de ganado, trabajo en piel, lana y herramientas. Ya para 1770 San Miguel el Grande tenía una población de 30,000 habitantes. Creció con una rapidez extraordinaria, en 1790 sus población ya era de 50,000 habitantes, el doble de la Ciudad de Nueva York en ese tiempo y seguía creciendo. ¿Qué podría detener esto? Si: La guerra.",
+    h2_2: "El segundo San Miguel, San Miguel el Grande",
+    p13: "La guerra de Independencia de México comenzó en 1810, aquí mismo en las calles de San Miguel donde el fuego del descontento había estado ardiendo durante décadas. Debido a su espectacular prosperidad y crecimiento, la actitud de sus pobladores era más liberal, más laissez-faire que lo normal bajo el gobierno español. Irónicamente, en vez de que los señores feudales aristócratas gachupines quisieran más a la población criolla, imperó el resentimiento. El caldo de cultivo de este descontento fue el Colegio de San Francisco de Sales (construido en 1734), donde la semilla de la revolución enraizó en las mentes de los alumnos como Ignacio Allende y Juan Aldama.",
+    p14: "El 16 de septiembre de 1810, el Grito de Dolores, señaló el principio de una insurrección que condujo Ignacio Allende y el cura Miguel Hidalgo y Costilla. La participación de estos personajes fue espectacular, pero de corta duración, ya que ambos hombres estarían muertos en menos de un año. Sin embargo ellos, y otros como Aldama, Jiménez y Umarán, inspiraron a una nación. Lo que estos hombres comenzaron duraría once años, pero terminaría en la independencia de México.",
+    h2_3: "El tercer San Miguel, San Miguel de Allende",
+    p15: "En 1826, San Miguel sería oficialmente nombrada ciudad y, en honor al héroe nacional e hijo pródigo, tomaría el nombre de San Miguel de Allende. Igualmente, la cercana Dolores tomaría el nombre de Dolores Hidalgo en honor al padre de la Patria. Sin embargo, la guerra había coincidido con la disminución de la producción de las minas locales de plata y San Miguel comenzó un periodo de decadencia. Su población decreció y sus elegantes iglesias y mansiones, cayeron en la ruina.",
+    p16: "No fue hasta el siglo XX que fue fundada una escuela de Bellas Artes, y la colonia artística en ciernes de San Miguel de Allende pronto fue reconocida mundialmente. Esto se cimentó aún más en los cincuenta cuando se funda el Instituto Allende que atraería a los veteranos de guerra que eran becados por el gobierno de los Estados Unidos. Esta particularidad del sitio colonial comenzó a seducir a escritores y artistas durante el comienzo del renacimiento de San Miguel.",
+    p17: "A finales de los años cincuenta personajes importantes como el Sr. Stirling Dickinson, artista y filántropo, en asociación con el pintor y activista político Don Felipe Cossío del Pomar y el ex Gobernador Enrique Fernández Martínez, fundaron la escuela de arte y español en el Instituto Allende.",
+    p18: "El mismo caso del Centro Cultural Ignacio Ramírez \"El Nigromante\", quien tuvo como profesor al gran maestro muralista David Alfaro Siqueiros, quien en una sala, aprovechando las bóvedas de lo que fue el antiguo claustro del Templo de La Inmaculada Concepción dejó huella de La Vida y Obra del Generalísimo Don Ignacio Allende (obra que tuvo que dejar inconclusa por motivos políticos).",
+    p19: "En 1982, bajo Declaratoria Presidencial, 68 manzanas del centro de San Miguel fueron declaradas zona de Monumentos Históricos, contribuyendo a la restauración de los antiguos edificios y la preservación del ambiente colonial. Hoy en día, San Miguel de Allende es un destino de primera y un refugio de retiro predilecto a nivel mundial.",
+    credits: "Vive San Miguel · Historia y patrimonio"
+  },
+  en: {
+    page_title: "History · Vive San Miguel",
+    logo_alt: "Vive San Miguel Logo",
+    nav_home: "Home",
+    library_title: "Virtual Library of San Miguel de Allende",
+    library_desc: "Official bibliographic archive, historical publications, and literary documents of the municipality.",
+    library_btn: "Explore Virtual Library",
+    book_title: "Interactive Digital Book",
+    book_desc: "Official digital edition on the history and traditions of San Miguel de Allende.",
+    book_iframe_title: "San Miguel de Allende Book",
+    pdf_fallback_msg: "The viewer requires direct action due to external server policies:",
+    pdf_fallback_cta: "Open / Download Book PDF",
+    open_pdf_btn: "Open Full PDF",
+    history_tag: "San Miguel de Allende · Colonial Jewel",
+    history_title: "History of San Miguel de Allende",
+    history_subtitle: "Forge of National Independence and birthplace of illustrious figures",
+    p1: "San Miguel de Allende, a colonial jewel and World Heritage city, has a fascinating history that dates back to pre-Hispanic times. Its current name honors Ignacio Allende, one of the leaders of Mexico's War of Independence, who was born in this city.",
+    p2: "San Miguel de Allende, “The Heart of Mexico,” located in the north of the beautiful State of Guanajuato, is regarded as the Forge of National Independence and the birthplace of illustrious figures. A colonial jewel distinguished by the warmth and generosity of its people—as well as its historical, cultural, gastronomic, and architectural richness that has dazzled hundreds of visitors over the years—it has become one of the most recognized destinations in the world.",
+    p3: "In 2008, UNESCO granted World Heritage status to the Protective Town of San Miguel and the Sanctuary of Jesús Nazareno de Atotonilco, a rural community 15 minutes north along the road to Dolores Hidalgo. This site is considered one of the most beautiful sanctuaries in all of Mexico, and connoisseurs even call it the “Sistine Chapel of the Americas.” It is a majestic work attributed to Reverend Father Luis Felipe Neri de Alfaro and executed by the influential promoter of religious art and visual artist Antonio Martínez de Poca Sangre, a criollo born in the city of Querétaro, who painted the Passion of Christ across its walls enriched with poems by Father Alfaro. This artistic and architectural landmark also witnessed the passage of the glorious Insurgent Army, led by the city's prodigal son Don Ignacio de Allende y Unzaga, promoter of this heroic endeavor, alongside priest Don Miguel Hidalgo y Costilla, who took a banner bearing the image of Our Lady of Guadalupe to form the insurgent standard—a symbol that inspired the people to fight against Spanish rule.",
+    p4: "In addition, this area is well known for its thermal hot springs, undoubtedly the ideal setting to find relaxation, peace, and connection with nature.",
+    p5: "Among the many distinctions this destination holds is its year-round calendar of Cultural and Gastronomic Festivals, internationally recognized for the quality of their programming, along with joyful celebrations of popular traditions and festivities—another major attraction of our community, as the fervor of its people impresses locals and visitors alike. Highlights include: the Feast of Saint Michael the Archangel, patron saint of the city; the Festivity in honor of the Holy Cross; El Señor de la Conquista; Convite de Locos; Día de Muertos; the Festivity of Our Lady of Loreto; and Independence Day celebrations.",
+    p6: "Nor can we overlook how many visitors are captivated by the rich flavors and variety of culinary styles that have boosted our destination's fame. Strolling through its cobblestone and picturesque streets, you will find restaurants offering a wide range of national and international dishes—Creole-Cajun, fusion, seafood, and more—all with high culinary standards that satisfy even the most discerning palates, thanks to nationally and internationally acclaimed chefs who fell in love with this magnificent city and made it their home. To complete the experience, nothing beats a fine dessert or digestif enjoyed while taking in the sunset or the city's historic architecture from a terrace restaurant, while nightlife offers options for every taste.",
+    h2_1: "Historical Chronology — The First San Miguel, San Miguel de los Chichimecas",
+    p7: "There is evidence that the first settlers arrived in San Miguel de Allende around 2,000 years ago and thrived through agriculture. However, roughly a thousand years ago, they abandoned their settlements, leaving them in the hands of nomadic hunter-gatherer tribes known as Chichimecas. One of their tribes, the Copuces, had a reputation for fierce violence, even among the battle-hardened Aztecs.",
+    p8: "The Spanish also avoided encountering these tribes until the discovery of silver in Guanajuato and Zacatecas forced them to establish a route from the mines, across Chichimeca lands, to Mexico City. They began by sending a Franciscan friar, Fray Juan de San Miguel, to convert and pacify the indigenous people.",
+    p9: "This was no easy task, yet by 1542 he had managed to build a church (San Miguel Arcángel) and establish a mission he named San Miguel de los Chichimecas.",
+    p10: "His success was short-lived: in 1551 the Copuces invaded the mission, and Fray Juan's successor, Fray Bernardo de Cossin, moved the settlement to a more defensible location a few kilometers away (the site of present-day San Miguel de Allende). During an inland expedition in which they reportedly brought Xoloitzcuintli dogs that wandered off and were found near a rich area of springs and an ideal strategic spot for settlement, the place was called Itzquinapan in Nahuatl, meaning “Water of Dogs” or “Pool of Dogs.”",
+    p11: "Still, things were not easy until 1555, when the Spanish fortified the site, called it a “Villa,” and began repopulating it—especially with soldiers. They gave the town the name Villa de San Miguel el Grande, and for many reasons, this was a turning point.",
+    p12: "Over the next 250 years, the town became a flourishing center of cattle ranching, leatherwork, wool, and toolmaking. By 1770, San Miguel el Grande had a population of 30,000. It grew at an extraordinary pace: by 1790, its population had reached 50,000—twice that of New York City at the time—and continued to grow. What could stop this? Yes: war.",
+    h2_2: "The Second San Miguel, San Miguel el Grande",
+    p13: "Mexico's War of Independence began in 1810, right here in the streets of San Miguel where fires of discontent had been smoldering for decades. Because of its remarkable prosperity and growth, residents held more liberal, laissez-faire attitudes than was typical under Spanish rule. Ironically, rather than aristocrats and peninsular lords growing closer to the criollo population, resentment prevailed. The breeding ground of this discontent was the Colegio de San Francisco de Sales (built in 1734), where seeds of revolution took root in the minds of students such as Ignacio Allende and Juan Aldama.",
+    p14: "On September 16, 1810, the Grito de Dolores marked the beginning of an insurrection led by Ignacio Allende and priest Miguel Hidalgo y Costilla. Their participation was dramatic yet brief, as both men were dead in less than a year. Nevertheless, they—alongside others such as Aldama, Jiménez, and Umarán—inspired a nation. What these men began lasted eleven years, culminating in Mexico's independence.",
+    h2_3: "The Third San Miguel, San Miguel de Allende",
+    p15: "In 1826, San Miguel was officially granted city status and, in honor of the national hero and prodigal son, took the name San Miguel de Allende. Likewise, nearby Dolores became Dolores Hidalgo in honor of the Father of the Nation. However, the war had coincided with declining output from local silver mines, and San Miguel entered a period of decline. Its population shrank, and its elegant churches and mansions fell into disrepair.",
+    p16: "It was not until the twentieth century that a School of Fine Arts was founded, and San Miguel de Allende's budding arts colony soon gained international recognition. This was further cemented in the 1950s with the founding of Instituto Allende, which drew war veterans studying on U.S. government scholarships. The character of the colonial town began attracting writers and artists during the early rebirth of San Miguel.",
+    p17: "In the late 1950s, prominent figures such as artist and philanthropist Stirling Dickinson, together with painter and political activist Felipe Cossío del Pomar and former Governor Enrique Fernández Martínez, founded the art and Spanish school at Instituto Allende.",
+    p18: "Similarly, the Ignacio Ramírez Cultural Center “El Nigromante” counted master muralist David Alfaro Siqueiros among its teachers; inside one room, utilizing the vaults of what was once the cloister of the Temple of La Inmaculada Concepción, he left his mark in a mural on the Life and Work of Generalísimo Don Ignacio Allende (a piece he had to leave unfinished for political reasons).",
+    p19: "In 1982, by Presidential Decree, 68 city blocks of central San Miguel were declared a Historic Monuments Zone, helping restore historic buildings and preserve the colonial atmosphere. Today, San Miguel de Allende is a premier destination and a beloved retreat around the world.",
+    credits: "Vive San Miguel · History and heritage"
+  }
+};
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.es;
+  document.documentElement.lang = lang;
+  localStorage.setItem("vsm_lang", lang);
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key] !== undefined) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key]) el.alt = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    if (dict[key]) el.title = dict[key];
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem("vsm_lang");
+setLanguage(savedLang === "en" ? "en" : "es");
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
